@@ -434,12 +434,17 @@ public class LEDScene : MonoBehaviour
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/4.toioID/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/toio_id/)です。
 
+toio ID の詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
+
 <div align="center"><img width=300 src="res/tutorial/toioID.gif"></div>
 
-詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
+上図では、Cube オブジェクトを違う Standard ID に置くことで、LED の色を切り替えて、マット上の y 座標（縦方向）で発光の強度を設定しています。
+
 
 toio ID は、Cube クラスのメンバー変数として、直接読み取ることができます。
 ```c#
+public int x { get; }   // Position ID の x 座標
+public int y { get; }   // Position ID の y 座標
 public Vector2 pos { get; } // 2Dベクトルに変換済みの Position ID
 public uint standardId { get; protected set; } // Standard ID
 ```
@@ -473,8 +478,12 @@ public class toioIDScene : MonoBehaviour
         {
             elapsedTime = 0.0f;
 
-            // y 座標で発光の強度を決める
+            // 手法A： y 座標で発光の強度を決める
             var strength = (510 - cube.y)/2;
+            // 手法B： x 座標で発光の強度を決める
+            // var strength = (510 - cube.x)/2;
+            // 手法C： pos と中央の距離で発光の強度を決める
+            // var strength = (int)(255 - (cube.pos-new Vector2(255,255)).magnitude);
 
             // Standard ID によって発光の色を決める （初期値は０）
             if (cube.standardId == 3670337) // Simple Card "A"
