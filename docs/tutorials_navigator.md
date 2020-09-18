@@ -306,6 +306,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
     {
         cubeManager = new CubeManager();
         await cubeManager.MultiConnect(2);
+        Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
         // By default, each navigator is able to see all others
         // But you can also manually make a navigator "blind"
@@ -412,7 +413,7 @@ async void Start()
 {
     cubeManager = new CubeManager();
     await cubeManager.MultiConnect(6);
-    Debug.Assert(cubeManager.navigators.Count>2, "Need more than 2 cubes.");
+    Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
     // Choose 1 cube not to be of boids
     CubeNavigator navigatorNotBoids = cubeManager.navigators[0];
@@ -471,6 +472,7 @@ public class BoidsAvoidTutorial : MonoBehaviour
     {
         cubeManager = new CubeManager();
         await cubeManager.MultiConnect(6);
+        Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
         // get Cube (5)
         CubeNavigator navigatorNotBoids = null;
