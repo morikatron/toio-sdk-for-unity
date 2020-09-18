@@ -1,0 +1,157 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"><style type="text/css">.markdown-body {padding: 20px 40px;}</style><style type="text/css">/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+/*# sourceURL=/Users/yaeda/.nodebrew/node/v14.3.0/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/github.css*/</style></head>
+<body class="markdown-body">
+<h1 id="webgl-ビルド">WebGL ビルド</h1>
+<h4 id="動作確認済み環境">動作確認済み環境</h4>
+<ul>
+<li>機種名 : MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)</li>
+<li>OS : MacOS Mojave 10.14.6</li>
+<li>Unity : 2019.1.10f1</li>
+<li>Chrome : 81.0.4044.129（Official Build） （64 ビット）</li>
+</ul>
+<h4 id="注記">注記</h4>
+<blockquote>
+<p>開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。</p>
+</blockquote>
+<h2 id="unity-の-webgl-build-support-をチェック">Unity の WebGL Build Support をチェック</h2>
+<p>Unity Hub を開いて、[インストール] タブで、相応のバージョンの右上のメニューの[モジュールを加える] で WebGL Build Support を入れてください。</p>
+<h2 id="ビルドのプラットフォームを-webgl-に切り替え">ビルドのプラットフォームを WebGL に切り替え</h2>
+<p>ここでは、<a href="download_sdk.html">toio-sdk-unity のインストール</a>が完了して<code>Assets/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/</code>を開いているものとして進めます。</p>
+<p>Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【プラットフォーム】リストの中、WebGL を選択し、右下の 【Switch Platform】 ボタンを押してください。</p>
+<img width="600" src="../res/build_webgl/1.png">
+
+<p>数十秒待ち、WebGL の右に Unity のアイコンが表示されたら、切り替え完成です。</p>
+<h2 id="webgltemplate-の適応">WebGLTemplate の適応</h2>
+<p>用意された WebGL プラグインを使用するために、Unity の Javascript テンプレートを変更します。</p>
+<ol>
+<li>Unity エディタ上で <code>Assets/toio-sdk-unity/Assets/WebGLTemplates</code> ディレクトリを <code>Assets/</code> ディレクトリ以下にドラック&amp;ドロップで移動します。</li>
+</ol>
+<img width="600" src="../res/build_webgl/5.png">
+
+<p>移動後に以下のような状態になっている事を確認して下さい。</p>
+<img width="600" src="../res/build_webgl/6.png">
+
+<ol start="2">
+<li>Build Settings より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。</li>
+</ol>
+<img width="600" src="../res/build_webgl/7.png">
+
+<ol start="3">
+<li>WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。</li>
+</ol>
+<img width="600" src="../res/build_webgl/8.png">
+
+<p>以上の操作で WebGL プラグインが使用出来るようになりました。</p>
+<h2 id="webgl-ビルド-1">WebGL ビルド</h2>
+<p>ビルドに含みたいシーンファイルを開いている状態で、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【シーンを追加】ボタンを押します。</p>
+<img width="600" src="../res/build_webgl/2.png">
+
+<p>すると【ビルドに含まれるシーン】のリストに Sample_UI が登録されます。続けて【ビルドして実行】をクリックします。</p>
+<img width="600" src="../res/build_webgl/3.png">
+
+<p>アプリが正しくビルドされていれば、ウェブページの画面はこのようになるはずです。</p>
+<img width="600" src="../res/build_webgl/4.png">
+
+<p>中央下にある【Connect】ボタンをクリックすると、キューブに接続します。その他のボタンを押すとキューブを操作する事が出来ます。</p>
+
+
+
+</body></html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"><style type="text/css">.markdown-body {padding: 20px 40px;}</style><style type="text/css">/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+/*# sourceURL=/Users/yaeda/.nodebrew/node/v14.3.0/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/github.css*/</style></head>
+<body class="markdown-body">
+<h3 id="今後の-ble-実装で大きく設計が変更される可能性があるため、こちらのドキュメントは適宜変更よろしくおねがいします。">今後の BLE 実装で大きく設計が変更される可能性があるため、こちらのドキュメントは適宜変更よろしくおねがいします。</h3>
+<h1 id="目次">目次</h1>
+<ul>
+<li><a href="sys_ble.html#1-%E6%A6%82%E8%AA%AC">1. 概説</a></li>
+<li><a href="sys_ble.html#2-BLE%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E6%A7%8B%E9%80%A0">2. BLE クラスの構造</a></li>
+<li><a href="sys_ble.html#3-%E9%80%9A%E4%BF%A1%E3%81%AE%E4%BB%95%E7%B5%84%E3%81%BF">3. 通信の仕組み</a><ul>
+<li><a href="sys_ble.html#31-%E6%A4%9C%E7%B4%A2%E3%81%A8%E6%8E%A5%E7%B6%9A">3.1. 検索と接続</a></li>
+<li><a href="sys_ble.html#32-%E9%80%81%E4%BF%A1%E3%81%A8%E5%8F%97%E4%BF%A1">3.2. 送信と受信</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="1-概説">1. 概説</h1>
+<div align="center">
+<img width="500" src="../res/ble/overview.png">
+</div>
+
+<br>
+
+<p>BLE モジュール群は、Bluetooth Low Enegy(BLE)の通信機能をインタフェースを介して抽象的に提供するモジュール群です。
+全ての BLE クラスをインタフェースを介して実装する事で、通信アーキテクチャとは独立した形で toio プログラミングが可能になります。
+そのため新たに継承クラスを独自開発する事で BLE 以外の通信モジュールに差し替える事も可能です</p>
+<br>
+
+<p>ディレクトリ構成は下図のようになります。</p>
+<div align="center">
+<img width="200" src="../res/ble/dir.png">
+</div>
+
+<br>
+
+<pre><code class="hljs plaintext">BLE  +---------------------------------+ BLEルートディレクトリ
+├── interfaces  +----------------------+ インタフェースディレクトリ
+│&nbsp;&nbsp; ├── BLECharacteristicInterface.cs  + Characteristic(機能単位)インタフェース
+│&nbsp;&nbsp; ├── BLEDeviceInterface.cs  +-------+ 端末のBLE機能を提供するインタフェース
+│&nbsp;&nbsp; ├── BLEPeripheralInterface.cs  +---+ Peripheral(接続端末)インタフェース
+│&nbsp;&nbsp; └── BLEServiceInterface.cs  +------+ BLE処理の最初の窓口となるインタフェース
+├── mobile  +--------------------------+ モバイル実装ディレクトリ
+│&nbsp;&nbsp; ├── BLEMobileCharacteristic.cs  +--+ Characteristic(機能単位)モバイル実装クラス
+│&nbsp;&nbsp; ├── BLEMobileDevice.cs  +----------+ モバイルのBLE機能を提供するクラス
+│&nbsp;&nbsp; ├── BLEMobilePeripheral.cs  +------+ Peripheral(接続端末)モバイル実装クラス
+│&nbsp;&nbsp; └── BLEMobileService.cs  +---------+ BLE処理の最初の窓口となるモバイル実装クラス
+├── unity  +---------------------------+ Unity実装ディレクトリ
+│&nbsp;&nbsp; └── UnityPeripheral.cs  +----------+ Peripheral(GameObject)Unity実装クラス
+├── WebGL  +---------------------------+ WebGL実装ディレクトリ
+│&nbsp;&nbsp; ├── Plugins  +---------------------+ WebGL用プラグインディレクトリ
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── WebGL  +-------------------+ WebGL用プラグインディレクトリ
+│&nbsp;&nbsp; │&nbsp;&nbsp; │&nbsp;&nbsp; └── WebBluetooth.jslib  +--+ WebGLTemplates/webble/webble.jsとやり取りをするスクリプト
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── WebBluetoothScript.cs  +---+ プラグイン機能を提供するクラス(WebBluetooth.jslibとやり取りをする)
+│&nbsp;&nbsp; ├── BLEWebCharacteristic.cs  +-----+ Characteristic(機能単位)WebGL実装クラス
+│&nbsp;&nbsp; ├── BLEWebDevice.cs  +-------------+ WebGLのBLE機能を提供するクラス
+│&nbsp;&nbsp; ├── BLEWebPeripheral.cs  +---------+ Peripheral(接続端末)WebGL実装クラス
+│&nbsp;&nbsp; ├── BLEWebService.cs  +------------+ BLE処理の最初の窓口となるWebGL実装クラス
+└── BLEService.cs  +-------------------+ BLE全体の最初の窓口となるシングルトンクラス</code></pre><br>
+
+<h1 id="2-ble-クラスの構造">2. BLE クラスの構造</h1>
+<br>
+
+<div align="center">
+<img width="700" src="../res/ble/ble_class.png">
+</div>
+
+<br>
+
+<h4 id="bleservice">BLEService</h4>
+<p>BLE 機能の最初の窓口となるシングルトンクラス<br>
+<u>BLEService.Instance.SetImplement()</u>関数で実装インタンスを入れる事で<br>
+内部実装クラスを設定する</p>
+<details>
+<summary>実装コード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">BLEService</span> : <span class="hljs-title">GenericSingleton</span>&lt;BLEService&gt;
+{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">bool</span> hasImplement { <span class="hljs-keyword">get</span>; <span class="hljs-keyword">private</span> <span class="hljs-keyword">set</span>; }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BLEService</span>(<span class="hljs-params"></span>)</span>
+    {
+        <span class="hljs-keyword">this</span>.hasImplement = <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-keyword">private</span> BLEServiceInterface impl;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetImplement</span>(<span class="hljs-params">BLEServiceInterface impl</span>)</span>
+    {
+        <span class="hljs-keyword">this</span>.impl = impl;
+        <span class="hljs-keyword">this</span>.hasImplement = <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">RequestDevice</span>(<span class="hljs-params">Action&lt;BLEDeviceInterface&gt; action</span>)</span>
+    {
+        <span class="hljs-keyword">this</span>.impl.RequestDevice(action);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> UniTask <span class="hljs-title">Enable</span>(<span class="hljs-params"><span class="hljs-keyword">bool</span> enable, Action action</span>)</span>
+    {
+        <span class="hljs-keyword">await</span> <span class="hljs-keyword">this</span>.impl.Enable(enable, action);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">DisconnectAll</span>(<span class="hljs-params"></span>)</span>
+    {
+        <span class="hljs-keyword">this</span>.impl.DisconnectAll();
+    }
+}</code></pre></details>
+
+<br>
+
+<h4 id="bleserviceinterface">BLEServiceInterface</h4>
+<p>BLE 処理の最初の窓口となるインタフェース<br>
+動作端末の BLE 機能を提供する Device インタフェースを取得する機能を提供する</p>
+<details>
+<summary>インタフェースコード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">BLEServiceInterface</span>
+{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">RequestDevice</span>(<span class="hljs-params">Action&lt;BLEDeviceInterface&gt; action</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DisconnectAll</span>(<span class="hljs-params"></span>)</span>;
+    <span class="hljs-function">UniTask <span class="hljs-title">Enable</span>(<span class="hljs-params"><span class="hljs-keyword">bool</span> enable, Action action</span>)</span>;
+}</code></pre></details>
+
+<br>
+
+<h4 id="bledeviceinterface">BLEDeviceInterface</h4>
+<p>動作端末の BLE 機能インタフェース<br>主な役目は BLE 機能にアクセスしてスキャン処理を実行すること</p>
+<details>
+<summary>インタフェースコード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">BLEDeviceInterface</span>
+{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Scan</span>(<span class="hljs-params">String[] serviceUUIDs, <span class="hljs-keyword">bool</span> rssiOnly, Action&lt;BLEPeripheralInterface&gt; action</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">StopScan</span>(<span class="hljs-params"></span>)</span>;
+    <span class="hljs-function">UniTask <span class="hljs-title">Disconnect</span>(<span class="hljs-params">Action action</span>)</span>;
+    <span class="hljs-function">UniTask <span class="hljs-title">Enable</span>(<span class="hljs-params"><span class="hljs-keyword">bool</span> enable, Action action</span>)</span>;
+}</code></pre></details>
+
+<br>
+
+<h4 id="bleperipheralinterface">BLEPeripheralInterface</h4>
+<p>スキャンされた BLE デバイスのインタフェース<br>主な役目はスキャンされた BLE デバイスへの接続処理を実行すること</p>
+<details>
+<summary>インタフェースコード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">BLEPeripheralInterface</span>
+{
+    <span class="hljs-keyword">string</span>[] serviceUUIDs { <span class="hljs-keyword">get</span>; }
+    <span class="hljs-keyword">string</span> device_address { <span class="hljs-keyword">get</span>; }
+    <span class="hljs-keyword">string</span> device_name { <span class="hljs-keyword">get</span>; }
+    <span class="hljs-keyword">float</span> rssi { <span class="hljs-keyword">get</span>; }
+    <span class="hljs-keyword">bool</span> isConnected { <span class="hljs-keyword">get</span>; }
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Connect</span>(<span class="hljs-params">Action&lt;BLECharacteristicInterface&gt; characteristicAction</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">AddConnectionListener</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> key, Action&lt;BLEPeripheralInterface&gt; action</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">RemoveConnectionListener</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> key</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ConnectionNotify</span>(<span class="hljs-params">BLEPeripheralInterface peri</span>)</span>;
+}</code></pre></details>
+
+<br>
+
+<h4 id="blecharacteristicinterface">BLECharacteristicInterface</h4>
+<p>スキャンされた BLE デバイスの機能ごとのインタフェース<br>主な役目は BLE デバイスそれぞれの機能に対して書き込み/読み込み処理を実行すること</p>
+<details>
+<summary>インタフェースコード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">BLECharacteristicInterface</span>
+{
+    <span class="hljs-keyword">string</span> deviceAddress { <span class="hljs-keyword">get</span>; }
+    <span class="hljs-keyword">string</span> serviceUUID { <span class="hljs-keyword">get</span>; }
+    <span class="hljs-keyword">string</span> characteristicUUID { <span class="hljs-keyword">get</span>; }
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ReadValue</span>(<span class="hljs-params">Action&lt;<span class="hljs-keyword">string</span>, <span class="hljs-keyword">byte</span>[]&gt; action</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">WriteValue</span>(<span class="hljs-params"><span class="hljs-keyword">byte</span>[] data, <span class="hljs-keyword">bool</span> withResponse</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">StartNotifications</span>(<span class="hljs-params">Action&lt;<span class="hljs-keyword">byte</span>[]&gt; action</span>)</span>;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">StopNotifications</span>(<span class="hljs-params"></span>)</span>;
+}</code></pre></details>
+
+<h1 id="3-通信の仕組み">3. 通信の仕組み</h1>
+<h2 id="31-検索と接続">3.1. 検索と接続</h2>
+<br>
+
+<div align="center">
+<img width="400" src="../res/ble/ble_connection.png">
+</div>
+
+<br>
+
+<h3 id="検索">検索</h3>
+<p>検索には Scanner クラスを使用します。Scanner クラスの概要は<a href="sys_cube.html#31-%E6%A4%9C%E7%B4%A2scanner">コチラ</a>を参照して下さい。<br>この節では Scanner クラスの BLE 処理について解説します。</p>
+<p>スキャンは大まかに以下の手順で実行します。</p>
+<ol>
+<li>RequestDevice 関数を呼び、BLEDeviceInterface 変数を取得します。</li>
+<li><a href="https://toio.github.io/toio-spec/docs/ble_communication_overview.html#%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%96%E3%81%AE%E7%99%BA%E8%A6%8B">CoreCube 識別 ID</a>を対象にスキャンを開始</li>
+<li>スキャン終了条件(接続数、待機時間)を満たしたらスキャンを終了</li>
+<li>スキャンにより取得した BLEPeripheralInterface 変数をリターン</li>
+</ol>
+<p>iOS/Android/WebGL で共通の通信モジュールを使用していますが、<br>Android の場合のみ接続処理が不安定なため様々な箇所にディレイ処理が入っています。</p>
+<br>
+
+<h3 id="接続">接続</h3>
+<p>接続には Connector クラスを使用します。<a href="sys_cube.html#32-%E6%8E%A5%E7%B6%9Aconnecter">cube ドキュメント</a>に殆ど書かれています、ご参照下さい。</p>
+<p>BLE 処理として追記するべき点は以下です。</p>
+<ol>
+<li><p>Cube 変数の生成直後に<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs">自動通知の購読(cube.StartNotifications)</a>を呼び、座標やボタン等の自動通知の購読を開始します。</p>
+</li>
+<li><p>検索と同様に Android の場合のみ接続処理が不安定なため様々な箇所にディレイ処理が入っています。</p>
+</li>
+</ol>
+<br>
+
+<h2 id="32-送信と受信">3.2. 送信と受信</h2>
+<br>
+
+<div align="center">
+<img width="400" src="../res/ble/ble_write.png">
+</div>
+<br>
+
+<h3 id="送信">送信</h3>
+<p>送信呼び出し自体は CubeReal の派生クラスから行われます、<a href="sys_cube.html#4-%E5%91%BD%E4%BB%A4%E9%80%81%E4%BF%A1">cube ドキュメント</a>をご参照下さい。<br></p>
+<h3 id="受信">受信</h3>
+<p>接続処理直後に行った<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs">自動通知の購読(cube.StartNotifications)</a>により、購読している情報が自動通知されます。</p>
+
+
+
+</body></html>

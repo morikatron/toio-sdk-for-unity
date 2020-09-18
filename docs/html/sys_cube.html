@@ -1,0 +1,532 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"><style type="text/css">.markdown-body {padding: 20px 40px;}</style><style type="text/css">/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+/*# sourceURL=/Users/yaeda/.nodebrew/node/v14.3.0/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/github.css*/</style></head>
+<body class="markdown-body">
+<h1 id="目次">目次</h1>
+<ul>
+<li><a href="sys_cube.html#1-%E6%A6%82%E8%AA%AC">1. 概説</a></li>
+<li><a href="sys_cube.html#2-cube%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E6%A7%8B%E9%80%A0">2. Cube クラスの構造</a></li>
+<li><a href="sys_cube.html#3-%E6%8E%A5%E7%B6%9A%E3%81%AE%E4%BB%95%E7%B5%84%E3%81%BF">3. 接続の仕組み</a><ul>
+<li><a href="sys_cube.html#31-%E6%A4%9C%E7%B4%A2scanner">3.1. 検索(Scanner)</a></li>
+<li><a href="sys_cube.html#32-%E6%8E%A5%E7%B6%9Aconnecter">3.2. 接続(Connecter)</a></li>
+</ul>
+</li>
+<li><a href="sys_cube.html#4-%E5%91%BD%E4%BB%A4%E9%80%81%E4%BF%A1">4. 命令送信</a></li>
+<li><a href="sys_cube.html#5-%E6%A9%9F%E8%83%BD%E6%8B%A1%E5%BC%B5%E3%81%AE%E6%96%B9%E6%B3%95">5. 機能拡張の方法</a><ul>
+<li><a href="sys_cube.html#51-Cube%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AB%E9%96%A2%E6%95%B0%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF">5.1. Cube クラスに関数を追加するには</a></li>
+<li><a href="sys_cube.html#52-%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0%E3%82%A6%E3%82%A7%E3%82%A2%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF">5.2. ファームウェアバージョンを追加するには</a></li>
+<li><a href="sys_cube.html#53-%E9%80%9A%E4%BF%A1%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88">5.3. 通信プログラムを変更する場合</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="1-概説">1. 概説</h1>
+<div align="center">
+  <img width="500" src="../res/cube/overview.png">
+</div>
+
+<p>Cube モジュール群は、Unity システム上で動くコアキューブ(以下シミュレータ) と 現実のコアキューブ(以下リアル) を同一のコードで動かす事が出来るマルチプラットフォーム対応モジュールです。</p>
+<p>ディレクトリ構成は下図のようになります。</p>
+<div align="center">
+  <img width="150" src="../res/cube/dir.png">
+</div>
+
+<pre><code class="hljs plaintext">Cube  +-------------------------------+ キューブルートディレクトリ
+├── CoreCube  +-----------------------+ コアキューブディレクトリ
+│&nbsp;&nbsp; ├── Real  +-----------------------+ リアル実装ディレクトリ
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── Versions  +---------------+ リアル実装のバージョンディレクトリ
+│&nbsp;&nbsp; │&nbsp;&nbsp; │&nbsp;&nbsp; ├── CubeReal_ver2_0_0.cs  + 2.0.0リアル実装クラス
+│&nbsp;&nbsp; │&nbsp;&nbsp; │&nbsp;&nbsp; └── CubeReal_ver2_1_0.cs  + 2.1.0リアル実装クラス
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── CubeReal.cs  +------------+ リアル実装抽象クラス
+│&nbsp;&nbsp; ├── Sim    +----------------------+ シミュレータ実装ディレクトリ
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── CubeUnity.cs  +-----------+ シミュレータ実装クラス
+│&nbsp;&nbsp; ├── Cube.cs  +--------------------+ コアキューブ抽象クラス
+│&nbsp;&nbsp; └── CubeOrderBalancer.cs  +-------+ 命令送信制御クラス
+├── Scanner  +------------------------+ 検索ディレクトリ
+│&nbsp;&nbsp; ├── NearScanner.cs  +-------------+ 複数台検索クラス
+│&nbsp;&nbsp; └── NearestScanner.cs  +----------+ 1台検索クラス
+├── CubeConnecter.cs  +---------------+ 接続クラス
+├── CubeHandle.cs  +------------------+ 機能拡張クラス
+└── CubeManager.cs  +-----------------+ コード簡略化クラス</code></pre><h1 id="2-cube-クラスの構造">2. Cube クラスの構造</h1>
+<div align="center">
+  <img width="300" src="../res/cube/cube_class.png">
+</div>
+
+<h4 id="cube-クラス">Cube クラス</h4>
+<p>Cube を操作するためのインタフェースです。
+全ての関数・プロパティの中身が未実装となっており、派生クラスに全ての処理を委ねています。
+こうする事で実行環境やバージョン毎の内部実装の違いを吸収し、ポリモーフィズムによる抽象的なプログラミングを可能にします。
+再利用性を保つために、このクラスには<a href="https://toio.github.io/toio-spec/docs/ble_communication_overview.html">コアキューブ通信仕様</a>以外の機能が存在しません。
+コアキューブ通信仕様以外の機能を利用/拡張する場合は、<a href="usage_cubehandle.html">CubeHandle</a>, <a href="sys_navigator.html">CubeNavigator</a>等の拡張クラスを利用します。</p>
+<p>実装コード：<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs">Cube.cs</a></p>
+<h4 id="cubeunity">CubeUnity</h4>
+<p>Unity エディタ実行時に動作するシミュレータ用 Cube クラスです。ファームウェアバージョンの解決処理が無いため、1 つのバージョンのみが動作対象になります。</p>
+<p>実装コード：<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Sim/CubeUnity.cs">CubeUnity.cs</a></p>
+<h4 id="cubereal">CubeReal</h4>
+<p>現実のコアキューブとの BLE 通信を行う Cube クラスです。最低限の共通処理を除いて、殆どの内部実装を派生クラスで行います。</p>
+<p>実装コード：<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs">CubeReal.cs</a></p>
+<p><strong>ver2_0_0：</strong></p>
+<ul>
+<li>実装コード：<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs">CubeReal_ver2_0_0.cs</a></li>
+<li>通信仕様：<a href="https://toio.github.io/toio-spec/docs/2.0.0/about">https://toio.github.io/toio-spec/docs/2.0.0/about</a></li>
+</ul>
+<p><strong>ver2_1_0：</strong></p>
+<ul>
+<li>実装コード：<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs">CubeReal_ver2_1_0.cs</a></li>
+<li>通信仕様：<a href="https://toio.github.io/toio-spec/docs/about">https://toio.github.io/toio-spec/docs/about</a></li>
+</ul>
+<h1 id="3-接続の仕組み">3. 接続の仕組み</h1>
+<p>例として、シンプルな Cube 移動コードを示します。このコードを実行すると、Cube へ接続後に移動関数が呼ばれます。Cube はクルクルと回転します。</p>
+<pre><code class="hljs C#"><span class="hljs-keyword">using</span> UnityEngine;
+<span class="hljs-keyword">using</span> toio;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">BasicScene</span> : <span class="hljs-title">MonoBehaviour</span>
+{
+    <span class="hljs-keyword">float</span> intervalTime = <span class="hljs-number">0.05f</span>;
+    <span class="hljs-keyword">float</span> elapsedTime = <span class="hljs-number">0</span>;
+    Cube cube;
+
+    <span class="hljs-comment">// 非同期初期化</span>
+    <span class="hljs-comment">// C#標準機能であるasync/awaitキーワードを使用する事で、検索・接続それぞれで終了待ちする</span>
+    <span class="hljs-comment">// async: 非同期キーワード</span>
+    <span class="hljs-comment">// await: 待機キーワード</span>
+    <span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>(<span class="hljs-params"></span>)</span>
+    {
+          <span class="hljs-comment">// Bluetoothデバイスを検索</span>
+        <span class="hljs-keyword">var</span> peripheral = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> NearestScanner().Scan();
+           <span class="hljs-comment">// デバイスへ接続してCube変数を生成</span>
+        cube = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> CubeConnecter().Connect(peripheral);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>(<span class="hljs-params"></span>)</span>
+    {
+        <span class="hljs-comment">// Cube変数の生成が完了するまで早期リターン</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> == cube) { <span class="hljs-keyword">return</span>; }
+            <span class="hljs-comment">// 経過時間を計測</span>
+        elapsedTime += Time.deltaTime;
+
+          <span class="hljs-comment">// 前回の命令から50ミリ秒以上経過した場合</span>
+        <span class="hljs-keyword">if</span> (intervalTime &lt; elapsedTime)
+        {
+            elapsedTime = <span class="hljs-number">0.0f</span>;
+              <span class="hljs-comment">// 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒</span>
+            cube.Move(<span class="hljs-number">50</span>, <span class="hljs-number">-50</span>, <span class="hljs-number">200</span>);
+        }
+    }
+}</code></pre><p>この章では、検索接続プログラム部分について解説します。</p>
+<pre><code class="hljs C#"><span class="hljs-function"><span class="hljs-keyword">async</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>(<span class="hljs-params"></span>)</span>
+{
+  <span class="hljs-comment">// Bluetoothデバイスを検索 (3.1. 検索)</span>
+  <span class="hljs-keyword">var</span> peripheral = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> NearestScanner().Scan();
+  <span class="hljs-comment">// デバイスへ接続してCube変数を生成 (3.2. 接続)</span>
+  cube = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> CubeConnecter().Connect(peripheral);
+}</code></pre><p>手早く概要を把握したい方のため、ひとまずこのプログラムの概要図を示します。このプログラムはマルチプラットフォームで動作するため、Scanner モジュール、Connecter モジュールのそれぞれに 2 つの内部実装(リアル実装/シミュレータ実装)が存在します。</p>
+<h3 id="検索接続プログラムの概要リアル実装">検索接続プログラムの概要(リアル実装)</h3>
+<div align="center">
+  <img width="500" src="../res/cube/cube_connectionSS.png">
+</div>
+
+<p>上の図のような仕組みで、検索・接続を行います。</p>
+<ol>
+<li>Scanner.Scan 関数を実行して、Peripheral 変数を取得</li>
+<li>Connecter.Connect 関数を実行して、Characteristic 配列変数を取得</li>
+<li>Connecter が持つバージョンテーブルを参照して、対応する Cube 変数を取得</li>
+</ol>
+<h3 id="検索接続プログラムの概要シミュレータ実装"><u>検索接続プログラムの概要(シミュレータ実装)</u></h3>
+<div align="center">
+  <img width="400" src="../res/cube/cube_connectionSS_unity.png">
+</div>
+
+<p>上の図のような仕組みで、検索・接続のダミー処理を行います。</p>
+<ol>
+<li>Scanner.Scan 関数を実行して、UnityPeripheral 変数を取得</li>
+<li>Connecter.Connect 関数を実行して、UnityCube 変数を取得</li>
+</ol>
+<h2 id="31-検索scanner">3.1. 検索(Scanner)</h2>
+<div align="center">
+  <img width="250" src="../res/cube/cube_scanner.png">
+</div>
+
+<p>ToioSDK には Bluetooth デバイスの検索モジュールが 2 つあります。</p>
+<ul>
+<li>NearestScanner クラス：<ul>
+<li>Scan 関数：最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。</li>
+</ul>
+</li>
+<li>NearScanner クラス：<ul>
+<li>Scan 関数：信号強度の高い順に指定された<b>複数</b>のデバイスを戻り値として<b>同期的</b>に返します。</li>
+<li>ScanAsync 関数：信号強度の高い順に指定された<b>複数</b>のデバイスを<b>非同期的</b>にコールバックします。</li>
+</ul>
+</li>
+</ul>
+<p>2 章の始めに示したサンプルコードでは、このうち NearestScanner.Scan を使用して同期的にスキャンをしています。</p>
+<h3 id="nearestscanner"><u>NearestScanner</u></h3>
+<p><strong>Scan 関数</strong>を呼ぶ事で、最も信号強度の高いデバイスを戻り値として同期的に返します。async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
+<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs">CubeManager</a>に拡張性を持たせる目的で、インタフェースを継承して実装されています。</p>
+<p>シミュレータ実装：</p>
+<ul>
+<li>GameObject を生成</li>
+</ul>
+<p>リアル実装：</p>
+<ul>
+<li>Bluetooth デバイスを検索</li>
+</ul>
+<details>
+<summary>概要コード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">NearestScannerInterface</span>
+{
+    <span class="hljs-function">Task&lt;BLEPeripheralInterface&gt; <span class="hljs-title">Scan</span>(<span class="hljs-params"></span>)</span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">NearestScanner</span> : <span class="hljs-title">NearestScannerInterface</span>
+{
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> UNITY_EDITOR</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;BLEPeripheralInterface&gt; <span class="hljs-title">Scan</span>(<span class="hljs-params"></span>)</span>
+    {
+        <span class="hljs-comment">/* return await UnityPeripheral */</span>
+    }
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;BLEPeripheralInterface&gt; <span class="hljs-title">Scan</span>(<span class="hljs-params"></span>)</span>
+    {
+        <span class="hljs-comment">/* return await BLEMobilePeripheral */</span>
+    }
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+}</code></pre></details>
+
+<p>実装コード：</p>
+<ul>
+<li><a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs">NearestScanner.cs</a></li>
+</ul>
+<p>サンプルコード：</p>
+<ul>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_RawSingle.cs">CubeManagerScene_RawSingle.cs</a></p>
+</li>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_Single.cs">CubeManagerScene_Single.cs</a></p>
+</li>
+</ul>
+<h3 id="nearscanner"><u>NearScanner</u></h3>
+<p>同期スキャンを行う Scan 関数、非同期スキャンを行う ScanAsync 関数があります。</p>
+<p><strong>Scan 関数</strong>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<strong>同期的</strong>に返します。async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。
+<strong>ScanAsync 関数</strong>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<strong>非同期的</strong>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、cube との接続が切れた際に自動的にスキャンを再開します。</p>
+<p>NearesetScanner 同様に、内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
+<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs">CubeManager</a>に拡張性を持たせる目的で、インタフェースを継承して実装されています。</p>
+<p>シミュレータ実装：</p>
+<ul>
+<li>UnityPeripheral(GameObject)を生成</li>
+</ul>
+<p>リアル実装：</p>
+<ul>
+<li>Peripheral(Bluetooth デバイス)を検索</li>
+</ul>
+<details>
+<summary>概要コード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">NearScannerInterface</span>
+{
+    Task&lt;BLEPeripheralInterface[]&gt; Scan(<span class="hljs-keyword">float</span> waitSeconds = <span class="hljs-number">3.0f</span>);
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ScanAsync</span>(<span class="hljs-params">MonoBehaviour coroutineObject, Action&lt;BLEPeripheralInterface&gt; callback, <span class="hljs-keyword">bool</span> autoRunning = <span class="hljs-literal">true</span></span>)</span>;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">NearScanner</span> : <span class="hljs-title">NearScannerInterface</span>
+{
+    <span class="hljs-keyword">private</span> Impl impl;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">NearScanner</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> satisfiedNum</span>)</span>
+    {
+        <span class="hljs-comment">// cross-platform implementation.</span>
+        <span class="hljs-keyword">this</span>.impl = <span class="hljs-keyword">new</span> Impl(satisfiedNum);
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;BLEPeripheralInterface[]&gt; Scan(<span class="hljs-keyword">float</span> waitSeconds = <span class="hljs-number">3.0f</span>)
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-keyword">this</span>.impl.Scan(waitSeconds);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ScanAsync</span>(<span class="hljs-params">MonoBehaviour coroutineObject, Action&lt;BLEPeripheralInterface&gt; callback, <span class="hljs-keyword">bool</span> autoRunning</span>)</span>
+    {
+        <span class="hljs-keyword">this</span>.impl.ScanAsync(coroutineObject, callback, autoRunning);
+    }
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> UNITY_EDITOR</span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> Impl for Unity.</span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Impl</span>
+    {
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">async</span> Task&lt;BLEPeripheralInterface[]&gt; Scan(<span class="hljs-keyword">float</span> waitSeconds)
+        {
+            <span class="hljs-comment">/* return await UnityPeripheral */</span>
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ScanAsync</span>(<span class="hljs-params">MonoBehaviour coroutineObject, Action&lt;BLEPeripheralInterface&gt; callback, <span class="hljs-keyword">bool</span> autoRunning</span>)</span>
+        {
+            <span class="hljs-comment">/* callback(UnityPeripheral) */</span>
+        }
+    }
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> Impl for Mobile(iOS, Android).</span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Impl</span>
+    {
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">async</span> Task&lt;BLEPeripheralInterface[]&gt; Scan(<span class="hljs-keyword">float</span> waitSeconds)
+        {
+            <span class="hljs-comment">/* return await BLEMobilePeripheral */</span>
+        }
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ScanAsync</span>(<span class="hljs-params">MonoBehaviour coroutineObject, Action&lt;BLEPeripheralInterface&gt; callback, <span class="hljs-keyword">bool</span> autoRunning = <span class="hljs-literal">true</span></span>)</span>
+        {
+            <span class="hljs-comment">/* callback(BLEMobilePeripheral) */</span>
+        }
+    }
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+}</code></pre></details>
+
+<p>実装コード：</p>
+<ul>
+<li><a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs">NearScanner.cs</a></li>
+</ul>
+<p>サンプルコード：</p>
+<ul>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_RawMulti.cs">CubeManagerScene_RawMulti.cs</a></p>
+</li>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_Multi.cs">CubeManagerScene_Multi.cs</a></p>
+</li>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_MultiAsync.cs">CubeManagerScene_MultiAsync.cs</a></p>
+</li>
+</ul>
+<h2 id="32-接続connecter">3.2. 接続(Connecter)</h2>
+<div align="center">
+  <img width="500" src="../res/cube/cube_connecter.png">
+</div>
+
+<p>CubeConnecter の役割は、BLE デバイスへの接続と <strong>ファームウェアバージョンの適応(※リアル実装のみ)</strong> です。内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。
+<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs">CubeManager</a>に拡張性を持たせる目的で、インタフェースを継承して実装されています。</p>
+<p>シミュレータ実装：</p>
+<ol>
+<li>UnityPeripheral(GameObject)から GameObject を取得</li>
+<li>GameObjet を引数に CubeUnity 変数を生成
+(※シミュレータ実装版ではファームウェアバージョン適応は実装されていません)</li>
+</ol>
+<p>リアル実装：</p>
+<ol>
+<li>Peripheral(Bluetooth デバイス)へ接続して Characteristic(機能)配列を取得</li>
+<li>ファームウェアバージョンを取得</li>
+<li>事前に追加しておいたバージョンテーブルを参照、ファームウェアに適応した Cube 変数(CubeReal_verX_X_X)を生成</li>
+</ol>
+<details>
+<summary>概要コード：（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">CubeConnecterInterface</span>
+{
+    <span class="hljs-function">Task&lt;Cube&gt; <span class="hljs-title">Connect</span>(<span class="hljs-params">BLEPeripheralInterface peripheral</span>)</span>;
+    Task&lt;Cube[]&gt; Connect(BLEPeripheralInterface[] peripherals);
+    <span class="hljs-function">Task <span class="hljs-title">ReConnect</span>(<span class="hljs-params">Cube cube, BLEPeripheralInterface peripheral</span>)</span>;
+}
+
+<span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+<span class="hljs-comment"><span class="hljs-doctag">///</span> CoreCubeのファームウェアバージョンを参照し, バージョンに応じたCubeクラスを生成.</span>
+<span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">CubeConnecter</span> : <span class="hljs-title">CubeConnecterInterface</span>
+{
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> UNITY_EDITOR</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;Cube&gt; <span class="hljs-title">Connect</span>(<span class="hljs-params">BLEPeripheralInterface peripheral</span>)</span>
+    {
+        <span class="hljs-comment">/* return CubeUnity */</span>
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;Cube[]&gt; Connect(BLEPeripheralInterface[] peripherals)
+    {
+        <span class="hljs-comment">/* return CubeUnity[] */</span>
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Task <span class="hljs-title">ReConnect</span>(<span class="hljs-params">Cube cube, BLEPeripheralInterface peripheral</span>)</span>
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+    <span class="hljs-keyword">private</span> Dictionary&lt;<span class="hljs-keyword">string</span>, Cube&gt; versionTable = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-keyword">string</span>, Cube&gt;();
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">CubeConnecter</span>(<span class="hljs-params"></span>)</span>
+    {<span class="hljs-comment">/*
+        versionTable.add("2.0.0", CubeReal_ver2_0_0)
+        versionTable.add("2.1.0", CubeReal_ver2_1_0)
+    */</span>}
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;Cube&gt; <span class="hljs-title">Connect</span>(<span class="hljs-params">BLEPeripheralInterface peripheral</span>)</span>
+    {<span class="hljs-comment">/*
+        characteristics ← connect(peripheral)
+        version ← get_version(characteristics)
+        cube ← versionTable[version]
+        return cube
+    */</span>}
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;Cube[]&gt; Connect(BLEPeripheralInterface[] peripherals)
+    {<span class="hljs-comment">/*
+        cubes = []
+        for i = 1 to peripherals.len do
+            characteristics ← connect(peripherals[i])
+            version ← get_version(characteristics)
+            cube ← versionTable[version]
+            cubes.add(cube)
+          return cubes
+    */</span>}
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task <span class="hljs-title">ReConnect</span>(<span class="hljs-params">Cube cube, BLEPeripheralInterface peripheral</span>)</span>
+    {
+        <span class="hljs-comment">/* connect(peripheral) */</span>
+    }
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+}</code></pre></details>
+
+<p>実装コード：</p>
+<ul>
+<li><a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeConnecter.cs">toio-sdk/Scripts/Cube/CubeConnecter.cs</a></li>
+</ul>
+<p>サンプルコード：</p>
+<ul>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_RawSingle.cs">CubeManagerScene_RawSingle.cs</a></p>
+</li>
+<li><p><a href="../../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/6.CubeManager/CubeManagerScene_Single.cs">CubeManagerScene_Single.cs</a></p>
+</li>
+</ul>
+<h1 id="4-命令送信">4. 命令送信</h1>
+<div align="center">
+  <img width="400" src="../res/cube/cube_order.png">
+</div>
+
+<p>全ての Cube への関数呼び出しは、継承により内部実装が異なります。シミュレータ用 Cube クラスである CubeUntiy は、CubeSimulator に対して命令を送ります。BLE 通信用 Cube クラスである CubeReal 派生クラスは、BLE に対して byte 配列を送信するように命令を送ります。CubeUnity / CubeReal 派生クラスで内部実装は異なっていますが、共通して命令送信を <strong>CubeOrderBalancer</strong> クラスに委ねています。</p>
+<p>大まかには以下の手順で命令送信します。</p>
+<ol>
+<li>CubeUnity / CubeReal 派生クラスからの命令を CubeOrderBalancer クラスの命令キューへ追加します。</li>
+<li>CubeOrderBalancer の Update 関数実行時に、命令キューから 1 つだけ命令を取り出して送信します。</li>
+</ol>
+<p>命令送信を CubeOrderBalancer クラスに委ねる背景は以下の 2 つです。</p>
+<ul>
+<li><p>短い間隔(約 45ms 以内)で複数の命令を送ると、2 つ目以降の命令が無視される。</p>
+</li>
+<li><p>命令には【必ず実行してほしい命令】と【時々無視しても問題ない命令】の 2 種類がある。</p>
+</li>
+</ul>
+<h3 id="cubeorderbalancer">CubeOrderBalancer</h3>
+<p>そのため、このクラスは以下の 2 つの機能を提供します。</p>
+<ol>
+<li><p>命令間隔の制御(45ms)</p>
+<p>このクラスは命令キューを持っており、AddOrder 関数で命令を追加出来ます。<br>Update 関数内において、それぞれの Cube の前回の命令から経過時間が 45ms 以上の場合に、命令キューの中から 1 つだけ命令を取り出して送信します。</p>
+</li>
+<li><p>命令の優先度設定(強 / 弱)</p>
+<p><strong>強い命令：</strong> キューに弱い命令と混在していた場合、弱い命令を破棄して優先的に送信されます。複数の強い命令がキューにある場合、先入れ先出し法(FIFO)で強い命令がキューから取り出されて送信されます。送信されなかった強い命令はキューに残り続け、命令間隔の制御により 45ms 以上の間隔を空けた後に送信されます。したがって、単発で重要な命令(音を鳴らす、LED を光らす等)を強い命令にする事で、命令無視される確率を下げる事が出来ます。</p>
+<p><strong>弱い命令：</strong> キューに強い命令と混在していた場合、弱い命令は送信されずに破棄されます。複数の弱い命令がキューにある場合、キューの最後の命令だけ送信して、その他の命令は全て破棄します。高頻度で送信する(ナビゲーションなどの)移動命令の場合、命令を多少無視しても問題無い場合があります。こういった多少無視しても問題ない命令を弱い命令にする事で、対照的に優先度の高い強い命令を安定して送信出来ます。</p>
+</li>
+</ol>
+<p>実装コード：<a href="../../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/CubeOrderBalancer.cs">CubeOrderBalancer.cs</a></p>
+<h1 id="5-機能拡張の方法">5. 機能拡張の方法</h1>
+<p>ToioSDK の機能拡張は、次のような方法で行うと良いと思います。</p>
+<h2 id="51-cube-クラスに関数を追加するには">5.1. Cube クラスに関数を追加するには</h2>
+<p><a href="sys_cube.html#2-cube%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E6%A7%8B%E9%80%A0">Cube クラスの構造</a>で説明しましたが、Cube クラスには継承関係があります。そのためベースとなる Cube クラスに仮想関数を追加してから派生クラスで関数オーバーライドしていく事で、関数を追加出来ます。</p>
+<h2 id="52-ファームウェアバージョンを追加するには">5.2. ファームウェアバージョンを追加するには</h2>
+<ol>
+<li>新たに追加されたファームウェアバージョンに対応する CubeReal 派生クラスを作成します。</li>
+<li>CubeConnecter クラスの versionTable メンバ変数に生成関数を登録します。</li>
+</ol>
+<h2 id="53-通信プログラムを変更する場合">5.3. 通信プログラムを変更する場合</h2>
+<p>BLE インタフェースの内部実装を変更する事で、既存の toio プログラムに変更を加える事なく通信プログラムだけを変更する事が出来ます。</p>
+
+
+
+</body></html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"><style type="text/css">.markdown-body {padding: 20px 40px;}</style><style type="text/css">/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+/*# sourceURL=/Users/yaeda/.nodebrew/node/v14.3.0/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/github.css*/</style></head>
+<body class="markdown-body">
+<h1 id="ios-ビルド">iOS ビルド</h1>
+<p>ここでは toio-sdk-unity を使ったプロジェクトを iOS 向けにビルドする方法を解説します。</p>
+<h2 id="動作確認済み環境">動作確認済み環境</h2>
+<p>以下の環境で動作確認をしています。必ずしも合わせる必要はありませんが、自分の環境でうまく行かない場合の参考にしてください。</p>
+<table>
+<thead>
+<tr>
+<th>ツール・ソフトウェア</th>
+<th>確認バージョン</th>
+<th>推奨バージョン</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OS</td>
+<td>macOS Catalina 10.15.5</td>
+<td>macOS Mojave 10.14 以上</td>
+</tr>
+<tr>
+<td>Unity</td>
+<td>2019.4.0f1</td>
+<td>2019.3 以上</td>
+</tr>
+<tr>
+<td>Xcode</td>
+<td>11.5 (11E608c)</td>
+<td>11 以上</td>
+</tr>
+<tr>
+<td>Cocoapods</td>
+<td>1.9.3</td>
+<td>1.9 以上</td>
+</tr>
+<tr>
+<td>iOS</td>
+<td>12.3.1, 13.2.2</td>
+<td>11 以上</td>
+</tr>
+</tbody></table>
+<h2 id="unity-の-ios-build-support-をチェック">Unity の iOS Build Support をチェック</h2>
+<p>Unity をインストールする時に iOS Build Support もモジュールを追加しなかった場合は、 Unity Hub を開いて［インストール］タブで、相応のバージョンの右上のメニューの［モジュールを加える］から iOS Build Support を加えてください。</p>
+<h2 id="ビルドプラットフォームを-ios-に切り替え">ビルドプラットフォームを iOS に切り替え</h2>
+<p>ここでは、<a href="download_sdk.html">toio-sdk-unity のインストール</a>の最後から続けて <code>Assets/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/</code> を開いているものとして話を進めます。</p>
+<p>まず、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。【Build Settings】の【プラットフォーム】のリストから iOS を選択し、右下の 【Switch Platform】 ボタンを押してください。</p>
+<img width="632" src="../res/build_ios/1.png">
+
+<p>しばらく待ち、iOS の右に Unity のアイコンが表示されたら、切り替え完了です。</p>
+<h2 id="xcode-プロジェクトのビルド">Xcode プロジェクトのビルド</h2>
+<p>ビルドに含みたいシーンファイルを開いている状態で、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【シーンを追加】ボタンを押します。</p>
+<img width="632" src="../res/build_ios/3.png">
+
+<p>すると【ビルドに含まれるシーン】のリストに 0.BasicScene が登録されます。続けて【ビルド】ボタンを押します。</p>
+<img width="632" src="../res/build_ios/4.png">
+
+<p>XCode のプロジェクトファイルを保存するダイアログが表示されるので、適当な名前をつけて保存してください。この例では SimpleScene とつけています。</p>
+<img src="../res/build_ios/5.png">
+
+<h2 id="xcode-でプロジェクトを開く">Xcode でプロジェクトを開く</h2>
+<p>iOS 用のビルドをするために Xcode でビルドしたプロジェクトを開きます。ビルド時に保存した場所には以下の２つのプロジェクトファイルがありますが、後者の <strong>Unity-iPhone.xcworkspace</strong> の方を開くようにしてください。</p>
+<ul>
+<li>Unity-iPhone.xcodeproj</li>
+<li>Unity-iPhone.xcworkspace（こっち！）</li>
+</ul>
+<h2 id="xcode-プロジェクトの設定">Xcode プロジェクトの設定</h2>
+<p>以下の Unity 公式ページを参考に、Xcode プロジェクトの設定やプロビジョニングプロファイルの設定を行います。</p>
+<ul>
+<li><a href="https://docs.unity3d.com/ja/2019.4/Manual/iphone-GettingStarted.html">iOS 用ゲームの開発について - Unity マニュアル</a></li>
+</ul>
+<h2 id="xcode-ビルド">Xcode ビルド</h2>
+<p>Xcode で各種設定を行い、接続した iPhone をポップアップメニューから選択したあと、Xcode の実行ボタンを押すと、ビルドされたアプリケーションが iPhone に転送＆起動されます。</p>
+<p>このサンプルでは起動直後にキューブへの接続が始まるので、事前にキューブの電源を入れておくと良いです。</p>
+<img src="../res/build_ios/6.png">
+
+<p>アプリが正しくビルドされていれば、iPhone の画面はこのようになります。</p>
+<img width="92" src="../res/build_ios/7.png">
+
+<p>最初にアプリケーションを起動したときは「Bluetooth の使用を許可する？」ダイアログが表示されます。ダイアログで許可すると、アプリケーションとキューブとが通信をはじめ、キューブが動き始めます。</p>
+
+
+
+</body></html>

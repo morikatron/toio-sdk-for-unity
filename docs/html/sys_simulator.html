@@ -1,0 +1,521 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"><style type="text/css">.markdown-body {padding: 20px 40px;}</style><style type="text/css">/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+/*# sourceURL=/Users/yaeda/.nodebrew/node/v14.3.0/lib/node_modules/md-to-pdf/node_modules/highlight.js/styles/github.css*/</style></head>
+<body class="markdown-body">
+<h1 id="目次">目次</h1>
+<ul>
+<li><a href="sys_simulator.html#1-%E6%A6%82%E8%AA%AC">1. 概説</a></li>
+<li><a href="sys_simulator.html#2-Mat-Prefab">2. Mat Prefab</a><ul>
+<li><a href="sys_simulator.html#21-%E3%83%9E%E3%83%83%E3%83%88%E3%81%AE%E5%BA%A7%E6%A8%99%E5%8D%98%E4%BD%8D%E3%81%8B%E3%82%89%E3%83%A1%E3%83%BC%E3%83%88%E3%83%AB%E3%81%B8%E3%81%AE%E5%A4%89%E6%8F%9B">2.1 マットの座標単位からメートルへの変換</a></li>
+<li><a href="sys_simulator.html#22-%E3%83%9E%E3%83%83%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E3%81%AE%E5%88%87%E3%82%8A%E6%9B%BF%E3%81%88">2.2 マットタイプの切り替え</a></li>
+<li><a href="sys_simulator.html#23-%E3%83%9E%E3%83%83%E3%83%88%E4%B8%8A%E3%81%AE%E5%BA%A7%E6%A8%99%E3%81%A8Unity%E4%B8%8A%E3%81%AE%E5%BA%A7%E6%A8%99%E3%81%A8%E3%81%AE%E5%A4%89%E6%8F%9B">2.3 マット上の座標と Unity 上の座標との変換</a></li>
+</ul>
+</li>
+<li><a href="sys_simulator.html#3-Cube-Prefab">3. Cube Prefab</a><ul>
+<li><a href="sys_simulator.html#31-%E5%AE%9A%E6%95%B0%E3%81%AE%E5%AE%9A%E7%BE%A9">3.1 定数の定義</a></li>
+<li><a href="sys_simulator.html#32-%E5%91%BD%E4%BB%A4%E5%87%A6%E7%90%86%E3%81%AE%E6%B5%81%E3%82%8C">3.2. 命令処理の流れ</a></li>
+<li><a href="sys_simulator.html#33-%E3%83%A2%E3%83%BC%E3%82%BF%E3%83%BC%E5%88%B6%E5%BE%A1%E5%91%BD%E4%BB%A4%E3%81%AE%E5%87%A6%E7%90%86%E3%81%A8%E7%89%A9%E7%90%86%E3%82%B7%E3%83%9F%E3%83%A5%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3">3.3. モーター制御命令の処理と物理シミュレーション</a></li>
+<li><a href="sys_simulator.html#34-%E3%82%B5%E3%82%A6%E3%83%B3%E3%83%89">3.4 サウンド</a></li>
+<li><a href="sys_simulator.html#35-%E3%83%A9%E3%83%B3%E3%83%97">3.5 ランプ</a></li>
+</ul>
+</li>
+<li><a href="sys_simulator.html#4-Stage-Prefab">4. Stage Prefab</a><ul>
+<li><a href="sys_simulator.html#41-%E3%82%BF%E3%83%BC%E3%82%B2%E3%83%83%E3%83%88%E3%83%9D%E3%83%BC%E3%83%AB">4.1 ターゲットポール</a></li>
+<li><a href="sys_simulator.html#42-%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%96%E3%82%92%E3%83%95%E3%82%A9%E3%83%BC%E3%82%AB%E3%82%B9">4.2 キューブをフォーカス</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="1-概説">1. 概説</h1>
+<div align="center">
+<img width="500" src="../res/simulator/overview.png">
+</div>
+
+<br>
+
+<p>Simulator は、toio コアキューブと通信するスマホアプリを開発する際、 Unity Editor 上で手軽に動作チェックができるように作られた仮想環境です。</p>
+<p>ディレクトリ構成は下図のようになります。</p>
+<div align="center"><img src="../res/simulator/dir.png"></div>
+
+<pre><code class="hljs plaintext">Resources/Cube.prefab  +-------------------+ コアキューブの prefab
+├── CubeSimulator.cs  +--------------------+ 現実のキューブのファームウェアと物理を擬似するスクリプト
+├── Models/cube_model  +-------------------+ ３Dモデル
+├── Materials/LED  +-----------------------+ LEDのマテリアル、見やすくするためソリッドカラーに設定
+└── Materials/PhysicMaterial_Slippy  +-----+ 物理マテリアル、摩擦力をゼロに設定
+Resources/Mat.prefab  +--------------------+ マットの prefab
+├── Mat.cs  +------------------------------+ 世界座標系とマット（自身）上の座標の変換メソッドを提供するスクリプト
+├── MatEditor.cs  +------------------------+ Mat をインスペクターでカスタマイズできるようにするスクリプト
+├── Resources/mat_front.mat  +-------------+ マット正面のマテリアル
+│   └── Resources/mat_front.png  +---------+ マット正面の画像
+├── Resources/mat_back.mat  +--------------+ マット背面のマテリアル
+│   └── Resources/mat_back.png  +----------+ マット背面の画像
+├── Resources/mat_null.mat  +--------------+ 空白のマテリアル
+└── Materials/PhysicMaterial_Slippy  +-----+ 物理マテリアル、摩擦力をゼロに設定
+Resources/Stage.prefab  +------------------+ Mat.prefab に Unity のカメラ、ライトなどを組み合わせた便利な「セット」
+├── Stage.cs  +----------------------------+ 簡単なインタラクションを提供
+├── Resources/Mat.prefab  +----------------+ Mat.prefab を一つ内包
+└── Materials/PhysicMaterial_Rough  +------+ 物理マテリアル、摩擦力あり、マット下に敷くテーブル用</code></pre><h1 id="2-mat-prefab">2. Mat Prefab</h1>
+<h2 id="21-マットの座標単位からメートルへの変換">2.1. マットの座標単位からメートルへの変換</h2>
+<p><a href="https://toio.github.io/toio-spec/docs/ble_id">toio™ コア キューブ 技術仕様/通信仕様/各種機能/読み取りセンサー</a>によると、トイオ・コレクションに付属するマットの大きさは縦横 410 単位となっています。<br>
+また、マットを実際に測定したところ一辺の長さは 56cm = 0.560 m でした。</p>
+<p>ここから、 マットの座標情報と距離(メートル)に変換するための係数 <code>DotPerM</code> を以下のように定義しています。</p>
+<pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">float</span> DotPerM = <span class="hljs-number">411f</span>/<span class="hljs-number">0.560f</span>; <span class="hljs-comment">// (410+1)/0.560 dot/m</span></code></pre><h2 id="22-マットタイプの切り替え">2.2. マットタイプの切り替え</h2>
+<p>インスペクターから matType を変更すると、 Mat.cs の ApplyMatType メソッドが実行され、 座標範囲の変更とマテリアルの切り替えが行われます。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> MatType
+{
+    MainFront,  <span class="hljs-comment">// toio 本体マットの正面</span>
+    MainBack,  <span class="hljs-comment">// toio 本体マットの背面</span>
+    Custom  <span class="hljs-comment">// 座標範囲をカスタマイズ</span>
+}
+<span class="hljs-keyword">public</span> MatType matType;
+
+<span class="hljs-comment">// マットのタイプ、座標範囲の変更を反映</span>
+<span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ApplyMatType</span>(<span class="hljs-params"></span>)</span>
+{
+    <span class="hljs-keyword">switch</span> (matType){
+        <span class="hljs-keyword">case</span> MatType.MainFront:
+            xMin = <span class="hljs-number">45</span>; xMax = <span class="hljs-number">455</span>; yMin = <span class="hljs-number">45</span>; yMax = <span class="hljs-number">455</span>;
+            GetComponent&lt;Renderer&gt;().material = (Material)Resources.Load&lt;Material&gt;(<span class="hljs-string">"mat_front"</span>);;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> MatType.MainBack:
+            xMin = <span class="hljs-number">545</span>; xMax = <span class="hljs-number">955</span>; yMin = <span class="hljs-number">45</span>; yMax = <span class="hljs-number">455</span>;
+            GetComponent&lt;Renderer&gt;().material = (Material)Resources.Load&lt;Material&gt;(<span class="hljs-string">"mat_back"</span>);
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> MatType.Custom:
+            GetComponent&lt;Renderer&gt;().material = (Material)Resources.Load&lt;Material&gt;(<span class="hljs-string">"mat_null"</span>);
+            <span class="hljs-keyword">break</span>;
+    }
+    <span class="hljs-keyword">this</span>.transform.localScale = <span class="hljs-keyword">new</span> Vector3((xMax-xMin+<span class="hljs-number">1</span>)/DotPerM, (yMax-yMin+<span class="hljs-number">1</span>)/DotPerM, <span class="hljs-number">1</span>);
+}</code></pre></details>
+
+<h2 id="23-マット上の座標と-unity-上の座標との変換">2.3. マット上の座標と Unity 上の座標との変換</h2>
+<p>Unity 上の座標/角度とマット上の座標/角度との相互変換メソッドを用意しています。</p>
+<blockquote>
+<p>Mat Prefab が水平に配置されている場合にのみ正しく変換可能です。</p>
+</blockquote>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs c#"><span class="hljs-comment">// Unity上の角度を本マット上の角度に変換</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">UnityDeg2MatDeg</span>(<span class="hljs-params"><span class="hljs-keyword">double</span> degU</span>)</span>
+{
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)(degU-<span class="hljs-keyword">this</span>.transform.eulerAngles.y<span class="hljs-number">-90</span>+<span class="hljs-number">0.49999f</span>)%<span class="hljs-number">360</span>;
+}
+<span class="hljs-comment">// 本マット上の角度をUnity上の角度に変換</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">float</span> <span class="hljs-title">MatDeg2UnityDeg</span>(<span class="hljs-params"><span class="hljs-keyword">double</span> degM</span>)</span>
+{
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)(degM+<span class="hljs-keyword">this</span>.transform.eulerAngles.y+<span class="hljs-number">90</span>+<span class="hljs-number">0.49999f</span>)%<span class="hljs-number">360</span>;
+}
+
+<span class="hljs-comment">// Unity の3D空間座標から、本マットにおけるマット座標に変換。</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Vector2Int <span class="hljs-title">UnityCoord2MatCoord</span>(<span class="hljs-params">Vector3 unityCoord</span>)</span>
+{
+    <span class="hljs-keyword">var</span> matPos = <span class="hljs-keyword">this</span>.transform.position;
+    <span class="hljs-keyword">var</span> drad = - <span class="hljs-keyword">this</span>.transform.eulerAngles.y * Mathf.Deg2Rad;
+    <span class="hljs-keyword">var</span> _cos = Mathf.Cos(drad);
+    <span class="hljs-keyword">var</span> _sin = Mathf.Sin(drad);
+
+    <span class="hljs-comment">// 座標系移動：本マットに一致させ</span>
+    <span class="hljs-keyword">var</span> dx = unityCoord[<span class="hljs-number">0</span>] - matPos[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">var</span> dy = -unityCoord[<span class="hljs-number">2</span>] + matPos[<span class="hljs-number">2</span>];
+
+    <span class="hljs-comment">// 座標系回転：本マットに一致させ</span>
+    Vector2 coord = <span class="hljs-keyword">new</span> Vector2(dx*_cos-dy*_sin, dx*_sin+dy*_cos);
+
+    <span class="hljs-comment">// マット単位に変換</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector2Int(
+        (<span class="hljs-keyword">int</span>)(coord.x*DotPerM + <span class="hljs-keyword">this</span>.xCenter + <span class="hljs-number">0.4999f</span>),
+        (<span class="hljs-keyword">int</span>)(coord.y*DotPerM + <span class="hljs-keyword">this</span>.yCenter + <span class="hljs-number">0.4999f</span>)
+    );
+}
+<span class="hljs-comment">// 本マットにおけるマット座標から、Unity の3D空間に変換。</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> Vector3 <span class="hljs-title">MatCoord2UnityCoord</span>(<span class="hljs-params"><span class="hljs-keyword">double</span> x, <span class="hljs-keyword">double</span> y</span>)</span>
+{
+    <span class="hljs-keyword">var</span> matPos = <span class="hljs-keyword">this</span>.transform.position;
+    <span class="hljs-keyword">var</span> drad = <span class="hljs-keyword">this</span>.transform.eulerAngles.y * Mathf.Deg2Rad;
+    <span class="hljs-keyword">var</span> _cos = Mathf.Cos(drad);
+    <span class="hljs-keyword">var</span> _sin = Mathf.Sin(drad);
+
+    <span class="hljs-comment">// メーター単位に変換</span>
+    <span class="hljs-keyword">var</span> dx = ((<span class="hljs-keyword">float</span>)x - xCenter)/DotPerM;
+    <span class="hljs-keyword">var</span> dy = ((<span class="hljs-keyword">float</span>)y - yCenter)/DotPerM;
+
+    <span class="hljs-comment">// 座標系回転：Unityに一致させ</span>
+    Vector2 coord = <span class="hljs-keyword">new</span> Vector2(dx*_cos-dy*_sin, dx*_sin+dy*_cos);
+
+    <span class="hljs-comment">// 座標系移動：Unityに一致させ</span>
+    coord.x += matPos.x;
+    coord.y += -matPos.z;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector3(coord.x, matPos.y, -coord.y);
+}</code></pre></details>
+
+<h1 id="3-cube-prefab">3. Cube Prefab</h1>
+<h2 id="31-定数の定義">3.1. 定数の定義</h2>
+<p><a href="https://toio.github.io/toio-spec/docs/hardware_shape">toio™ コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ</a>に記載されている寸法と
+<a href="sys_simulator.html#21-%E3%83%9E%E3%83%83%E3%83%88%E3%81%AE%E5%BA%A7%E6%A8%99%E5%8D%98%E4%BD%8D%E3%81%8B%E3%82%89%E3%83%A1%E3%83%BC%E3%83%88%E3%83%AB%E3%81%B8%E3%81%AE%E5%A4%89%E6%8F%9B">Mat.DotPerM 定数</a> から、左右のタイヤの間隔とキューブのサイズを以下のように定義しています。</p>
+<pre><code class="hljs c#"><span class="hljs-comment">// 左右タイヤの間隔（メートル）</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">float</span> TireWidthM = <span class="hljs-number">0.0266f</span>;
+<span class="hljs-comment">// 左右タイヤの間隔（ドット（マット座標））</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">float</span> TireWidthDot= <span class="hljs-number">0.0266f</span> * Mat.DotPerM;
+<span class="hljs-comment">// キューブのサイズ</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">float</span> WidthM= <span class="hljs-number">0.0318f</span>;</code></pre><p><a href="https://toio.github.io/toio-spec/docs/ble_motor">toio™ コア キューブ 技術仕様/通信仕様/各種機能/モーター</a>に記載されているモーターのスペックと、
+<a href="https://toio.github.io/toio-spec/docs/hardware_shape">toio™ コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ</a>に記載されているタイヤの直径(0.0125m)から、
+マット上の速度と速度指示値の係数を以下のように定義しています。</p>
+<pre><code class="hljs c#"><span class="hljs-comment">// 速度（ドット毎秒）と指示値の比例</span>
+<span class="hljs-comment">// (dot/s)/u = 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> <span class="hljs-keyword">float</span> VDotOverU =  <span class="hljs-number">4.3f</span>*Mathf.PI*<span class="hljs-number">0.0125f</span>/<span class="hljs-number">60</span> * Mat.DotPerM; <span class="hljs-comment">// about 2.06</span></code></pre><h2 id="32-命令処理の流れ">3.2. 命令処理の流れ</h2>
+<p>CubeSimulator.cs は以下の図のようなロジックで <a href="sys_cube.html#2-cube%E3%82%AF%E3%83%A9%E3%82%B9%E3%81%AE%E6%A7%8B%E9%80%A0">CubeUnity</a> から渡された命令を処理しています。</p>
+<div align="center">
+<img width="600" src="../res/simulator/cube_logic.png">
+</div>
+
+<ul>
+<li>CubeUnity がメソッドを呼び出す際に、命令と命令をセットした時間をキューに入れる</li>
+<li>毎フレーム実行される FixedUpdate() の中で以下のように処理する<ul>
+<li>キューから <code>受け取った時間 + ラグ ＞ 現在時間</code> を満たす命令をポップし、 Current Order にセットする</li>
+<li>Current Order の継続時間が終わったかを判断し、是の場合 Current Order をクリアする</li>
+<li>Current Order を実行する</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Cube Prefab のラグ (Delay) は実環境で実測した値をセットしています。</p>
+</blockquote>
+<h2 id="33-モーター制御命令の処理と物理シミュレーション">3.3. モーター制御命令の処理と物理シミュレーション</h2>
+<h3 id="座標と角度を取得">座標と角度を取得</h3>
+<p>実際のキューブの読み取りセンサーと同じように、 Unity の Physics.Raycast でキューブの底面から「下」へレイを飛ばし、
+衝突したオブジェクトが Mat で かつ距離が 5mm 以下だった場合にマット座標を取得します。</p>
+<blockquote>
+<p>マット座標の取得には Mat の座標変換メソッドを利用しています。</p>
+</blockquote>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdatePhysic</span>(<span class="hljs-params"><span class="hljs-keyword">float</span> dt</span>)</span>
+{
+    <span class="hljs-comment">// 座標、角度情報更新</span>
+    <span class="hljs-comment">// retrieve coord</span>
+    RaycastHit hit;
+    Ray ray = <span class="hljs-keyword">new</span> Ray(transform.position+transform.up*<span class="hljs-number">0.001f</span>, -transform.up);
+
+    <span class="hljs-keyword">if</span> (Physics.Raycast(ray, <span class="hljs-keyword">out</span> hit)) {
+        <span class="hljs-keyword">float</span> dist = (hit.point - ray.origin).magnitude;
+        <span class="hljs-comment">// 下5mm距離内にMatがあると</span>
+        <span class="hljs-keyword">if</span> (hit.transform.gameObject.tag == <span class="hljs-string">"Mat"</span> &amp;&amp; dist &lt; <span class="hljs-number">0.005f</span>){
+            <span class="hljs-keyword">this</span>.offMat = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">this</span>.mat = hit.transform.gameObject.GetComponent&lt;Mat&gt;();
+            <span class="hljs-comment">// Mat 上の座標に変換</span>
+            <span class="hljs-keyword">var</span> coord = <span class="hljs-keyword">this</span>.mat.UnityCoord2MatCoord(transform.position);
+            <span class="hljs-keyword">this</span>.x = coord.x; <span class="hljs-keyword">this</span>.y = coord.y;
+            <span class="hljs-comment">// Mat 上の角度に変換</span>
+            <span class="hljs-keyword">this</span>.deg = <span class="hljs-keyword">this</span>.mat.UnityDeg2MatDeg(transform.eulerAngles.y);
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">this</span>.offMat = <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">this</span>.offMat = <span class="hljs-literal">true</span>;
+
+    ...
+}</code></pre></details>
+<br>
+
+<h3 id="目標速度を更新">目標速度を更新</h3>
+<p>現在のモーター制御命令の目標速度を Unity 座標系での速度に変換し、そこにデッドゾーンと遅れ要素を加えて目標速度を更新します。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdatePhysic</span>(<span class="hljs-params"><span class="hljs-keyword">float</span> dt</span>)</span>
+{
+    ...
+
+    <span class="hljs-comment">// 目標速度を更新</span>
+    <span class="hljs-comment">// update speed</span>
+    <span class="hljs-keyword">float</span> targetSpeedL = orderLeft * VDotOverU / Mat.DotPerM;
+    <span class="hljs-keyword">float</span> targetSpeedR = orderRight * VDotOverU / Mat.DotPerM;
+    <span class="hljs-keyword">if</span> (Mathf.Abs(orderLeft) &lt; DeadZone) targetSpeedL = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (Mathf.Abs(orderRight) &lt; DeadZone) targetSpeedR = <span class="hljs-number">0</span>;
+
+    speedL += (targetSpeedL - speedL) / Mathf.Max(MOTOR_TAU,dt) * dt;
+    speedR += (targetSpeedR - speedR) / Mathf.Max(MOTOR_TAU,dt) * dt;
+
+    ...
+}</code></pre></details>
+<br>
+
+<h3 id="位置と角度を更新">位置と角度を更新</h3>
+<p>現在速度から目標速度までの変化量によって、 Unity の Rigidbody.Addforce で力を与え、 位置と角度を Unity の物理エンジンに更新させます。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs C#"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdatePhysic</span>(<span class="hljs-params"><span class="hljs-keyword">float</span> dt</span>)</span>
+{
+    ...
+
+    <span class="hljs-comment">// 位置と角度を更新</span>
+    <span class="hljs-comment">// speed -&gt; postion</span>
+    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.offMat) {
+        <span class="hljs-comment">// this.rb is Rigidbody</span>
+        <span class="hljs-keyword">this</span>.rb.angularVelocity = transform.up * (<span class="hljs-keyword">float</span>)((speedL - speedR) / TireWidthM);
+        <span class="hljs-keyword">var</span> vel = transform.forward * (speedL + speedR) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">var</span> dv = vel - <span class="hljs-keyword">this</span>.rb.velocity;
+        <span class="hljs-keyword">this</span>.rb.AddForce(dv, ForceMode.VelocityChange);
+    }
+    <span class="hljs-keyword">else</span>{
+        <span class="hljs-keyword">this</span>.rb.angularVelocity = <span class="hljs-keyword">new</span> Vector3(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">this</span>.rb.velocity = <span class="hljs-keyword">new</span> Vector3(<span class="hljs-number">0</span>, rb.velocity.y, <span class="hljs-number">0</span>);
+    }
+}</code></pre></details>
+<br>
+
+<h3 id="さらなる改善点（現在は未実装の項目）">さらなる改善点（現在は未実装の項目）</h3>
+<h4 id="読み取りセンサーの位置のズレ">読み取りセンサーの位置のズレ</h4>
+<p>現在、読み取りは Cube Prefab の底面中央からレイを飛ばして、Cube Prefab がマット上にあるかの判定と合わせて取得しています。</p>
+<p>しかし、実際のキューブの読み取りセンサーは<a href="https://toio.github.io/toio-spec/docs/hardware_components">底面の前面寄り</a>に付いています。
+中央からずれた場所にある読み取りセンサーで座標を取得できるかを決めていて、そのセンサーで読み取った情報からセンサー位置の座標とキューブ中央の座標との両方を提供しています。</p>
+<h4 id="速度と位置、角度更新の方法">速度と位置、角度更新の方法</h4>
+<p>現在の方法では、 Rigidbody.AddForce で確実に目標速度に達するために、マットの摩擦力を 0 に設定し、
+本来なら物理法則により生じる 遅れ要素 を目標速度の計算に含めています。</p>
+<p>このような物理計算を簡単化したモデルで計算を行っているので、マットを傾けた状態での動作をシミュレーションできません。</p>
+<p>もっと正確にモデリングするなら、次のような手順が考えられます。</p>
+<ul>
+<li>モーター制御命令から変換した 目標速度 と 現在速度 の差を、 実際のコアキューブのファームウェアと同一の制御モジュール（例えば PID）に入力する</li>
+<li>PID の出力した 「電圧」 をモーターモデルに入力する</li>
+<li>モーターモデルの出力した 「電流」 を換算した 「力」 を物理エンジンに与える</li>
+<li>ホイールの Collider、 物理マテリアルなどはなるべくリアルに作成する</li>
+</ul>
+<h2 id="34-サウンド">3.4. サウンド</h2>
+<p>Unity の AudioSource コンポーネントを利用して MIDI ノートナンバーに応じた音色を再生しています。</p>
+<h3 id="基準となる音源の生成">基準となる音源の生成</h3>
+<p>各オクターブの A (A0 から A10 まで) の音色を事前に音声ファイルとして作成しています。</p>
+<p>音声は以下の python スクリプトで、1 周期の正弦波をサンプリングした wav ファイルを生成しています。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> wave
+<span class="hljs-keyword">import</span> struct
+
+nsamples = <span class="hljs-number">32</span>
+audio_array = [int(-np.cos(<span class="hljs-number">2</span>*np.pi*i/nsamples)*<span class="hljs-number">127</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(nsamples)]
+
+f_A0 = <span class="hljs-number">440</span>/<span class="hljs-number">16</span>
+audio = struct.pack(<span class="hljs-string">"b"</span> * len(audio_array), *audio_array)
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">11</span>):
+    f = f_A0 * <span class="hljs-number">2</span>**i
+
+    w = wave.Wave_write(str(<span class="hljs-number">12</span>*i+<span class="hljs-number">9</span>) + <span class="hljs-string">'.wav'</span>)
+    p = (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, nsamples*f, len(audio), <span class="hljs-string">'NONE'</span>, <span class="hljs-string">'not compressed'</span>)
+    w.setparams(p)
+    w.writeframes(audio)
+    w.close()</code></pre></details>
+
+<p>この音声ファイルを <a href="(https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-%E3%81%A8-note-name)">toio™ コア キューブ 技術仕様/通信仕様/各種機能/サウンド</a> の対応表にしたがって名前を付け、「Assets/toio-sdk/Resources/Octave」 に配置しています。</p>
+<div align="center"><img src="../res/simulator/sound.png"></div>
+
+<h3 id="再生">再生</h3>
+<p>あらかじめ用意した A 以外の音階は、 AudioSource の Pitch 属性を利用して 同じオクターブにある A から変換して再生しています。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs c#"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> _PlaySound(<span class="hljs-keyword">int</span> soundId, <span class="hljs-keyword">int</span> volume){
+    <span class="hljs-comment">// 同じオクターブにある A の番号を計算</span>
+    <span class="hljs-keyword">int</span> octave = (<span class="hljs-keyword">int</span>)(soundId/<span class="hljs-number">12</span>);
+    <span class="hljs-keyword">int</span> idx = (<span class="hljs-keyword">int</span>)(soundId%<span class="hljs-number">12</span>);
+    <span class="hljs-comment">// A をロード</span>
+    <span class="hljs-keyword">var</span> audio = Resources.Load(<span class="hljs-string">"Octave/"</span> + (octave*<span class="hljs-number">12</span>+<span class="hljs-number">9</span>)) <span class="hljs-keyword">as</span> AudioClip;
+    audioSource.clip = audio;
+    <span class="hljs-comment">// ピッチと音量を入力値に調整</span>
+    audioSource.pitch = (<span class="hljs-keyword">float</span>)Math.Pow(<span class="hljs-number">2</span>, ((<span class="hljs-keyword">float</span>)idx<span class="hljs-number">-9</span>)/<span class="hljs-number">12</span>);
+    audioSource.volume = (<span class="hljs-keyword">float</span>)volume/<span class="hljs-number">256</span>;
+    audioSource.Play();
+}</code></pre></details>
+
+<h2 id="35-ランプ">3.5. ランプ</h2>
+<p>ランプに光源を配置して発光を表現すると処理が重くなるので、単にマテリアルの色を変えています。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs c#"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> _SetLight(<span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> g, <span class="hljs-keyword">int</span> b){
+    LED.GetComponent&lt;Renderer&gt;().material.color = <span class="hljs-keyword">new</span> Color(r/<span class="hljs-number">255f</span>, g/<span class="hljs-number">255f</span>, b/<span class="hljs-number">255f</span>);
+}</code></pre></details>
+
+<h1 id="4-stage-prefab">4. Stage Prefab</h1>
+<p>Stage Prefab は、</p>
+<ul>
+<li>Mat Prefab</li>
+<li>カメラ</li>
+<li>ライト</li>
+<li>ターゲットポール (後述)</li>
+<li>キューブの脱出を防止する 「テーブル」 と ボーダー</li>
+</ul>
+<p>をセットにしたものです。</p>
+<div align="center"><img src="../res/simulator/stage.png"></div>
+
+<br>
+
+<h2 id="41-ターゲットポール">4.1. ターゲットポール</h2>
+<p>マウスの左クリックまたはドラッグすることで ターゲットポールを移動することができ、
+開発者はターゲットポールの位置を取得してキューブの制御に利用することが出来ます。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-comment">// Left mouse to Move Target Pole</span>
+    <span class="hljs-keyword">if</span> (Input.GetMouseButton(<span class="hljs-number">0</span>)){
+        <span class="hljs-keyword">var</span> camera = GameObject.FindObjectOfType&lt;Camera&gt;();
+        RaycastHit hit;
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+        <span class="hljs-keyword">if</span> (Physics.Raycast(ray, <span class="hljs-keyword">out</span> hit) &amp;&amp; targetPole != <span class="hljs-literal">null</span>) {
+            targetPole.position = <span class="hljs-keyword">new</span> Vector3(hit.point.x, targetPole.position.y, hit.point.z);
+        }
+    }
+    ...
+}</code></pre></details>
+
+<br>
+
+<p>プロパティ tarPoleCoord でターゲットポールのマット上の座標を取得すると、キューブを動かす時に便利に使えます。</p>
+<br>
+
+<h2 id="42-キューブをフォーカス">4.2. キューブをフォーカス</h2>
+<p>右クリックした際、マウスカーソル位置からレイを飛ばし、レイが衝突したキューブにスポットライトの焦点を合わせて追従します。</p>
+<details>
+<summary>実装コード（クリック展開）</summary>
+
+<pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>(<span class="hljs-params"></span>)</span>{
+    ...
+
+    <span class="hljs-comment">// Right Click to Select Cube</span>
+    <span class="hljs-keyword">if</span> (Input.GetMouseButtonDown(<span class="hljs-number">1</span>)){
+        <span class="hljs-keyword">var</span> camera = GameObject.FindObjectOfType&lt;Camera&gt;();
+        RaycastHit hit;
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        Stage stage = GameObject.FindObjectOfType&lt;Stage&gt;();
+
+        <span class="hljs-keyword">if</span> (Physics.Raycast(ray, <span class="hljs-keyword">out</span> hit)) {
+            <span class="hljs-keyword">if</span> (hit.transform.gameObject.tag == <span class="hljs-string">"Cube"</span>)
+                stage.SetFocus(hit.transform);
+            <span class="hljs-keyword">else</span> stage.SetNoFocus();
+        }
+        <span class="hljs-keyword">else</span> stage.SetNoFocus();
+
+    }
+
+    <span class="hljs-comment">// Keep focusing on focusTarget</span>
+    <span class="hljs-keyword">if</span> (focusTarget!=<span class="hljs-literal">null</span>){
+        <span class="hljs-keyword">var</span> tar = <span class="hljs-keyword">new</span> Vector3(<span class="hljs-number">0</span>, <span class="hljs-number">0.01f</span>, <span class="hljs-number">0</span>) + focusTarget.position;
+        mainLightObj.GetComponent&lt;Light&gt;().transform.LookAt(tar);
+        sideLightObj.GetComponent&lt;Light&gt;().transform.LookAt(tar);
+    }
+    ...
+}</code></pre></details>
+
+<br>
+
+<p>プロパティ focusName でフォーカスの対象のキューブの名前を取得することが出来ます。<br>
+多数のキューブを使った処理のデバッグをする際、個々のキューブの動作をチェックするのに役立ちます。</p>
+
+
+
+</body></html>
