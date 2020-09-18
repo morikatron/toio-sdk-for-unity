@@ -20,10 +20,9 @@ Unity システム上で動くキューブ(以下シミュレータ) と 現実�
 
 ### Real/Sim 機能表
 
-現在(2020/03/04)、キューブのファームウェアバージョンは 2 つです。
+現在(2020/03/04)、キューブのファームウェアバージョンは 1 つです。
 
 - 2.0.0 : 公開時の初期バージョン
-- 2.1.0 : 公開後の初アップデート
 
 Toio SDK for Unity では、現実に動作するキューブクラス(Real 対応)、シミュレータで動作するキューブクラス(Sim 対応)の 2 つの内部実装が用意されています。それぞれ内部実装が異なっているため、対応状況に違いがあります。<br>
 以下に実装対応表を示します。
@@ -51,20 +50,6 @@ Toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [水平検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#水平検出のしきい値設定)                 | o             | o            |
 |                    | [衝突検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#衝突検出のしきい値設定)                 | o             | x            |
 |                    | [BLE プロトコルバージョンの取得](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの取得) | o             | x            |
-
-#### ファームウェアバージョン 2.1.0
-
-| 機能タイプ         | 機能                                                                                                                                | Real 対応状況 | Sim 対応状況 |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
-| モーションセンサー | [ダブルタップ検出（new）](https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出)                                        | o             | ※            |
-|                    | [姿勢検出（new）](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
-| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                              | o             | o            |
-|                    | [目標指定付きモーター制御（new）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | x             | x            |
-|                    | [複数目標指定付きモーター制御（new）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
-|                    | [加速度指定付きモーター制御（new）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | x             | x            |
-|                    | [目標指定付きモーター制御の応答（new）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | x             | x            |
-|                    | [複数目標指定付きモーター制御の応答（new）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
-| 設定               | [ダブルタップ検出の時間間隔の設定（new）](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | x             | x            |
 
 > ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-CubeSimulator-のインスペクター)をご確認ください。
 
