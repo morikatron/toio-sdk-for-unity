@@ -29,8 +29,12 @@ namespace toio.tutorial
             {
                 elapsedTime = 0.0f;
 
-                // y 座標で発光の強度を決める
+                // 手法A： y 座標で発光の強度を決める
                 var strength = (510 - cube.y)/2;
+                // 手法B： x 座標で発光の強度を決める
+                // var strength = (510 - cube.x)/2;
+                // 手法C： pos と中央の距離で発光の強度を決める
+                // var strength = (int)(255 - (cube.pos-new Vector2(255,255)).magnitude);
 
                 // Standard ID によって発光の色を決める （初期値は０）
                 if (cube.standardId == 3670337) // Simple Card "A"
