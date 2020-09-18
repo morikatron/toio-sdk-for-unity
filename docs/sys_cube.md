@@ -38,7 +38,8 @@ Cube  +-------------------------------+ キューブルートディレクトリ
 ├── CoreCube  +-----------------------+ コアキューブディレクトリ
 │   ├── Real  +-----------------------+ リアル実装ディレクトリ
 │   │   ├── Versions  +---------------+ リアル実装のバージョンディレクトリ
-│   │   │   └── CubeReal_ver2_0_0.cs  + 2.0.0リアル実装クラス
+│   │   │   ├── CubeReal_ver2_0_0.cs  + 2.0.0リアル実装クラス
+│   │   │   └── CubeReal_ver2_1_0.cs  + 2.1.0リアル実装クラス
 │   │   └── CubeReal.cs  +------------+ リアル実装抽象クラス
 │   ├── Sim    +----------------------+ シミュレータ実装ディレクトリ
 │   │   └── CubeUnity.cs  +-----------+ シミュレータ実装クラス
@@ -89,6 +90,11 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 
 - 実装コード：[CubeReal_ver2_0_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
 - 通信仕様：https://toio.github.io/toio-spec/docs/2.0.0/about
+
+<b>ver2_1_0：</b>
+
+- 実装コード：[CubeReal_ver2_1_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
+- 通信仕様：https://toio.github.io/toio-spec/docs/about
 
 <br>
 
@@ -434,6 +440,7 @@ public class CubeConnecter : CubeConnecterInterface
     public CubeConnecter()
     {/*
         versionTable.add("2.0.0", CubeReal_ver2_0_0)
+        versionTable.add("2.1.0", CubeReal_ver2_1_0)
     */}
 
     public async Task<Cube> Connect(BLEPeripheralInterface peripheral)
