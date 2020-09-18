@@ -68,20 +68,6 @@ namespace toio.Simulator
             internal set{ NotSupportedWarning(); }}
         public virtual void StartNotification_CollisionDetected(System.Action<bool> action)
         { NotSupportedWarning(); }
-        // ---------- 2.1.0 ----------
-        // Pose
-        public virtual Cube.PoseType pose {
-            get{ NotSupportedWarning(); return default; }
-            internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_Pose(System.Action<Cube.PoseType> action)
-        { NotSupportedWarning(); }
-        // Double Tap
-        public virtual bool doubleTap {
-            get{ NotSupportedWarning(); return default; }
-            internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_DoubleTap(System.Action<bool> action)
-        { NotSupportedWarning(); }
-
 
 
         // ============ Motor ============

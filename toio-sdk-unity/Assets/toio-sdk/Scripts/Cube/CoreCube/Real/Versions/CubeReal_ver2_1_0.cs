@@ -7,8 +7,6 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        public override bool isDoubleTap { get; protected set; }
-        public override PoseType pose { get; protected set; }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
