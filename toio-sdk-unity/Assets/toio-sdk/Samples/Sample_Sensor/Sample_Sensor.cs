@@ -28,7 +28,11 @@ public class Sample_Sensor : MonoBehaviour
         cube.buttonCallback.AddListener("Sample_Sensor", OnPressButton);           // ボタンイベント
         cube.idCallback.AddListener("Sample_Sensor", OnUpdateID);                  // 座標角度イベント
         cube.standardIdCallback.AddListener("Sample_Sensor", OnUpdateStandardId);  // standardIdイベント
+        cube.poseCallback.AddListener("Sample_Sensor", OnPose);
+        cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);
 
+        this.DoubleTap = GameObject.Find("DoubleTap");
+        this.Pose = GameObject.Find("Pose");
         this.Battery = GameObject.Find("Battery");
         this.Collision = GameObject.Find("Collision");
         this.Flat = GameObject.Find("Flat");
@@ -46,6 +50,46 @@ public class Sample_Sensor : MonoBehaviour
             {
                 this.Battery.GetComponent<Text>().text = "Battery:" +cube.battery.ToString()+"%";
             }
+        }
+    }
+
+    public void OnPose(Cube c)
+    {
+        switch (cube.pose)
+        {
+            case Cube.PoseType.up:
+                this.Pose.GetComponent<Text>().text = "Up";
+                break;
+            case Cube.PoseType.down:
+                this.Pose.GetComponent<Text>().text = "Down";
+                break;
+            case Cube.PoseType.forward:
+                this.Pose.GetComponent<Text>().text = "Forward";
+                break;
+            case Cube.PoseType.backward:
+                this.Pose.GetComponent<Text>().text = "Backward";
+                break;
+            case Cube.PoseType.right:
+                this.Pose.GetComponent<Text>().text = "Right";
+                break;
+            case Cube.PoseType.left:
+                this.Pose.GetComponent<Text>().text = "Left";
+                break;
+            default:
+                this.Pose.GetComponent<Text>().text = "Pose";
+                break;
+        }
+    }
+
+    public void OnDoubleTap(Cube c)
+    {
+        if (c.isDoubleTap)
+        {
+            this.DoubleTap.GetComponent<Text>().text = "DoubleTap:ON";
+        }
+        else
+        {
+            this.DoubleTap.GetComponent<Text>().text = "DoubleTap:OFF";
         }
     }
 

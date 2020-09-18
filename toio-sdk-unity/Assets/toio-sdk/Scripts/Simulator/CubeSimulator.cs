@@ -25,9 +25,10 @@ namespace toio.Simulator
         public enum Version
         {
             v2_0_0,
+            v2_1_0
         }
         [SerializeField]
-        public Version version = Version.v2_0_0;
+        public Version version = Version.v2_1_0;
         [SerializeField]
         public float motorTau = 0.04f; // parameter of one-order model for motor, τ
         [SerializeField]
@@ -66,6 +67,9 @@ namespace toio.Simulator
         public bool isSimulateSloped = true;
         public bool sloped{ get {return impl.sloped;} internal set {impl.sloped = value;} }
         public bool collisionDetected{ get {return impl.collisionDetected;} internal set {impl.collisionDetected = value;} }
+        // 2.1.0
+        public bool doubleTap{ get {return impl.doubleTap;} internal set {impl.doubleTap = value;} }
+        public Cube.PoseType pose{ get {return impl.pose;} internal set {impl.pose = value;} }
 
 
         // ======== Objects ========
@@ -95,7 +99,8 @@ namespace toio.Simulator
                 switch (version)
                 {
                     case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
-                    default : this.impl = new CubeSimImpl_v2_0_0(this);break;
+                    case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
+                    default : this.impl = new CubeSimImpl_v2_1_0(this);break;
                 }
                 this._InitPresetSounds();
             #endif
@@ -160,6 +165,16 @@ namespace toio.Simulator
         public void StartNotification_CollisionDetected(System.Action<bool> action)
         {
             impl.StartNotification_CollisionDetected(action);
+        }
+
+        public void StartNotification_DoubleTap(System.Action<bool> action)
+        {
+            impl.StartNotification_DoubleTap(action);
+        }
+
+        public void StartNotification_Pose(System.Action<Cube.PoseType> action)
+        {
+            impl.StartNotification_Pose(action);
         }
 
         // ============ コマンド ============
