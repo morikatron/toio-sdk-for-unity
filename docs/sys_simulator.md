@@ -23,7 +23,7 @@
 
 <br>
 
-Simulator は、toio コアキューブと通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作チェックができるように作られたテスト用の仮想環境です。
+Simulator は、toio™コア キューブと通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作チェックができるように作られたテスト用の仮想環境です。
 
 ディレクトリ構成は以下のようになります。
 
@@ -49,7 +49,7 @@ Mat Prefab には、スクリプト Mat.cs がアタッチされています。
 
 ## 2.1. マットの座標単位からメートルへの変換
 
-[toio™ コア キューブ 技術仕様/通信仕様/各種機能/読み取りセンサー](https://toio.github.io/toio-spec/docs/ble_id)によると、トイオ・コレクション付属のプレイマットの大きさは縦横 410 単位となっています。<br>
+[toio™コア キューブ 技術仕様/通信仕様/各種機能/読み取りセンサー](https://toio.github.io/toio-spec/docs/ble_id)によると、トイオ・コレクション付属のプレイマットの大きさは縦横 410 単位となっています。<br>
 また、マットを実際に測定したところ一辺の長さは 56cm = 0.560 m でした。
 
 ここから、 マットの座標情報と距離(メートル)に変換するための係数 `DotPerM` を以下のように定義しています。
@@ -285,7 +285,7 @@ Cube Prefab には３つのスクリプトが実装されています。
 
 ## 4.1. 定数の定義
 
-[toio™ コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ](https://toio.github.io/toio-spec/docs/hardware_shape)に記載されている寸法と
+[toio™コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ](https://toio.github.io/toio-spec/docs/hardware_shape)に記載されている寸法と
 [Mat.DotPerM 定数](sys_simulator.md#21-マットの座標単位からメートルへの変換) から、左右のタイヤの間隔とキューブのサイズを以下のように定義しています。
 
 ```c#
@@ -297,8 +297,8 @@ public static readonly float TireWidthDot= 0.0266f * Mat.DotPerM;
 public static readonly float WidthM= 0.0318f;
 ```
 
-[toio™ コア キューブ 技術仕様/通信仕様/各種機能/モーター](https://toio.github.io/toio-spec/docs/ble_motor)に記載されているモーターのスペックと、
-[toio™ コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ](https://toio.github.io/toio-spec/docs/hardware_shape)に記載されているタイヤの直径(0.0125m)から、
+[toio™コア キューブ 技術仕様/通信仕様/各種機能/モーター](https://toio.github.io/toio-spec/docs/ble_motor)に記載されているモーターのスペックと、
+[toio™コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ](https://toio.github.io/toio-spec/docs/hardware_shape)に記載されているタイヤの直径(0.0125m)から、
 マット上の速度と速度指示値の係数を以下のように定義しています。
 
 ```c#
@@ -651,7 +651,7 @@ internal void _SetSpeed(float speedL, float speedR)
 本来なら物理法則により生じる 遅れ要素 を目標速度の計算に含めています。<br>
 このような物理計算を簡単化したモデルで計算を行っているので、マットを傾けた状態での動作をシミュレーションできません。
 もっと正確にモデリングするなら、次のような手順が考えられます：
-- モーター制御命令から変換した 目標速度 と 現在速度 の差を、 実際のコアキューブのファームウェアと同一の制御モジュール（例えば PID）に入力する
+- モーター制御命令から変換した 目標速度 と 現在速度 の差を、 実際のキューブのファームウェアと同一の制御モジュール（例えば PID）に入力する
 - PID の出力した 「電圧」 をモーターモデルに入力する
 - モーターモデルの出力した 「電流」 を換算した 「力」 を物理エンジンに与える
 - ホイールの Collider、 物理マテリアルなどはなるべくリアルに作成する
@@ -693,7 +693,7 @@ for i in range(11):
 </details>
 <br>
 
-この音声ファイルを [toio™ コア キューブ 技術仕様/通信仕様/各種機能/サウンド](<(https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-%E3%81%A8-note-name)>) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
+この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](<(https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-%E3%81%A8-note-name)>) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
 
 
 #### 再生

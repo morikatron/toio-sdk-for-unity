@@ -15,14 +15,14 @@
 
 # 概要
 
-本 SDK は同じソースコードで、シミュレータ環境とスマートデバイス環境の両方で toio コアキューブを動かすことが出来ます。
+本 SDK は同じソースコードで、シミュレータ環境とスマートデバイス環境の両方で toio™コア キューブ （以降キューブ） を動かすことが出来ます。
 以下の説明は、シミュレータ環境での動作を前提として説明します。
 
 ## シミュレータ
 
 最初に簡単にシミュレータについて説明しておきます。
 
-toio コアキューブと通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作をチェックする環境があると非常に便利です。
+キューブと通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作をチェックする環境があると非常に便利です。
 そこで toio SDK for Unity では、テスト用の仮想環境としてシミュレータを用意しています。
 
 詳細は技術ドキュメントの「[シミュレータ](usage_simulator.md)」にまとめてありますのでそちらを参照してください。
@@ -33,7 +33,7 @@ toio コアキューブと通信するスマートデバイスのアプリを開
 
 - Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/info_position_id)を模したもの
 - StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/info_standard_id)を模したもの
-- Cube … toio コアキューブを模したもの
+- Cube … toio™コア キューブを模したもの
 - Stage … シミュレーション環境に必要な一通りの機能をセットにしたもの
 
 Mat、StandardID、Cube は実物を模したもので、必要に応じて Unity のシーン上に配置して使ってください。
@@ -236,7 +236,7 @@ public class MoveScene : MonoBehaviour
 
 # 音を鳴らす
 
-> ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/2.Sound/」 にあります。
+> ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/2.Sound/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/sound/)です。
 
 Cube クラスの PlayPresetSound メソッドでキューブからあらかじめ用意された効果音を再生出来ます。
@@ -436,7 +436,7 @@ public class LEDScene : MonoBehaviour
 
 <div align="center"><img width=300 src="res/tutorial/toioID.gif"></div>
 
-詳細は[toio™ コアキューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
+詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
 
 toio ID は、Cube クラスのメンバー変数として、直接読み取ることができます。
 ```c#
@@ -499,7 +499,7 @@ public class toioIDScene : MonoBehaviour
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/event/)です。
 
 以下のコールバックで、キューブに変化が起きた(イベントを検知した)時の処理を記述することが出来ます。
-各イベントについては toio™ コアキューブ技術仕様に準拠していますので、詳しくはそちらを参照してください。
+各イベントについては toio™コア キューブ技術仕様に準拠していますので、詳しくはそちらを参照してください。
 
 - ボタンイベント: https://toio.github.io/toio-spec/docs/ble_button
 - 傾き、衝突イベント: https://toio.github.io/toio-spec/docs/ble_sensor
@@ -679,7 +679,7 @@ public class MultiCubeScene : MonoBehaviour
 - 時間制御変数
 
 などを用意していました。<br>
-しかし、toio のプログラムを作る度に毎回似たようなコードを書く必要があります。
+しかし、toio™ のプログラムを作る度に毎回似たようなコードを書く必要があります。
 
 CubeManager クラスを使うと、これらの定型的な処理を簡略化する事が出来ます。
 

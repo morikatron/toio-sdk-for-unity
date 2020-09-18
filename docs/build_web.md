@@ -66,7 +66,7 @@ Unity Hub を開いて、[インストール] タブで、相応のバージョ�
 
 ### ビルドのプラットフォームを WebGL に切り替え
 
-ここでは、[toio-SDK-for-Unity のインストール](download_sdk.md)が完了して`Assets/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`を開いているものとして進めます。
+ここでは、[toio SDK for Unity のインストール](download_sdk.md)が完了して`Assets/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`を開いているものとして進めます。
 
 Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【プラットフォーム】リストの中、WebGL を選択し、右下の 【Switch Platform】 ボタンを押してください。
 

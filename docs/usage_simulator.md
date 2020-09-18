@@ -19,13 +19,13 @@
 
 # 1. 概説
 
-Simulator は、toio コアキューブと通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作チェックができるように作られたテスト用の仮想環境です。
+Simulator は、toio™コア キューブ (以降、キューブ) と通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作チェックができるように作られたテスト用の仮想環境です。
 
 Simulator は `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つの prefab から構成されています。
 
 - Mat … 各種プレイマットを模したもの
 - StandardID … Standard ID を読み取れる各種のカード・シートを模したもの
-- Cube … toio のコアキューブを模したもの
+- Cube … toio™コア キューブを模したもの
 - Stage … シミュレーション環境に必要な一通りの機能をセットにしたもの
 
 Simulator に実装されたクラスは全て `toio.Simulator` 名前空間に属しています。
@@ -56,8 +56,8 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 | :-- | :-- |
 | トイコレ付属マット（土俵面） | トイオ・コレクション付属のプレイマット(土俵の面) |
 | トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) | 
-| キューブ（単体）付属簡易マット | toio コア キューブ（単体）付属の簡易プレイマット |
-| 開発用マット | toio 開発用プレイマット（仮称） |
+| キューブ（単体）付属簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
+| 開発用マット | toio™開発用プレイマット（仮称） |
 
 各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/info_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考してください。
 
@@ -187,13 +187,13 @@ public float MatDeg2UnityDeg(double deg);
 
 # 4. Cube Prefab
 
-Cube Prefab は toio のコアキューブを模したゲームオブジェクトです。
+Cube Prefab は toio™コア キューブ を模したゲームオブジェクトです。
 
 Cube Prefab は二つのスクリプトを持っています。
-- `CubeSimulator`：実際のコアキューブのシミュレーションを実装したもの
+- `CubeSimulator`：実際のキューブのシミュレーションを実装したもの
 - `CubeInteraction`：シミュレータ上で、Cubeオブジェクトを押したりつかんだりする操作を実装したもの
 
-> 実際のコアキューブとは一部機能差があります。<br>
+> 実際のキューブとは一部機能差があります。<br>
 > 詳細については、[機能の対応状況](usage_cube.md#RealSim-機能表)をご確認下さい。
 
 Cube Prefab はシーンの中に複数台配置することが出来ます。 （ Cube Prefab が他のオブジェクトと重ならないように配置してください。）
