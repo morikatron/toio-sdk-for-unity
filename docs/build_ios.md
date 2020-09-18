@@ -1,6 +1,6 @@
 # iOS ビルド
 
-ここでは toio-SDK-for-Unity を使ったプロジェクトを iOS 向けにビルドする方法を解説します。
+ここでは toio SDK for Unity を使ったプロジェクトを iOS 向けにビルドする方法を解説します。
 
 ## 動作確認済み環境
 
@@ -16,11 +16,11 @@
 
 ## Unity の iOS Build Support をチェック
 
-Unity をインストールする時に iOS Build Support もモジュールを追加しなかった場合は、 Unity Hub を開いて［インストール］タブで、相応のバージョンの右上のメニューの［モジュールを加える］から iOS Build Support を加えてください。
+Unity をインストールする時に iOS Build Support モジュールを追加しなかった場合は、 Unity Hub を開いて［インストール］タブで、相応のバージョンの右上のメニューの［モジュールを加える］から iOS Build Support を加えてください。
 
 ## ビルドプラットフォームを iOS に切り替え
 
-ここでは、[toio-SDK-for-Unity のインストール](download_sdk.md)の最後から続けて `Assets/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` を開いているものとして話を進めます。
+ここでは、[toio SDK for Unity のインストール](download_sdk.md)の最後から続けて `Assets/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` を開いているものとして説明を進めます。
 
 まず、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。【Build Settings】の【プラットフォーム】のリストから iOS を選択し、右下の 【Switch Platform】 ボタンを押してください。
 
