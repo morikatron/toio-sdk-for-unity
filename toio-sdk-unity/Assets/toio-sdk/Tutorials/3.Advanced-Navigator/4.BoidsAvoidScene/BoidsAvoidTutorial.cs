@@ -12,7 +12,7 @@ namespace toio.tutorial
         {
             cubeManager = new CubeManager();
             await cubeManager.MultiConnect(6);
-            Debug.Assert(cubeManager.navigators.Count>2, "Need more than 2 cubes.");
+            Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
             // Choose 1 cube not to be of boids
             navigatorNotBoids = cubeManager.navigators[0];
