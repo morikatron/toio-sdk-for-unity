@@ -106,8 +106,8 @@ public class HandleBasic : MonoBehaviour
 
 ## CubeHandle
 
-チュートリアル基本編でキューブの移動制御を行っていた Cube クラスは [toio™ コアキューブ技術仕様](https://toio.github.io/toio-spec/) に従った基礎機能を提供するクラスで、キューブの移動は左右のモーター制御となっています。
-このようなモーターの制御だけで複雑な移動を行うのは大変なので ToioSDK ではキューブの移動制御をより扱いやすくした CubeHandle クラスを用意しています。
+チュートリアル基本編でキューブの移動制御を行っていた Cube クラスは [toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/) に従った基礎機能を提供するクラスで、キューブの移動は左右のモーター制御となっています。
+このようなモーターの制御だけで複雑な移動を行うのは大変なので Toio SDK for Unity ではキューブの移動制御をより扱いやすくした CubeHandle クラスを用意しています。
 
 CubeHandle クラスは、以下のような移動制御を提供します。
 

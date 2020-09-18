@@ -1,7 +1,7 @@
 # 目次
 
 - [1. 概説](usage_cube.md#1-概説)
-- [2. 既存 toio ライブラリ(toio.js)との比較](usage_cube.md#2-既存toioライブラリtoiojsとの比較)
+- [2. 既存 toio™ ライブラリ(toio.js)との比較](usage_cube.md#2-既存toioライブラリtoiojsとの比較)
 - [3. Cube クラス API](usage_cube.md#3-Cube-クラス-API)
   - [3.1. 変数](usage_cube.md#31-変数)
   - [3.2. コールバック](usage_cube.md#32-コールバック)
@@ -10,22 +10,22 @@
 
 # 1. 概説
 
-Cube クラスは、toio のコアキューブを操作するための機能が実装されています。<br>
+Cube クラスは、toio™コア キューブ (以降、キューブ) を操作するための機能が実装されています。<br>
 このクラスは、異なる環境向けの実装切り替えが出来るマルチプラットフォーム対応クラスとなっており、
-Unity システム上で動くコアキューブ(以下シミュレータ) と 現実のコアキューブ の 2 つの実行環境に対応しています。
+Unity システム上で動くキューブ(以下シミュレータ) と 現実のキューブ の 2 つの実行環境に対応しています。
 
 シミュレータについては[コチラ](usage_simulator.md)のページをご参照下さい。
 
-現実のコアキューブでは、[コアキューブの技術仕様(通信仕様)](https://toio.github.io/toio-spec/docs/ble_communication_overview.html)に沿って Unity プログラムから Bluetooth 通信を行う事で、現実のコアキューブを操作します。
+現実のキューブでは、[toio™コア キューブ技術仕様(通信仕様)](https://toio.github.io/toio-spec/docs/ble_communication_overview.html)に沿って Unity プログラムから Bluetooth 通信を行う事で、現実のキューブを操作します。
 
 ### Real/Sim 機能表
 
-現在(2020/03/04)、コアキューブのファームウェアバージョンは 2 つです。
+現在(2020/03/04)、キューブのファームウェアバージョンは 2 つです。
 
 - 2.0.0 : 公開時の初期バージョン
 - 2.1.0 : 公開後の初アップデート
 
-ToioSDK では、現実に動作するコアキューブクラス(Real 対応)、シミュレータで動作するコアキューブクラス(Sim 対応)の 2 つの内部実装が用意されています。それぞれ内部実装が異なっているため、対応状況に違いがあります。<br>
+Toio SDK for Unity では、現実に動作するキューブクラス(Real 対応)、シミュレータで動作するキューブクラス(Sim 対応)の 2 つの内部実装が用意されています。それぞれ内部実装が異なっているため、対応状況に違いがあります。<br>
 以下に実装対応表を示します。
 
 #### ファームウェアバージョン 2.0.0
@@ -70,11 +70,11 @@ ToioSDK では、現実に動作するコアキューブクラス(Real 対応)�
 
 <br>
 
-# 2. 既存 toio ライブラリ(toio.js)との比較
+# 2. 既存 toio™ ライブラリ(toio.js)との比較
 
 [toio.js](https://github.com/toio/toio.js)は、javascript で書かれた既存の toio ライブラリです。<br>
 このライブラリは node.js で作られており、PC 環境で動作します。<br>
-scanner、cube の 2 つをクラスを利用してコアキューブを操作します。
+scanner、cube の 2 つをクラスを利用してキューブを操作します。
 
 以下に toio.js のサンプルコードを示します。
 
@@ -98,8 +98,8 @@ async function main() {
 main();
 ```
 
-ToioSDK は toio.js ユーザーでも使いやすいプログラムを目指し、
-scanner、cube の 2 つのクラスを使用してコアキューブを操作する仕組みにしました。
+Toio SDK for Unity は toio.js ユーザーでも使いやすいプログラムを目指し、
+scanner、cube の 2 つのクラスを使用してキューブを操作する仕組みにしました。
 
 以下に、同じ挙動をする本プログラムのサンプルコードを示します。
 
@@ -130,80 +130,80 @@ public class SimpleScene : MonoBehaviour
 ## 3.1. 変数
 
 ```c#
-// 接続したコアキューブのファームウェアバージョン
+// 接続したキューブのファームウェアバージョン
 public string version { get; }
 
-// コアキューブの固有識別ID
+// キューブの固有識別ID
 // シミュレータ環境では Cube ゲームオブジェクトの InstanceID が ID になります
 public string id { get; protected set; }
 
-// コアキューブのアドレス
+// キューブのアドレス
 public string addr { get; }
 
-// コアキューブの接続状態
+// キューブの接続状態
 public bool isConnected { get; }
 
-// コアキューブのバッテリー状態
+// キューブのバッテリー状態
 public int battery { get; protected set; }
 
-// マット上のコアキューブのX座標
-// コアキューブの中心位置を基準とした座標となっています。
+// マット上のキューブのX座標
+// キューブの中心位置を基準とした座標となっています。
 // マットの上にいる間、自動更新されます。
 // コールバック機能：standardIdCallback
 public int x { get; protected set; }
 
-// マット上のコアキューブのY座標
-// コアキューブの中心位置を基準とした座標となっています。
+// マット上のキューブのY座標
+// キューブの中心位置を基準とした座標となっています。
 // マットの上にいる間、自動更新されます。
 // コールバック機能：standardIdCallback
 public int y { get; protected set; }
 
-// マット上のコアキューブのXY座標
-// コアキューブの中心位置を基準とした座標となっています。
+// マット上のキューブのXY座標
+// キューブの中心位置を基準とした座標となっています。
 // マットの上にいる間、自動更新されます。
 // コールバック機能：standardIdCallback
 public Vector2 pos { get; }
 
-// マット上のコアキューブの角度
-// コアキューブの中心位置を基準とした角度になっています。
+// マット上のキューブの角度
+// キューブの中心位置を基準とした角度になっています。
 // マットの上にいる間、自動更新されます。
 // コールバック機能：standardIdCallback
 public int angle { get; protected set; }
 
-// マット上のコアキューブのXY座標
-// コアキューブの光学センサー位置を基準とした座標になっています。
+// マット上のキューブのXY座標
+// キューブの光学センサー位置を基準とした座標になっています。
 // マットの上にいる間、自動更新されます。
 // コールバック機能：standardIdCallback
 public Vector2 sensorPos { get; }
 
-// マット上のコアキューブの角度
-// コアキューブの光学センサー位置を基準とした角度になっています。
+// マット上のキューブの角度
+// キューブの光学センサー位置を基準とした角度になっています。
 // マットの上にいる間、自動更新されます。
 // コールバック機能：standardIdCallback
 public int sensorAngle { get; protected set; }
 
 // 読み取り可能な特殊ステッカーのID
-// コアキューブの光学センサーから取得したIDとなっています。
+// キューブの光学センサーから取得したIDとなっています。
 // コールバック機能：standardIdCallback
 public uint standardId { get; protected set; }
 
-// コアキューブのボタン押下状態の変数
+// キューブのボタン押下状態の変数
 // コールバック機能：buttonCallback
 public bool isPressed { get; protected set; }
 
-// コアキューブの傾き状態の変数
+// キューブの傾き状態の変数
 // コールバック機能：slopeCallback
 public bool isSloped { get; protected set; }
 
-// コアキューブの衝突状態の変数
+// キューブの衝突状態の変数
 // 内部実装は継承クラスによって大きく異なる可能性があります。
 // コールバック機能：collisionCallback
 public bool isCollisionDetected { get; protected set; }
 
-// コアキューブがマット上にいるか判定する変数
+// キューブがマット上にいるか判定する変数
 public bool isGrounded { get; protected set; }
 
-// コアキューブの最高速度を表す変数
+// キューブの最高速度を表す変数
 // ファームウェアバージョン毎に異なるため用意されています。
 public int maxSpd { get; }
 ```
@@ -246,7 +246,7 @@ public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYP
 ```
 
 キューブのモーターを制御します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御)
 
 - left
   - 定義 : 左モーター速度
@@ -276,7 +276,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 ```
 
 キューブ底面についている LED を制御します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
 
 - red
   - 定義 : 赤色の強さ
@@ -313,7 +313,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 ```
 
 キューブ底面についている LED を連続的に制御します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
 
 - repeatCount
   - 定義 : 繰り返し回数
@@ -334,7 +334,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 キューブ底面についている LED を消灯させます<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯)
 
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
@@ -349,7 +349,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 ```
 
 キューブからあらかじめ用意された効果音を再生します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
 
 - soundId
   - 定義 : サウンド ID
@@ -366,7 +366,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 ### PlaySound
 
 キューブから任意の音を再生します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
 
 ```C#
 // 引数版
@@ -397,7 +397,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 
 - buff
   - 定義 : 命令プロコトル
-  - [コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+  - [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -411,7 +411,7 @@ public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 キューブの音再生を停止します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_sound#再生の停止)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#再生の停止)
 
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
@@ -426,7 +426,7 @@ public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 キューブの水平検出のしきい値を設定します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_configuration#水平検出のしきい値設定)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#水平検出のしきい値設定)
 
 - angle
   - 定義 : 傾き検知の閾値
@@ -444,7 +444,7 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
 ```
 
 キューブの衝突検出のしきい値を設定します<br>
-[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_configuration#衝突検出のしきい値設定)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#衝突検出のしきい値設定)
 
 - level
   - 定義 : 衝突検知の閾値
