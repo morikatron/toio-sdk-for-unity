@@ -434,7 +434,6 @@ public class CubeConnecter : CubeConnecterInterface
     public CubeConnecter()
     {/*
         versionTable.add("2.0.0", CubeReal_ver2_0_0)
-        versionTable.add("2.1.0", CubeReal_ver2_1_0)
     */}
 
     public async Task<Cube> Connect(BLEPeripheralInterface peripheral)

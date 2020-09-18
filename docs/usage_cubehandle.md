@@ -161,12 +161,10 @@ public void MoveRaw(
   - 定義：左モーター速度の指示値
   - 範囲：
     - [Version 2.0.0] -100 ~ -10； -9 ~ 9 は 0 に等価； 10 ~ 100
-    - [Version 2.1.0] -115 ~ -8； -7 ~ 7 は 0 に等価； 8 ~ 115
 - uR
   - 定義：右モーター速度の指示値
   - 範囲：
     - [Version 2.0.0] -100 ~ -10； -9 ~ 9 は 0 に等価； 10 ~ 100
-    - [Version 2.1.0] -115 ~ -8； -7 ~ 7 は 0 に等価； 8 ~ 115
 - durationMS
   - 定義：継続時間（ms）
   - 範囲：
@@ -197,13 +195,11 @@ public Movement Move(
   - 定義：前進速度の指示値
   - 範囲：
     - [Version 2.0.0] -100+Abs(rotate)/2 ~ 100-Abs(rotate)/2
-    - [Version 2.1.0] -115+Abs(rotate)/2 ~ 115-Abs(rotate)/2
   - 説明：左右モーター指示値（uL, uR）との関係は、`translate = (uL + uR)/2`
 - rotate
   - 定義：回転速度の指示値
   - 範囲：
     - [Version 2.0.0] -100+Abs(rotate)/2 ~ 100-Abs(rotate)/2
-    - [Version 2.1.0] -115+Abs(rotate)/2 ~ 115-Abs(rotate)/2
   - 説明：左右モーター指示値（uL, uR）との関係は、`rotate = uL - uR`
 - durationMS
   - 定義：継続時間（ms）
@@ -301,7 +297,6 @@ public Movement TranslateByDist(double dist, double translate);
   - 定義：前進速度の指示値
   - 範囲：
     - [Version 2.0.0] -100~-10； 10~100
-    - [Version 2.1.0] -115~-8； 8~115
 - 戻り値
   - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
 
@@ -320,7 +315,6 @@ public Movement RotateByRad(double drad, double rotate);
   - 定義：回転速度の指示値
   - 範囲：
     - [Version 2.0.0] -200~-20； 20~200
-    - [Version 2.1.0] -230~-16； 16~230
 - 戻り値
   - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
 
@@ -340,7 +334,6 @@ public Movement RotateByDeg(double ddeg, double rotate)
   - 定義：回転速度の指示値
   - 範囲：
     - [Version 2.0.0] -200~-20； 20~200
-    - [Version 2.1.0] -230~-16； 16~230
 - 戻り値
   - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
 
@@ -376,7 +369,6 @@ public Movement Move2Target(
   - 定義：最大速度の指示値
   - 範囲：
     - [Version 2.0.0] 0~100
-    - [Version 2.1.0] 0~115
   - 既定値：50
   - 説明：目標に近づくや回転する具合によって減速する。
 - rotateTime
