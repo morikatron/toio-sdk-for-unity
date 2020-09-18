@@ -21,7 +21,7 @@
 
 <br>
 
-Cube モジュール群は、Unity システム上で動くコアキューブ(以下シミュレータ) と 現実のコアキューブ(以下リアル) を同一のコードで動かす事が出来るマルチプラットフォーム対応モジュールです。
+Cube モジュール群は、Unity システム上で動くキューブ(以下シミュレータ) と 現実のキューブ(以下リアル) を同一のコードで動かす事が出来るマルチプラットフォーム対応モジュールです。
 
 <br>
 
@@ -43,7 +43,7 @@ Cube  +-------------------------------+ キューブルートディレクトリ
 │   │   └── CubeReal.cs  +------------+ リアル実装抽象クラス
 │   ├── Sim    +----------------------+ シミュレータ実装ディレクトリ
 │   │   └── CubeUnity.cs  +-----------+ シミュレータ実装クラス
-│   ├── Cube.cs  +--------------------+ コアキューブ抽象クラス
+│   ├── Cube.cs  +--------------------+ キューブ抽象クラス
 │   └── CubeOrderBalancer.cs  +-------+ 命令送信制御クラス
 ├── Scanner  +------------------------+ 検索ディレクトリ
 │   ├── NearScanner.cs  +-------------+ 複数台検索クラス
@@ -69,8 +69,8 @@ Cube  +-------------------------------+ キューブルートディレクトリ
 Cube を操作するためのインタフェースです。<br>
 全ての関数・プロパティの中身が未実装となっており、派生クラスに全ての処理を委ねています。<br>
 こうする事で実行環境やバージョン毎の内部実装の違いを吸収し、ポリモーフィズムによる抽象的なプログラミングを可能にします。<br>
-再利用性を保つために、このクラスには[コアキューブ通信仕様](https://toio.github.io/toio-spec/docs/ble_communication_overview.html)以外の機能が存在しません。<br>
-コアキューブ通信仕様以外の機能を利用/拡張する場合は、[CubeHandle](usage_cubehandle.md), [CubeNavigator](sys_navigator.md)等の拡張クラスを利用します。<br>
+再利用性を保つために、このクラスには[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_communication_overview.html)以外の機能が存在しません。<br>
+toio™コア キューブ 技術仕様（通信仕様）以外の機能を利用/拡張する場合は、[CubeHandle](usage_cubehandle.md), [CubeNavigator](sys_navigator.md)等の拡張クラスを利用します。<br>
 
 実装コード：[Cube.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
 
@@ -82,7 +82,7 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 
 #### CubeReal
 
-現実のコアキューブとの BLE 通信を行う Cube クラスです。<br>最低限の共通処理を除いて、殆どの内部実装を派生クラスで行います。<br>
+現実のキューブとの BLE 通信を行う Cube クラスです。<br>最低限の共通処理を除いて、殆どの内部実装を派生クラスで行います。<br>
 
 実装コード：[CubeReal.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)
 
@@ -206,7 +206,7 @@ async void Start()
 </div>
 <br>
 
-ToioSDK には Bluetooth デバイスの検索モジュールが 2 つあります。
+Toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。
 
 - NearestScanner クラス：
   - Scan 関数：最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。
@@ -387,8 +387,8 @@ public class NearScanner : NearScannerInterface
 CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファームウェアバージョンの適応(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
 [CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
 
-<b>Connect 関数</b>を呼ぶ事でコアキューブに接続します。<br>
-<b>Disconnect 関数</b>を呼ぶ事で接続済みのコアキューブとの通信を切断します。<br>
+<b>Connect 関数</b>を呼ぶ事でキューブに接続します。<br>
+<b>Disconnect 関数</b>を呼ぶ事で接続済みのキューブとの通信を切断します。<br>
 
 シミュレータ実装：
 
@@ -528,7 +528,7 @@ public class CubeConnecter : CubeConnecterInterface
 
 # 5. 機能拡張の方法
 
-ToioSDK の機能拡張は、次のような方法で行うと良いと思います。
+Toio SDK for Unity の機能拡張は、次のような方法で行うと良いと思います。
 
 ## 5.1. Cube クラスに関数を追加するには
 
@@ -545,4 +545,4 @@ ToioSDK の機能拡張は、次のような方法で行うと良いと思いま
 
 ## 5.3. 通信プログラムを変更する場合
 
-BLE インタフェースの内部実装を変更する事で、既存の toio プログラムに変更を加える事なく通信プログラムだけを変更する事が出来ます。
+BLE インタフェースの内部実装を変更する事で、既存の toio™ プログラムに変更を加える事なく通信プログラムだけを変更する事が出来ます。
