@@ -206,7 +206,7 @@ async void Start()
 </div>
 <br>
 
-Toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。
+toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。
 
 - NearestScanner クラス：
   - Scan 関数：最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。
@@ -528,7 +528,7 @@ public class CubeConnecter : CubeConnecterInterface
 
 # 5. 機能拡張の方法
 
-Toio SDK for Unity の機能拡張は、次のような方法で行うと良いと思います。
+toio SDK for Unity の機能拡張は、次のような方法で行うと良いと思います。
 
 ## 5.1. Cube クラスに関数を追加するには
 
