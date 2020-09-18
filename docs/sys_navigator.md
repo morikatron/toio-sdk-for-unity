@@ -43,7 +43,7 @@ Navigation  +----------------------+ Navigator 関連ディレクトリ
 
 ## 1.1. クラスダイアグラム
 
-Toio SDK for Unity の Navigator モジュール群は、 toio™ 関連とは独立して実装されている [Navigator](sys_navigator.md#2-Navigator-クラス) クラス(図の 「Cube-independent Navigator」)と、
+toio SDK for Unity の Navigator モジュール群は、 toio™ 関連とは独立して実装されている [Navigator](sys_navigator.md#2-Navigator-クラス) クラス(図の 「Cube-independent Navigator」)と、
 Navigator と CubeHandle とをつなげるインターフェイスである [CubeNavigator](sys_navigator.md#3-CubeNavigator-クラス) クラス および CubeEntity クラス (図の 「Interfavce for Cube」) とで構成されています。
 
 <div align="center"><img width=600 src="res/navigator/arch.png"></div>
@@ -232,7 +232,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
 <figcaption>※ 図は <a href="https://ieeexplore.ieee.org/abstract/document/6630610">元論文</a>から引用</figcaption>
 </div>
 
-Toio SDK for Unity の HLAvoid クラスは機能としてのメソッドを 2 つ持っています。
+toio SDK for Unity の HLAvoid クラスは機能としてのメソッドを 2 つ持っています。
 
 ```c#
 // 目標にナビゲーションする（ウェイポイント、衝突状態、速度上限）を計算
@@ -458,7 +458,7 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
 <figcaption>※ <a href="http://www.red3d.com/cwr/boids/">Reynolds, Craig. Boids(Webpage)</a>から引用</figcaption>
 </div>
 
-Toio SDK for Unity の Boids クラスは機能としてのメソッドを 2 つ持っています。
+toio SDK for Unity の Boids クラスは機能としてのメソッドを 2 つ持っています。
 
 ```c#
 // 目標への「引力」を含めて、ボイドの力ベクトルを計算
