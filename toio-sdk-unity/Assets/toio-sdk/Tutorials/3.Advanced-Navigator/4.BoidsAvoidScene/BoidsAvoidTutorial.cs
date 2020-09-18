@@ -12,18 +12,19 @@ namespace toio.tutorial
         {
             cubeManager = new CubeManager();
             await cubeManager.MultiConnect(6);
+            Debug.Assert(cubeManager.navigators.Count>2, "Need more than 2 cubes.");
 
-#if UNITY_EDITOR
+            // Choose 1 cube not to be of boids
+            navigatorNotBoids = cubeManager.navigators[0];
             foreach (var navigator in cubeManager.navigators){
-                if (navigator.cube.id == "Cube (5)")
+                if ((navigator.cube as CubeUnity).objName == "Cube Not Boids")
                     navigatorNotBoids = navigator;
             }
-#else
-            navigatorNotBoids = cubeManager.navigators[0];
-#endif
+
+            // Use LED color to distinguish cubes
             navigatorNotBoids.cube.TurnLedOn(255, 0, 0, 0); // Red
 
-            // set to BOIDS_AVOID mode, except Cube (5) (Red)
+            // set to BOIDS_AVOID mode, except navigatorNotBoids
             foreach (var navigator in cubeManager.navigators){
                 navigator.mode = CubeNavigator.Mode.BOIDS_AVOID;
                 navigator.usePred = true;
