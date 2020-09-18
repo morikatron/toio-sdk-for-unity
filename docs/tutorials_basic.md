@@ -236,7 +236,7 @@ public class MoveScene : MonoBehaviour
 
 # 音を鳴らす
 
-> ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/2.Sound/」 にあります。
+> ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/2.Sound/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/sound/)です。
 
 Cube クラスの PlayPresetSound メソッドでキューブからあらかじめ用意された効果音を再生出来ます。
