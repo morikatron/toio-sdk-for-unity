@@ -33,7 +33,7 @@ public class Sample_Cross : MonoBehaviour
             var navi = cm.navigators[i];
             int M = 350; int m = 150;
 #if UNITY_EDITOR
-            if (navi.cube.id[5] == '1')
+            if ((navi.cube as CubeUnity).objName[5] == '1')
 #else
             if (i < cm.cubes.Count/2)
 #endif
