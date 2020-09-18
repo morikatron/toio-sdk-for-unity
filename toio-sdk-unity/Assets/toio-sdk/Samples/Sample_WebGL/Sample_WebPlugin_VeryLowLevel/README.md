@@ -1,7 +1,7 @@
 # Sample_WebPlugin_VeryLowLevel
 
 <div align="center">
-<img height=280 src="/docs/res/main/sample_real.gif" title="キューブの動作" alt="キューブの動作">
+<img height=280 src="/docs/res/samples/real.gif" title="キューブの動作" alt="キューブの動作">
 </div>
 
 <br>
