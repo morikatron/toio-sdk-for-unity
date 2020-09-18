@@ -39,9 +39,6 @@ namespace toio
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return 100; } }
 
-        public override bool isDoubleTap { get; protected set; }
-        public override PoseType pose { get; protected set; }
-        //public override PoseType posesy;
         // ボタンコールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
         // 傾きコールバック
