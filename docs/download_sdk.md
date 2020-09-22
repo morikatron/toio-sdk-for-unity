@@ -29,7 +29,7 @@ toio SDK for Unity では、Unity に最適化された非同期処理ライブ�
 ## SDK の追加
 
 ### 1. unitypackage のダウンロード
-[【コチラ】](TODO)から、【toio-SDK-for-Unity.unitypackage】 をダウンロードしてください。
+[【コチラ】](https://github.com/morikatron/toio-sdk-for-unity/releases/)から、【toio-SDK-for-Unity.unitypackage】 をダウンロードしてください。
 
 ### 2. Unity のプロジェクトにドラッグ&ドロップ
 ダウンロードしたフォルダを開いたら、 **【Assets】** フォルダに **【toio-SDK-for-Unity.unitypackage】** をドラック&ドロップします。
