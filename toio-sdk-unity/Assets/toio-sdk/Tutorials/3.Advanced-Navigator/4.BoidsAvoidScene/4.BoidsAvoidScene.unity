@@ -94,8 +94,9 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -199,7 +200,7 @@ PrefabInstance:
     - target: {fileID: 3909610859877989875, guid: 8bd6ea65c87536d49ac5878fd9e412fe,
         type: 3}
       propertyPath: m_Name
-      value: Cube (5)
+      value: Cube Not Boids
       objectReference: {fileID: 0}
     - target: {fileID: 3909610859877989875, guid: 8bd6ea65c87536d49ac5878fd9e412fe,
         type: 3}
@@ -520,10 +521,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8138842908862602433, guid: cdb3cb207738d3b45ade7abf174b8f7a,
+    - target: {fileID: 749879195433089394, guid: cdb3cb207738d3b45ade7abf174b8f7a,
         type: 3}
-      propertyPath: m_Name
-      value: Stage
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0acb722a63deff4fd9d02d3e9863da09, type: 2}
+    - target: {fileID: 5075611865879378582, guid: cdb3cb207738d3b45ade7abf174b8f7a,
+        type: 3}
+      propertyPath: matType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075611865879378582, guid: cdb3cb207738d3b45ade7abf174b8f7a,
+        type: 3}
+      propertyPath: xMin
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075611865879378582, guid: cdb3cb207738d3b45ade7abf174b8f7a,
+        type: 3}
+      propertyPath: xMax
+      value: 455
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366037465402533080, guid: cdb3cb207738d3b45ade7abf174b8f7a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8138842908862602432, guid: cdb3cb207738d3b45ade7abf174b8f7a,
         type: 3}
@@ -580,30 +601,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366037465402533080, guid: cdb3cb207738d3b45ade7abf174b8f7a,
+    - target: {fileID: 8138842908862602433, guid: cdb3cb207738d3b45ade7abf174b8f7a,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 749879195433089394, guid: cdb3cb207738d3b45ade7abf174b8f7a,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 0acb722a63deff4fd9d02d3e9863da09, type: 2}
-    - target: {fileID: 5075611865879378582, guid: cdb3cb207738d3b45ade7abf174b8f7a,
-        type: 3}
-      propertyPath: matType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5075611865879378582, guid: cdb3cb207738d3b45ade7abf174b8f7a,
-        type: 3}
-      propertyPath: xMin
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 5075611865879378582, guid: cdb3cb207738d3b45ade7abf174b8f7a,
-        type: 3}
-      propertyPath: xMax
-      value: 455
+      propertyPath: m_Name
+      value: Stage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdb3cb207738d3b45ade7abf174b8f7a, type: 3}
