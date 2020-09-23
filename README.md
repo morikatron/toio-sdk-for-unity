@@ -116,3 +116,8 @@ public class Hello_Toio : MonoBehaviour
 
 - [LICENSE](LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
+
+## 知的財産権表記 / Trademark Notice
+”toio”は、株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。  
+Bluetooth®のワードマークおよびロゴは、Bluetooth SIG, Inc.が所有する商標であり、株式会社ソニー・インタラクティブエンタテインメントはこれらのマークをライセンスに基づいて使用しています。  
+その他商標およびトレードネームはそれぞれの所有者に帰属します。  
