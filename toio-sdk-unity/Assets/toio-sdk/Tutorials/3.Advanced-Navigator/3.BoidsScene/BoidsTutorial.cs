@@ -16,9 +16,11 @@ namespace toio.tutorial
 
             // Choose 1 cube not to be of boids
             CubeNavigator navigatorNotBoids = cubeManager.navigators[0];
+#if UNITY_EDITOR
             foreach (var navigator in cubeManager.navigators)
                 if ((navigator.cube as CubeUnity).objName == "Cube Not Boids")
                     navigatorNotBoids = navigator;
+#endif
 
             // Use LED color to distinguish cubes
             foreach (var navigator in cubeManager.navigators)
@@ -27,7 +29,7 @@ namespace toio.tutorial
                 else navigator.cube.TurnLedOn(0,255,0,0);  // Green
             }
 
-            // set to BOIDS only mode, except navigatorNotBoids
+            // Set to BOIDS only mode, except navigatorNotBoids
             foreach (var navigator in cubeManager.navigators)
                 if (navigator != navigatorNotBoids) navigator.mode = CubeNavigator.Mode.BOIDS;
 
