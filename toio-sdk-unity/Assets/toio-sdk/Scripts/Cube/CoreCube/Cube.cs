@@ -221,8 +221,8 @@ namespace toio
         {
             up=1,
             down=2,
-            forward=3,
-            backward=4,
+            front=3,
+            back=4,
             right=5,
             left=6
         };

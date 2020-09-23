@@ -63,10 +63,10 @@ public class Sample_Sensor : MonoBehaviour
             case Cube.PoseType.down:
                 this.Pose.GetComponent<Text>().text = "Down";
                 break;
-            case Cube.PoseType.forward:
+            case Cube.PoseType.front:
                 this.Pose.GetComponent<Text>().text = "Forward";
                 break;
-            case Cube.PoseType.backward:
+            case Cube.PoseType.back:
                 this.Pose.GetComponent<Text>().text = "Backward";
                 break;
             case Cube.PoseType.right:

@@ -45,11 +45,11 @@ namespace toio.Simulator
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.forward)<slopeThreshold)
             {
-                this.pose = Cube.PoseType.forward;
+                this.pose = Cube.PoseType.front;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.forward)>180-slopeThreshold)
             {
-                this.pose = Cube.PoseType.backward;
+                this.pose = Cube.PoseType.back;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.right)<slopeThreshold)
             {

@@ -9,7 +9,7 @@ namespace toio.Simulator
     public class CubeSimulatorEditor : Editor
     {
 
-        string[] poseNames = new string[6]{"up", "down", "forward", "backward", "right", "left"};
+        string[] poseNames = new string[6]{"up", "down", "front", "back", "right", "left"};
         string[] versionNames = new string[2]{"2.0.0", "2.1.0"};
 
         public override void OnInspectorGUI()
