@@ -21,7 +21,7 @@
 - [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
 - [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
 - [7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#7-イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
-- [8. 複数の Cube を動かす](tutorials_basic.md#8-複数の-Cube-を動かす)
+- [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
 - [9. ソースコード簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
 - [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
 - [11. UI の作成](tutorials_UI.md)
@@ -86,14 +86,14 @@
 
 ### 使い方
 
-- [Cube](usage_cube.md)
+- [Cubeクラス](usage_cube.md)
 - [シミュレータ](usage_simulator.md)
-- [CubeHandle](usage_cubehandle.md)
-- [Navigator](usage_navigator.md)
+- [CubeHandleクラス](usage_cubehandle.md)
+- [Navigatorクラス](usage_navigator.md)
 
 ### 機能説明
 
-- [Cube](sys_cube.md)
+- [Cubeクラス](sys_cube.md)
 - [BLE(Bluetooth Low Energy)](sys_ble.md)
 - [シミュレータ](sys_simulator.md)
 - [Navigator](sys_navigator.md)
