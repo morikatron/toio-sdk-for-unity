@@ -34,13 +34,15 @@
 - Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/info_position_id)を模したもの
 - StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/info_standard_id)を模したもの
 - Cube … toio™コア キューブを模したもの
-<div align="center"><img src="res/tutorial/RealAndSimCube.png"></div>
 - Stage … シミュレーション環境に必要な一通りの機能をセットにしたもの
 
 Mat、StandardID、Cube は実物を模したもので、必要に応じて Unity のシーン上に配置して使ってください。
 
 Stage は、通常一つのマットだけを使う場合、Unity のシーンで必要なものをセットにし、便利機能を加えたものです。
 本チュートリアルは全て Stage を使っています。
+
+<div align="center"><img src="res/tutorial/RealAndSimCube.png"></div>
+
 
 ### 操作
 
