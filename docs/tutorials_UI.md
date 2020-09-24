@@ -9,13 +9,13 @@ Cube.Move | 移動する（[チュートリアル](tutorials_basic.md#移動す�
 Cube.TurnOnLightWithScenario<br> Cube.LightOperation | LED を発光する（[チュートリアル](tutorials_basic.md#LEDを発光する)）
 
 ## 目次
-- [UI の作成例](tutorials_UI.md#UI-の作成例)
-    - [シーン作成](tutorials_UI.md#シーン作成)
-    - [UI を作成](tutorials_UI.md#UI-を作成)
-    - [シミュレータと UI の同時表示](tutorials_UI.md#シミュレータと-UI-の同時表示)
-    - [ボタンの作成と動作対応](tutorials_UI.md#ボタンの作成と動作対応)
+- [1. UI の作成例](tutorials_UI.md#UI-の作成例)
+    - [1.1. シーン作成](tutorials_UI.md#11-シーン作成)
+    - [1.2. UI を作成](tutorials_UI.md#12-UI-を作成)
+    - [1.3. シミュレータと UI の同時表示](tutorials_UI.md#13-シミュレータと-UI-の同時表示)
+    - [1.4. ボタンの作成と動作対応](tutorials_UI.md#14-ボタンの作成と動作対応)
 
-# UI の作成例
+# 1. UI の作成例
 
 > ※ サンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/ex.Sample_UI/」 にあります。
 
@@ -32,7 +32,7 @@ Unity Editor で実行した場合はUIとシミュレータが並列表示さ�
 
 > プロジェクト設定でDefault OrientationをPortraitにしてください。
 
-## シーン作成
+## 1.1. シーン作成
 まず最初にシーンを作成します。  
 これは、チュートリアル(Basic)の[「シーン作成」](tutorials_basic.md#シーン作成)と同じです。
 
@@ -109,7 +109,7 @@ public class MyUIScript : MonoBehaviour
 </div>
 
 
-## UI を作成
+## 1.2. UI を作成
 続いてキューブを操作するための UI を作成していきます。
 
 1. ヒエラルキー上で右クリックし、メニューから「空のオブジェクトを作成」をクリックし、名前を「UI」にします。
@@ -141,7 +141,7 @@ public class MyUIScript : MonoBehaviour
 <img width=400 src="res/tutorial_UI/BG.png"></img>
 </div>
 
-## シミュレータと UI の同時表示
+## 1.3. シミュレータと UI の同時表示
 スマートデバイスにビルドして実行した場合は、スマートフォンの画面に UI のみが表示され操作パネルとして利用したいですが、シミュレータで実行する場合にはUIとシミュレータの画面を下図のように同時に表示されている必要があります。<br>
 これを実現するために、シミュレータ上では同時に見られるようUIを左側に移動する仕組みを作ります。
 
@@ -203,7 +203,7 @@ public class MySimUI : MonoBehaviour
     2. シミュレータの画面を少し右側に寄せたいため、カメラを左へ移動しています。
     3. 「UI」―「Canvas」の親を「SimCanvas」に設定してから、左端へ移動します。（[Transform.SetParent](https://docs.unity3d.com/ScriptReference/Transform.SetParent.html) を利用）
 
-## ボタンの作成と動作対応
+## 1.4. ボタンの作成と動作対応
 最後に操作パネルの各ボタンを作成します。
 
 >  スマートデバイス上で操作パネルが正しく表示されるよう、ここの文字の方向は90度回転します。
