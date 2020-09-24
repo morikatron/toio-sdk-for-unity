@@ -22,16 +22,14 @@ Unity が立ち上がった事を確認しましょう。
 
 toio SDK for Unity では、Unity に最適化された非同期処理ライブラリ [UniTask](https://github.com/Cysharp/UniTask) を使用しています。したがって本Unity プロジェクトには UniTask (2.0.0 以降) をインストールする必要があります。<br>
 
-UniTask のインストールは
+UniTask のインストールは以下の手順で行います（2020年9月24日現在。Unity 2019）。
 1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開き
 1. [+] アイコンから Add package from git URL... を選び
 1. https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask を追加する
-<br>
-といった手順で行います（2020年9月24日現在。Unity 2019）。<br>
 
-以下のドキュメントに、インストール手順やスクリーンショットが掲載されていますので、参考にしてください。
-* [UniTask の Github リポジトリ](https://github.com/Cysharp/UniTask#install-via-git-url)
-* Unity マニュアルの [Git URL からのインストール](https://docs.unity3d.com/ja/current/Manual/upm-ui-giturl.html)
+以下のドキュメントには、UniTaskのインストール手順やスクリーンショットが掲載されていますので、参考にしてください。
+* [UniTask の Github リポジトリの説明文](https://github.com/Cysharp/UniTask#install-via-git-url)
+* Unity マニュアルの [「Git URL からのインストール」](https://docs.unity3d.com/ja/current/Manual/upm-ui-giturl.html)も参考になります。
 
 ## SDK の追加
 
