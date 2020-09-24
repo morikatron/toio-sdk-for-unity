@@ -4,7 +4,7 @@
 
 メソッド | 機能
 :--------|:--------|
-Cube.PlayPresetSound | 音を鳴らす（[チュートリアル](tutorials_basic.md#音4-を鳴らす)）
+Cube.PlayPresetSound | 音を鳴らす（[チュートリアル](tutorials_basic.md#4-音を鳴らす)）
 Cube.Move | 移動する（[チュートリアル](tutorials_basic.md#3-移動する)）
 Cube.TurnOnLightWithScenario<br> Cube.LightOperation | LED を発光する（[チュートリアル](tutorials_basic.md#5-LED-を発光する)）
 
