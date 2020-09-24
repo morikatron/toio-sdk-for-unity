@@ -1,4 +1,6 @@
-# 目次
+# 技術ドキュメント - 使い方 - Navigator
+
+## 目次
 
 - [1. 概説](usage_navigator.md#1-概説)
 - [2. CubeNavigator クラス API](usage_navigator.md#2-CubeNavigator-クラス-API)

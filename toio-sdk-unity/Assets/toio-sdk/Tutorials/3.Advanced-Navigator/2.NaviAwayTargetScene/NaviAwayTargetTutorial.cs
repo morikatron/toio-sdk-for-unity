@@ -10,6 +10,7 @@ namespace toio.tutorial
         {
             cubeManager = new CubeManager();
             await cubeManager.MultiConnect(2);
+            Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
             // By default, each navigator is able to see all others
             // But you can also manually make a navigator "blind"

@@ -279,7 +279,7 @@ async void Start()
 ### 目標から離れる NaviAwayTarget 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/2.NaviAwayTargetScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi_away_target/)です。
+> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi_away_target/)です。二台以上に接続してください。
 
 NaviAwayTarget 関数を使うと、 Navi2Target 関数とは逆にキューブが目標から離れます。<br>
 (キューブの視野内に一番離れるところに移動します。)
@@ -306,6 +306,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
     {
         cubeManager = new CubeManager();
         await cubeManager.MultiConnect(2);
+        Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
         // By default, each navigator is able to see all others
         // But you can also manually make a navigator "blind"
@@ -333,7 +334,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
 ### ボイドによる集団制御
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids/)です。
+> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids/)です。二台以上に接続してください。
 
 「ボイド」とは、鳥の集団行動を擬似し、キューブ達を互いに一定距離を保ちながら群れとして移動させるアルゴリズムです。
 
@@ -412,13 +413,15 @@ async void Start()
 {
     cubeManager = new CubeManager();
     await cubeManager.MultiConnect(6);
-    Debug.Assert(cubeManager.navigators.Count>2, "Need more than 2 cubes.");
+    Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
     // Choose 1 cube not to be of boids
     CubeNavigator navigatorNotBoids = cubeManager.navigators[0];
+#if UNITY_EDITOR
     foreach (var navigator in cubeManager.navigators)
         if ((navigator.cube as CubeUnity).objName == "Cube Not Boids")
             navigatorNotBoids = navigator;
+#endif
 
     // Use LED color to distinguish cubes
     foreach (var navigator in cubeManager.navigators)
@@ -427,7 +430,7 @@ async void Start()
         else navigator.cube.TurnLedOn(0,255,0,0);  // Green
     }
 
-    // set to BOIDS only mode, except navigatorNotBoids
+    // Set to BOIDS only mode, except navigatorNotBoids
     foreach (var navigator in cubeManager.navigators)
         if (navigator != navigatorNotBoids) navigator.mode = CubeNavigator.Mode.BOIDS;
 
@@ -450,7 +453,7 @@ async void Start()
 ### ボイド + 衝突回避
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/4.BoidsAvoidScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids_avoid/)です。
+> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids_avoid/)です。二台以上に接続してください。
 
 ボイドと衝突回避の組み合わせを使うことで、ボイドの群がる特性と安定的で自然な回避能力を同時に発揮します。
 
@@ -471,16 +474,20 @@ public class BoidsAvoidTutorial : MonoBehaviour
     {
         cubeManager = new CubeManager();
         await cubeManager.MultiConnect(6);
+        Debug.Assert(cubeManager.navigators.Count>1, "Need at least 2 cubes.");
 
-        // get Cube (5)
-        CubeNavigator navigatorNotBoids = null;
-        foreach (var navigator in cubeManager.navigators){
-            if (navigator.cube.id == "Cube (5)")
+        // Choose 1 cube not to be of boids
+        navigatorNotBoids = cubeManager.navigators[0];
+#if UNITY_EDITOR
+        foreach (var navigator in cubeManager.navigators)
+            if ((navigator.cube as CubeUnity).objName == "Cube Not Boids")
                 navigatorNotBoids = navigator;
-        }
-        //navigatorNotBoids.cube.TurnLedOn(255,0,0,0); // Red
+#endif
 
-        // set to BOIDS_AVOID mode, except Cube (5) (Red)
+        // Use LED color to distinguish cubes
+        navigatorNotBoids.cube.TurnLedOn(255, 0, 0, 0); // Red
+
+        // Set to BOIDS_AVOID mode, except Cube (5) (Red)
         foreach (var navigator in cubeManager.navigators){
             navigator.mode = CubeNavigator.Mode.BOIDS_AVOID;
             navigator.usePred = true;

@@ -1,7 +1,9 @@
-# 目次
+# 技術ドキュメント - 機能説明 - BLE(Bluetooth Low Enegy)
+
+## 目次
 
 - [1. 概説](sys_ble.md#1-概説)
-- [2. BLE クラスの構造](sys_ble.md#2-BLEクラスの構造)
+- [2. BLE クラスの構造](sys_ble.md#2-ble-クラスの構造)
 - [3. 通信の仕組み](sys_ble.md#3-通信の仕組み)
   - [3.1. 検索と接続](sys_ble.md#31-検索と接続)
   - [3.2. 送信と受信](sys_ble.md#32-送信と受信)
@@ -227,8 +229,6 @@ public interface BLECharacteristicInterface
 3. スキャン終了条件(接続数、待機時間)を満たしたらスキャンを終了
 4. スキャンにより取得した BLEPeripheralInterface 変数をリターン
 
-iOS/Android/WebGL で共通の通信モジュールを使用していますが、<br>Android の場合のみ接続処理が不安定なため様々な箇所にディレイ処理が入っています。
-
 <br>
 
 ### 接続
@@ -238,8 +238,6 @@ iOS/Android/WebGL で共通の通信モジュールを使用していますが�
 BLE 処理として追記するべき点は以下です。
 
 1. Cube 変数の生成直後に[自動通知の購読(cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)を呼び、座標やボタン等の自動通知の購読を開始します。
-
-2. 検索と同様に Android の場合のみ接続処理が不安定なため様々な箇所にディレイ処理が入っています。
 
 <br>
 

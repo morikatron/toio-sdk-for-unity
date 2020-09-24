@@ -1,7 +1,9 @@
-# 目次
+# 技術ドキュメント - 使い方 - Cube
+
+## 目次
 
 - [1. 概説](usage_cube.md#1-概説)
-- [2. 既存 toio™ ライブラリ(toio.js)との比較](usage_cube.md#2-既存toioライブラリtoiojsとの比較)
+- [2. 既存 toio™ ライブラリ(toio.js)との比較](usage_cube.md#2-既存-toio-ライブラリtoiojsとの比較)
 - [3. Cube クラス API](usage_cube.md#3-Cube-クラス-API)
   - [3.1. 変数](usage_cube.md#31-変数)
   - [3.2. コールバック](usage_cube.md#32-コールバック)
