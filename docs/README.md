@@ -31,7 +31,7 @@
 - [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
 - [7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#7-イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
 - [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
-- [9. ソースコード簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
+- [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
 - [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
 - [11. UI の作成](tutorials_UI.md)
 

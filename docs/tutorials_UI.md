@@ -39,7 +39,7 @@ Unity Editor で実行した場合はUIとシミュレータが並列表示さ�
 ### ステージの配置方法
 
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
-2. ヒエラルキーにある「Main Camera」を削除
+2. ヒエラルキーにある「Main Camera」と「Directional Light」を削除
 3. プロジェクトウィンドウで「Assets/toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます
 4. 「Cube」Prefab ファイル と 「Stage」Prefab ファイルをヒエラルキーにドラック&ドロップします。<br>
 ※ シーン上でマウス操作すれば「Cube」オブジェクトの移動も出来ます。
@@ -101,7 +101,7 @@ public class MyUIScript : MonoBehaviour
 ```
 
 これでシーンの作成は完了です。
-ここまでの作業でヒエラルキーとゲームビューは、下のようになるなずです。
+ここまでの作業でヒエラルキーとゲームビューは、下のようになるはずです。
 
 <div align="center">
 <img src="res/tutorial_UI/scene.png"><br>
