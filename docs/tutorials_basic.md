@@ -76,7 +76,7 @@ Cube オブジェクトの CubeSimulator のインスペクターから、直接
 # 2. シーン作成
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/basic/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/basic/)です。
 
 <div align="center"><img width=200 src="res/tutorial/simplescene.gif"></div>
 
@@ -144,7 +144,7 @@ public class BasicScene : MonoBehaviour
 # 3. 移動する
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/1.Move/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/move/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/move/)です。
 
 <div align="center"><img width=200 src="res/tutorial/movescene.gif"></div>
 
@@ -240,7 +240,7 @@ public class MoveScene : MonoBehaviour
 # 4. 音を鳴らす
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/2.Sound/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/sound/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/sound/)です。
 
 Cube クラスの PlayPresetSound メソッドでキューブからあらかじめ用意された効果音を再生出来ます。
 用意されている効果音については[【コチラ】](https://toio.github.io/toio-spec/docs/ble_sound#効果音の-id)を参照してください。
@@ -342,7 +342,7 @@ public class SoundScene : MonoBehaviour
 # 5. LED を発光する
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/3.LED/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/led/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/led/)です。
 
 <div align="center"><img width=200 src="res/tutorial/ledscene.gif"></div>
 
@@ -435,7 +435,7 @@ public class LEDScene : MonoBehaviour
 # 6. toio IDの読み取り(Position ID & Standard ID)
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/4.toioID/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/toio_id/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/toio_id/)です。
 
 toio ID の詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
 
@@ -508,7 +508,7 @@ public class toioIDScene : MonoBehaviour
 # 7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/5.Event/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/event/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/event/)です。
 
 以下のコールバックで、キューブに変化が起きた(イベントを検知した)時の処理を記述することが出来ます。
 各イベントについては toio™コア キューブ技術仕様に準拠していますので、詳しくはそちらを参照してください。
@@ -625,7 +625,7 @@ public class EventScene : MonoBehaviour
 # 8. 複数のキューブを動かす
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/6.MultiCube/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/multi_cube/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/multi_cube/)です。
 
 <div align="center"><img width=200 src="res/tutorial/multicube.gif"></div>
 
