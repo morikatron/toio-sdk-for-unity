@@ -523,7 +523,7 @@ public class CubeConnecter : CubeConnecterInterface
 
 # 5. 機能拡張の方法
 
-toio SDK for Unity の機能拡張は、次のような方法で行うと良いと思います。
+toio SDK for Unity の機能拡張は、次のような方法が考えられます。
 
 ## 5.1. Cube クラスに関数を追加するには
 
