@@ -34,6 +34,7 @@
 - Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/info_position_id)を模したもの
 - StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/info_standard_id)を模したもの
 - Cube … toio™コア キューブを模したもの
+<div align="center"><img src="res/tutorial/RealAndSimCube.png"></div>
 - Stage … シミュレーション環境に必要な一通りの機能をセットにしたもの
 
 Mat、StandardID、Cube は実物を模したもので、必要に応じて Unity のシーン上に配置して使ってください。
@@ -43,7 +44,7 @@ Stage は、通常一つのマットだけを使う場合、Unity のシーン�
 
 ### 操作
 
-シミュレータ実行中に、Cube や Stage をマウス操作することが出来ます。
+シミュレータ実行中に、Cube や Stage をマウスで操作することが出来ます。
 
 #### Cube オブジェクトに対する操作：
 
@@ -85,10 +86,10 @@ Cube オブジェクトの CubeSimulator のインスペクターから、直接
 2. ヒエラルキー上から「Main Camera」を削除
 3. プロジェクトウィンドウで「Assets/toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます。
 4. 「Cube」Prefabファイルと「Stage」Prefabファイルをヒエラルキーにドラック&ドロップします。<br>
-   ※シーン上でマウス操作すれば「Cube」オブジェクトの移動も出来ます。
+   ※「シーンビュー」に切り替えてマウス操作すれば「Cube」オブジェクトの移動も出来ます。
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします(※名前は自由です)。
 6. 「scene」オブジェクトを選択し、インスペクター上から「コンポーネントを追加」をクリックします。
-7. 任意のスクリプト名（例 MyScene）を入力して、スクリプトを作成します。
+7. 任意のスクリプト名（例 BasicScene）を入力して、スクリプトを作成します。
 8. 作成したスクリプトを下記サンプルコードに書き換えます。(クラス名はスクリプトファイルと同じ名前にする必要があります)
 
 以上を完了させてエディタの再生ボタンを押すと、[toio SDK for Unity ダウンロード](download_sdk.md)の最後で再生したサンプルと同じように、キューブが回転し続けるはずです。
