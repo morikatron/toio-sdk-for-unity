@@ -127,6 +127,8 @@
 
 ## 留意事項
 
+- シミュレータの効果音の再生機能について
+
 シミュレータの効果音の再生機能は実装されていますが、効果音自体は実装されていません。
 現在は一つだけのダミー効果音が入っています。
 
@@ -143,4 +145,4 @@ private void _InitPresetSounds(){
 }
 ```
 
-`Cube.SoundOperation` の説明は [Cube の使い方](usage_cube.md#playsound) を参照してください。
+`Cube.SoundOperation` の説明は [Cube クラスの使い方](usage_cube.md#playsound) を参照してください。

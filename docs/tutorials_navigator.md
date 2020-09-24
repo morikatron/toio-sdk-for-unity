@@ -22,7 +22,7 @@ CubeNavigator の詳細については[【コチラ】](usage_navigator.md)を�
 ## 1.1. CubeManager を使って CubeNavigator を利用する
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/0.BasicScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/basic/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/basic/)です。
 
 CubeNavigator は CubeManager がキューブ接続時に自動的に作成してメンバ変数のリストに入れています。
 
@@ -163,7 +163,7 @@ public class NavigatorBasic : MonoBehaviour
 ### 1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/1.Navi2TargetScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi2target/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi2target/)です。
 
 衝突を回避しつつキューブを目標に移動させるには Navi2Target 関数を利用します。<br>
 この関数は CubeHandle クラスの Move2Target 関数に相当します。
@@ -279,7 +279,7 @@ async void Start()
 ### 1.2.2. 目標から離れる NaviAwayTarget 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/2.NaviAwayTargetScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi_away_target/)です。二台以上に接続してください。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi_away_target/)です。二台以上に接続してください。
 
 NaviAwayTarget 関数を使うと、 Navi2Target 関数とは逆にキューブが目標から離れます。<br>
 (キューブの視野内に一番離れるところに移動します。)
@@ -334,7 +334,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
 ### 1.3. ボイドによる集団制御
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids/)です。二台以上に接続してください。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids/)です。二台以上に接続してください。
 
 「ボイド」とは、鳥の集団行動を擬似し、キューブ達を互いに一定距離を保ちながら群れとして移動させるアルゴリズムです。
 
@@ -452,7 +452,7 @@ async void Start()
 ### 1.4. ボイド + 衝突回避
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/4.BoidsAvoidScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids_avoid/)です。二台以上に接続してください。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids_avoid/)です。二台以上に接続してください。
 
 ボイドと衝突回避の組み合わせを使うことで、ボイドの群がる特性と安定的で自然な回避能力を同時に発揮します。
 

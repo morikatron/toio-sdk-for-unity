@@ -12,7 +12,7 @@
 ## 1. CubeManager を使ったキューブの同期制御
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/0.BasicScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/basic/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/basic/)です。
 
 チュートリアル基本編で説明した CubeManager は複数のキューブをそれぞれ任意のタイミング(非同期)で制御するものです。<br>
 このような非同期の通信はキューブの移動制御を行う上で問題になる時があり、キューブを指定した一定のタイミング(同期)で制御したい場合があります。
@@ -120,7 +120,7 @@ CubeHandle の詳細については[【コチラ】](cubehandle.md)を参照し�
 ### 2.1. CubeHandle の Move 関数と MoveRaw 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/1.MoveScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/move/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/move/)です。
 
 Cube クラスの Move 関数では左右のモーターの出力を指定することでキューブの移動を制御しています。
 それに対して、CubeHandle クラスの Move 関数では、 より直感的に扱えるように 直進+回転の量を指定する方式にしています。<br>
@@ -232,7 +232,7 @@ handle.Move(mv);
 ### 2.2. キューブとの通信量を抑える One-shot メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/2.OneShotScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/oneshot/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/oneshot/)です。
 
 CubeHandle クラスの Closed-loop メソッド（下で説明）は目的に到達するために何度も繰り返し実行する想定です。
 処理を実行するたびにキューブと Bluetooth 通信をすることなるため、 移動しながら LED を点滅したり、音を鳴らしたりすると通信量が多くなりすぎてしまいます。
@@ -296,7 +296,7 @@ void Update()
 ### 2.3. 指定した座標/方向に到達する Closed-Loop メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/3.ToTargetScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/to_target/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/to_target/)です。
 
 繰り返し実行し続けることで、マットの指定した座標、指定した方向に到達するのが Closed-Loop メソッドです。
 
@@ -372,7 +372,7 @@ void Update()
 ## 3. Follow TargetPole デモ
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/ex.FollowTargetPole/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/follow_target_pole/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/follow_target_pole/)です。
 
 これまで説明してきた機能を使い、 Stage の TargetPole 機能（シミュレータで使える仮想的な目的地）を利用して、`Ctrlを押しながらマウスの右ボタン`でキューブをコントロールしてみましょう。
 

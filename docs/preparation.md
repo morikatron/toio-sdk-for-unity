@@ -4,7 +4,7 @@ toio SDK for Unity を使うためや、このドキュメントのサンプル�
 
 - Unity（2019.4 LTS）
 - Xcode（11 以降）
-- CocoaPods（1.9 以降）
+- CocoaPods（1.8.4 以降）
 
 ## Unity のインストール
 
