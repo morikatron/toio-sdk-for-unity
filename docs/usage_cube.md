@@ -1,4 +1,6 @@
-# 目次
+# 技術ドキュメント - 使い方 - Cube
+
+## 目次
 
 - [1. 概説](usage_cube.md#1-概説)
 - [2. 既存 toio™ ライブラリ(toio.js)との比較](usage_cube.md#2-既存toioライブラリtoiojsとの比較)

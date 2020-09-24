@@ -1,4 +1,6 @@
-# 目次
+# 技術ドキュメント - 機能説明 - BLE(Bluetooth Low Enegy)
+
+## 目次
 
 - [1. 概説](sys_ble.md#1-概説)
 - [2. BLE クラスの構造](sys_ble.md#2-BLEクラスの構造)
