@@ -226,7 +226,7 @@ public class MySimUI : MonoBehaviour
 4. 「Button0」をコピーし、「Button1」から「Button7」まで貼り付けます。
 
 5.  下の表を参考に、作成した8つのボタンのプロパティーを設定して行きます。
-    1. 「Button*」のインスペクターにある「Event Trigger」コンポーネントの 「Pointer Down」および 「Pointer Up」にある「No Function」をクリックし、「MyUIScript( [シーン作成](tutorials_UI.md#シーン作成) で設定したスクリプト名)」以下にあるそれぞれのメソッドに設定します。
+    1. 「Button*」のインスペクターにある「Event Trigger」コンポーネントの 「Pointer Down」および 「Pointer Up」にある「No Function」をクリックし、「MyUIScript( [シーン作成](tutorials_UI.md#11-シーン作成) で設定したスクリプト名)」以下にあるそれぞれのメソッドに設定します。
     します。
     2. ヒエラルキーから「Button*」の子オブジェクトの「Text」を選択します。
     3. インスペクターにある「Text」コンポーネントの「テキスト」と「フォントサイズ」をそれぞれ設定します。
