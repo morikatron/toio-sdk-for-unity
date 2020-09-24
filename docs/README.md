@@ -119,7 +119,7 @@
 - [Cubeクラス](sys_cube.md)
 - [BLE(Bluetooth Low Energy)](sys_ble.md)
 - [シミュレータ](sys_simulator.md)
-- [Navigator](sys_navigator.md)
+- [Navigatorクラス](sys_navigator.md)
 
 ## FAQ
 
