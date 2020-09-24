@@ -437,7 +437,7 @@ public class LEDScene : MonoBehaviour
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/4.toioID/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/toio_id/)です。
 
-toio ID の詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
+toio ID について詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
 
 <div align="center"><img width=300 src="res/tutorial/toioID.gif"></div>
 
