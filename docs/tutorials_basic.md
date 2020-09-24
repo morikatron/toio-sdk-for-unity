@@ -85,7 +85,7 @@ Cube オブジェクトの CubeSimulator のインスペクターから、直接
 以下の手順で基礎環境を構築する事が出来ます。
 
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
-2. ヒエラルキー上から「Main Camera」を削除
+2. ヒエラルキー上から「Main Camera」と「Directional Light」を削除
 3. プロジェクトウィンドウで「Assets/toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます。
 4. 「Cube」Prefabファイルと「Stage」Prefabファイルをヒエラルキーにドラック&ドロップします。<br>
    ※「シーンビュー」に切り替えてマウス操作すれば「Cube」オブジェクトの移動も出来ます。
