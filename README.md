@@ -48,21 +48,6 @@ public class Hello_Toio : MonoBehaviour
 </details>
 
 
-## システム全体の構成図
-
-<p align="center">
-<img src="./docs/res/main/arch.png" width=550></img>
-</p>
-
-ローレベル（左）からハイレベル（右）に説明していきます。
-- Simulator：Unity Editor で実行できるシミュレータ
-- BLE：スマートデバイスやウェブで、リアルのキューブとブルートゥース通信するモジュール
-- Cube：シミュレータとリアルの両方を統一し、キューブを扱うクラス
-- CubeHandle：便利な移動機能をまとめたクラス
-- Navigator：高度な集団制御を実現したクラス
-- CubeManager：複数のキューブと各種の機能を便利に管理するクラス
-
-
 ## 機能一覧
 
 - シミュレータ
@@ -98,15 +83,6 @@ public class Hello_Toio : MonoBehaviour
 
 - Xcode 11
 - [CocoaPods](https://cocoapods.org/) (version 1.9 以上)
-
-## 開発手順
-
-1. 開発環境を整える　[→「事前準備」参照](docs/preparation.md)
-1. Unity で新規プロジェクトを作り、新規プロジェクトにT4Uを読み込む　[→「toio SDK for Unityのインストール」参照](docs/download_sdk.md)
-1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](docs/tutorials_basic.md#シーン作成)
-1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく（シーンとスクリプトを編集する）　[→docs/README.md参照](docs/README.md)
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](docs/build_ios.md)
-1. `4` `5` を繰り返してプログラムを仕上げていく
 
 ## ドキュメント
 

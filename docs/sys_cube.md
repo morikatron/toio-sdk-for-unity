@@ -1,4 +1,4 @@
-# 技術ドキュメント - 機能説明 - Cube
+# 技術ドキュメント - 機能説明 - Cubeクラス
 
 ## 目次
 
@@ -274,7 +274,7 @@ public class NearestScanner : NearestScannerInterface
 同期スキャンを行う Scan 関数、非同期スキャンを行う ScanAsync 関数があります。
 
 <b>Scan 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<b>同期的</b>に返します。async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
-<b>ScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、cube との接続が切れた際に自動的にスキャンを再開します。
+<b>ScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。
 
 NearesetScanner 同様に、内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。<br>
 [CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
@@ -490,7 +490,7 @@ public class CubeConnecter : CubeConnecterInterface
 
 <br>
 
-全ての Cube への関数呼び出しは、継承により内部実装が異なります。<br>シミュレータ用 Cube クラスである CubeUntiy は、CubeSimulator に対して命令を送ります。<br>BLE 通信用 Cube クラスである CubeReal 派生クラスは、BLE に対して byte 配列を送信するように命令を送ります。<br>CubeUnity / CubeReal 派生クラスで内部実装は異なっていますが、<br>共通して命令送信を<b>CubeOrderBalancer</b>クラスに委ねています。
+全ての Cube クラスへの関数呼び出しは、継承により内部実装が異なります。<br>シミュレータ用 Cube クラスである CubeUntiy は、CubeSimulator に対して命令を送ります。<br>BLE 通信用 Cube クラスである CubeReal 派生クラスは、BLE に対して byte 配列を送信するように命令を送ります。<br>CubeUnity / CubeReal 派生クラスで内部実装は異なっていますが、<br>共通して命令送信を<b>CubeOrderBalancer</b>クラスに委ねています。
 
 大まかには以下の手順で命令送信します。
 

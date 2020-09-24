@@ -9,7 +9,7 @@
 - [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
 - [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
 - [7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#7-イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
-- [8. 複数の Cube を動かす](tutorials_basic.md#8-複数の-Cube-を動かす)
+- [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
 - [9. ソースコード簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
 - [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
 
@@ -39,22 +39,22 @@
 Mat、StandardID、Cube は実物を模したもので、必要に応じて Unity のシーン上に配置して使ってください。
 
 Stage は、通常一つのマットだけを使う場合、Unity のシーンで必要なものをセットにし、便利機能を加えたものです。
-本チュートリアルは全てStageを使っています。
+本チュートリアルは全て Stage を使っています。
 
 ### 操作
 
-シミュレータ実行中に、CubeやStageをマウス操作することが出来ます。
+シミュレータ実行中に、Cube や Stage をマウス操作することが出来ます。
 
-#### Cubeに対する操作：
+#### Cube オブジェクトに対する操作：
 
 | 操作 | 説明 |
 | :--: | :--: |
 | 左クリック | Cube のボタンを押す |
 | 右クリック | Cube を持ち上げる/キューブを放す |
-| 持ち上げ中にホイール操作 | Cubeの角度を変更する |
+| 持ち上げ中にホイール操作 | Cube の角度を変更する |
 | 右ドラッグ | Cube を力で引っ張る |
 
-詳細は技術ドキュメントの「シミュレータ」[4.5. Cube の操作 (CubeInteraction)](usage_simulator.md#45-Cube-の操作-CubeInteraction) を参照してください。
+詳細は技術ドキュメントの「シミュレータ」[4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction) を参照してください。
 
 #### Stageに対する操作：
 
@@ -65,9 +65,9 @@ Stage は、通常一つのマットだけを使う場合、Unity のシーン�
 
 詳細は技術ドキュメントの「シミュレータ」[「5.Stage-Prefab」](usage_simulator.md#5-Stage-Prefab)を参照してください。
 
-#### インスペクターからCubeの状態を変更
+#### インスペクターからCubeオブジェクトの状態を変更
 
-Cubeオブジェクトの CubeSimulator のインスペクターから、直接状態を変更すること、対応イベントを発生させることも出来ます。
+Cube オブジェクトの CubeSimulator のインスペクターから、直接状態を変更すること、対応イベントを発生させることも出来ます。
 
 
 # 2. シーン作成
@@ -619,20 +619,20 @@ public class EventScene : MonoBehaviour
 
 <br>
 
-# 8. 複数の Cube を動かす
+# 8. 複数のキューブを動かす
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/6.MultiCube/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/multi_cube/)です。
 
 <div align="center"><img width=200 src="res/tutorial/multicube.gif"></div>
 
-これまでのサンプルコードでは 1 台の Cube に接続していました。<br>
-スキャン部分を以下のコードに変更すると、複数台の Cube に接続が可能になります。
+これまでのサンプルコードでは 1 台のキューブに接続していました。<br>
+スキャン部分を以下のコードに変更すると、複数台のキューブに接続が可能になります。
 
 ```C#
-// 最大12台のCubeを検索
+// 最大12台のキューブを検索
 var peripherals = await new NearScanner(12).Scan();
-// 検索したCubeに接続
+// 検索したキューブに接続
 cubes = await new CubeConnecter().Connect(peripherals);
 ```
 
