@@ -4,12 +4,12 @@
 
 メソッド | 機能
 :--------|:--------|
-Cube.PlayPresetSound | 音を鳴らす（[チュートリアル](tutorials_basic.md#音を鳴らす)）
-Cube.Move | 移動する（[チュートリアル](tutorials_basic.md#移動する)）
-Cube.TurnOnLightWithScenario<br> Cube.LightOperation | LED を発光する（[チュートリアル](tutorials_basic.md#LEDを発光する)）
+Cube.PlayPresetSound | 音を鳴らす（[チュートリアル](tutorials_basic.md#音4-を鳴らす)）
+Cube.Move | 移動する（[チュートリアル](tutorials_basic.md#3-移動する)）
+Cube.TurnOnLightWithScenario<br> Cube.LightOperation | LED を発光する（[チュートリアル](tutorials_basic.md#5-LED-を発光する)）
 
 ## 目次
-- [1. UI の作成例](tutorials_UI.md#UI-の作成例)
+- [1. UI の作成例](tutorials_UI.md#1-UI-の作成例)
     - [1.1. シーン作成](tutorials_UI.md#11-シーン作成)
     - [1.2. UI を作成](tutorials_UI.md#12-UI-を作成)
     - [1.3. シミュレータと UI の同時表示](tutorials_UI.md#13-シミュレータと-UI-の同時表示)
