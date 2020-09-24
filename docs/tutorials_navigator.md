@@ -2,31 +2,31 @@
 
 ## 目次
 
-- [CubeNavigator](tutorials_navigator.md#CubeNavigator)
-  - [CubeManager を使って CubeNavigator を利用する](tutorials_navigator.md#CubeManager-を使って-CubeNavigator-を利用する)
-    - [非同期でキューブを制御する場合](tutorials_navigator.md#非同期でキューブを制御する場合)
-    - [同期でキューブを制御する場合](tutorials_navigator.md#同期でキューブを制御する場合)
-    - [CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#CubeManager-を使わないで-CubeNavigator-を利用する)
-  - [CubeNavigator による衝突回避](tutorials_navigator.md#CubeNavigator-による衝突回避)
-    - [衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#衝突を回避しつつ目標に移動する-Navi2Target-関数)
-    - [目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#目標から離れる-NaviAwayTarget-関数)
-  - [ボイドによる集団制御](tutorials_navigator.md#ボイドによる集団制御)
-  - [ボイド + 衝突回避](tutorials_navigator.md#ボイド--衝突回避)
+- [1. CubeNavigator](tutorials_navigator.md#1-CubeNavigator)
+  - [1.1. CubeManager を使って CubeNavigator を利用する](tutorials_navigator.md#11-CubeManager-を使って-CubeNavigator-を利用する)
+    - [1.1.1. 非同期でキューブを制御する場合](tutorials_navigator.md#111-非同期でキューブを制御する場合)
+    - [1.1.2. 同期でキューブを制御する場合](tutorials_navigator.md#112-同期でキューブを制御する場合)
+    - [1.1.3. CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#113-CubeManager-を使わないで-CubeNavigator-を利用する)
+  - [1.2. CubeNavigator による衝突回避](tutorials_navigator.md#12-CubeNavigator-による衝突回避)
+    - [1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#121-衝突を回避しつつ目標に移動する-Navi2Target-関数)
+    - [1.2.2. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#122-目標から離れる-NaviAwayTarget-関数)
+  - [1.3. ボイドによる集団制御](tutorials_navigator.md#13-ボイドによる集団制御)
+  - [1.4. ボイド + 衝突回避](tutorials_navigator.md#14-ボイド--衝突回避)
 
-# CubeNavigator
+# 1. CubeNavigator
 
 CubeNavigator を使うことで、複数のキューブがお互いの動きを考慮しながら一斉にうまく移動することが出来ます。
 
 CubeNavigator の詳細については[【コチラ】](usage_navigator.md)を参照してください。
 
-## CubeManager を使って CubeNavigator を利用する
+## 1.1. CubeManager を使って CubeNavigator を利用する
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/0.BasicScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/basic/)です。
 
 CubeNavigator は CubeManager がキューブ接続時に自動的に作成してメンバ変数のリストに入れています。
 
-### 非同期でキューブを制御する場合
+### 1.1.1. 非同期でキューブを制御する場合
 
 下記のサンプルコードでは、 Update の中で、CubeNavigator の制御可能状態を確認してから、制御を行っています。
 
@@ -57,7 +57,7 @@ public class NavigatorBasic : MonoBehaviour
 
 制御可能状態は皆それぞれなので、「非同期」になります。
 
-### 同期でキューブを制御する場合
+### 1.1.2. 同期でキューブを制御する場合
 
 以下のようにすると、すべての navigator が、50ms ごとの同じフレームで制御されます。
 
@@ -110,7 +110,7 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-### CubeManager を使わないで CubeNavigator を利用する
+### 1.1.3. CubeManager を使わないで CubeNavigator を利用する
 
 CubeManager を使わない場合には、以下のように Cube クラスを使って CubeNavigator インスタンスを作成してください。
 
@@ -158,9 +158,9 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-## CubeNavigator による衝突回避
+## 1.2. CubeNavigator による衝突回避
 
-### 衝突を回避しつつ目標に移動する Navi2Target 関数
+### 1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/1.Navi2TargetScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi2target/)です。
@@ -276,7 +276,7 @@ async void Start()
 }
 ```
 
-### 目標から離れる NaviAwayTarget 関数
+### 1.2.2. 目標から離れる NaviAwayTarget 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/2.NaviAwayTargetScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi_away_target/)です。二台以上に接続してください。
@@ -331,7 +331,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
 }
 ```
 
-### ボイドによる集団制御
+### 1.3. ボイドによる集団制御
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids/)です。二台以上に接続してください。
@@ -449,7 +449,7 @@ async void Start()
 > BOIDS モードのキューブは ボイドでないキューブを回避することが出来ません。<br>
 > そのため、複雑の構成で BOIDS モードを使うことはおすすめしません。 後述する BOIDS_AVOID モードの仕様を検討してください。
 
-### ボイド + 衝突回避
+### 1.4. ボイド + 衝突回避
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/4.BoidsAvoidScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids_avoid/)です。二台以上に接続してください。

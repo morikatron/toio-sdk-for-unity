@@ -2,14 +2,14 @@
 
 ## 目次
 
-- [CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#CubeManager-を使ったキューブの同期制御)
-- [CubeHandle](tutorials_cubehandle.md#CubeHandle)
-  - [CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#CubeHandle-の-Move-関数と-MoveRaw-関数)
-  - [キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#キューブとの通信量を抑える-One-shot-メソッド)
-  - [指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#指定した座標方向に到達する-Closed-Loop-メソッド)
-- [Follow TargetPole デモ](tutorials_cubehandle.md#Follow-TargetPole-デモ)
+- [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-CubeManager-を使ったキューブの同期制御)
+- [2. CubeHandle](tutorials_cubehandle.md#2-CubeHandle)
+  - [2.1. CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#21-CubeHandle-の-Move-関数と-MoveRaw-関数)
+  - [2.2. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#22-キューブとの通信量を抑える-One-shot-メソッド)
+  - [2.3. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#23-指定した座標方向に到達する-Closed-Loop-メソッド)
+- [3. Follow TargetPole デモ](tutorials_cubehandle.md#3-Follow-TargetPole-デモ)
 
-## CubeManager を使ったキューブの同期制御
+## 1. CubeManager を使ったキューブの同期制御
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/0.BasicScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/basic/)です。
@@ -104,7 +104,7 @@ public class HandleBasic : MonoBehaviour
 }
 ```
 
-## CubeHandle
+## 2. CubeHandle
 
 チュートリアル基本編でキューブの移動制御を行っていた Cube クラスは [toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/) に従った基礎機能を提供するクラスで、キューブの移動は左右のモーター制御となっています。
 このようなモーターの制御だけで複雑な移動を行うのは大変なので toio SDK for Unity ではキューブの移動制御をより扱いやすくした CubeHandle クラスを用意しています。
@@ -117,7 +117,7 @@ CubeHandle クラスは、以下のような移動制御を提供します。
 
 CubeHandle の詳細については[【コチラ】](cubehandle.md)を参照してください。
 
-### CubeHandle の Move 関数と MoveRaw 関数
+### 2.1. CubeHandle の Move 関数と MoveRaw 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/1.MoveScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/move/)です。
@@ -229,7 +229,7 @@ mv.Exec();
 handle.Move(mv);
 ```
 
-### キューブとの通信量を抑える One-shot メソッド
+### 2.2. キューブとの通信量を抑える One-shot メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/2.OneShotScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/oneshot/)です。
@@ -293,7 +293,7 @@ void Update()
 }
 ```
 
-### 指定した座標/方向に到達する Closed-Loop メソッド
+### 2.3. 指定した座標/方向に到達する Closed-Loop メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/3.ToTargetScene/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/to_target/)です。
@@ -369,7 +369,7 @@ void Update()
 }
 ```
 
-## Follow TargetPole デモ
+## 3. Follow TargetPole デモ
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/ex.FollowTargetPole/」 にあります。<br>
 > ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/follow_target_pole/)です。
