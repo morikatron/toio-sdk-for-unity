@@ -496,7 +496,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button:OFF
+  m_Text: 'Button: False'
 --- !u!222 &395720888
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -574,7 +574,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Flat:ON
+  m_Text: 'Flat: False'
 --- !u!222 &582413227
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1227,7 +1227,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Collision:OFF
+  m_Text: 'Collision: False'
 --- !u!222 &1553645031
 CanvasRenderer:
   m_ObjectHideFlags: 0

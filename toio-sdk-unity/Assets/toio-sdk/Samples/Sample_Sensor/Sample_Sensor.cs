@@ -53,11 +53,11 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isCollisionDetected)
         {
-            this.textCollision.text = "Collision: ON";
+            this.textCollision.text = "Collision: True";
         }
         else
         {
-            this.textCollision.text = "Collision: OFF";
+            this.textCollision.text = "Collision: False";
         }
     }
 
@@ -65,11 +65,11 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isSloped)
         {
-            this.textFlat.text = "Flat: OFF";
+            this.textFlat.text = "Flat: False";
         }
         else
         {
-            this.textFlat.text = "Flat: ON";
+            this.textFlat.text = "Flat: True";
         }
 
     }
@@ -78,11 +78,11 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isPressed)
         {
-            this.textButton.text = "Button: ON";
+            this.textButton.text = "Button: True";
         }
         else
         {
-            this.textButton.text = "Button: OFF";
+            this.textButton.text = "Button: False";
         }
 
     }
