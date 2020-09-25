@@ -82,7 +82,7 @@ public class Hello_Toio : MonoBehaviour
 また、iOS 向けビルドには以下の二つも必要となります。
 
 - Xcode 11
-- [CocoaPods](https://cocoapods.org/) (version 1.9 以上)
+- [CocoaPods](https://cocoapods.org/) (version 1.8.4 以上)
 
 ## ドキュメント
 
