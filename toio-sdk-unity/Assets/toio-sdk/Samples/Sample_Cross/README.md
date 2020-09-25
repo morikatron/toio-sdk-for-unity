@@ -1,6 +1,6 @@
 ## Sample_Cross
 
-> ※ このページのウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/cross)です。
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/cross)です。
 
 <div align="center">
 <img src="/docs/res/samples/cross.gif">

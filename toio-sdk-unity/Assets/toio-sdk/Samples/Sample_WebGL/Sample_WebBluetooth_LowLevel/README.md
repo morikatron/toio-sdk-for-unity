@@ -1,6 +1,6 @@
 # Sample_WebBluetooth_LowLevel
 
-> ※ このページのウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/web-bluetooth)です。
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/web-bluetooth)です。
 
 <div align="center">
 <img height=280 src="/docs/res/samples/real.gif" title="キューブの動作" alt="キューブの動作">
