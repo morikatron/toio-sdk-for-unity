@@ -2,18 +2,18 @@
 
 ## 目次
 
-- [概要](tutorials_basic.md#概要)
-- [シーン作成](tutorials_basic.md#シーン作成)
-- [移動する](tutorials_basic.md#移動する)
-- [音を鳴らす](tutorials_basic.md#音を鳴らす)
-- [LED を発光する](tutorials_basic.md#LED-を発光する)
-- [toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#toio-IDの読み取りPosition-ID--Standard-ID)
-- [イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
-- [複数の Cube を動かす](tutorials_basic.md#複数の-Cube-を動かす)
-- [ソースコード簡略化](tutorials_basic.md#cubemanagerクラスを用いたソースコードの簡略化)
-- [途中接続/途中切断](tutorials_basic.md#途中接続--途中切断)
+- [1. 概要](tutorials_basic.md#1-概要)
+- [2. シーン作成](tutorials_basic.md#2-シーン作成)
+- [3. 移動する](tutorials_basic.md#3-移動する)
+- [4. 音を鳴らす](tutorials_basic.md#4-音を鳴らす)
+- [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
+- [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
+- [7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#7-イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
+- [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
+- [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
+- [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
 
-# 概要
+# 1. 概要
 
 本 SDK は同じソースコードで、シミュレータ環境とスマートデバイス環境の両方で toio™コア キューブ （以降キューブ） を動かすことが出来ます。
 以下の説明は、シミュレータ環境での動作を前提として説明します。
@@ -39,22 +39,25 @@
 Mat、StandardID、Cube は実物を模したもので、必要に応じて Unity のシーン上に配置して使ってください。
 
 Stage は、通常一つのマットだけを使う場合、Unity のシーンで必要なものをセットにし、便利機能を加えたものです。
-本チュートリアルは全てStageを使っています。
+本チュートリアルは全て Stage を使っています。
+
+<div align="center"><img src="res/tutorial/RealAndSimCube.png"></div>
+
 
 ### 操作
 
-シミュレータ実行中に、CubeやStageをマウス操作することが出来ます。
+シミュレータ実行中に、Cube や Stage をマウスで操作することが出来ます。
 
-#### Cubeに対する操作：
+#### Cube オブジェクトに対する操作：
 
 | 操作 | 説明 |
 | :--: | :--: |
 | 左クリック | Cube のボタンを押す |
 | 右クリック | Cube を持ち上げる/キューブを放す |
-| 持ち上げ中にホイール操作 | Cubeの角度を変更する |
+| 持ち上げ中にホイール操作 | Cube の角度を変更する |
 | 右ドラッグ | Cube を力で引っ張る |
 
-詳細は技術ドキュメントの「シミュレータ」[4.5. Cube の操作 (CubeInteraction)](usage_simulator.md#45-Cube-の操作-CubeInteraction) を参照してください。
+詳細は技術ドキュメントの「シミュレータ」[4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction) を参照してください。
 
 #### Stageに対する操作：
 
@@ -65,15 +68,15 @@ Stage は、通常一つのマットだけを使う場合、Unity のシーン�
 
 詳細は技術ドキュメントの「シミュレータ」[「5.Stage-Prefab」](usage_simulator.md#5-Stage-Prefab)を参照してください。
 
-#### インスペクターからCubeの状態を変更
+#### インスペクターからCubeオブジェクトの状態を変更
 
-Cubeオブジェクトの CubeSimulator のインスペクターから、直接状態を変更すること、対応イベントを発生させることも出来ます。
+Cube オブジェクトの CubeSimulator のインスペクターから、直接状態を変更すること、対応イベントを発生させることも出来ます。
 
 
-# シーン作成
+# 2. シーン作成
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/basic/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/basic/)です。
 
 <div align="center"><img width=200 src="res/tutorial/simplescene.gif"></div>
 
@@ -82,13 +85,13 @@ Cubeオブジェクトの CubeSimulator のインスペクターから、直接�
 以下の手順で基礎環境を構築する事が出来ます。
 
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
-2. ヒエラルキー上から「Main Camera」を削除
+2. ヒエラルキー上から「Main Camera」と「Directional Light」を削除
 3. プロジェクトウィンドウで「Assets/toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます。
 4. 「Cube」Prefabファイルと「Stage」Prefabファイルをヒエラルキーにドラック&ドロップします。<br>
-   ※シーン上でマウス操作すれば「Cube」オブジェクトの移動も出来ます。
+   ※「シーンビュー」に切り替えてマウス操作すれば「Cube」オブジェクトの移動も出来ます。
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします(※名前は自由です)。
 6. 「scene」オブジェクトを選択し、インスペクター上から「コンポーネントを追加」をクリックします。
-7. 任意のスクリプト名（例 MyScene）を入力して、スクリプトを作成します。
+7. 任意のスクリプト名（例 BasicScene）を入力して、スクリプトを作成します。
 8. 作成したスクリプトを下記サンプルコードに書き換えます。(クラス名はスクリプトファイルと同じ名前にする必要があります)
 
 以上を完了させてエディタの再生ボタンを押すと、[toio SDK for Unity ダウンロード](download_sdk.md)の最後で再生したサンプルと同じように、キューブが回転し続けるはずです。
@@ -138,10 +141,10 @@ public class BasicScene : MonoBehaviour
 
 <br>
 
-# 移動する
+# 3. 移動する
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/1.Move/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/move/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/move/)です。
 
 <div align="center"><img width=200 src="res/tutorial/movescene.gif"></div>
 
@@ -234,10 +237,10 @@ public class MoveScene : MonoBehaviour
 
 <br>
 
-# 音を鳴らす
+# 4. 音を鳴らす
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/2.Sound/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/sound/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/sound/)です。
 
 Cube クラスの PlayPresetSound メソッドでキューブからあらかじめ用意された効果音を再生出来ます。
 用意されている効果音については[【コチラ】](https://toio.github.io/toio-spec/docs/ble_sound#効果音の-id)を参照してください。
@@ -336,10 +339,10 @@ public class SoundScene : MonoBehaviour
 
 <br>
 
-# LED を発光する
+# 5. LED を発光する
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/3.LED/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/led/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/led/)です。
 
 <div align="center"><img width=200 src="res/tutorial/ledscene.gif"></div>
 
@@ -429,12 +432,12 @@ public class LEDScene : MonoBehaviour
 
 <br>
 
-# toio IDの読み取り(Position ID & Standard ID)
+# 6. toio IDの読み取り(Position ID & Standard ID)
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/4.toioID/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/toio_id/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/toio_id/)です。
 
-toio ID の詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
+toio ID について詳細は[toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/docs/ble_id) を参照してください。
 
 <div align="center"><img width=300 src="res/tutorial/toioID.gif"></div>
 
@@ -502,10 +505,10 @@ public class toioIDScene : MonoBehaviour
 
 <br>
 
-# イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)
+# 7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/5.Event/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/event/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/event/)です。
 
 以下のコールバックで、キューブに変化が起きた(イベントを検知した)時の処理を記述することが出来ます。
 各イベントについては toio™コア キューブ技術仕様に準拠していますので、詳しくはそちらを参照してください。
@@ -619,20 +622,20 @@ public class EventScene : MonoBehaviour
 
 <br>
 
-# 複数の Cube を動かす
+# 8. 複数のキューブを動かす
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/6.MultiCube/」 にあります。<br>
-> ※ この章のウェブサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/multi_cube/)です。
+> ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/multi_cube/)です。
 
 <div align="center"><img width=200 src="res/tutorial/multicube.gif"></div>
 
-これまでのサンプルコードでは 1 台の Cube に接続していました。<br>
-スキャン部分を以下のコードに変更すると、複数台の Cube に接続が可能になります。
+これまでのサンプルコードでは 1 台のキューブに接続していました。<br>
+スキャン部分を以下のコードに変更すると、複数台のキューブに接続が可能になります。
 
 ```C#
-// 最大12台のCubeを検索
+// 最大12台のキューブを検索
 var peripherals = await new NearScanner(12).Scan();
-// 検索したCubeに接続
+// 検索したキューブに接続
 cubes = await new CubeConnecter().Connect(peripherals);
 ```
 
@@ -676,7 +679,7 @@ public class MultiCubeScene : MonoBehaviour
 
 <br>
 
-# CubeManagerクラスを用いたソースコードの簡略化
+# 9. CubeManagerクラスを用いたソースコードの簡略化
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/」 にあります。
 
@@ -821,7 +824,7 @@ public class CubeManagerScene_Multi : MonoBehaviour
 
 <br>
 
-# 途中接続 / 途中切断
+# 10. 途中接続 / 途中切断
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/」 にあります。
 

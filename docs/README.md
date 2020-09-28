@@ -1,5 +1,14 @@
 # toio SDK for Unity ドキュメント
 
+## 開発手順の概略
+
+1. 開発環境を整える　[→「事前準備」参照](preparation.md)
+1. Unity で新規プロジェクトを作り、新規プロジェクトにT4Uを読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
+1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
+1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
+1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](build_ios.md)
+1. `4` `5` を繰り返してプログラムを仕上げていく
+
 ## 基本
 
 ### セットアップ
@@ -14,16 +23,17 @@
 
 ### 基本
 
-- [概要](tutorials_basic.md#概要)
-- [シーン作成](tutorials_basic.md#シーン作成)
-- [移動する](tutorials_basic.md#移動する)
-- [音を鳴らす](tutorials_basic.md#音を鳴らす)
-- [LED を発光する](tutorials_basic.md#LED-を発光する)
-- [イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
-- [複数の Cube を動かす](tutorials_basic.md#複数の-Cube-を動かす)
-- [ソースコード簡略化](tutorials_basic.md#cubemanagerクラスを用いたソースコードの簡略化)
-- [途中接続/途中切断](tutorials_basic.md#途中接続--途中切断)
-- [UI の作成](tutorials_UI.md)
+- [1. 概要](tutorials_basic.md#1-概要)
+- [2. シーン作成](tutorials_basic.md#2-シーン作成)
+- [3. 移動する](tutorials_basic.md#3-移動する)
+- [4. 音を鳴らす](tutorials_basic.md#4-音を鳴らす)
+- [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
+- [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
+- [7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#7-イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
+- [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
+- [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
+- [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
+- [11. UI の作成](tutorials_UI.md)
 
 ### 便利な移動機能 - CubeHandle
 
@@ -83,25 +93,41 @@
 
 ## 技術ドキュメント
 
+### システム全体の構成図
+
+<p align="center">
+<img src="./res/main/arch.png" width=550></img>
+</p>
+
+ローレベル（左）からハイレベル（右）に説明して行きます。
+- Simulator：Unity Editor で実行できるシミュレータ
+- BLE：スマートデバイスやウェブで、リアルのキューブとブルートゥース通信するモジュール
+- Cube：シミュレータとリアルの両方を統一し、キューブを扱うクラス
+- CubeHandle：便利な移動機能をまとめたクラス
+- Navigator：高度な集団制御を実現したクラス
+- CubeManager：複数のキューブと各種の機能を便利に管理するクラス
+
 ### 使い方
 
-- [Cube](usage_cube.md)
+- [Cubeクラス](usage_cube.md)
 - [シミュレータ](usage_simulator.md)
-- [CubeHandle](usage_cubehandle.md)
-- [Navigator](usage_navigator.md)
+- [CubeHandleクラス](usage_cubehandle.md)
+- [Navigatorクラス](usage_navigator.md)
 
 ### 機能説明
 
-- [Cube](sys_cube.md)
+- [Cubeクラス](sys_cube.md)
 - [BLE(Bluetooth Low Energy)](sys_ble.md)
 - [シミュレータ](sys_simulator.md)
-- [Navigator](sys_navigator.md)
+- [Navigatorクラス](sys_navigator.md)
 
 ## FAQ
 
 - [FAQ](FAQ.md)
 
 ## 留意事項
+
+- シミュレータの効果音の再生機能について
 
 シミュレータの効果音の再生機能は実装されていますが、効果音自体は実装されていません。
 現在は一つだけのダミー効果音が入っています。
@@ -119,4 +145,4 @@ private void _InitPresetSounds(){
 }
 ```
 
-`Cube.SoundOperation` の説明は [Cube の使い方](usage_cube.md#playsound) を参照してください。
+`Cube.SoundOperation` の説明は [Cube クラスの使い方](usage_cube.md#playsound) を参照してください。

@@ -14,7 +14,7 @@
   - [4.2. CubeSimulator の定数](usage_simulator.md#42-CubeSimulator-の定数)
   - [4.3. CubeSimulator の変数](usage_simulator.md#43-CubeSimulator-の変数)
   - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-CubeSimulator-のメソッド)
-  - [4.5. Cube の操作 (CubeInteraction)](usage_simulator.md#45-Cube-の操作-CubeInteraction)
+  - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction)
 - [5. Stage-Prefab](usage_simulator.md#5-Stage-Prefab)
   - [5.1. ターゲットポール](usage_simulator.md#51-ターゲットポール)
   - [5.2. キューブをフォーカス](usage_simulator.md#52-キューブをフォーカス)
@@ -202,7 +202,7 @@ Cube Prefab はシーンの中に複数台配置することが出来ます。 �
 
 ## 4.1. CubeSimulator のインスペクター
 
-【シミュレータの設定】と【手動でキューブの状態を模擬】との二つの部分に分けられています。
+【シミュレータの設定】と【手動でキューブの状態を変更】との二つの部分に分けられています。
 
 ### シミュレータの設定
 
@@ -258,9 +258,9 @@ public bool isGrounded { get {return onMat || onStandardID; } } // Mat 又は St
 
 Cube クラスから利用するためのメソッドなので、エンドユーザーが直接使用する必要はありません。
 
-## 4.5. Cube の操作 (CubeInteraction)
+## 4.5. Cube オブジェクトの操作 (CubeInteraction)
 
-CubeInteraction クラスは、Unity の EventSystem をベースに、キューブを押したりつかんだりする操作を実装したクラスです。
+CubeInteraction クラスは、Unity の EventSystem をベースに、Cube オブジェクトを押したりつかんだりする操作を実装したクラスです。
 
 ### 使用方法
 
@@ -271,28 +271,28 @@ CubeInteraction クラスは、Unity の EventSystem をベースに、キュー
 - カメラに `Physics Raycaster` コンポーネントを追加してください；
   - 追加方法：カメラのインスペクターで、「Add Compnent」で `Physics Raycaster` を見つけて追加します。
 
-### Cube を左クリックで押す
+### Cube オブジェクトを左クリックで押す
 
-Cube を`左クリック`すると、対象の Cube の[底面のボタン](https://toio.github.io/toio-spec/docs/ble_button)を押すことができます。  
+Cube オブジェクトを`左クリック`すると、対象の Cube オブジェクトの[底面のボタン](https://toio.github.io/toio-spec/docs/ble_button)を押すことができます。  
 
-> マウスの左ボタンを押し続けている間、Cube の底面ボタンは押され続けます。
+> マウスの左ボタンを押し続けている間、Cube オブジェクトの底面ボタンは押され続けます。
 
 <div align="center"><img width=250 src="res/usage_simulator/button.gif"></div>
 
-### Cube を右クリックで持ち上げる/おろす
-Cube を`右クリック`することで対象の Cube をマットから持ち上げ、その状態で場所や角度を変えることが出来ます。
+### Cube オブジェクトを右クリックで持ち上げる/おろす
+Cube オブジェクトを`右クリック`することで対象の Cube オブジェクトをマットから持ち上げ、その状態で場所や角度を変えることが出来ます。
 
-- Cube を`右クリック`すると、対象の Cube をマットから持ち上げることができます
-- 持ち上げた状態で`マウスを動かす`と、対象の Cube を任意の場所に移動させることが出来ます
-- 持ち上げた状態で`マウスホイールを回す`と、対象の Cube の向きを変えられます
-- 持ち上げた状態で再度`右クリック`すると、対象の Cube を Mat 上におろすことができます
+- Cube オブジェクトを`右クリック`すると、対象の Cube オブジェクトをマットから持ち上げることができます
+- 持ち上げた状態で`マウスを動かす`と、対象の Cube オブジェクトを任意の場所に移動させることが出来ます
+- 持ち上げた状態で`マウスホイールを回す`と、対象の Cube オブジェクトの向きを変えられます
+- 持ち上げた状態で再度`右クリック`すると、対象の Cube オブジェクトを Mat 上におろすことができます
 
 <div align="center"><img width=250 src="res/usage_simulator/dragdrop.gif"></div>
 
-### Cubeを右ドラッグで引っ張る
+### Cube オブジェクトを右ドラッグで引っ張る
 
-対象の Cube を `右ドラッグ` することで、Cube を引っ張って動かすことが出来ます。<br>
-右ドラッグを開始すると、マウスカーソルと Cube の間に黒いベクトルが表示され、そのベクトルに比例した力が Cube に加わります。
+対象の Cube オブジェクトを `右ドラッグ` することで、Cube オブジェクトを引っ張って動かすことが出来ます。<br>
+右ドラッグを開始すると、マウスカーソルと Cube オブジェクトの間に黒いベクトルが表示され、そのベクトルに比例した力が Cube オブジェクトに加わります。
 
 <div align="center"><img width=250 src="res/usage_simulator/pull.gif"></div>
 
