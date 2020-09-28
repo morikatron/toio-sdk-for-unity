@@ -3,7 +3,7 @@
 ## 開発手順の概略
 
 1. 開発環境を整える　[→「事前準備」参照](preparation.md)
-1. Unity で新規プロジェクトを作り、新規プロジェクトにT4Uを読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
+1. Unity で新規プロジェクトを作り、新規プロジェクトに toio SDK for Unity を読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
 1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
 1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
 1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](build_ios.md)
