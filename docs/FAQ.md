@@ -11,7 +11,7 @@
     - [Stage Prefab を使わない場合に注意することはありますか](FAQ.md#Stage-Prefab-を使わない場合に注意することはありますか)
 
 - [ウェブアプリ関連](FAQ.md#ウェブアプリ関連)
-    - [WindowsPC でウェブアプリがうまく動きません](##windowspc-でウェブアプリがうまく動きません)
+    - [WindowsPC でウェブアプリがうまく動きません](FAQ.md#windowspc-でウェブアプリがうまく動きません)
 
 ## 基本
 
@@ -64,4 +64,4 @@ Stage 専用のフォーカスやターゲットポール機能は勿論使え�
 ### WindowsPC でウェブアプリがうまく動きません
 > Keywords： Windows Bluetooth BLE
 
-[【コチラ】](build_web.md###windowspc-を使った複数台接続が不安定)をご参照ください。
+[【コチラ】](build_web.md#windowspc-を使った複数台接続が不安定)をご参照ください。
