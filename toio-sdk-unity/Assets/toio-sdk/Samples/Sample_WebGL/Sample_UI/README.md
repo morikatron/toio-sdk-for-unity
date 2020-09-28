@@ -1,5 +1,7 @@
 # Sample_UI on WebGL
 
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/ui)です。
+
 <div align="center">
 <img src="/docs/res/samples/web_ui.gif">
 </div>

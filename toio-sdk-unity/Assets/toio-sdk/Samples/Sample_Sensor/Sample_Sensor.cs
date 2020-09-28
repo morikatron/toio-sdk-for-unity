@@ -8,15 +8,15 @@ public class Sample_Sensor : MonoBehaviour
 {
     Cube cube;
 
-    GameObject DoubleTap;
-    GameObject Pose;
-    GameObject Battery;
-    GameObject Flat;
-    GameObject Collision;
-    GameObject Button;
-    GameObject PositionID;
-    GameObject StandardID;
-    GameObject Angle;
+    UnityEngine.UI.Text textBattery;
+    UnityEngine.UI.Text textFlat;
+    UnityEngine.UI.Text textCollision;
+    UnityEngine.UI.Text textButton;
+    UnityEngine.UI.Text textPositionID;
+    UnityEngine.UI.Text textStandardID;
+    UnityEngine.UI.Text textAngle;
+    UnityEngine.UI.Text textDoubleTap;
+    UnityEngine.UI.Text textPose;
 
     async void Start()
     {
@@ -28,18 +28,20 @@ public class Sample_Sensor : MonoBehaviour
         cube.buttonCallback.AddListener("Sample_Sensor", OnPressButton);           // ボタンイベント
         cube.idCallback.AddListener("Sample_Sensor", OnUpdateID);                  // 座標角度イベント
         cube.standardIdCallback.AddListener("Sample_Sensor", OnUpdateStandardId);  // standardIdイベント
-        cube.poseCallback.AddListener("Sample_Sensor", OnPose);
-        cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);
+        cube.idMissedCallback.AddListener("Sample_Sensor", OnMissedID);            // 座標角度 missedイベント
+        cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedID);    // standardId missedイベント
+        cube.poseCallback.AddListener("Sample_Sensor", OnPose);                    // 姿勢イベント
+        cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);          // ダブルタップイベント
 
-        this.DoubleTap = GameObject.Find("DoubleTap");
-        this.Pose = GameObject.Find("Pose");
-        this.Battery = GameObject.Find("Battery");
-        this.Collision = GameObject.Find("Collision");
-        this.Flat = GameObject.Find("Flat");
-        this.PositionID = GameObject.Find("PositionID");
-        this.StandardID = GameObject.Find("StandardID");
-        this.Button = GameObject.Find("Button");
-        this.Angle = GameObject.Find("Angle");
+        this.textBattery = GameObject.Find("TextBattery").GetComponent<Text>();
+        this.textCollision = GameObject.Find("TextCollision").GetComponent<Text>();
+        this.textFlat = GameObject.Find("TextFlat").GetComponent<Text>();
+        this.textPositionID = GameObject.Find("TextPositionID").GetComponent<Text>();
+        this.textStandardID = GameObject.Find("TextStandardID").GetComponent<Text>();
+        this.textButton = GameObject.Find("TextButton").GetComponent<Text>();
+        this.textAngle = GameObject.Find("TextAngle").GetComponent<Text>();
+        this.textDoubleTap = GameObject.Find("TextDoubleTap").GetComponent<Text>();
+        this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
     }
 
     public void FixedUpdate()
@@ -48,7 +50,7 @@ public class Sample_Sensor : MonoBehaviour
         {
             if (cube.isConnected)
             {
-                this.Battery.GetComponent<Text>().text = "Battery:" +cube.battery.ToString()+"%";
+                this.textBattery.text = "Battery: " +cube.battery.ToString()+"%";
             }
         }
     }
@@ -58,25 +60,25 @@ public class Sample_Sensor : MonoBehaviour
         switch (cube.pose)
         {
             case Cube.PoseType.up:
-                this.Pose.GetComponent<Text>().text = "Up";
+                this.textPose.text = "Pose: Up";
                 break;
             case Cube.PoseType.down:
-                this.Pose.GetComponent<Text>().text = "Down";
+                this.textPose.text = "Pose: Down";
                 break;
             case Cube.PoseType.front:
-                this.Pose.GetComponent<Text>().text = "Forward";
+                this.textPose.text = "Pose: Front";
                 break;
             case Cube.PoseType.back:
-                this.Pose.GetComponent<Text>().text = "Backward";
+                this.textPose.text = "Pose: Back";
                 break;
             case Cube.PoseType.right:
-                this.Pose.GetComponent<Text>().text = "Right";
+                this.textPose.text = "Pose: Right";
                 break;
             case Cube.PoseType.left:
-                this.Pose.GetComponent<Text>().text = "Left";
+                this.textPose.text = "Pose: Left";
                 break;
             default:
-                this.Pose.GetComponent<Text>().text = "Pose";
+                this.textPose.text = "Pose: Up";
                 break;
         }
     }
@@ -85,11 +87,11 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isDoubleTap)
         {
-            this.DoubleTap.GetComponent<Text>().text = "DoubleTap:ON";
+            this.textDoubleTap.text = "DoubleTap: True";
         }
         else
         {
-            this.DoubleTap.GetComponent<Text>().text = "DoubleTap:OFF";
+            this.textDoubleTap.text = "DoubleTap: False";
         }
     }
 
@@ -97,11 +99,11 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isCollisionDetected)
         {
-            this.Collision.GetComponent<Text>().text = "Collision:ON";
+            this.textCollision.text = "Collision: True";
         }
         else
         {
-            this.Collision.GetComponent<Text>().text = "Collision:OFF";
+            this.textCollision.text = "Collision: False";
         }
     }
 
@@ -109,11 +111,11 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isSloped)
         {
-            this.Flat.GetComponent<Text>().text = "Flat:OFF";
+            this.textFlat.text = "Flat: False";
         }
         else
         {
-            this.Flat.GetComponent<Text>().text = "Flat:ON";
+            this.textFlat.text = "Flat: True";
         }
 
     }
@@ -122,40 +124,32 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isPressed)
         {
-            this.Button.GetComponent<Text>().text = "Button:ON";
+            this.textButton.text = "Button: True";
         }
         else
         {
-            this.Button.GetComponent<Text>().text = "Button:OFF";
+            this.textButton.text = "Button: False";
         }
 
     }
 
     public void OnUpdateID(Cube c)
     {
-        if (c.isGrounded)
-        {
-            this.StandardID.GetComponent<Text>().text = "X:" + c.pos.x.ToString() + " Y:" + c.pos.y.ToString();
-            this.Angle.GetComponent<Text>().text = " Angle:" + c.angle.ToString();
-        }
-        else
-        {
-            this.StandardID.GetComponent<Text>().text = "Standard";
-            this.Angle.GetComponent<Text>().text = " Angle";
-        }
-
+        this.textPositionID.text = "PositionID:" + " X=" + c.pos.x.ToString() + " Y=" + c.pos.y.ToString();
+        this.textAngle.text = " Angle: " + c.angle.ToString();
     }
 
     public void OnUpdateStandardId(Cube c)
     {
-        if (c.isGrounded)
-        {
-            this.PositionID.GetComponent<Text>().text = c.standardId.ToString();
-        }
-        else
-        {
-            this.PositionID.GetComponent<Text>().text = "PositionID";
-        }
-
+        this.textStandardID.text =  "StandardID: " + c.standardId.ToString();
+        this.textAngle.text = " Angle: " + c.angle.ToString();
     }
+
+    public void OnMissedID(Cube c)
+    {
+        this.textPositionID.text = "PositionID";
+        this.textStandardID.text = "StandardID";
+        this.textAngle.text = " Angle";
+    }
+
 }

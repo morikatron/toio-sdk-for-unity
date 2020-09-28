@@ -1,4 +1,6 @@
-# 目次
+# 技術ドキュメント - 使い方 - CubeHandleクラス
+
+## 目次
 
 - [1. 概説](usage_cubehandle.md#1-概説)
 - [2. CubeHandle クラス API](usage_cubehandle.md#2-CubeHandle-クラス-API)
@@ -20,7 +22,7 @@ Cube cube = ...
 CubeHandle handle = new CubeHandle(cube);
 ```
 
-CubeHandle の内部の構造と Cube とのやり取りは以下の制御ブロック図で示されています。
+CubeHandle クラスの内部の構造と Cube クラスとのやり取りは以下の制御ブロック図で示されています。
 
 <div align="center">
   <img src="res/cubehandle/arch.png" title="CubeHandle 制御ブロック図">

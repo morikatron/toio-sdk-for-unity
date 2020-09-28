@@ -2,7 +2,7 @@
 
 ## 概要
 
-**toio SDK for Unity (T4U)** は、Unity で toio™コア キューブ（以降キューブ）を制御するためのツールキットです。
+**toio SDK for Unity (T4U)** は、Unity で toio™コア キューブ（以降キューブ）を制御するための開発環境です。
 
 toio SDK for Unity を使用することでキューブを使ったアプリを簡単に開発できるようになります。またシミュレータ機能によって、実機を使わずに画面上でキューブの動作を確認できるため、迅速かつ効率的に開発可能です。
 
@@ -48,21 +48,6 @@ public class Hello_Toio : MonoBehaviour
 </details>
 
 
-## システム全体の構成図
-
-<p align="center">
-<img src="./docs/res/main/arch.png" width=550></img>
-</p>
-
-ローレベル（左）からハイレベル（右）に説明していきます。
-- Simulator：Unity Editor で実行できるシミュレータ
-- BLE：スマートデバイスやウェブで、リアルのキューブとブルートゥース通信するモジュール
-- Cube：シミュレータとリアルの両方を統一し、キューブを扱うクラス
-- CubeHandle：便利な移動機能をまとめたクラス
-- Navigator：高度な集団制御を実現したクラス
-- CubeManager：複数のキューブと各種の機能を便利に管理するクラス
-
-
 ## 機能一覧
 
 - シミュレータ
@@ -97,16 +82,7 @@ public class Hello_Toio : MonoBehaviour
 また、iOS 向けビルドには以下の二つも必要となります。
 
 - Xcode 11
-- [CocoaPods](https://cocoapods.org/) (version 1.9 以上)
-
-## 開発手順
-
-1. 開発環境を整える　[→「事前準備」参照](docs/preparation.md)
-1. Unity で新規プロジェクトを作り、新規プロジェクトにT4Uを読み込む　[→「toio SDK for Unityのインストール」参照](docs/download_sdk.md)
-1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](docs/tutorials_basic.md#シーン作成)
-1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく（シーンとスクリプトを編集する）　[→docs/README.md参照](docs/README.md)
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](docs/build_ios.md)
-1. `4` `5` を繰り返してプログラムを仕上げていく
+- [CocoaPods](https://cocoapods.org/) (version 1.8.4 以上)
 
 ## ドキュメント
 
@@ -116,3 +92,8 @@ public class Hello_Toio : MonoBehaviour
 
 - [LICENSE](LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
+
+## 知的財産権表記 / Trademark Notice
+”toio”は、株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。  
+Bluetooth®のワードマークおよびロゴは、Bluetooth SIG, Inc.が所有する商標であり、株式会社ソニー・インタラクティブエンタテインメントはこれらのマークをライセンスに基づいて使用しています。  
+その他商標およびトレードネームはそれぞれの所有者に帰属します。  

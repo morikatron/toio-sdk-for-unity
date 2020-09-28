@@ -59,7 +59,7 @@ namespace toio
         //
         // ErrorAction
         //
-        private static Action<string> ErrorAction;
+        private static Action<string> ErrorAction = null;
         private delegate void ErrorActionDelegate(string errorCode, string errorMessage, string errorDescription);
         [AOT.MonoPInvokeCallback(typeof(ErrorActionDelegate))]
         private static void ErrorActionCallback(string errorCode, string errorMessage, string errorDescription)
@@ -73,7 +73,7 @@ namespace toio
         //
         // InitializedAction
         //
-        private static Action InitializedAction;
+        private static Action InitializedAction = null;
         private delegate void InitializedActionDelegate();
         [AOT.MonoPInvokeCallback(typeof(InitializedActionDelegate))]
         private static void InitializedActionCallback()
@@ -87,7 +87,7 @@ namespace toio
         //
         // FinalizedAction
         //
-        private static Action FinalizedAction;
+        private static Action FinalizedAction = null;
         private delegate void FinalizedActionDelegate();
         [AOT.MonoPInvokeCallback(typeof(FinalizedActionDelegate))]
         private static void FinalizedActionCallback()
@@ -101,7 +101,7 @@ namespace toio
         //
         // DiscoveredAction
         //
-        private static Action<string, string, int, byte[]> DiscoveredAction;
+        private static Action<string, string, int, byte[]> DiscoveredAction = null;
         private delegate void DiscoveredActionDelegate(string identifier, string name, string rssi, string base64ManufacturerData);
         [AOT.MonoPInvokeCallback(typeof(DiscoveredActionDelegate))]
         private static void DiscoveredActionCallback(string identifier, string name, string rssi, string base64ManufacturerData)
