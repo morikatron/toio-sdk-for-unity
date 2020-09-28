@@ -10,6 +10,9 @@
     - [Stage Prefab は必須ですか](FAQ.md#Stage-Prefab-は必須ですか)
     - [Stage Prefab を使わない場合に注意することはありますか](FAQ.md#Stage-Prefab-を使わない場合に注意することはありますか)
 
+- [ウェブアプリ関連](FAQ.md#ウェブアプリ関連)
+    - [WindowsPC でウェブアプリがうまく動きません](##windowspc-でウェブアプリがうまく動きません)
+
 ## 基本
 
 ### toio SDK for Unity をダウンロードしましたがサンプルが動きません
@@ -55,3 +58,10 @@ Stage 専用のフォーカスやターゲットポール機能は勿論使え�
 現在は一つだけのダミー効果音が入っています。
 
 実装方法は[【コチラ】](README.md##-留意事項)を参考にしてください。
+
+## ウェブアプリ関連
+
+### WindowsPC でウェブアプリがうまく動きません
+> Keywords： Windows Bluetooth BLE
+
+[【コチラ】](build_web.md###windowspc-を使った複数台接続が不安定)をご参照ください。
