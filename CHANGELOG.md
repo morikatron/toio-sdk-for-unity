@@ -22,10 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix null reference exception in BoidsTutorial and BoidsAvoidTutorlal.
 - Fix warning in ble-plugin-unity.
 - Fix documents.
-  - typo
-  - broken links.
-  - wording.
-  - chapter number.
+  - typos
+  - broken links
+  - wording
+  - chapter number
   - Add title in some technical documents.
   - description of how to install UniTask in download_sdk.md.
 
