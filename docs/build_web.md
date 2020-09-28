@@ -78,19 +78,11 @@ Unity のメニュー【ファイル】→【ビルド設定...】を選択し�
 
 用意された WebGL プラグインを使用するために、Unity の Javascript テンプレートを変更します。
 
-1. Unity エディタ上で `Assets/toio-sdk-unity/Assets/WebGLTemplates` ディレクトリを `Assets/` ディレクトリ以下にドラック&ドロップで移動します。
-
-<img width=600 src="res/build_webgl/5.png">
-
-移動後に以下のような状態になっている事を確認してください。
-
-<img width=600 src="res/build_webgl/6.png">
-
-2. Build Settings より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。
+1. Build Settings より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。
 
 <img width=600 src="res/build_webgl/7.png">
 
-3. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。
+2. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。
 
 <img width=600 src="res/build_webgl/8.png">
 
