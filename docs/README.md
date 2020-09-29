@@ -3,7 +3,7 @@
 ## 開発手順の概略
 
 1. 開発環境を整える　[→「事前準備」参照](preparation.md)
-1. Unity で新規プロジェクトを作り、新規プロジェクトにT4Uを読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
+1. Unity で新規プロジェクトを作り、新規プロジェクトに toio SDK for Unity を読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
 1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
 1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
 1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](build_ios.md)
@@ -127,22 +127,18 @@
 
 ## 留意事項
 
-- シミュレータの効果音の再生機能について
+- シミュレータの効果音の再生機能について  
 
-シミュレータの効果音の再生機能は実装されていますが、効果音自体は実装されていません。
-現在は一つだけのダミー効果音が入っています。
-
-効果音を実装するには、[CubeSimulator クラス](../toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/CubeSimulator.cs)の `_InitPresetSounds` 関数の中で効果音を定義します。
-
-```c#
-// Sound Preset を設定
-private void _InitPresetSounds(){
-    Cube.SoundOperation[] sounds = new Cube.SoundOperation[3];
-    sounds[0] = new Cube.SoundOperation(200, 255, 48);
-    sounds[1] = new Cube.SoundOperation(200, 255, 50);
-    sounds[2] = new Cube.SoundOperation(200, 255, 52);
-    this.presetSounds.Add(sounds);
-}
-```
-
-`Cube.SoundOperation` の説明は [Cube クラスの使い方](usage_cube.md#playsound) を参照してください。
+    シミュレータの効果音の再生機能は実装されていますが、効果音自体は実装されていません。現在は一つだけのダミー効果音が入っています。  
+    効果音を実装するには、[CubeSimulator クラス](../toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/CubeSimulator.cs)の `_InitPresetSounds` 関数の中で効果音を定義します。  
+    ```c#
+    // Sound Preset を設定
+    private void _InitPresetSounds(){
+        Cube.SoundOperation[] sounds = new Cube.SoundOperation[3];
+        sounds[0] = new Cube.SoundOperation(200, 255, 48);
+        sounds[1] = new Cube.SoundOperation(200, 255, 50);
+        sounds[2] = new Cube.SoundOperation(200, 255, 52);
+        this.presetSounds.Add(sounds);
+    }
+    ```
+    `Cube.SoundOperation` の説明は [Cube クラスの使い方](usage_cube.md#playsound) を参照してください。

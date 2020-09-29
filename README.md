@@ -2,7 +2,7 @@
 
 ## 概要
 
-**toio SDK for Unity (T4U)** は、Unity で toio™コア キューブ（以降キューブ）を制御するための開発環境です。
+**toio SDK for Unity** は、Unity で toio™コア キューブ（以降キューブ）を制御するための開発環境です。
 
 toio SDK for Unity を使用することでキューブを使ったアプリを簡単に開発できるようになります。またシミュレータ機能によって、実機を使わずに画面上でキューブの動作を確認できるため、迅速かつ効率的に開発可能です。
 
@@ -92,8 +92,4 @@ public class Hello_Toio : MonoBehaviour
 
 - [LICENSE](LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
-
-## 知的財産権表記 / Trademark Notice
-”toio”は、株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。  
-Bluetooth®のワードマークおよびロゴは、Bluetooth SIG, Inc.が所有する商標であり、株式会社ソニー・インタラクティブエンタテインメントはこれらのマークをライセンスに基づいて使用しています。  
-その他商標およびトレードネームはそれぞれの所有者に帰属します。  
+- [知的財産権表記 / Trademark Notice](Trademark-Notices.md)
