@@ -58,7 +58,8 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
 #### 注記
 
-> 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。
+> 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。<br>
+> WindowsPC では複数台接続に問題が確認されています。[【コチラ】](build_web.md#windowspc-を使った複数台接続が不安定)をご確認ください。
 
 ### Unity の WebGL Build Support をチェック
 
@@ -182,6 +183,6 @@ Github Pages についての詳しい説明は[公式ドキュメント](https:/
 繰り返しになりますが、ユーザーの操作イベント1回に付きスキャン1回とする必要があります。<br>
 接続プログラムにおいては、`NearScanner`と`CubeManager.MultiConnect`を使った複数台接続が出来なくなります。<br>[Sample_UI on WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI)の実装を参考に、`NearestScanner`もしくは`CubeManager.SingleConnect`を使用するプログラムへの修正を検討してください。
 
+### WindowsPC を使った複数台接続が不安定
 
-
-
+WindowsPCのブラウザ(Edge, Chrome)を利用して複数台のキューブと接続するウェブアプリを実行する際、2台目以降のキューブへの接続で通信エラーが発生する事を確認しています。
