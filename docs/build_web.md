@@ -58,7 +58,7 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
 #### 注記
 
-> 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。
+> 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。<br>
 > WindowsPC では複数台接続に問題が確認されています。[【コチラ】](build_web.md#windowspc-を使った複数台接続が不安定)をご確認ください。
 
 ### Unity の WebGL Build Support をチェック
