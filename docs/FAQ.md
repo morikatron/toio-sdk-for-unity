@@ -64,4 +64,4 @@ Stage 専用のフォーカスやターゲットポール機能は勿論使え�
 ### WindowsPC でウェブアプリがうまく動きません
 > Keywords： Windows Bluetooth BLE
 
-[【コチラ】](build_web.md#windowspc-を使った複数台接続が不安定)をご参照ください。
+WindowsPC では複数台接続に問題が確認されています。[【コチラ】](build_web.md#windowspc-を使った複数台接続が不安定)をご確認ください。
