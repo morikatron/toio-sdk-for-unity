@@ -24,9 +24,15 @@ iOS でアプリケーションを動かすために Xcode を使います。以
 
 ## CocoaPods のインストール
 
-iOS 向けのビルドを行う際、toio SDK for Unity の内部で使っている依存関係をインストールするために[Cocoapods](https://cocoapods.org/)をインストールします。
+iOS 向けのビルドを行う際、toio SDK for Unity の内部で使っている依存関係をインストールするために[Cocoapods](https://cocoapods.org/)が必要となります。
 
-下記のコマンドでインストールできます。
+CocoaPodsが既にインストールされているかどうかは、次のコマンドで確認できます。
+
+```sh
+pod --version
+```
+
+CocoaPodsがインストールされていればそのバージョンが表示され、まだインストールされていなければ"command not found: pod"と表示されますので、下記のコマンドでインストールしてください。
 
 ```sh
 sudo gem install cocoapods
@@ -34,7 +40,7 @@ sudo gem install cocoapods
 
 参考: [CocoaPods Guides \- Getting Started](https://guides.cocoapods.org/using/getting-started.html)
 
-もしCocoaPodsのインストール時にエラー（Error installing cocoapodsみたいな）が出る場合は、少し古いバージョンをインストールすると良いかもしれません。たとえば以下のようなコマンドでバージョン指定をしてみてください。
+もしCocoaPodsのインストール時にエラー（Error installing cocoapodsのような）が出る場合は、少し古いバージョンをインストールすると良いかもしれません。たとえば以下のようなコマンドでバージョン指定をしてみてください。
 ```sh
 sudo gem install -v1.8.4 cocoapods
 ```
