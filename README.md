@@ -77,12 +77,13 @@ public class Hello_Toio : MonoBehaviour
 
 ## 動作環境
 
-- Unity 2019 LTS
+- toio™コア キューブ
+- toio™専用マット（トイオ・コレクション付属のプレイマット／toio™コア キューブ（単体）付属の簡易プレイマット／toio 開発用プレイマット）
+- Mac（macOS ver.10.14以上）
+    ※WindowsやLinux上ではSDKのシミュレータ機能のみ利用可能です。
+- iOS端末（iOS ver.12以上）
+- Unity（2019.4 LTS）
 
-また、iOS 向けビルドには以下の二つも必要となります。
-
-- Xcode 11
-- [CocoaPods](https://cocoapods.org/) (version 1.8.4 以上)
 
 ## ドキュメント
 
