@@ -128,12 +128,9 @@
 ## 留意事項
 
 - シミュレータの効果音の再生機能について
-
 シミュレータの効果音の再生機能は実装されていますが、効果音自体は実装されていません。
 現在は一つだけのダミー効果音が入っています。
-
 効果音を実装するには、[CubeSimulator クラス](../toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/CubeSimulator.cs)の `_InitPresetSounds` 関数の中で効果音を定義します。
-
 ```c#
 // Sound Preset を設定
 private void _InitPresetSounds(){
@@ -144,5 +141,4 @@ private void _InitPresetSounds(){
     this.presetSounds.Add(sounds);
 }
 ```
-
 `Cube.SoundOperation` の説明は [Cube クラスの使い方](usage_cube.md#playsound) を参照してください。
