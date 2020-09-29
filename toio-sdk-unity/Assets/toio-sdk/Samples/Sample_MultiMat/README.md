@@ -1,5 +1,7 @@
 ## Sample_MultiMat
 
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/multi_mat)です。
+
 <div align="center">
 <img src="/docs/res/samples/multimat.gif">
 </div>

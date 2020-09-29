@@ -20,16 +20,21 @@ Unity が立ち上がった事を確認しましょう。
 
 ## UniTask のインストール
 
-toio SDK for Unity では、Unity に最適化された非同期処理ライブラリ [UniTask](https://github.com/Cysharp/UniTask) を使用しています。<br>
-以下のドキュメントを参考に UniTask（2.0.0 以降）をインストールしてください。
+toio SDK for Unity では、Unity に最適化された非同期処理ライブラリ [UniTask](https://github.com/Cysharp/UniTask) を使用しています。したがって本Unity プロジェクトには UniTask (2.0.0 以降) をインストールする必要があります。<br>
 
-* [UniTask の Github リポジトリ](https://github.com/Cysharp/UniTask#install-via-git-url)
-* Unity マニュアルの [Git URL からのインストール](https://docs.unity3d.com/ja/current/Manual/upm-ui-giturl.html)
+UniTask のインストールは以下の手順で行います（2020年9月24日現在。Unity 2019.4 LTS）。
+1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開き
+1. [+] アイコンから Add package from git URL... を選び
+1. https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask を追加する
+
+以下のドキュメントには、UniTaskのインストール手順やスクリーンショットが掲載されていますので、参考にしてください。
+* [UniTask の Github リポジトリの説明文](https://github.com/Cysharp/UniTask#install-via-git-url)
+* Unity マニュアルの [「Git URL からのインストール」](https://docs.unity3d.com/ja/current/Manual/upm-ui-giturl.html)も参考になります。
 
 ## SDK の追加
 
 ### 1. unitypackage のダウンロード
-[【コチラ】](https://github.com/morikatron/toio-sdk-for-unity/releases/)から、【toio-sdk-for-unity.unitypackage】 をダウンロードしてください。
+[【コチラ】](https://github.com/morikatron/toio-sdk-for-unity/releases/)の最新リリース版の【▼Assets】を開いて【toio-sdk-for-unity.unitypackage】を探し、ダウンロードしてください。
 
 ### 2. Unity のプロジェクトにドラッグ&ドロップ
 ダウンロードしたフォルダを開いたら、 **【Assets】** フォルダに **【toio-sdk-for-unity.unitypackage】** をドラック&ドロップします。
@@ -43,7 +48,8 @@ Unity プロジェクトに読み込まれたら、`Assets/toio-sdk/Tutorials/1.
 
 <img width=300 src="res/download_sdk/play.png">
 
- 以下のようにサンプルが動く事を確認してください。
+ 以下のようにサンプルが動く事（シミュレーター上）を確認してください。  
+ ※実物のtoio™コア キューブに接続するには[docs/README.mdの「ビルド」](README.md#ビルド)を参照してください。
 
 <img src="res/download_sdk/sample.gif">
 

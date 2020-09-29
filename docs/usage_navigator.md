@@ -1,4 +1,6 @@
-# 目次
+# 技術ドキュメント - 使い方 - Navigatorクラス
+
+## 目次
 
 - [1. 概説](usage_navigator.md#1-概説)
 - [2. CubeNavigator クラス API](usage_navigator.md#2-CubeNavigator-クラス-API)
@@ -18,7 +20,7 @@
 
 # 1. 概説
 
-Navigator とは、複数のロボット（キューブ）が存在する時、
+Navigator は、複数のロボット（キューブ）が存在する時、
 お互いのロボットの動きを考慮しながら上手く移動するために作られたアルゴリズムです。
 
 このアルゴリズムは主に「ヒューマンライク衝突回避」(HLAvoid)と「ボイド」(Boids)二つのアルゴリズムに基づいています。
