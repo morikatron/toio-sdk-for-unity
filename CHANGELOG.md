@@ -22,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix null reference exception in BoidsTutorial and BoidsAvoidTutorlal.
 - Fix warning in ble-plugin-unity.
-- Fix warinig in cube_model.fbx.
 - Fix documents.
 
 ## [1.0.0-beta0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.0.0-beta0) - 2020-09-22
