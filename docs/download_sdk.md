@@ -34,7 +34,7 @@ UniTask のインストールは以下の手順で行います（2020年9月24�
 ## SDK の追加
 
 ### 1. unitypackage のダウンロード
-[【コチラ】](https://github.com/morikatron/toio-sdk-for-unity/releases/)から、【toio-sdk-for-unity.unitypackage】 をダウンロードしてください。
+[【コチラ】](https://github.com/morikatron/toio-sdk-for-unity/releases/)の最新リリース版の【▼Assets】を開いて【toio-sdk-for-unity.unitypackage】を探し、ダウンロードしてください。
 
 ### 2. Unity のプロジェクトにドラッグ&ドロップ
 ダウンロードしたフォルダを開いたら、 **【Assets】** フォルダに **【toio-sdk-for-unity.unitypackage】** をドラック&ドロップします。
@@ -48,7 +48,8 @@ Unity プロジェクトに読み込まれたら、`Assets/toio-sdk/Tutorials/1.
 
 <img width=300 src="res/download_sdk/play.png">
 
- 以下のようにサンプルが動く事を確認してください。
+ 以下のようにサンプルが動く事（シミュレーター上）を確認してください。  
+ ※実物のtoio™コア キューブに接続するには[docs/README.mdの「ビルド」](README.md#ビルド)を参照してください。
 
 <img src="res/download_sdk/sample.gif">
 

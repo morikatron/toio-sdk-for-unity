@@ -58,7 +58,8 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
 #### 注記
 
-> 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。
+> 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。<br>
+> WindowsPC では複数台接続に問題が確認されています。[【コチラ】](build_web.md#windowspc-を使った複数台接続が不安定)をご確認ください。
 
 ### Unity の WebGL Build Support をチェック
 
@@ -78,19 +79,11 @@ Unity のメニュー【ファイル】→【ビルド設定...】を選択し�
 
 用意された WebGL プラグインを使用するために、Unity の Javascript テンプレートを変更します。
 
-1. Unity エディタ上で `Assets/toio-sdk-unity/Assets/WebGLTemplates` ディレクトリを `Assets/` ディレクトリ以下にドラック&ドロップで移動します。
-
-<img width=600 src="res/build_webgl/5.png">
-
-移動後に以下のような状態になっている事を確認してください。
-
-<img width=600 src="res/build_webgl/6.png">
-
-2. Build Settings より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。
+1. Build Settings より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。
 
 <img width=600 src="res/build_webgl/7.png">
 
-3. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。
+2. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。
 
 <img width=600 src="res/build_webgl/8.png">
 
@@ -190,6 +183,6 @@ Github Pages についての詳しい説明は[公式ドキュメント](https:/
 繰り返しになりますが、ユーザーの操作イベント1回に付きスキャン1回とする必要があります。<br>
 接続プログラムにおいては、`NearScanner`と`CubeManager.MultiConnect`を使った複数台接続が出来なくなります。<br>[Sample_UI on WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI)の実装を参考に、`NearestScanner`もしくは`CubeManager.SingleConnect`を使用するプログラムへの修正を検討してください。
 
+### WindowsPC を使った複数台接続が不安定
 
-
-
+WindowsPCのブラウザ(Edge, Chrome)を利用して複数台のキューブと接続するウェブアプリを実行する際、2台目以降のキューブへの接続で通信エラーが発生する事を確認しています。

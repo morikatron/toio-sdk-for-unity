@@ -2,7 +2,7 @@
 
 ## 概要
 
-**toio SDK for Unity (T4U)** は、Unity で toio™コア キューブ（以降キューブ）を制御するための開発環境です。
+**toio SDK for Unity** は、Unity で toio™コア キューブ（以降キューブ）を制御するための開発環境です。
 
 toio SDK for Unity を使用することでキューブを使ったアプリを簡単に開発できるようになります。またシミュレータ機能によって、実機を使わずに画面上でキューブの動作を確認できるため、迅速かつ効率的に開発可能です。
 
@@ -77,12 +77,13 @@ public class Hello_Toio : MonoBehaviour
 
 ## 動作環境
 
-- Unity 2019 LTS
+- toio™コア キューブ
+- toio™専用マット（トイオ・コレクション付属のプレイマット／toio™コア キューブ（単体）付属の簡易プレイマット／toio 開発用プレイマット）
+- Mac（macOS ver.10.14以上）
+    ※WindowsやLinux上ではSDKのシミュレータ機能のみ利用可能です。
+- iOS端末（iOS ver.12以上）
+- Unity（2019.4 LTS）
 
-また、iOS 向けビルドには以下の二つも必要となります。
-
-- Xcode 11
-- [CocoaPods](https://cocoapods.org/) (version 1.8.4 以上)
 
 ## ドキュメント
 
@@ -92,8 +93,4 @@ public class Hello_Toio : MonoBehaviour
 
 - [LICENSE](LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
-
-## 知的財産権表記 / Trademark Notice
-”toio”は、株式会社ソニー・インタラクティブエンタテインメントの登録商標または商標です。  
-Bluetooth®のワードマークおよびロゴは、Bluetooth SIG, Inc.が所有する商標であり、株式会社ソニー・インタラクティブエンタテインメントはこれらのマークをライセンスに基づいて使用しています。  
-その他商標およびトレードネームはそれぞれの所有者に帰属します。  
+- [知的財産権表記 / Trademark Notice](Trademark-Notices.md)
