@@ -4,11 +4,17 @@ ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: -919107998859796434
-    second: toio|toio|toio|Action1|toio|Action1
+      74: 6538464551278750672
+    second: toio|toio|toio|toio|toio|Action1|toio|Action1|toio|toio|toio|Action1
   - first:
-      74: -8347686979285824226
-    second: toio|toio|toio|Action|toio|Action
+      74: 7729022388398935012
+    second: toio|toio|toio|toio|toio|Action|toio|Action|toio|toio|toio|Action|to
+  - first:
+      74: 741046663272402330
+    second: toio|toio|toio|toio|toio|toio|toio|Action1|toio|Action1|toio|toio_b7
+  - first:
+      74: -703452349665075733
+    second: toio|toio|toio|toio|toio|toio|toio|Action|toio|Action|toio|toio|t_de
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -36,66 +42,8 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: toio|toio|toio|Action1|toio|Action1
-      takeName: toio|toio|toio|Action1|toio|Action1
-      internalID: -919107998859796434
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: toio|toio|toio|Action|toio|Action
-      takeName: toio|toio|toio|Action|toio|Action
-      internalID: -8347686979285824226
-      firstFrame: 0
-      lastFrame: 163
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    isReadable: 1
+    clipAnimations: []
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -107,7 +55,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    fileIdsGeneration: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -154,7 +102,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
