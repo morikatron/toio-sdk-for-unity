@@ -78,6 +78,9 @@ namespace toio.Simulator
             this.onStandardID = false;
         }
 
+        /// <summary>
+        /// Simulate reading toio ID
+        /// </summary>
         protected virtual void SimulateIDSensor()
         {
             // 読み取りセンサーを模擬
@@ -409,11 +412,12 @@ namespace toio.Simulator
             soundRepeatQ.Enqueue(1);
             soundTimeQ.Enqueue(Time.time);
         }
-        // 閾値
+
+        // 水平検出の閾値
         protected int slopeThreshold = 45;
-        public override void SetSlopeThreshold(int angle)
+        public override void SetSlopeThreshold(int degree)
         {
-            slopeThreshold = angle;
+            slopeThreshold = degree;
         }
     }
 }

@@ -186,6 +186,9 @@ namespace toio.Simulator
 
         }
 
+        /// <summary>
+        /// 実際の寸法に対応するオブジェクトのスケールを計算する
+        /// </summary>
         public static float RealWidthToScale(Sprite sprite, float realWidth)
         {
             return sprite.pixelsPerUnit/(sprite.rect.width/realWidth);
