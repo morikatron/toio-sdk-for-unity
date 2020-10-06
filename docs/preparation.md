@@ -4,7 +4,6 @@ toio SDK for Unity を使うためや、このドキュメントのサンプル�
 
 - Unity（2019.4 LTS）
 - Xcode（11 以降）
-- CocoaPods（1.8.4 以降）
 
 ## Unity のインストール
 
@@ -21,31 +20,3 @@ Unity のバージョンは **Unity 2019.4 (LTS)** を利用してください�
 iOS でアプリケーションを動かすために Xcode を使います。以下のリンクから Xcode の最新版を入手します。
 
 - [‎「Xcode」を Mac App Store で](https://apps.apple.com/jp/app/xcode/id497799835)
-
-## CocoaPods のインストール
-
-iOS 向けのビルドを行う際、toio SDK for Unity の内部で使っている依存関係をインストールするために[CocoaPods](https://cocoapods.org/)が必要となります。
-
-CocoaPodsが既にインストールされているかどうかは、次のコマンドで確認できます。
-
-```sh
-pod --version
-```
-
-CocoaPodsがインストールされていればそのバージョンが表示され、まだインストールされていなければ"command not found: pod"と表示されますので、下記のコマンドでインストールしてください。
-
-```sh
-sudo gem install cocoapods
-```
-
-参考: [CocoaPods Guides \- Getting Started](https://guides.cocoapods.org/using/getting-started.html)
-
-もしCocoaPodsのインストール時にエラー（"Error installing cocoapods"のような）が出る場合は、少し古いバージョンをインストールすると良いかもしれません。たとえば以下のようなコマンドでバージョン指定をしてみてください。
-```sh
-sudo gem install -v1.8.4 cocoapods
-```
-CocoaPodsのインストール可能なバージョンリストは
-```sh
-gem query -ra -n “^cocoapods$”
-```
-で表示できます。おためしを！
