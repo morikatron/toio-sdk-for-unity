@@ -6,7 +6,7 @@
 //
 
 #import "UnityBLE.h"
-@import MultiplatformBleAdapter;
+#import "UnityFramework/UnityFramework-Swift.h"
 
 BleModule *_bleModule = nil;
 NSMutableArray *uuids = nil;  // filtered service uuid
