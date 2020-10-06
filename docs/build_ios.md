@@ -11,7 +11,6 @@
 | OS                   | macOS Catalina 10.15.5 | macOS Mojave 10.14 以上 |
 | Unity                | 2019.4.0f1             | 2019.3 以上             |
 | Xcode                | 11.5 (11E608c)         | 11 以上                 |
-| CocoaPods            | 1.9.3                  | 1.9 以上                |
 | iOS                  | 12.3.1, 13.2.2         | 11 以上                 |
 
 ## Unity の iOS Build Support をチェック
