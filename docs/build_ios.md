@@ -43,10 +43,7 @@ XCode のプロジェクトファイルを保存するダイアログが表示�
 
 ## Xcode でプロジェクトを開く
 
-iOS 用のビルドをするために Xcode でビルドしたプロジェクトを開きます。ビルド時に保存した場所には以下の２つのプロジェクトファイルがありますが、後者の **Unity-iPhone.xcworkspace** の方を開くようにしてください。
-
-- Unity-iPhone.xcodeproj
-- Unity-iPhone.xcworkspace（←こちらです）
+iOS 用のビルドをするために Xcode でプロジェクトファイル（この例では SimpleScene/Unity-iPhone.xcodeproj ）を開きます。
 
 ## Xcode プロジェクトの設定
 
