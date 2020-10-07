@@ -20,3 +20,5 @@ Unity のバージョンは **Unity 2019.4 (LTS)** を利用してください�
 iOS でアプリケーションを動かすために Xcode を使います。以下のリンクから Xcode の最新版を入手します。
 
 - [‎「Xcode」を Mac App Store で](https://apps.apple.com/jp/app/xcode/id497799835)
+
+これで事前準備は完了です。続いて toio SDK for Unity をインストールする場合は [toio SDK for Unity のインストール](download_sdk.md) を参照してください。
