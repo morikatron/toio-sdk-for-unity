@@ -38,33 +38,97 @@ namespace toio.Simulator
 
 
         // ======== Properties ========
+
+        /// <summary>
+        /// モーター指令の最大値
+        /// </summary>
         public int maxMotor { get{
             return impl.maxMotor;
         }}
+
+        /// <summary>
+        /// モーター指令のデッドゾーン
+        /// </summary>
         public int deadzone { get{
             return impl.deadzone;
         }}
+
+        /// <summary>
+        /// シミュレータが初期化できたか
+        /// </summary>
         public bool ready { get; private set; } = false;
 
         // ----- toio ID -----
+
+        /// <summary>
+        /// マット上の x 座標
+        /// </summary>
         public int x { get {return impl.x;} internal set {impl.x = value;} }
+
+        /// <summary>
+        /// マット上の y 座標
+        /// </summary>
         public int y { get {return impl.y;} internal set {impl.y = value;} }
+
+        /// <summary>
+        /// マット・スタンダードID上の角度
+        /// </summary>
         public int deg { get {return impl.deg;} internal set {impl.deg = value;} }
+
+        /// <summary>
+        /// マット上の読み取りセンサーの y 座標
+        /// </summary>
         public int xSensor { get {return impl.xSensor;} internal set {impl.xSensor = value;} }
+
+        /// <summary>
+        /// マット上の読み取りセンサーの y 座標
+        /// </summary>
         public int ySensor { get {return impl.ySensor;} internal set {impl.ySensor = value;} }
+
+        /// <summary>
+        /// Standard ID の値
+        /// </summary>
         public uint standardID { get {return impl.standardID;} internal set {impl.standardID = value;} }
+
+        /// <summary>
+        /// マット上にあるか
+        /// </summary>
         public bool onMat { get {return impl.onMat;} internal set {impl.onMat = value;} }
+
+        /// <summary>
+        /// Standard ID 上にあるか
+        /// </summary>
         public bool onStandardID { get {return impl.onStandardID;} internal set {impl.onStandardID = value;} }
+
+        /// <summary>
+        /// マット又はStandard ID 上にあるか
+        /// </summary>
         public bool isGrounded { get {return onMat || onStandardID; } }
 
         // ----- Button -----
+
+        /// <summary>
+        /// ボタンが押されているか
+        /// </summary>
         public bool button{ get {return impl.button;} internal set {impl.button = value;} }
 
         // ----- Motion Sensor -----
         // 2.0.0
+
+        /// <summary>
+        /// 水平検出をシミュレータがシミュレーションするか
+        /// </summary>
         [HideInInspector]
         public bool isSimulateSloped = true;
+
+        /// <summary>
+        /// 傾斜であるか
+        /// </summary>
         public bool sloped{ get {return impl.sloped;} internal set {impl.sloped = value;} }
+
+        /// <summary>
+        /// 衝突が検出されたか
+        /// </summary>
         public bool collisionDetected{ get {return impl.collisionDetected;} internal set {impl.collisionDetected = value;} }
 
 
@@ -81,7 +145,7 @@ namespace toio.Simulator
 
         private void Start()
         {
-            #if !UNITY_EDITOR
+            #if !UNITY_EDITOR   // Editor以外で実行される場合は自身を無効かします
                 this.gameObject.SetActive(false);
             #else
                 this.rb = GetComponent<Rigidbody>();
@@ -131,32 +195,59 @@ namespace toio.Simulator
 
         // ============ Event ============
 
+        // ------------ v2.0.0 ------------
+
+        /// <summary>
+        /// ボタンのイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_Button(System.Action<bool> action)
         {
             impl.StartNotification_Button(action);
         }
+
+        /// <summary>
+        /// Standard ID のイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_StandardID(System.Action<uint, int> action)
         {
             impl.StartNotification_StandardID(action);
         }
+
+        /// <summary>
+        /// Standard ID から持ち上げられた時のイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_StandardIDMissed(System.Action action)
         {
             impl.StartNotification_StandardIDMissed(action);
         }
+
+        /// <summary>
+        /// Position ID （マット座標）のイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_PositionID(System.Action<int, int, int, int, int> action)
         {
             impl.StartNotification_PositionID(action);
         }
+
+        /// <summary>
+        /// マットから持ち上げられた時のイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_PositionIDMissed(System.Action action)
         {
             impl.StartNotification_PositionIDMissed(action);
         }
 
+        /// <summary>
+        /// 水平検出のイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_Sloped(System.Action<bool> action)
         {
             impl.StartNotification_Sloped(action);
         }
 
+        /// <summary>
+        /// 衝突検出のイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_CollisionDetected(System.Action<bool> action)
         {
             impl.StartNotification_CollisionDetected(action);
@@ -217,11 +308,11 @@ namespace toio.Simulator
         }
 
         /// <summary>
-        /// 閾値
+        /// 水平検出の閾値を設定する（度）
         /// </summary>
-        public void SetSlopeThreshold(int angle)
+        public void SetSlopeThreshold(int degree)
         {
-            impl.SetSlopeThreshold(angle);
+            impl.SetSlopeThreshold(degree);
         }
 
 

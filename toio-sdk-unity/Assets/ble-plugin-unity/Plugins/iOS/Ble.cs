@@ -15,11 +15,11 @@ namespace toio
     public class Ble
     {
 
-#if UNITY_EDITOR_OSX
-    private const string DLL_NAME = "bleplugin";
-#elif UNITY_IOS
-    private const string DLL_NAME = "__Internal";
-#endif
+        // #if UNITY_EDITOR_OSX
+        //     private const string DLL_NAME = "bleplugin";
+        // #elif UNITY_IOS
+        private const string DLL_NAME = "__Internal";
+        // #endif
 
 #if UNITY_IOS
 	[DllImport (DLL_NAME)]
