@@ -147,7 +147,7 @@ namespace toio
         public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
-            if (59 < operations.Length)
+            if (29 < operations.Length)
             {
                 Debug.LogErrorFormat("[Cube.TurnOnLightWithScenario]最大発光数を超えました. operations.Length={0}", operations.Length);
             }
@@ -155,7 +155,7 @@ namespace toio
             if (!this.isConnected) { return; }
 
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            var operation_length = Mathf.Clamp(operations.Length, 0, 59);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 29);
 
             byte[] buff = new byte[3 + operation_length * 6];
             buff[0] = 4;
@@ -219,7 +219,8 @@ namespace toio
         public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
-            if (29 < operations.Length)
+            // v2.0.0に限り58以下
+            if (58 < operations.Length)
             {
                 Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. operations.Length={0}", operations.Length);
             }
@@ -227,7 +228,7 @@ namespace toio
             if (!this.isConnected) { return; }
 
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            var operation_length = Mathf.Clamp(operations.Length, 0, 29);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 58);
 
             byte[] buff = new byte[3 + operation_length * 3];
             buff[0] = 3;
@@ -252,6 +253,13 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public override void PlaySound(byte[] buff, ORDER_TYPE order)
         {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            if (58 < buff[2])
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. Length={0}", buff[2]);
+            }
+#endif
             if (!this.isConnected) { return; }
 
             this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound");
