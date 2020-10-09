@@ -75,7 +75,7 @@ namespace toio
         /// <param name="right">右モーター速度</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void Move(int left, int right, int durationMs, ORDER_TYPE order)
         {
 #if !RELEASE
             if (2550 < durationMs)
@@ -115,7 +115,7 @@ namespace toio
         /// <param name="blue">青色の強さ</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order)
         {
 #if !RELEASE
             if (2550 < durationMs)
@@ -144,7 +144,7 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
             if (59 < operations.Length)
@@ -197,7 +197,7 @@ namespace toio
         /// <param name="soundId">サウンドID</param>
         /// <param name="volume">音量</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlayPresetSound(int soundId, int volume, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -216,7 +216,7 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
             if (29 < operations.Length)
@@ -250,7 +250,7 @@ namespace toio
         /// </summary>
         /// <param name="buff">命令プロトコル</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlaySound(byte[] buff, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -262,7 +262,7 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_sound#再生の停止
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public override void StopSound(ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void StopSound(ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -278,7 +278,7 @@ namespace toio
         /// </summary>
         /// <param name="angle">傾き検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public override void ConfigSlopeThreshold(int _angle, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override void ConfigSlopeThreshold(int _angle, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -298,7 +298,7 @@ namespace toio
         /// </summary>
         /// <param name="level">衝突検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
