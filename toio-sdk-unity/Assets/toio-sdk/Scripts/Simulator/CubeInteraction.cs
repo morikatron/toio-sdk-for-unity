@@ -12,7 +12,7 @@ namespace toio.Simulator
         IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         // === Global ===
-        public static Object current { get; set; }
+        public static Object current { get; set; }　// currently object under interaction
 
         CubeSimulator cube;
         Rigidbody rb;

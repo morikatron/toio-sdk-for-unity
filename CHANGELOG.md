@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.0.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.0.1) - 2020-10-08
+
+### Added
+
+- Add version.txt.
+- Add guidance for git.
+
+### Changed
+
+- Update ble-plugin-unity.
+- Update comments for codes of Simulator.
+
+### Fixed
+
+- Fix warning when importing cube_model.fbx.
+
+### Removed
+
+- Remove contents of CocoaPods from documents.
+
+
 ## [1.0.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.0.0) - 2020-09-29
 
 ### Added

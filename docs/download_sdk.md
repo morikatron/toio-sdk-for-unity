@@ -53,4 +53,4 @@ Unity プロジェクトに読み込まれたら、`Assets/toio-sdk/Tutorials/1.
 
 <img src="res/download_sdk/sample.gif">
 
-これで toio SDK for Unity のインストールは完了です。
+これで toio SDK for Unity のインストールは完了です。本SDKでは様々なチュートリアルが用意されています。各種チュートリアルについては [チュートリアル(Basic)](tutorials_basic.md) を参照してください。

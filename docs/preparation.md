@@ -1,10 +1,10 @@
 # 事前準備
 
-toio SDK for Unity を使うためや、このドキュメントのサンプルやチュートリアルを行ううえで必要となるものの準備をします。具体的には以下の３つのソフトウェアをインストールします。
+toio SDK for Unity を使うためや、このドキュメントのサンプルやチュートリアルを行ううえで必要となるものの準備をします。具体的には以下の３つのソフトウェアが必要となります。
 
 - Unity（2019.4 LTS）
 - Xcode（11 以降）
-- CocoaPods（1.8.4 以降）
+- git
 
 ## Unity のインストール
 
@@ -18,34 +18,46 @@ Unity のバージョンは **Unity 2019.4 (LTS)** を利用してください�
 
 ## Xcode のインストール
 
-iOS でアプリケーションを動かすために Xcode を使います。以下のリンクから Xcode の最新版を入手します。
+iOS でアプリケーションを動かすために Xcode （macOS 専用アプリ）を使います。以下のリンクから Xcode の最新版を入手します。
 
 - [‎「Xcode」を Mac App Store で](https://apps.apple.com/jp/app/xcode/id497799835)
 
-## CocoaPods のインストール
+## git について
 
-iOS 向けのビルドを行う際、toio SDK for Unity の内部で使っている依存関係をインストールするために[CocoaPods](https://cocoapods.org/)が必要となります。
+この後、[toio SDK for Unity のインストール](download_sdk.md) で UniTask のインストールを行う際に、gitコマンドがインストールされている必要があります。
 
-CocoaPodsが既にインストールされているかどうかは、次のコマンドで確認できます。
+#### macOS
 
-```sh
-pod --version
+macOS には標準で git が入っているはずですが、確認する場合はターミナルアプリで以下のコマンドを入力してください。
+
+```
+$ git --version
 ```
 
-CocoaPodsがインストールされていればそのバージョンが表示され、まだインストールされていなければ"command not found: pod"と表示されますので、下記のコマンドでインストールしてください。
+git がすでに入っている場合は
 
-```sh
-sudo gem install cocoapods
+```
+git version 2.21.1 (Apple Git-122.3)
 ```
 
-参考: [CocoaPods Guides \- Getting Started](https://guides.cocoapods.org/using/getting-started.html)
+このようにバージョン番号が表示されます。もし git が入っていない場合は、コマンドライン・デベロッパ・ツールのインストールを催すダイアログが表示されると思いますので、ダイアログの「インストール」ボタンをクリックして、インストールしてください。
 
-もしCocoaPodsのインストール時にエラー（"Error installing cocoapods"のような）が出る場合は、少し古いバージョンをインストールすると良いかもしれません。たとえば以下のようなコマンドでバージョン指定をしてみてください。
-```sh
-sudo gem install -v1.8.4 cocoapods
+#### Windows
+
+Windows の場合、コマンドプロンプトを起動して以下のコマンドを実行することで、git がインストールされているかを確認できます。
+
 ```
-CocoaPodsのインストール可能なバージョンリストは
-```sh
-gem query -ra -n “^cocoapods$”
+> git --version
 ```
-で表示できます。おためしを！
+
+すでに git がインストールされている場合は
+
+```
+git version 2.21.0.windows.1
+```
+
+このように表示されます。まだ git コマンドが入っていない場合は、[git for windows の公式サイト](https://gitforwindows.org/)からインストーラをダウンロードして、インストールしてください。
+
+
+
+これで事前準備は完了です。続いて toio SDK for Unity をインストールする場合は [toio SDK for Unity のインストール](download_sdk.md) を参照してください。
