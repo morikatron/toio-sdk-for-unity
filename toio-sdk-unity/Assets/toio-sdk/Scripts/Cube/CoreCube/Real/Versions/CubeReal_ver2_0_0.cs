@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace toio
 {
@@ -318,6 +319,35 @@ namespace toio
             buff[2] = BitConverter.GetBytes(level)[0];
 
             this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "configCollisionThreshold", level);
+        }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < subscribe >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// 自動通知機能の購読を開始する
+        /// </summary>
+        public override async UniTask StartNotifications()
+        {
+            characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#else
+            await UniTask.Delay(1);
+#endif
+            characteristicTable[CHARACTERISTIC_ID].StartNotifications(this.Recv_Id);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+            this.characteristicTable[CHARACTERISTIC_BUTTON].StartNotifications(this.Recv_button);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+            this.characteristicTable[CHARACTERISTIC_SENSOR].StartNotifications(this.Recv_sensor);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
