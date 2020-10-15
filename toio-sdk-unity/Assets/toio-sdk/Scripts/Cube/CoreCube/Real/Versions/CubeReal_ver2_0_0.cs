@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace toio
 {
@@ -77,7 +78,7 @@ namespace toio
         /// <param name="right">右モーター速度</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void Move(int left, int right, int durationMs, ORDER_TYPE order)
         {
 #if !RELEASE
             if (2550 < durationMs)
@@ -117,7 +118,7 @@ namespace toio
         /// <param name="blue">青色の強さ</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order)
         {
 #if !RELEASE
             if (2550 < durationMs)
@@ -146,10 +147,10 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
-            if (59 < operations.Length)
+            if (29 < operations.Length)
             {
                 Debug.LogErrorFormat("[Cube.TurnOnLightWithScenario]最大発光数を超えました. operations.Length={0}", operations.Length);
             }
@@ -157,7 +158,7 @@ namespace toio
             if (!this.isConnected) { return; }
 
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            var operation_length = Mathf.Clamp(operations.Length, 0, 59);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 29);
 
             byte[] buff = new byte[3 + operation_length * 6];
             buff[0] = 4;
@@ -199,7 +200,7 @@ namespace toio
         /// <param name="soundId">サウンドID</param>
         /// <param name="volume">音量</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlayPresetSound(int soundId, int volume, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -218,10 +219,11 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
-            if (29 < operations.Length)
+            // v2.0.0に限り58以下
+            if (58 < operations.Length)
             {
                 Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. operations.Length={0}", operations.Length);
             }
@@ -229,7 +231,7 @@ namespace toio
             if (!this.isConnected) { return; }
 
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            var operation_length = Mathf.Clamp(operations.Length, 0, 29);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 58);
 
             byte[] buff = new byte[3 + operation_length * 3];
             buff[0] = 3;
@@ -252,8 +254,15 @@ namespace toio
         /// </summary>
         /// <param name="buff">命令プロトコル</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlaySound(byte[] buff, ORDER_TYPE order)
         {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            if (58 < buff[2])
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. Length={0}", buff[2]);
+            }
+#endif
             if (!this.isConnected) { return; }
 
             this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound");
@@ -264,7 +273,7 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_sound#再生の停止
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public override void StopSound(ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void StopSound(ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -280,7 +289,7 @@ namespace toio
         /// </summary>
         /// <param name="angle">傾き検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public override void ConfigSlopeThreshold(int _angle, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override void ConfigSlopeThreshold(int _angle, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -300,7 +309,7 @@ namespace toio
         /// </summary>
         /// <param name="level">衝突検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -312,6 +321,35 @@ namespace toio
             buff[2] = BitConverter.GetBytes(level)[0];
 
             this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "configCollisionThreshold", level);
+        }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < subscribe >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// 自動通知機能の購読を開始する
+        /// </summary>
+        public override async UniTask StartNotifications()
+        {
+            characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#else
+            await UniTask.Delay(1);
+#endif
+            characteristicTable[CHARACTERISTIC_ID].StartNotifications(this.Recv_Id);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+            this.characteristicTable[CHARACTERISTIC_BUTTON].StartNotifications(this.Recv_button);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+            this.characteristicTable[CHARACTERISTIC_SENSOR].StartNotifications(this.Recv_sensor);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/

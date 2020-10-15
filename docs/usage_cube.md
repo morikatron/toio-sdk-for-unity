@@ -322,7 +322,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
   - 範囲 : 0~255
 - operations
   - 定義 : 命令配列
-  - 個数 : 1~59
+  - 個数 : 1~29
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -387,7 +387,7 @@ public void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE o
   - 範囲 : 0~255
 - operations
   - 定義 : 命令配列
-  - 個数 : 1~29
+  - 個数 : 1~59
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
