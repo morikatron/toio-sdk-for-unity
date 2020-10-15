@@ -7,14 +7,23 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        public override bool isDoubleTap { get; protected set; }
-        public override PoseType pose { get; protected set; }
+
+        protected CallbackProvider _doubleTapCallback = new CallbackProvider();
+        protected CallbackProvider _poseCallback = new CallbackProvider();
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        public override bool isDoubleTap { get; protected set; }
+        public override PoseType pose { get; protected set; }
         public override string version { get { return "2.1.0"; } }
         public override int maxSpd { get { return 115; } }
+
+        // ダブルタップコールバック
+        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
+        // 姿勢コールバック
+        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
