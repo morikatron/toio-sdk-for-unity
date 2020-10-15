@@ -14,10 +14,12 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      純粋仮想関数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
+        public abstract UniTask StartNotifications();
         protected abstract void Recv_battery(byte[] data);
         protected abstract void Recv_Id(byte[] data);
         protected abstract void Recv_button(byte[] data);
         protected abstract void Recv_sensor(byte[] data);
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      定数
@@ -49,31 +51,6 @@ namespace toio
 
             // idが無効となったため、addrで代用
             this.id = addr;
-        }
-
-        /// <summary>
-        /// 自動通知機能の購読を開始する
-        /// </summary>
-        public async UniTask StartNotifications()
-        {
-            characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#else
-            await UniTask.Delay(1);
-#endif
-            characteristicTable[CHARACTERISTIC_ID].StartNotifications(this.Recv_Id);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
-            this.characteristicTable[CHARACTERISTIC_BUTTON].StartNotifications(this.Recv_button);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
-            this.characteristicTable[CHARACTERISTIC_SENSOR].StartNotifications(this.Recv_sensor);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
         }
 
         protected void Request(string characteristicName, byte[] buff, bool withResponse, Cube.ORDER_TYPE order, string DEBUG_name, params object[] DEBUG_plist)
