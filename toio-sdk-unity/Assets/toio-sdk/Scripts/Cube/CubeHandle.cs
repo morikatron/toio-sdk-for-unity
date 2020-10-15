@@ -76,6 +76,9 @@ namespace toio
             if (this.cube.version == "2.0.0"){
                 MaxSpd = 100; Deadzone = 10;
             }
+            else if (this.cube.version == "2.1.0"){
+                MaxSpd = 115; Deadzone = 8;
+            }
             else{
                 MaxSpd = 100; Deadzone = 10;
             }

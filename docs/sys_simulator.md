@@ -279,6 +279,7 @@ Cube Prefab には３つのスクリプトが実装されています。
 - `CubeSimulator.cs`：実際のキューブのシミュレーションを実装したもの
   - `CubeSimImpl.cs`：CubeSimulator のバージョン毎の実装のベースクラスとなるもの
   - `CubeSimImpl_v2_0_0.cs`：バージョン 2.0.0 を対応する実装
+  - `CubeSimImpl_v2_1_0.cs`：バージョン 2.1.0 を対応する実装
 - `CubeSimulatorEditor.cs`：`CubeSimulator.cs`のインスペクターをカスタマイズしたもの
 - `CubeInteraction.cs`：シミュレータ上で、Cubeオブジェクトを押したりつかんだりする操作を実装したもの
 
@@ -477,6 +478,81 @@ public override bool collisionDetected
             this.collisionDetectedCallback?.Invoke(value);
         }
         this._collisionDetected = value;
+    }
+}
+```
+
+### ダブルタップ
+
+> 2.1.0 の機能です。
+ダブルタップのシミュレーションは未実装です。
+
+`doubleTap` がインスペクターで手動で変更された時に、対応コールバック `doubleTapCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected bool _doubleTap;
+public override bool doubleTap
+{
+    get {return this._doubleTap;}
+    internal set
+    {
+        if (this._doubleTap!=value){
+            this.doubleTapCallback?.Invoke(value);
+        }
+        this._doubleTap = value;
+    }
+}
+```
+
+### 姿勢検出
+
+> 2.1.0 の機能です。
+原理は水平検出と同じで、Cube オブジェクトの角度が対応方向に閾値を超えたら、`pose` を対応方向にします。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected virtual void SimulateMotionSensor()
+{
+    if(Vector3.Angle(Vector3.up, transform.up)<45f)
+    {
+        this.pose = Cube.PoseType.up;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.up)>135f)
+    {
+        this.pose = Cube.PoseType.down;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.forward)<45f)
+    {
+        this.pose = Cube.PoseType.forward;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.forward)>135f)
+    {
+        this.pose = Cube.PoseType.backward;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.right)<45f)
+    {
+        this.pose = Cube.PoseType.right;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.right)>135f)
+    {
+        this.pose = Cube.PoseType.left;
+    }
+}
+```
+
+`pose` が変更された時に、対応コールバック `poseCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected Cube.PoseType _pose = Cube.PoseType.up;
+public override Cube.PoseType pose {
+    get{ return _pose; }
+    internal set{
+        if (this._pose!=value){
+            this.poseCallback?.Invoke(value);
+        }
+        _pose = value;
     }
 }
 ```

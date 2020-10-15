@@ -47,6 +47,11 @@ namespace toio
         public abstract bool isGrounded { get; protected set; }
         // コアキューブの最高速度
         public abstract int maxSpd { get; }
+        // コアキューブのダブルタック状態
+        public abstract bool isDoubleTap { get; protected set; }
+        // コアキューブの姿態
+        public abstract PoseType pose { get; protected set; }
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -157,6 +162,11 @@ namespace toio
         public virtual CallbackProvider idMissedCallback { get { return this.unsupportingCallback; } }
         // StandardID Missed コールバック
         public virtual CallbackProvider standardIdMissedCallback { get { return this.unsupportingCallback; } }
+        // Double Tap コールバック
+        public virtual CallbackProvider doubleTapCallback { get { return this.unsupportingCallback; } }
+        // 姿態検出コールバック
+        public virtual CallbackProvider poseCallback { get { return this.unsupportingCallback; } }
+
 
         public Cube()
         {
@@ -211,8 +221,8 @@ namespace toio
         {
             up=1,
             down=2,
-            forward=3,
-            backward=4,
+            front=3,
+            back=4,
             right=5,
             left=6
         };

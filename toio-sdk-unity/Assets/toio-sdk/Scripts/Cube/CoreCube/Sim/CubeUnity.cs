@@ -37,6 +37,9 @@ namespace toio
 
 				simulator.StartNotification_Sloped(this.Recv_Sloped);
 				simulator.StartNotification_CollisionDetected(this.Recv_CollisionDetected);
+
+				simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
+				simulator.StartNotification_Pose(this.Recv_Pose);
 				return true;
 			}
 			return false;
@@ -46,6 +49,7 @@ namespace toio
         public override int battery { get { return 100; } protected set { } }
         public override string version { get {
                 if (simulator.version == CubeSimulator.Version.v2_0_0) return "2.0.0";
+                else if (simulator.version == CubeSimulator.Version.v2_1_0) return "2.1.0";
                 return "2.0.0";
         } }
         public override int x { get; protected set; }
@@ -62,6 +66,8 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return simulator.maxMotor; } }
+        public override bool isDoubleTap { get; protected set; }
+        public override PoseType pose { get; protected set; }
 
         // コールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
@@ -71,6 +77,8 @@ namespace toio
         public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
         public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
         public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
+        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
 
         ///////////////   RETRIEVE INFO   ////////////
 
@@ -124,6 +132,17 @@ namespace toio
                 this.collisionCallback.Notify(this);
         }
 
+        private void Recv_DoubleTap(bool doubleTap)// コアキューブのダブルタップ
+        {
+                this.isDoubleTap = doubleTap;
+                this.doubleTapCallback.Notify(this);
+        }
+
+        private void Recv_Pose(PoseType posed)// コアキューブの姿態
+        {
+                this.pose = posed;
+                this.poseCallback.Notify(this);
+        }
         ///////////////   COMMAND API  ///////////////
 
         public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
