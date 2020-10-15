@@ -20,5 +20,48 @@ namespace toio
         : base(peripheral, characteristicTable)
         {
         }
+
+        protected override void Recv_sensor(byte[] data)
+        {
+            // https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor
+            int type = data[0];
+            if (1 == type)
+            {
+                var _isSloped = data[1] == 0 ? true : false;
+                var _isCollisionDetected = data[2] == 1 ? true : false;
+                var _isDoubleTap = data[3] == 1 ? true : false;
+                PoseType _pose = (PoseType)data[4];
+
+
+                if (_isSloped != this.isSloped)
+                {
+                    this.isSloped = _isSloped;
+                    this.slopeCallback.Notify(this);
+                }
+
+                if (_isCollisionDetected != this.isCollisionDetected)
+                {
+                    this.isCollisionDetected = _isCollisionDetected;
+                    this.collisionCallback.Notify(this);
+                }
+
+                if (_isDoubleTap != this.isDoubleTap)
+                {
+                    this.isDoubleTap = _isDoubleTap;
+                    this.doubleTapCallback.Notify(this);
+                }
+
+                if (_pose != this.pose)
+                {
+                    this.pose = _pose;
+                    this.poseCallback.Notify(this);
+
+                }
+            }
+        }
+
+
+
+
     }
 }
