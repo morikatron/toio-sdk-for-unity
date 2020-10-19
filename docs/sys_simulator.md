@@ -596,7 +596,7 @@ private void SimulatePhysics()
 ```
 
 現在のモーター制御命令の目標速度を Unity 座標系での速度に変換し、デッドゾーンを加え、
-強制停止・押された状態・タイヤが地面を離れた状態それぞれの場合に対応し、目標速度を計算し、`CubeSimulator._SetSpeed` に渡します。
+強制停止・押された場合によってタイヤ速度を計算してから、着地状態によって Cube 速度を計算し、`CubeSimulator._SetSpeed` に渡します。
 
 ```C#
 // CubeSimImpl.cs
@@ -612,18 +612,21 @@ public virtual void SimulateMotor()
     if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
     // 速度更新
-    // update speed
+    // update tires' speed
     if (cube.forceStop || this.button)   // 強制的に停止
     {
-        speedL = 0; speedR = 0;
+        speedTireL = 0; speedTireR = 0;
     }
     else
     {
-        if (cube.offGroundL) targetSpeedL = 0;
-        if (cube.offGroundR) targetSpeedR = 0;
-        speedL += (targetSpeedL - speedL) / Mathf.Max(cube.motorTau,dt) * dt;
-        speedR += (targetSpeedR - speedR) / Mathf.Max(cube.motorTau,dt) * dt;
+        speedTireL += (targetSpeedL - speedTireL) / Mathf.Max(cube.motorTau,dt) * dt;
+        speedTireR += (targetSpeedR - speedTireR) / Mathf.Max(cube.motorTau,dt) * dt;
     }
+
+    // update object's speed
+    // NOTES: simulation for slipping shall be implemented here
+    speedL = cube.offGroundL? 0: speedTireL;
+    speedR = cube.offGroundR? 0: speedTireR;
 
     cube._SetSpeed(speedL, speedR);
 }
