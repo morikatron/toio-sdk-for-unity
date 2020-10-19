@@ -41,7 +41,6 @@ namespace toio
         public override int maxSpd { get { return 100; } }
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
-        public override bool isShake { get; protected set; }
 
         // ボタンコールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }

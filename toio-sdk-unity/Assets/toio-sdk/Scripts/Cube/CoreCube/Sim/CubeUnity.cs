@@ -18,7 +18,6 @@ namespace toio
         CallbackProvider _standardIdMissedCallback = new CallbackProvider();
         CallbackProvider _doubleTapCallback = new CallbackProvider();
         CallbackProvider _poseCallback = new CallbackProvider();
-        CallbackProvider _shakeCallback = new CallbackProvider();
 
         public CubeUnity(GameObject gameObject)
         {
@@ -41,8 +40,6 @@ namespace toio
 
 				simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
 				simulator.StartNotification_Pose(this.Recv_Pose);
-
-                                // simulator.StartNotification_Shake(this.Recv_Shake);
 				return true;
 			}
 			return false;
@@ -71,7 +68,6 @@ namespace toio
         public override int maxSpd { get { return simulator.maxMotor; } }
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
-        public override bool isShake { get; protected set; }
 
         // コールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
@@ -83,7 +79,6 @@ namespace toio
         public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
         public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
         public override CallbackProvider poseCallback { get { return this._poseCallback; } }
-        public override CallbackProvider shakeCallback { get { return this._shakeCallback; } }
 
         ///////////////   RETRIEVE INFO   ////////////
 
@@ -147,12 +142,6 @@ namespace toio
         {
                 this.pose = posed;
                 this.poseCallback.Notify(this);
-        }
-
-        private void Recv_Shake(bool shaked)// コアキューブのシェイク
-        {
-                this.isShake = shaked;
-                this.shakeCallback.Notify(this);
         }
         ///////////////   COMMAND API  ///////////////
 
