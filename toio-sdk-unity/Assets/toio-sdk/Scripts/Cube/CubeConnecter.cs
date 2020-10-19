@@ -112,9 +112,6 @@ namespace toio
                         case "2.1.0":
                             cube = new CubeReal_ver2_1_0(peripheral, characteristicTable);
                             break;
-                        case "2.2.0":
-                            cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
-                            break;
                         default:
                             // Basically, BLE protocol version has backward compatibility,
                             // so consider unknown version as the latest version.
@@ -122,7 +119,7 @@ namespace toio
                             // TODO:
                             // - patch(build) number can be ignored (should be?)
                             // - major number should be checked
-                            cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
+                            cube = new CubeReal_ver2_1_0(peripheral, characteristicTable);
                             break;
                     }
                     await cube.StartNotifications();
