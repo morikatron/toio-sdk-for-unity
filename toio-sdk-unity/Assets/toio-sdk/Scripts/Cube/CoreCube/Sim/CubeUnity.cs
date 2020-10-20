@@ -27,22 +27,24 @@ namespace toio
         }
         public bool Init()
         {
-			if (isConnected)
-			{
-				simulator.StartNotification_Button(this.Recv_Button);
-				simulator.StartNotification_StandardID(this.Recv_StandardId);
-				simulator.StartNotification_PositionID(this.Recv_PositionId);
-				simulator.StartNotification_StandardIDMissed(this.Recv_StandardIdMissed);
-				simulator.StartNotification_PositionIDMissed(this.Recv_PositionIdMissed);
+            if (isConnected)
+            {
+                simulator.StartNotification_Button(this.Recv_Button);
+                simulator.StartNotification_StandardID(this.Recv_StandardId);
+                simulator.StartNotification_PositionID(this.Recv_PositionId);
+                simulator.StartNotification_StandardIDMissed(this.Recv_StandardIdMissed);
+                simulator.StartNotification_PositionIDMissed(this.Recv_PositionIdMissed);
 
-				simulator.StartNotification_Sloped(this.Recv_Sloped);
-				simulator.StartNotification_CollisionDetected(this.Recv_CollisionDetected);
+                simulator.StartNotification_Sloped(this.Recv_Sloped);
+                simulator.StartNotification_CollisionDetected(this.Recv_CollisionDetected);
 
-				simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
-				simulator.StartNotification_Pose(this.Recv_Pose);
-				return true;
-			}
-			return false;
+                simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
+                simulator.StartNotification_Pose(this.Recv_Pose);
+
+
+                return true;
+            }
+            return false;
         }
 
         public override string id { get; protected set; }
@@ -66,8 +68,10 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return simulator.maxMotor; } }
+        // ver2.1.0
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
+        // ver2.2.0
 
         // コールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
