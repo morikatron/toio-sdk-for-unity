@@ -47,10 +47,21 @@ namespace toio
         public abstract bool isGrounded { get; protected set; }
         // コアキューブの最高速度
         public abstract int maxSpd { get; }
+
+        // ver2.1.0
+
         // コアキューブのダブルタック状態
-        public abstract bool isDoubleTap { get; protected set; }
+        public virtual bool isDoubleTap { get; protected set; }
         // コアキューブの姿態
-        public abstract PoseType pose { get; protected set; }
+        public virtual PoseType pose { get; protected set; }
+
+        // ver2.2.0
+        // コアキューブのシェイク状態
+        public virtual bool isShake { get; protected set; }
+        // コアキューブのモーター ID 1（左）の速度
+        public virtual int leftSpeed { get; protected set; }
+        // コアキューブのモーター ID 2（右）の速度
+        public virtual int rightSpeed { get; protected set; }
 
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
