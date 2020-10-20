@@ -147,6 +147,11 @@ namespace toio.Simulator
 
         // 2.2.0
 
+        /// <summary>
+        /// シェイクが検出されたか
+        /// </summary>
+        public bool shake{ get {return impl.shake;} internal set {impl.shake = value;} }
+
         // ======== Objects ========
         private Rigidbody rb;
         private AudioSource audioSource;
@@ -284,6 +289,14 @@ namespace toio.Simulator
         public void StartNotification_Pose(System.Action<Cube.PoseType> action)
         {
             impl.StartNotification_Pose(action);
+        }
+
+        /// <summary>
+        /// シェイク検出のイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_Shake(System.Action<bool> action)
+        {
+            impl.StartNotification_Shake(action);
         }
 
         // ============ コマンド ============
