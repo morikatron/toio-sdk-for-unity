@@ -102,6 +102,12 @@ namespace toio.Simulator
                     }
                 }
 
+                var shake_new = GUILayout.Toggle(cube.shake, "shake 状態");
+                if (cube.shake!=shake_new){
+                    cube.shake = shake_new;
+                }
+                EditorGUILayout.Space();
+
                 EditorGUILayout.EndVertical();
             }
 

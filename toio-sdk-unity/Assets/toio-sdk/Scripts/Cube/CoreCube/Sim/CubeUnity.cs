@@ -41,6 +41,7 @@ namespace toio
                 simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
                 simulator.StartNotification_Pose(this.Recv_Pose);
 
+                simulator.StartNotification_Shake(this.Recv_Shake);
 
                 return true;
             }
@@ -72,6 +73,7 @@ namespace toio
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
         // ver2.2.0
+        public override bool isShake { get; protected set; }
 
         // コールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
@@ -147,6 +149,14 @@ namespace toio
                 this.pose = posed;
                 this.poseCallback.Notify(this);
         }
+
+        private void Recv_Shake(bool shake) // コアキューブのシェイク
+        {
+                this.isShake = shake;
+                // this.shakeCallback.Notify(this);
+        }
+
+
         ///////////////   COMMAND API  ///////////////
 
         public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
