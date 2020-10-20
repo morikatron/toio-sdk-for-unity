@@ -25,10 +25,11 @@ namespace toio.Simulator
         public enum Version
         {
             v2_0_0,
-            v2_1_0
+            v2_1_0,
+            v2_2_0
         }
         [SerializeField]
-        public Version version = Version.v2_1_0;
+        public Version version = Version.v2_2_0;
         [SerializeField]
         public float motorTau = 0.04f; // parameter of one-order model for motor, τ
         [SerializeField]
@@ -135,6 +136,7 @@ namespace toio.Simulator
         public bool doubleTap{ get {return impl.doubleTap;} internal set {impl.doubleTap = value;} }
         public Cube.PoseType pose{ get {return impl.pose;} internal set {impl.pose = value;} }
 
+        // 2.2.0
 
         // ======== Objects ========
         private Rigidbody rb;
