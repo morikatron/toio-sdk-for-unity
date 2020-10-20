@@ -124,25 +124,25 @@ namespace toio
                 this.standardIdMissedCallback.Notify(this);
         }
 
-        private void Recv_Sloped(bool sloped)// コアキューブの傾き状態
+        private void Recv_Sloped(bool sloped) // コアキューブの傾き状態
         {
                 this.isSloped = sloped;
                 this.slopeCallback.Notify(this);
         }
 
-        private void Recv_CollisionDetected(bool collisionDetected)// コアキューブの衝突状態
+        private void Recv_CollisionDetected(bool collisionDetected) // コアキューブの衝突状態
         {
                 this.isCollisionDetected = collisionDetected;
                 this.collisionCallback.Notify(this);
         }
 
-        private void Recv_DoubleTap(bool doubleTap)// コアキューブのダブルタップ
+        private void Recv_DoubleTap(bool doubleTap) // コアキューブのダブルタップ
         {
                 this.isDoubleTap = doubleTap;
                 this.doubleTapCallback.Notify(this);
         }
 
-        private void Recv_Pose(PoseType posed)// コアキューブの姿態
+        private void Recv_Pose(PoseType posed) // コアキューブの姿態
         {
                 this.pose = posed;
                 this.poseCallback.Notify(this);

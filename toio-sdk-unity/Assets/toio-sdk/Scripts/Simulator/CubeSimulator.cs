@@ -132,8 +132,17 @@ namespace toio.Simulator
         /// 衝突が検出されたか
         /// </summary>
         public bool collisionDetected{ get {return impl.collisionDetected;} internal set {impl.collisionDetected = value;} }
+
         // 2.1.0
+
+        /// <summary>
+        /// ダブルタップが検出されたか
+        /// </summary>
         public bool doubleTap{ get {return impl.doubleTap;} internal set {impl.doubleTap = value;} }
+
+        /// <summary>
+        /// ポーズ
+        /// </summary>
         public Cube.PoseType pose{ get {return impl.pose;} internal set {impl.pose = value;} }
 
         // 2.2.0
@@ -166,7 +175,8 @@ namespace toio.Simulator
                 {
                     case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
                     case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
-                    default : this.impl = new CubeSimImpl_v2_1_0(this);break;
+                    case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
+                    default : this.impl = new CubeSimImpl_v2_2_0(this);break;
                 }
                 this._InitPresetSounds();
             #endif
@@ -260,11 +270,17 @@ namespace toio.Simulator
             impl.StartNotification_CollisionDetected(action);
         }
 
+        /// <summary>
+        /// ダブルタップのイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_DoubleTap(System.Action<bool> action)
         {
             impl.StartNotification_DoubleTap(action);
         }
 
+        /// <summary>
+        /// ポーズのイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_Pose(System.Action<Cube.PoseType> action)
         {
             impl.StartNotification_Pose(action);
