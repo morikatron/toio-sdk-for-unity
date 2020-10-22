@@ -138,12 +138,10 @@ namespace toio.MathUtils{
         }
 
         public static int ToInt(double x){
-            if (x >= 0) return (int)(x + 0.499);
-            else return (int)(x - 0.499);
+            return (int)(Round(x));
         }
         public static int ToInt(float x){
-            if (x >= 0) return (int)(x + 0.499f);
-            else return (int)(x - 0.499f);
+            return (int)(Round(x));
         }
     }
 }
