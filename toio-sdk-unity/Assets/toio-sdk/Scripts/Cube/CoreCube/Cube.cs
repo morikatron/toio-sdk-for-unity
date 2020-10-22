@@ -49,9 +49,9 @@ namespace toio
         public abstract int maxSpd { get; }
 
         // ver2.1.0
-        // コアキューブのダブルタック状態
+        // コアキューブのダブルタップ状態
         public virtual bool isDoubleTap { get; protected set; }
-        // コアキューブの姿態
+        // コアキューブの姿勢状態
         public virtual PoseType pose { get; protected set; }
 
         // ver2.2.0
