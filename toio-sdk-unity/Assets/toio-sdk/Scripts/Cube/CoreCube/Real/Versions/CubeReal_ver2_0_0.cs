@@ -328,7 +328,7 @@ namespace toio
         /// <summary>
         /// 自動通知機能の購読を開始する
         /// </summary>
-        public override async UniTask StartNotifications()
+        public override async UniTask Initialize()
         {
             characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
 #if !UNITY_EDITOR && UNITY_ANDROID
