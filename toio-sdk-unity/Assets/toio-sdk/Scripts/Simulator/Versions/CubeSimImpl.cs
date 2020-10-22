@@ -88,6 +88,15 @@ namespace toio.Simulator
             internal set{ NotSupportedWarning(); }}
         public virtual void StartNotification_Shake(System.Action<bool> action)
         { NotSupportedWarning(); }
+        // Motor Speed
+        public virtual int leftMotorSpeed {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual int rightMotorSpeed {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
+        { NotSupportedWarning(); }
 
 
 

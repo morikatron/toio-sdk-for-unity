@@ -18,7 +18,8 @@ namespace toio.Simulator
         public static readonly float WidthM= 0.0318f;
         // ratio of Speed(Dot/s) and order ( 2.04f in real test )
         // theorically, 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
-        public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM; // about 2.06
+        public static readonly float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
+        public static readonly float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
 
 
         // ======== Simulator Settings ========
@@ -151,6 +152,17 @@ namespace toio.Simulator
         /// シェイクが検出されたか
         /// </summary>
         public bool shake{ get {return impl.shake;} internal set {impl.shake = value;} }
+
+        /// <summary>
+        /// コアキューブのモーター ID 1（左）の速度
+        /// </summary>
+        public int leftMotorSpeed{ get {return impl.leftMotorSpeed;} }
+
+        /// <summary>
+        /// コアキューブのモーター ID 2（右）の速度
+        /// </summary>
+        public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
+
 
         // ======== Objects ========
         private Rigidbody rb;
@@ -298,6 +310,15 @@ namespace toio.Simulator
         {
             impl.StartNotification_Shake(action);
         }
+
+        /// <summary>
+        /// モーター速度読み取りのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_MotorSpeed(System.Action<int, int> action)
+        {
+            impl.StartNotification_MotorSpeed(action);
+        }
+
 
         // ============ コマンド ============
 
