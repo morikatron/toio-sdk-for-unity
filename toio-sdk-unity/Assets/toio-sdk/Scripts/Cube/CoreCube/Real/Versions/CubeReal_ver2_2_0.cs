@@ -32,39 +32,13 @@ namespace toio
 
         protected override void Recv_sensor(byte[] data)
         {
+            base.Recv_sensor(data);
+
             // https://toio.github.io/toio-spec/docs/ble_sensor
             int type = data[0];
             if (1 == type)
             {
-                var _isSloped = data[1] == 0 ? true : false;
-                var _isCollisionDetected = data[2] == 1 ? true : false;
-                var _isDoubleTap = data[3] == 1 ? true : false;
-                PoseType _pose = (PoseType)data[4];
                 var _isShake = data[5] == 1 ? true : false;
-
-                if (_isSloped != this.isSloped)
-                {
-                    this.isSloped = _isSloped;
-                    this.slopeCallback.Notify(this);
-                }
-
-                if (_isCollisionDetected != this.isCollisionDetected)
-                {
-                    this.isCollisionDetected = _isCollisionDetected;
-                    this.collisionCallback.Notify(this);
-                }
-
-                if (_isDoubleTap != this.isDoubleTap)
-                {
-                    this.isDoubleTap = _isDoubleTap;
-                    this.doubleTapCallback.Notify(this);
-                }
-
-                if (_pose != this.pose)
-                {
-                    this.pose = _pose;
-                    this.poseCallback.Notify(this);
-                }
 
                 if (_isShake != this.isShake)
                 {
@@ -83,6 +57,7 @@ namespace toio
             buff[0] = 0x1c;
             buff[1] = 0;
             buff[2] = BitConverter.GetBytes(valid)[0];
+            this.Request(CHARACTERISTIC_SOUND, buff, true, ORDER_TYPE.Strong, "MotorReadValidation", valid);
         }
 
         //キューブのモーター速度情報を取得
@@ -108,24 +83,7 @@ namespace toio
 
         public override async UniTask Initialize()
         {
-            characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#else
-            await UniTask.Delay(1);
-#endif
-            characteristicTable[CHARACTERISTIC_ID].StartNotifications(this.Recv_Id);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
-            this.characteristicTable[CHARACTERISTIC_BUTTON].StartNotifications(this.Recv_button);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
-            this.characteristicTable[CHARACTERISTIC_SENSOR].StartNotifications(this.Recv_sensor);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
+        await base.Initialize();
 
         // モーターの速度情報の取得の有効化
             this.MotorReadValidation(true);
