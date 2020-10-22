@@ -14,7 +14,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      純粋仮想関数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        public abstract UniTask StartNotifications();
+        public abstract UniTask Initialize();
         protected abstract void Recv_battery(byte[] data);
         protected abstract void Recv_Id(byte[] data);
         protected abstract void Recv_button(byte[] data);

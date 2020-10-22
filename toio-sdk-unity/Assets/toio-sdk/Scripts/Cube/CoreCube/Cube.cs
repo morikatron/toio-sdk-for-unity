@@ -49,7 +49,6 @@ namespace toio
         public abstract int maxSpd { get; }
 
         // ver2.1.0
-
         // コアキューブのダブルタック状態
         public virtual bool isDoubleTap { get; protected set; }
         // コアキューブの姿態
@@ -173,10 +172,16 @@ namespace toio
         public virtual CallbackProvider idMissedCallback { get { return this.unsupportingCallback; } }
         // StandardID Missed コールバック
         public virtual CallbackProvider standardIdMissedCallback { get { return this.unsupportingCallback; } }
+
         // Double Tap コールバック
         public virtual CallbackProvider doubleTapCallback { get { return this.unsupportingCallback; } }
         // 姿態検出コールバック
         public virtual CallbackProvider poseCallback { get { return this.unsupportingCallback; } }
+
+        // シェイクコールバック
+        public virtual CallbackProvider shakeCallback { get { return this.unsupportingCallback; } }
+        // モータースピードコールバック
+        public virtual CallbackProvider motorSpeedCallback { get { return this.unsupportingCallback; } }
 
 
         public Cube()
