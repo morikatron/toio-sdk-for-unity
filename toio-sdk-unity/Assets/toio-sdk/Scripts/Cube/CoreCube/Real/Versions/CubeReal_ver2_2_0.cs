@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+
 namespace toio
 {
     public class CubeReal_ver2_2_0 : CubeReal_ver2_1_0
@@ -50,14 +51,14 @@ namespace toio
 
 
         // キューブのモーター速度情報の取得を有効化します
-        protected void MotorReadEnable(bool valid)
+        protected void EnableMotorRead(bool valid)
         {
             if (!this.isConnected) { return; }
             byte[] buff = new byte[3];
             buff[0] = 0x1c;
             buff[1] = 0;
             buff[2] = BitConverter.GetBytes(valid)[0];
-            this.Request(CHARACTERISTIC_SOUND, buff, true, ORDER_TYPE.Strong, "MotorReadEnable", valid);
+            this.Request(CHARACTERISTIC_SOUND, buff, true, ORDER_TYPE.Strong, "EnableMotorRead", valid);
         }
 
         //キューブのモーター速度情報を取得
@@ -86,7 +87,7 @@ namespace toio
             await base.Initialize();
 
             // モーターの速度情報の取得の有効化
-            this.MotorReadEnable(true);
+            this.EnableMotorRead(true);
 #if !UNITY_EDITOR && UNITY_ANDROID
             await UniTask.Delay(500);
 #endif
