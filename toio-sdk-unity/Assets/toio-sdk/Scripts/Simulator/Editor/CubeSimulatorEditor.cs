@@ -10,7 +10,7 @@ namespace toio.Simulator
     {
 
         string[] poseNames = new string[6]{"up", "down", "front", "back", "right", "left"};
-        string[] versionNames = new string[2]{"2.0.0", "2.1.0"};
+        string[] versionNames = new string[3]{"2.0.0", "2.1.0", "2.2.0"};
 
         public override void OnInspectorGUI()
         {
@@ -101,6 +101,12 @@ namespace toio.Simulator
                         case 6 : cube.transform.right  = -Vector3.up; break;
                     }
                 }
+
+                var shake_new = GUILayout.Toggle(cube.shake, "shake 状態");
+                if (cube.shake!=shake_new){
+                    cube.shake = shake_new;
+                }
+                EditorGUILayout.Space();
 
                 EditorGUILayout.EndVertical();
             }

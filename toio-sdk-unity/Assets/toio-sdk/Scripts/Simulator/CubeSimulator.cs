@@ -18,17 +18,19 @@ namespace toio.Simulator
         public static readonly float WidthM= 0.0318f;
         // ratio of Speed(Dot/s) and order ( 2.04f in real test )
         // theorically, 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
-        public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM; // about 2.06
+        public static readonly float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
+        public static readonly float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
 
 
         // ======== Simulator Settings ========
         public enum Version
         {
             v2_0_0,
-            v2_1_0
+            v2_1_0,
+            v2_2_0
         }
         [SerializeField]
-        public Version version = Version.v2_1_0;
+        public Version version = Version.v2_2_0;
         [SerializeField]
         public float motorTau = 0.04f; // parameter of one-order model for motor, τ
         [SerializeField]
@@ -131,9 +133,35 @@ namespace toio.Simulator
         /// 衝突が検出されたか
         /// </summary>
         public bool collisionDetected{ get {return impl.collisionDetected;} internal set {impl.collisionDetected = value;} }
+
         // 2.1.0
+
+        /// <summary>
+        /// ダブルタップが検出されたか
+        /// </summary>
         public bool doubleTap{ get {return impl.doubleTap;} internal set {impl.doubleTap = value;} }
+
+        /// <summary>
+        /// ポーズ
+        /// </summary>
         public Cube.PoseType pose{ get {return impl.pose;} internal set {impl.pose = value;} }
+
+        // 2.2.0
+
+        /// <summary>
+        /// シェイクが検出されたか
+        /// </summary>
+        public bool shake{ get {return impl.shake;} internal set {impl.shake = value;} }
+
+        /// <summary>
+        /// コアキューブのモーター ID 1（左）の速度
+        /// </summary>
+        public int leftMotorSpeed{ get {return impl.leftMotorSpeed;} }
+
+        /// <summary>
+        /// コアキューブのモーター ID 2（右）の速度
+        /// </summary>
+        public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
 
 
         // ======== Objects ========
@@ -164,7 +192,8 @@ namespace toio.Simulator
                 {
                     case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
                     case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
-                    default : this.impl = new CubeSimImpl_v2_1_0(this);break;
+                    case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
+                    default : this.impl = new CubeSimImpl_v2_2_0(this);break;
                 }
                 this._InitPresetSounds();
             #endif
@@ -258,15 +287,38 @@ namespace toio.Simulator
             impl.StartNotification_CollisionDetected(action);
         }
 
+        /// <summary>
+        /// ダブルタップのイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_DoubleTap(System.Action<bool> action)
         {
             impl.StartNotification_DoubleTap(action);
         }
 
+        /// <summary>
+        /// ポーズのイベントコールバックを設定する
+        /// </summary>
         public void StartNotification_Pose(System.Action<Cube.PoseType> action)
         {
             impl.StartNotification_Pose(action);
         }
+
+        /// <summary>
+        /// シェイク検出のイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_Shake(System.Action<bool> action)
+        {
+            impl.StartNotification_Shake(action);
+        }
+
+        /// <summary>
+        /// モーター速度読み取りのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_MotorSpeed(System.Action<int, int> action)
+        {
+            impl.StartNotification_MotorSpeed(action);
+        }
+
 
         // ============ コマンド ============
 

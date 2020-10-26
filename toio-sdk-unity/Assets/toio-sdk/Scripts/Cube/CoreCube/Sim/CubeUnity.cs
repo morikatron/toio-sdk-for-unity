@@ -18,6 +18,8 @@ namespace toio
         CallbackProvider _standardIdMissedCallback = new CallbackProvider();
         CallbackProvider _doubleTapCallback = new CallbackProvider();
         CallbackProvider _poseCallback = new CallbackProvider();
+        CallbackProvider _shakeCallback = new CallbackProvider();
+        CallbackProvider _motorSpeedCallback = new CallbackProvider();
 
         public CubeUnity(GameObject gameObject)
         {
@@ -27,22 +29,26 @@ namespace toio
         }
         public bool Init()
         {
-			if (isConnected)
-			{
-				simulator.StartNotification_Button(this.Recv_Button);
-				simulator.StartNotification_StandardID(this.Recv_StandardId);
-				simulator.StartNotification_PositionID(this.Recv_PositionId);
-				simulator.StartNotification_StandardIDMissed(this.Recv_StandardIdMissed);
-				simulator.StartNotification_PositionIDMissed(this.Recv_PositionIdMissed);
+            if (isConnected)
+            {
+                simulator.StartNotification_Button(this.Recv_Button);
+                simulator.StartNotification_StandardID(this.Recv_StandardId);
+                simulator.StartNotification_PositionID(this.Recv_PositionId);
+                simulator.StartNotification_StandardIDMissed(this.Recv_StandardIdMissed);
+                simulator.StartNotification_PositionIDMissed(this.Recv_PositionIdMissed);
 
-				simulator.StartNotification_Sloped(this.Recv_Sloped);
-				simulator.StartNotification_CollisionDetected(this.Recv_CollisionDetected);
+                simulator.StartNotification_Sloped(this.Recv_Sloped);
+                simulator.StartNotification_CollisionDetected(this.Recv_CollisionDetected);
 
-				simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
-				simulator.StartNotification_Pose(this.Recv_Pose);
-				return true;
-			}
-			return false;
+                simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
+                simulator.StartNotification_Pose(this.Recv_Pose);
+
+                simulator.StartNotification_Shake(this.Recv_Shake);
+                simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
+
+                return true;
+            }
+            return false;
         }
 
         public override string id { get; protected set; }
@@ -66,8 +72,13 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return simulator.maxMotor; } }
+        // ver2.1.0
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
+        // ver2.2.0
+        public override bool isShake { get; protected set; }
+        public override int leftSpeed { get; protected set; }
+        public override int rightSpeed { get; protected set; }
 
         // コールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
@@ -79,6 +90,8 @@ namespace toio
         public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
         public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
         public override CallbackProvider poseCallback { get { return this._poseCallback; } }
+        public override CallbackProvider shakeCallback { get { return this._shakeCallback; } }
+        public override CallbackProvider motorSpeedCallback { get { return this._motorSpeedCallback; } }
 
         ///////////////   RETRIEVE INFO   ////////////
 
@@ -120,29 +133,44 @@ namespace toio
                 this.standardIdMissedCallback.Notify(this);
         }
 
-        private void Recv_Sloped(bool sloped)// コアキューブの傾き状態
+        private void Recv_Sloped(bool sloped)
         {
                 this.isSloped = sloped;
                 this.slopeCallback.Notify(this);
         }
 
-        private void Recv_CollisionDetected(bool collisionDetected)// コアキューブの衝突状態
+        private void Recv_CollisionDetected(bool collisionDetected)
         {
                 this.isCollisionDetected = collisionDetected;
                 this.collisionCallback.Notify(this);
         }
 
-        private void Recv_DoubleTap(bool doubleTap)// コアキューブのダブルタップ
+        private void Recv_DoubleTap(bool doubleTap)
         {
                 this.isDoubleTap = doubleTap;
                 this.doubleTapCallback.Notify(this);
         }
 
-        private void Recv_Pose(PoseType posed)// コアキューブの姿態
+        private void Recv_Pose(PoseType posed)
         {
                 this.pose = posed;
                 this.poseCallback.Notify(this);
         }
+
+        private void Recv_Shake(bool shake)
+        {
+                this.isShake = shake;
+                this.shakeCallback.Notify(this);
+        }
+
+        private void Recv_MotorSpeed(int left, int right)
+        {
+                this.leftSpeed = left;
+                this.rightSpeed = right;
+                this.motorSpeedCallback.Notify(this);
+        }
+
+
         ///////////////   COMMAND API  ///////////////
 
         public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
