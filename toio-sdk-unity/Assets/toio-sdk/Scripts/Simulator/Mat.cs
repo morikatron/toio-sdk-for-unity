@@ -104,7 +104,7 @@ namespace toio.Simulator
         /// </summary>
         public int UnityDeg2MatDeg(float deg)
         {
-            return (int)(deg-this.transform.eulerAngles.y-90+0.49999f)%360;
+            return Mathf.RoundToInt(deg-this.transform.eulerAngles.y-90)%360;
         }
         /// <summary>
         /// Unity上の角度をマットmat上の角度に変換
@@ -120,7 +120,7 @@ namespace toio.Simulator
         /// </summary>
         public float MatDeg2UnityDeg(float deg)
         {
-            return (int)(deg+this.transform.eulerAngles.y+90+0.49999f)%360;
+            return Mathf.RoundToInt(deg+this.transform.eulerAngles.y+90)%360;
         }
         /// <summary>
         /// マットmat上の角度をUnity上の角度に変換
@@ -153,8 +153,8 @@ namespace toio.Simulator
 
             // マット単位に変換
             return new Vector2Int(
-                (int)(coord.x*DotPerM + this.xCenter + 0.4999f),
-                (int)(coord.y*DotPerM + this.yCenter + 0.4999f)
+                Mathf.RoundToInt(coord.x*DotPerM + this.xCenter),
+                Mathf.RoundToInt(coord.y*DotPerM + this.yCenter)
             );
         }
 
