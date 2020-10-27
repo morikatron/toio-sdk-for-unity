@@ -70,6 +70,18 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [複数目標指定付きモーター制御の応答（new）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
 | 設定               | [ダブルタップ検出の時間間隔の設定（new）](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | x             | x            |
 
+#### ファームウェアバージョン 2.2.0
+
+| 機能タイプ         | 機能                                                                                                                                       | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
+| モーションセンサー | [シェイク検出（new）](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                       | o             | o            |
+| 磁気センサー       | [磁気センサー情報の要求（new）](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
+|                    | [磁気センサー情報の取得（new）](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
+| モーター           | [モーターの速度情報の取得（new）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得)                                | o             | o            |
+| 設定               | [磁気センサーの設定（new）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)                                    | x             | x            |
+|                    | [磁気センサーの設定の応答（new）](https://toio.github.io/toio-spec/docs/ble_configuration#[磁気センサーの設定の応答)                       | x             | x            |
+|                    | [モーターの速度情報の取得の設定（new）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)            | o             | o            |
+|                    | [モーターの速度情報の取得の設定の応答（new）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定の応答)| o             | o            |
 <br>
 
 # 2. 既存 toio™ ライブラリ(toio.js)との比較
@@ -208,6 +220,41 @@ public bool isGrounded { get; protected set; }
 // キューブの最高速度を表す変数
 // ファームウェアバージョン毎に異なるため用意されています。
 public int maxSpd { get; }
+
+// ver2.1.0
+// キューブのダブルタップ状態
+// 一度タップされてから一定時間内に再度タップされます。
+// コールバック機能：doubleTapCallback
+public virtual bool isDoubleTap {
+    get{UnsupportedWarning(); return default;}
+    protected set{UnsupportedWarning();}}
+
+// キューブの姿態
+// キューブの水平面に対する姿勢が変化したときに値が変わります
+// コールバック機能：poseCallback
+public virtual PoseType pose {
+    get{UnsupportedWarning(); return default;}
+    protected set{UnsupportedWarning();}}
+
+// ver2.2.0
+// キューブのシェイク状態
+// キューブを振ると振った強さに応じて値が変わります。
+// コールバック機能：shakeCallback
+public virtual bool isShake {
+    get{UnsupportedWarning(); return default;}
+    protected set{UnsupportedWarning();}}
+
+// キューブのモーター ID 1（左）の速度
+// コールバック機能：motorSpeedCallba
+public virtual int leftSpeed {
+    get{UnsupportedWarning(); return default;}
+    protected set{UnsupportedWarning();}}
+
+// キューブのモーター ID 2（右）の速度
+// コールバック機能：motorSpeedCallba
+public virtual int rightSpeed {
+    get{UnsupportedWarning(); return default;}
+    protected set{UnsupportedWarning();}}
 ```
 
 <br>
@@ -237,6 +284,18 @@ public virtual CallbackProvider idMissedCallback { get; }
 public virtual CallbackProvider standardIdCallback { get; }
 // StandardID Missed コールバック
 public virtual CallbackProvider standardIdMissedCallback { get; }
+
+// ver2.1.0
+// ダブルタップコールバック
+public virtual CallbackProvider doubleTapCallback { get { return this.unsupportingCallback; } }
+// 姿態検出コールバック
+public virtual CallbackProvider poseCallback { get { return this.unsupportingCallback; } }
+
+// ver2.2.0
+// シェイクコールバック
+public virtual CallbackProvider shakeCallback { get { return this.unsupportingCallback; } }
+// モータースピードコールバック
+public virtual CallbackProvider motorSpeedCallback { get { return this.unsupportingCallback; } }
 ```
 
 ## 3.3. メソッド

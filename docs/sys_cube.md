@@ -96,6 +96,11 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 <b>ver2_1_0：</b>
 
 - 実装コード：[CubeReal_ver2_1_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
+- 通信仕様：https://toio.github.io/toio-spec/docs/2.1.0/about
+
+<b>ver2_2_0：</b>
+
+- 実装コード：[CubeReal_ver2_2_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
 - 通信仕様：https://toio.github.io/toio-spec/docs/about
 
 <br>
