@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace toio
 {
@@ -29,6 +31,38 @@ namespace toio
         : base(peripheral, characteristicTable)
         {
         }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < send >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// キューブのダブルタップ検出の時間間隔を設定します
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定
+        /// </summary>
+        /// <param name="level">ダブルタップ検出の時間間隔</param>
+        /// <param name="order">命令の優先度</param>
+        public override void ConfigDoubleTapInterval(int level, ORDER_TYPE order)
+        {
+            if (!this.isConnected) { return; }
+
+            level = Mathf.Clamp(level, 1, 7);
+
+            byte[] buff = new byte[3];
+            buff[0] = 17;
+            buff[1] = 0;
+            buff[2] = BitConverter.GetBytes(level)[0];
+
+            this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigDoubleTapInterval", level);
+        }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < subscribe >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         protected override void Recv_sensor(byte[] data)
         {
