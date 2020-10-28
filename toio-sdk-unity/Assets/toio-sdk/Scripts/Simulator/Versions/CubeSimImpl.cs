@@ -95,6 +95,8 @@ namespace toio.Simulator
         public virtual int rightMotorSpeed {
             get{ NotSupportedWarning(); return default; }
             protected set{ NotSupportedWarning(); }}
+        public virtual void EnableMotorSpeed(bool enabled)
+        { NotSupportedWarning(); }
         public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
         { NotSupportedWarning(); }
 

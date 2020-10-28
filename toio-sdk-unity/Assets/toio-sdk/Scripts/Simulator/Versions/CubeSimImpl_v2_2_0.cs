@@ -39,19 +39,26 @@ namespace toio.Simulator
 
 
         // ---------- Motor Speed -----------
+        protected bool motorSpeedEnabled = false;
         public override int leftMotorSpeed {get; protected set;}
         public override int rightMotorSpeed {get; protected set;}
         protected System.Action<int, int> motorSpeedCallback = null;
+        public override void EnableMotorSpeed(bool enabled)
+        {
+            this.motorSpeedEnabled = enabled;
+        }
         public override void StartNotification_MotorSpeed(System.Action<int, int> action)
         {
             this.motorSpeedCallback = action;
-            this.motorSpeedCallback.Invoke(leftMotorSpeed, rightMotorSpeed);
+            if (motorSpeedEnabled)
+                this.motorSpeedCallback.Invoke(leftMotorSpeed, rightMotorSpeed);
         }
 
         protected void _SetMotorSpeed(int left, int right)
         {
-            if (this.leftMotorSpeed != left || this.rightMotorSpeed != right)
-                this.motorSpeedCallback?.Invoke(left, right);
+            if (motorSpeedEnabled)
+                if (this.leftMotorSpeed != left || this.rightMotorSpeed != right)
+                    this.motorSpeedCallback?.Invoke(left, right);
             this.leftMotorSpeed = left;
             this.rightMotorSpeed = right;
         }

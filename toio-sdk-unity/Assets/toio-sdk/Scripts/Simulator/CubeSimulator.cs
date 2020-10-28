@@ -374,12 +374,23 @@ namespace toio.Simulator
             impl.StopSound();
         }
 
+
+        // ============ 設定 ============
+
         /// <summary>
         /// 水平検出の閾値を設定する（度）
         /// </summary>
         public void SetSlopeThreshold(int degree)
         {
             impl.SetSlopeThreshold(degree);
+        }
+
+        /// <summary>
+        /// モーターの速度情報の取得の設定
+        /// </summary>
+        public void EnableMotorSpeed(bool enabled)
+        {
+            impl.EnableMotorSpeed(enabled);
         }
 
 
