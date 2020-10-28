@@ -56,7 +56,8 @@ namespace toio
         public override string version { get {
                 if (simulator.version == CubeSimulator.Version.v2_0_0) return "2.0.0";
                 else if (simulator.version == CubeSimulator.Version.v2_1_0) return "2.1.0";
-                return "2.0.0";
+                else if (simulator.version == CubeSimulator.Version.v2_2_0) return "2.2.0";
+                return "2.2.0";
         } }
         public override int x { get; protected set; }
         public override int y { get; protected set; }
