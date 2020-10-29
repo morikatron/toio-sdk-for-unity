@@ -57,7 +57,7 @@ namespace toio
             buff[1] = 0;
             buff[2] = BitConverter.GetBytes(interval)[0];
 
-            this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigDoubleTapinterval", Interval);
+            this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigDoubleTapinterval", interval);
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/

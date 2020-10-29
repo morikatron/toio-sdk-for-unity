@@ -19,7 +19,7 @@ public class Sample_Sensor : MonoBehaviour
     UnityEngine.UI.Text textPose;
     UnityEngine.UI.Text textShake;
     UnityEngine.UI.Text textSpeed;
-    
+
     async void Start()
     {
         var peripheral = await new NearestScanner().Scan();
@@ -49,8 +49,15 @@ public class Sample_Sensor : MonoBehaviour
         this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
 
-        cube.ConfigDoubleTapInterval(7);
     }
+
+    public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void Backward() { cube.Move(-40, -40, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void TurnRight() { cube.Move(60, 30, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void DoubleTaplevel7() { cube.ConfigDoubleTapInterval(7, order:Cube.ORDER_TYPE.Strong); }
+    public void DoubleTaplevel1() { cube.ConfigDoubleTapInterval(1, order:Cube.ORDER_TYPE.Strong); }
 
     public void FixedUpdate()
     {
