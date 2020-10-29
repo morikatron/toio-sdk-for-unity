@@ -51,14 +51,14 @@ namespace toio
 
 
         // キューブのモーター速度情報の取得を有効化します
-        protected void EnableMotorRead(bool valid)
+        public override void EnableMotorRead(bool valid)
         {
             if (!this.isConnected) { return; }
             byte[] buff = new byte[3];
             buff[0] = 0x1c;
             buff[1] = 0;
             buff[2] = BitConverter.GetBytes(valid)[0];
-            this.Request(CHARACTERISTIC_SOUND, buff, true, ORDER_TYPE.Strong, "EnableMotorRead", valid);
+            this.Request(CHARACTERISTIC_CONFIG, buff, true, ORDER_TYPE.Strong, "EnableMotorRead", valid);
         }
 
         //キューブのモーター速度情報を取得
@@ -85,12 +85,6 @@ namespace toio
         public override async UniTask Initialize()
         {
             await base.Initialize();
-
-            // モーターの速度情報の取得の有効化
-            this.EnableMotorRead(true);
-#if !UNITY_EDITOR && UNITY_ANDROID
-            await UniTask.Delay(500);
-#endif
 
             this.characteristicTable[CHARACTERISTIC_MOTOR].StartNotifications(this.Recv_motor);
 #if !UNITY_EDITOR && UNITY_ANDROID

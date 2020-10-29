@@ -160,6 +160,7 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
+        public virtual void EnableMotorRead(bool valid){ UnsupportedWarning(); }
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/

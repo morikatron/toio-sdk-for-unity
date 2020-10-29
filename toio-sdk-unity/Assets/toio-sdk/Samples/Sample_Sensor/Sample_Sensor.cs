@@ -56,8 +56,7 @@ public class Sample_Sensor : MonoBehaviour
     public void TurnRight() { cube.Move(60, 30, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
-    public void DoubleTaplevel7() { cube.ConfigDoubleTapInterval(7, order:Cube.ORDER_TYPE.Strong); }
-    public void DoubleTaplevel1() { cube.ConfigDoubleTapInterval(1, order:Cube.ORDER_TYPE.Strong); }
+    public void EnableMotor() { cube.EnableMotorRead(true); }
 
     public void FixedUpdate()
     {
