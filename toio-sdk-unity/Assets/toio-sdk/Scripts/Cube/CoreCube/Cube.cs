@@ -156,9 +156,9 @@ namespace toio
         /// キューブのダブルタップ検出の時間間隔を設定します
         /// https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定
         /// </summary>
-        /// <param name="level">ダブルタップ検出の時間間隔</param>
+        /// <param name="interval">ダブルタップ検出の時間間隔</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void ConfigDoubleTapInterval(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
