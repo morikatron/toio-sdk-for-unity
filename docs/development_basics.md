@@ -11,9 +11,15 @@
 - 重要事項
   - toio-sdk/Scriptsにはソースコードを置かない方が良い
 
-- Unity Assembly Definitionの説明
-  - モジュールの依存関係について
-- T4Uの依存関係
+#### アセンブリ定義について
+
+本 SDK では Assembly Definition という機能を利用し、スクリプトを複数のアセンブリに分割しています。<br>
+この機能を利用して、分割したアセンブリ間の依存関係を設定する事で、コンパイル時間を削減する事が可能です。<br>
+Assembly Definitionの詳細については[【コチラ】](https://docs.unity3d.com/ja/2018.4/Manual/ScriptCompilationAssemblyDefinitionFiles.html)をご参照下さい。
+
+#### 本 SDK におけるアセンブリ依存関係
+
+本 SDK では下図のような構成でアセンブリ定義ファイルを配置しています。
 
 ```
 Assets
@@ -28,6 +34,9 @@ Assets
         └── PlayMode
             └── PlayMode.asmdef
 ```
+
+アセンブリ定義ファイルにはアセンブリ間の依存関係を設定する事が出来ます。
+本 SDK では下図のようにアセンブリ間の依存関係を設定しています。<br>
 
 <div align="center">
 <img width=500 src="res/development/dependencies.png">
