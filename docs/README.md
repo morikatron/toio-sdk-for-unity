@@ -4,27 +4,28 @@
 
 ### 【 １ 】セットアップ
 
-❶開発環境を整える　[→「事前準備」](preparation.md)
+❶開発環境を整える [→「事前準備」](preparation.md)
 <br>
-❷Unity で新規プロジェクトを作り、新規プロジェクトに toio SDK for Unity をのインストール　[→「toio SDK for Unity のインストール」](download_sdk.md)
+❷Unity で新規プロジェクトを作り、 toio SDK for Unity を読み込む [→「toio SDK for Unity インストール」](download_sdk.md)
 <br><br>
-### 【 1.5 】開発前に
 
-[シミュレータの操作方法](development_simulator.md)
-<br><br>
+
+
 ### 【 2 】開発
 
-❶Assetsフォルダの下に開発用フォルダを作成する　[→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
+❶開発前に確認する [→シミュレータの操作方法](development_simulator.md)
 <br>
-❷新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」](tutorials_basic.md#2-シーン作成)
+❷Assetsフォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
 <br>
-❸ Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく ★A
+❸新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
+<br>
+❹ Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく ★A
 <br><br>
 ### 【 3 】ビルド
 
-❶スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　→[「iOSビルド」](build_ios.md) |[「WebGL](build_web.md)　★B
+❶スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「iOSビルド」](build_ios.md) |[「WebGL](build_web.md)　★B
 <br>
-❷ ★`A` ★`B` を繰り返してプログラムを仕上げていく♪
+❷ ★`A` ★`B` を繰り返してプログラムを仕上げていく♪♪
 
 <br>
 
