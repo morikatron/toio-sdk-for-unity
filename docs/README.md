@@ -2,7 +2,7 @@
 
 ## 開発概要
 
-### 【１】セットアップ
+### 【 1 】セットアップ
 
 ❶開発環境を整える [→「事前準備」](preparation.md)
 <br>
@@ -15,15 +15,16 @@
 
 ❶開発前に確認する [→シミュレータの操作方法](development_simulator.md)
 <br>
-❷Assetsフォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
+❷Assets フォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
 <br>
 ❸新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
 <br>
 ❹ Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく ★A
 <br><br>
+
 ### 【 3 】ビルド
 
-❶スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「iOSビルド」](build_ios.md) |[「WebGLビルド」](build_web.md)　★B
+❶スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「 iOS ビルド」](build_ios.md) |[「 WebGL ビルド」](build_web.md)　★B
 <br>
 ❷ ★`A` ★`B` を繰り返してプログラムを仕上げていく♪♪
 
