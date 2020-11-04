@@ -21,6 +21,7 @@
 
 ### 開発
 - [開発前に読む注意事項](development_basics.md)
+- [シミュレータの操作方法](development_simulator.md)
 
 ## チュートリアル
 
