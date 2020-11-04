@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+### Fixed
+
+- Movement.Exec() -> Movement.Exec(bool border=true)
+
 ## [1.0.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.0.1) - 2020-10-08
 
 ### Added
