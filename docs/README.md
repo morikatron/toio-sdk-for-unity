@@ -13,7 +13,7 @@
 
 #### 開発
 
-3. Assetsフォルダの下に開発用フォルダを作成するのがオススメです　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
+3. Assetsフォルダの下に開発用フォルダを作成するのがオススメです　[→「シーン作成」参照](development_basics.md)
 
 4. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
 5. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
@@ -24,20 +24,6 @@
 7. `4` `5` を繰り返してプログラムを仕上げていく
 
 <br>
-
-
-## 基本
-
-### セットアップ
-- [事前準備](preparation.md)
-- [toio SDK for Unity のインストール](download_sdk.md)
-
-### ビルド
-- [iOS ビルド](build_ios.md)
-- [ウェブアプリビルド](build_web.md)
-
-### 開発
-- [開発前に読む注意事項](development_basics.md)
 
 ## チュートリアル
 
