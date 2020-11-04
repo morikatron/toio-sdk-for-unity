@@ -2,12 +2,29 @@
 
 ## 開発手順の概略
 
-1. 開発環境を整える　[→「事前準備」参照](preparation.md)
-1. Unity で新規プロジェクトを作り、新規プロジェクトに toio SDK for Unity を読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
-1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
-1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](build_ios.md)
-1. `4` `5` を繰り返してプログラムを仕上げていく
+#### セットアップ
+
+1. 開発環境を整える　[詳細](preparation.md)
+2. Unity で新規プロジェクトを作り、新規プロジェクトに toio SDK for Unity をのインストール　[詳細](download_sdk.md)
+
+#### 開発前に知っておく
+
+- [シミュレータの操作方法](development_simulator.md)
+
+#### 開発
+
+3. Assetsフォルダの下に開発用フォルダを作成するのがオススメです　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
+
+4. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
+5. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
+
+#### ビルド
+
+6. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[iOSビルド](build_ios.md) | [WebGL](build_web.md) 
+7. `4` `5` を繰り返してプログラムを仕上げていく
+
+<br>
+
 
 ## 基本
 
@@ -21,7 +38,6 @@
 
 ### 開発
 - [開発前に読む注意事項](development_basics.md)
-- [シミュレータの操作方法](development_simulator.md)
 
 ## チュートリアル
 
