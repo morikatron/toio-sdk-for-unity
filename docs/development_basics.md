@@ -1,17 +1,12 @@
-# 開発前に読む注意事項
+# 開発に関する注意事項
 
 ## 目次
 
-- [1. toio-sdkにはファイルを追加しない](development_basics.md#1-toio-sdkにはファイルを追加しない)
+- [1. スクリプトの依存関係](development_basics.md#1-スクリプトの依存関係)
 
 <br>
 
-# 1. toio-sdkにはファイルを追加しない
-
-
-<details>
-<summary>詳細説明</summary>
-
+# 1. スクリプトの依存関係
 
 #### アセンブリ定義について
 
@@ -43,4 +38,6 @@ Assets
 <img width=500 src="res/development/dependencies.png">
 </div>
 
-</details>
+#### toio-sdk/Scriptsにはソースコードを置かない
+
+アセンブリ間の定義は
