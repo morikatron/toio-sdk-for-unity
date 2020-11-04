@@ -19,6 +19,9 @@
 - [iOS ビルド](build_ios.md)
 - [ウェブアプリビルド](build_web.md)
 
+### 開発
+- [開発前に読む注意事項](development_basics.md)
+
 ## チュートリアル
 
 ### 基本
