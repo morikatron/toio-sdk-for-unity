@@ -1,9 +1,6 @@
 {
-    "name": "AllProject",
-    "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
-    ],
-    "optionalUnityReferences": [],
+    "name": "ble-plugin-unity",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -11,5 +8,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
