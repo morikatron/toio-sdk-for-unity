@@ -1,27 +1,34 @@
 # toio SDK for Unity ドキュメント
 
-## 開発手順の概略
+## 開発概要
 
-1. 開発環境を整える　[→「事前準備」参照](preparation.md)
-1. Unity で新規プロジェクトを作り、新規プロジェクトに toio SDK for Unity を読み込む　[→「toio SDK for Unityのインストール」参照](download_sdk.md)
-1. 新しいシーンを作って、シミュレータの Prefab を読み込む（又は既存のサンプルシーンを複製する）　[→「シーン作成」参照](tutorials_basic.md#2-シーン作成)
-1. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認　[→「iOSビルド」参照](build_ios.md)
-1. `4` `5` を繰り返してプログラムを仕上げていく
+### 【 1 】セットアップ
 
-## 基本
+❶開発環境を整える [→「事前準備」](preparation.md)
+<br>
+❷Unity で新規プロジェクトを作り、 toio SDK for Unity を読み込む [→「toio SDK for Unity インストール」](download_sdk.md)
+<br><br>
 
-### セットアップ
-- [事前準備](preparation.md)
-- [toio SDK for Unity のインストール](download_sdk.md)
 
-### ビルド
-- [iOS ビルド](build_ios.md)
-- [ウェブアプリビルド](build_web.md)
 
-### 開発
-- [開発前に読む注意事項](development_basics.md)
-- [シミュレータの操作方法](development_simulator.md)
+### 【 2 】開発
+
+❶開発前に確認する [→シミュレータの操作方法](development_simulator.md)
+<br>
+❷Assets フォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
+<br>
+❸新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
+<br>
+❹ Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく ★A
+<br><br>
+
+### 【 3 】ビルド
+
+❶スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「 iOS ビルド」](build_ios.md) |[「 WebGL ビルド」](build_web.md)　★B
+<br>
+❷ ★`A` ★`B` を繰り返してプログラムを仕上げていく
+
+<br>
 
 ## チュートリアル
 
@@ -61,6 +68,8 @@
   - [1.3. ボイドによる集団制御](tutorials_navigator.md#13-ボイドによる集団制御)
   - [1.4. ボイド + 衝突回避](tutorials_navigator.md#14-ボイド--衝突回避)
 
+<br>
+
 ## サンプル
 
 ### 基礎
@@ -95,6 +104,8 @@
 
   リアルのキューブとの接続・シミュレータ上のキューブと相関インスタンスを維持したままに、シーン遷移を扱うサンプルです。
 
+<br>
+
 ## 技術ドキュメント
 
 ### システム全体の構成図
@@ -125,9 +136,13 @@
 - [シミュレータ](sys_simulator.md)
 - [Navigatorクラス](sys_navigator.md)
 
+<br>
+
 ## FAQ
 
 - [FAQ](FAQ.md)
+
+<br>
 
 ## 留意事項
 
