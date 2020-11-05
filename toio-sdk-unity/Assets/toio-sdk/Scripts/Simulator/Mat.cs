@@ -59,41 +59,65 @@ namespace toio.Simulator
         /// </summary>
         internal void ApplyMatType()
         {
+            // Resize
+            if (matType != MatType.Custom)
+            {
+                var rect = GetRectForMatType(matType);
+                xMin = rect.xMin; xMax = rect.xMax;
+                yMin = rect.yMin; yMax = rect.yMax;
+            }
+            this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+
+            // Change material
             switch (matType){
                 case MatType.toio_collection_front:
-                    xMin = 45; xMax = 455; yMin = 45; yMax = 455;
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
                     break;
                 case MatType.toio_collection_back:
-                    xMin = 545; xMax = 955; yMin = 45; yMax = 455;
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
                     break;
                 case MatType.simple_playmat:
-                    xMin = 98; xMax = 402; yMin = 142; yMax = 358;
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
                 case MatType.developer:
-                    switch (developerMatType){
-                        case DeveloperMatType._1: xMin = 34; xMax = 339; yMin = 35; yMax = 250; break;
-                        case DeveloperMatType._2: xMin = 34; xMax = 339; yMin = 251; yMax = 466; break;
-                        case DeveloperMatType._3: xMin = 34; xMax = 339; yMin = 467; yMax = 682; break;
-                        case DeveloperMatType._4: xMin = 34; xMax = 339; yMin = 683; yMax = 898; break;
-                        case DeveloperMatType._5: xMin = 340; xMax = 644; yMin = 35; yMax = 250; break;
-                        case DeveloperMatType._6: xMin = 340; xMax = 644; yMin = 251; yMax = 466; break;
-                        case DeveloperMatType._7: xMin = 340; xMax = 644; yMin = 467; yMax = 682; break;
-                        case DeveloperMatType._8: xMin = 340; xMax = 644; yMin = 683; yMax = 898; break;
-                        case DeveloperMatType._9: xMin = 645; xMax = 949; yMin = 35; yMax = 250; break;
-                        case DeveloperMatType._10: xMin = 645; xMax = 949; yMin = 251; yMax = 466; break;
-                        case DeveloperMatType._11: xMin = 645; xMax = 949; yMin = 467; yMax = 682; break;
-                        case DeveloperMatType._12: xMin = 645; xMax = 949; yMin = 683; yMax = 898; break;
-                    }
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
                 case MatType.Custom:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
                     break;
             }
-            this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+        }
+
+        public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default)
+        {
+            switch (matType){
+                case MatType.toio_collection_front:
+                    return new RectInt(45, 45, 410, 410);
+                case MatType.toio_collection_back:
+                    return new RectInt(545, 45, 410, 410);
+                case MatType.simple_playmat:
+                    return new RectInt(98, 142, 304, 216);
+                case MatType.developer:
+                    switch (devMatType){
+                        case DeveloperMatType._1:  return new RectInt( 34,  35, 305, 215);
+                        case DeveloperMatType._2:  return new RectInt( 34, 251, 305, 215);
+                        case DeveloperMatType._3:  return new RectInt( 34, 467, 305, 215);
+                        case DeveloperMatType._4:  return new RectInt( 34, 683, 305, 215);
+                        case DeveloperMatType._5:  return new RectInt(340,  35, 304, 215);
+                        case DeveloperMatType._6:  return new RectInt(340, 251, 304, 215);
+                        case DeveloperMatType._7:  return new RectInt(340, 467, 304, 215);
+                        case DeveloperMatType._8:  return new RectInt(340, 683, 304, 215);
+                        case DeveloperMatType._9:  return new RectInt(645,  35, 304, 215);
+                        case DeveloperMatType._10: return new RectInt(645, 251, 304, 215);
+                        case DeveloperMatType._11: return new RectInt(645, 467, 304, 215);
+                        case DeveloperMatType._12: return new RectInt(645, 683, 304, 215);
+                    }
+                    throw new System.Exception("devMatType out of range.");
+                case MatType.Custom:
+                    Debug.LogError("Custom MatType not supported in this method.");
+                    return new RectInt(0, 0, 0, 0);
+            }
+            throw new System.Exception("matType out of range.");
         }
 
 
