@@ -62,7 +62,7 @@ Assets
 
 <br>
 
-### toio-sdk/Scripts にはソースコードを置かない
+### toio-sdk/Scripts にはソースコードを置かないでください
 
 上の項で説明しましたが、下図のように、Assembly-CSharp.dll は全てのアセンブリを参照可能です。
 
