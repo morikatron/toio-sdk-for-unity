@@ -17,7 +17,7 @@
 
 1. アセンブリ定義の無いスクリプトは、基本的に Assembly-CSharp.dll にコンパイルされます。そのため、ユーザーが作成するスクリプトは基本的に Assembly-CSharp.dll に含まれる事となります。
 
-2. 事前に定義した依存関係以外のアセンブリは参照する事が出来ません( Assembly-CSharp.dll を除く)。
+2. 事前に定義した依存関係以外のアセンブリは参照する事が出来ません( Assembly-CSharp.dll を除く)。
 
 3. Assembly-CSharp.dll は全てのアセンブリを参照可能ですが、その他のアセンブリは Assembly-CSharp.dll を参照不可能です。
 
