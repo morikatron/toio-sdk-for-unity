@@ -13,13 +13,23 @@ namespace toio
 
         protected CallbackProvider _shakeCallback = new CallbackProvider();
         protected CallbackProvider _motorSpeedCallback = new CallbackProvider();
-
+        
+        private int _leftSpeed;
+        private int _rightSpeed;
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
+
         public override bool isShake { get; protected set; }
-        public override int leftSpeed { get; protected set; }
-        public override int rightSpeed { get; protected set; }
+        public override int leftSpeed { 
+            get {enableSpeed = true;
+                Debug.Log("sssss");
+                return _leftSpeed;}
+            protected set {_leftSpeed = value;}}
+        public override int rightSpeed { 
+            get {enableSpeed = true;
+                return _rightSpeed;}
+            protected set {_rightSpeed = value;}}
         public override string version { get { return "2.2.0"; } }
 
         // シェイクコールバック
@@ -85,7 +95,7 @@ namespace toio
         public override async UniTask Initialize()
         {
             await base.Initialize();
-
+            if (this.enableSpeed){EnableMotorRead(true);}
             this.characteristicTable[CHARACTERISTIC_MOTOR].StartNotifications(this.Recv_motor);
 #if !UNITY_EDITOR && UNITY_ANDROID
             await UniTask.Delay(500);
