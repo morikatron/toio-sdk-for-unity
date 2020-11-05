@@ -10,7 +10,7 @@
 
 ### 【 2 】開発
 
-1. 開発前に確認する [→シミュレータの操作方法](development_simulator.md)
+1. 開発前に確認する [→「シミュレータの操作方法」](development_simulator.md)
 2. Assets フォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
 3. 新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
 4. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく ★A
