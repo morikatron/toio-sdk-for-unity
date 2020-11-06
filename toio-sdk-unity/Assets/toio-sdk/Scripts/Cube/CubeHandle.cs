@@ -653,10 +653,14 @@ namespace toio
             this.order = order;
         }
 
-        public Movement Exec()
+        /// <summary>
+        /// Execute this movement with/out border
+        /// この movement を実行する（ボーダーの有り無しの指定付き）
+        /// </summary>
+        public Movement Exec(bool border=true)
         {
             if (handle!=null)
-                return handle.Move(this);
+                return handle.Move(this, border);
             throw new NullReferenceException("Movement.Exec() called without CubeHandle set.");
         }
 
