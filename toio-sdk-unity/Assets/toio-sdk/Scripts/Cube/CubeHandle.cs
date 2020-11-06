@@ -26,17 +26,17 @@ namespace toio
         public static double lag = 0.130;
 
         // --- Parameters ---
-        [Obsolete("Deprecated. Please use borderRect.center.x instead.", false)]
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
         public int CenterX = 250;
-        [Obsolete("Deprecated. Please use borderRect.center.y instead.", false)]
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
         public int CenterY = 250;
-        [Obsolete("Deprecated.", false)]
+        [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeX = 410;
-        [Obsolete("Deprecated.", false)]
+        [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeY = 410;
-        [Obsolete("Deprecated. Please use borderRect.width instead.", false)]
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
         public int RangeX = 370;
-        [Obsolete("Deprecated. Please use borderRect.height instead.", false)]
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
         public int RangeY = 370;
         /// <summary>
         /// RectInt that defines border.
