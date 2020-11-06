@@ -186,6 +186,15 @@ CubeNavigator をインスタンス化する際、自動的に `AddBorder(70);` 
 
 既定値を例として、x 座標 -60 ~ 60, 440 ~ 560 と y 座標 -60 ~ 60, 440 ~ 560 は壁になってナビゲーターに回避されます。
 
+```c#
+public void AddBorder(int width, RectInt rect);
+```
+
+- rect
+  - 定義：ボーダーの位置を表す RectInt<br>
+  ※ [Mat.GetRectForMatType](usage_simulator.md#24-メソッド) でマットのサイズに合わせた RectInt を取得できます
+
+
 ### 認識できる他者を設定
 
 #### AddOther
