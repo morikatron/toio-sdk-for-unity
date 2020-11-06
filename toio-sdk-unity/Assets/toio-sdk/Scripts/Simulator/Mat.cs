@@ -14,7 +14,7 @@ namespace toio.Simulator
             toio_collection_back = 1,
             simple_playmat = 2,
             developer = 3,
-            Custom = 4  // 座標範囲をカスタマイズ
+            custom = 4  // 座標範囲をカスタマイズ
         }
 
         public static readonly string[] MatTypeNames = new string[]
@@ -60,7 +60,7 @@ namespace toio.Simulator
         internal void ApplyMatType()
         {
             // Resize
-            if (matType != MatType.Custom)
+            if (matType != MatType.custom)
             {
                 var rect = GetRectForMatType(matType);
                 xMin = rect.xMin; xMax = rect.xMax;
@@ -82,7 +82,7 @@ namespace toio.Simulator
                 case MatType.developer:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
-                case MatType.Custom:
+                case MatType.custom:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
                     break;
             }
@@ -113,7 +113,7 @@ namespace toio.Simulator
                         case DeveloperMatType._12: return new RectInt(645, 683, 304, 215);
                     }
                     throw new System.Exception("devMatType out of range.");
-                case MatType.Custom:
+                case MatType.custom:
                     Debug.LogError("Custom MatType not supported in this method.");
                     return new RectInt(0, 0, 0, 0);
             }
