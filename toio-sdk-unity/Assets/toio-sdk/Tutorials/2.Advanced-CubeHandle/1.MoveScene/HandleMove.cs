@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using toio.Simulator;
 
 namespace toio.tutorial
 {
@@ -63,6 +64,11 @@ namespace toio.tutorial
                 }
                 else if (phase == 3)
                 {
+                    Vector3 offset = new Vector3(0, 0.005f, 0);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(65, 65)+offset, Mat.MatCoord2UnityCoord(65, 435)+offset, Color.red, 3.5f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(65, 65)+offset, Mat.MatCoord2UnityCoord(435, 65)+offset, Color.red, 3.5f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(435, 435)+offset, Mat.MatCoord2UnityCoord(65, 435)+offset, Color.red, 3.5f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(435, 435)+offset, Mat.MatCoord2UnityCoord(435, 65)+offset, Color.red, 3.5f);
                     Debug.Log("---------- Phase 3 - ボーダー ----------");
                     Debug.Log("赤キューブは MoveRawで前進、緑キューブは moveで同じ前進を。");
                     Debug.Log("緑キューブはボーダー前に止まった。");
@@ -82,6 +88,26 @@ namespace toio.tutorial
                     cubeManager.handles[1].Move(-80, 30, 2000);
                 }
                 else if (phase == 5)
+                {
+                    Vector3 offset = new Vector3(0, 0.005f, 0);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(105, 105)+offset, Mat.MatCoord2UnityCoord(105, 395)+offset, Color.red, 10f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(105, 105)+offset, Mat.MatCoord2UnityCoord(395, 105)+offset, Color.red, 10f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(395, 395)+offset, Mat.MatCoord2UnityCoord(105, 395)+offset, Color.red, 10f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(395, 395)+offset, Mat.MatCoord2UnityCoord(395, 105)+offset, Color.red, 10f);
+                    Debug.Log("---------- Phase 5 - ボーダー設定 ----------");
+                    Debug.Log("SetBorderRectでボーダーの位置をもっと内側に設定");
+
+                    // ボーダーの位置を変更：　toio_collection_front マットのサイズより、margin=120 単位内側のところに
+                    cubeManager.handles[1].SetBorderRect(
+                        matRect:Mat.GetRectForMatType(Mat.MatType.toio_collection_front),
+                        margin:60
+                    );
+
+                    // moveで前進：　前進指令 100、回転指令 30、(希望)継続時間 2000
+                    // border の有効無効も指定できるが、ここは有効のままに
+                    cubeManager.handles[1].Move(100, 30, 2000, border:true);
+                }
+                else if (phase == 6)
                 {
                     Debug.Log("---------- 【おわり】 ----------");
                     Debug.Log("ありがとうございます。");
