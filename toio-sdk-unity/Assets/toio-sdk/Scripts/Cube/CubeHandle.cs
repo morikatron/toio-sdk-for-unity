@@ -27,17 +27,17 @@ namespace toio
 
         // --- Parameters ---
         [Obsolete("Deprecated. Please use borderRect instead.", false)]
-        public int CenterX = 250;
+        public int CenterX {get{return (int)borderRect.center.x;} set{borderRect = new RectInt(value-RangeX/2, CenterY-RangeY/2, RangeX, RangeY);}}
         [Obsolete("Deprecated. Please use borderRect instead.", false)]
-        public int CenterY = 250;
+        public int CenterY {get{return (int)borderRect.center.y;} set{borderRect = new RectInt(CenterX-RangeX/2, value-RangeY/2, RangeX, RangeY);}}
         [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeX = 410;
         [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeY = 410;
         [Obsolete("Deprecated. Please use borderRect instead.", false)]
-        public int RangeX = 370;
+        public int RangeX {get{return (int)borderRect.width;} set{borderRect = new RectInt(CenterX-value/2, CenterY-RangeY/2, value, RangeY);}}
         [Obsolete("Deprecated. Please use borderRect instead.", false)]
-        public int RangeY = 370;
+        public int RangeY {get{return (int)borderRect.height;} set{borderRect = new RectInt(CenterX-RangeX/2, CenterY-value/2, RangeX, value);}}
         /// <summary>
         /// RectInt that defines border.
         /// ボーダーを定義する RectInt。
