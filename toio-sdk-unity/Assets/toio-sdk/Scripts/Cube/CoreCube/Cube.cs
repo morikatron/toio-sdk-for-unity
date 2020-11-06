@@ -47,7 +47,7 @@ namespace toio
         public abstract bool isGrounded { get; protected set; }
         // コアキューブの最高速度
         public abstract int maxSpd { get; }
-        public bool enableSpeed;
+
         // ver2.1.0
         // コアキューブのダブルタップ状態
         public virtual bool isDoubleTap { get; protected set; }
