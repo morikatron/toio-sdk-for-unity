@@ -47,6 +47,8 @@ namespace toio
         public abstract bool isGrounded { get; protected set; }
         // コアキューブの最高速度
         public abstract int maxSpd { get; }
+        // コアキューブのモーター指令のデッドゾーン
+        public abstract int deadzone { get; }
 
         // ver2.1.0
         // コアキューブのダブルタップ状態
