@@ -185,7 +185,7 @@ namespace toio.Simulator
         /// <summary>
         /// マット mat におけるマット座標から、Unity の3D空間に変換。mat が null の場合、mat.prefab の初期位置に基づく。
         /// </summary>
-        public static Vector3 MatCoord2UnityCoord(float x, float y, Mat mat)
+        public static Vector3 MatCoord2UnityCoord(float x, float y, Mat mat=null)
         {
             if (mat==null)
                 return new Vector3((float)(x-250)/DotPerM, 0, -(float)(y-250)/DotPerM);
@@ -194,7 +194,10 @@ namespace toio.Simulator
                 return mat.MatCoord2UnityCoord(x, y);
             }
         }
-        public static Vector3 MatCoord2UnityCoord(Vector2Int matCoord, Mat mat)
+        /// <summary>
+        /// マット mat におけるマット座標から、Unity の3D空間に変換。mat が null の場合、mat.prefab の初期位置に基づく。
+        /// </summary>
+        public static Vector3 MatCoord2UnityCoord(Vector2Int matCoord, Mat mat=null)
         {
             if (mat==null)
                 return new Vector3((matCoord.x-250)/DotPerM, 0, -(matCoord.y-250)/DotPerM);
