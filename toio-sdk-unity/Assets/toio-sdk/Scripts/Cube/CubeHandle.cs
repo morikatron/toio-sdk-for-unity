@@ -42,7 +42,19 @@ namespace toio
         /// RectInt that defines border.
         /// ボーダーを定義する RectInt。
         /// </summary>
-        public RectInt borderRect = Mat.GetRectForMatType(Mat.MatType.toio_collection_front);
+        public RectInt borderRect = new RectInt(65, 65, 370, 370);  // default is based on toio_collection_front mat
+        /// <summary>
+        /// Set borderRect from RectInt defining dimension of Mat and margin.
+        /// マットのサイズを表す RectInt と margin によって、borderRect を設定する。
+        /// </summary>
+        public void SetBorderRect(RectInt matRect, int margin=20)
+        {
+            int xmin = Min(matRect.xMin + margin, (int)matRect.center.x);
+            int ymin = Min(matRect.yMin + margin, (int)matRect.center.y);
+            int w = Max(matRect.width - margin * 2, 0);
+            int h = Max(matRect.height - margin * 2, 0);
+            borderRect = new RectInt(xmin, ymin, w, h);
+        }
 
         // --- Properties ---
         public Vector pos { get; protected set; }
@@ -367,8 +379,8 @@ namespace toio
                     ) rotate = 2*Deadzone * Sign(rotate);
                 }
 
-                // currently inside : limit duration
-                else if (Abs(x - cx) < rx && Abs(y - cy) < ry)
+                // currently inside or outside but returning : limit duration
+                else
                 {
                     var _dt = 0.05f;
                     var now = Time.time;
@@ -379,9 +391,12 @@ namespace toio
                     {
                         predRad += (float)((spdL - spdR) / TireWidthDot) * _dt;
                         predRad = Rad(predRad);
-                        predX += Cos(predRad) * (spdL + spdR) / 2 * _dt;
-                        predY += Sin(predRad) * (spdL + spdR) / 2 * _dt;
-                        if (Abs(predX - cx) >= rx || Abs(predY - cy) >= ry)
+                        var dx = Cos(predRad) * (spdL + spdR) / 2 * _dt;
+                        var dy = Sin(predRad) * (spdL + spdR) / 2 * _dt;
+                        predX += dx;
+                        predY += dy;
+                        if (Abs(predX - cx) >= rx && Abs(predX+dx - cx) >= Abs(predX - cx)
+                            || Abs(predY - cy) >= ry && Abs(predY+dy - cy) >= Abs(predY - cy) )
                         {
                             dur = (int)(t * 1000 - _dt * 1000);
                             if (dur < 10) dur = 0;
