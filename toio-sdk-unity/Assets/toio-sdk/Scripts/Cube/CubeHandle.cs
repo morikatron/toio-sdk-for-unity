@@ -20,8 +20,8 @@ namespace toio
         public static double VDotOverU { get { return CubeSimulator.VDotOverU; } } // (dot/sec) / cmd
         public static double DotPerM { get { return Mat.DotPerM; } } // dot / mm
         public static readonly float MotorTau = 0.04f;
-        public double Deadzone { get; protected set; }
-        public int MaxSpd { get; protected set; }
+        public double deadzone { get { return cube.deadzone; } }
+        public int maxSpd { get { return cube.maxSpd; } }
         public static double dt = 1.0 / 60 * 3;
         public static double lag = 0.130;
 
@@ -72,16 +72,6 @@ namespace toio
         public CubeHandle(Cube _cube)
         {
             this.cube = _cube;
-
-            if (this.cube.version == "2.0.0"){
-                MaxSpd = 100; Deadzone = 10;
-            }
-            else if (this.cube.version == "2.1.0"){
-                MaxSpd = 115; Deadzone = 8;
-            }
-            else{
-                MaxSpd = 100; Deadzone = 10;
-            }
         }
 
 
@@ -206,8 +196,8 @@ namespace toio
         /// </summary>
         public void MoveRaw(double uL, double uR, int durationMs = 1000, Cube.ORDER_TYPE order = Cube.ORDER_TYPE.Weak)
         {
-            uL = clip(uL, -MaxSpd, MaxSpd);
-            uR = clip(uR, -MaxSpd, MaxSpd);
+            uL = clip(uL, -maxSpd, maxSpd);
+            uR = clip(uR, -maxSpd, maxSpd);
             if (durationMs < 10)
             {
                 if (durationMs <= 5)
@@ -255,44 +245,44 @@ namespace toio
             {
 
                 var l = uL; var r = uR; var M = Max(l, r); var m = Min(l, r);
-                if ((l == 0 || l >= Deadzone || l <= -Deadzone) && (r == 0 || r >= Deadzone || r <= -Deadzone))
+                if ((l == 0 || l >= deadzone || l <= -deadzone) && (r == 0 || r >= deadzone || r <= -deadzone))
                 {
                     // Outside deadzone
                 }
-                else if (Abs(l - r) < Deadzone)
+                else if (Abs(l - r) < deadzone)
                 {
-                    if ((l + r) > 0) { uL += Deadzone - m; uR += Deadzone - m; }
-                    else if ((l + r) < 0) { uL += -Deadzone - M; uR += -Deadzone - M; }
+                    if ((l + r) > 0) { uL += deadzone - m; uR += deadzone - m; }
+                    else if ((l + r) < 0) { uL += -deadzone - M; uR += -deadzone - M; }
                     else { } //uL=Sign(uL)*Deadzone; uR=Sign(uR)*Deadzone;}
                 }
-                else if (Abs(l - r) < 2 * Deadzone)
+                else if (Abs(l - r) < 2 * deadzone)
                 {
                     if ((l + r) > 0)
                     {
                         if (m < 0) { uL += 0 - m; uR += 0 - m; }
-                        else if (m < Deadzone / 2) { uL += 0 - m; uR += 0 - m; }
-                        else { uL += Deadzone - m; uR += Deadzone - m; }
+                        else if (m < deadzone / 2) { uL += 0 - m; uR += 0 - m; }
+                        else { uL += deadzone - m; uR += deadzone - m; }
                     }
                     else if ((l + r) < 0)
                     {
                         if (M > 0) { uL += 0 - M; uR += 0 - M; }
-                        else if (M > -Deadzone / 2) { uL += 0 - M; uR += 0 - M; }
-                        else { uL += -Deadzone - M; uR += -Deadzone - M; }
+                        else if (M > -deadzone / 2) { uL += 0 - M; uR += 0 - M; }
+                        else { uL += -deadzone - M; uR += -deadzone - M; }
                     }
-                    else { uL = Sign(l) * Deadzone; uR = Sign(r) * Deadzone; }
+                    else { uL = Sign(l) * deadzone; uR = Sign(r) * deadzone; }
                 }
                 else
                 {
                     if ((l + r) > 0)
                     {
-                        if (m < -Deadzone / 2) { uL += -Deadzone - m; uR += -Deadzone - m; }
-                        else if (m > Deadzone / 2) { uL += Deadzone - m; uR += Deadzone - m; }
+                        if (m < -deadzone / 2) { uL += -deadzone - m; uR += -deadzone - m; }
+                        else if (m > deadzone / 2) { uL += deadzone - m; uR += deadzone - m; }
                         else { uL += 0 - m; uR += 0 - m; }
                     }
                     else
                     {
-                        if (m < -Deadzone / 2) { uL += -Deadzone - M; uR += -Deadzone - M; }
-                        else if (m > Deadzone / 2) { uL += Deadzone - M; uR += Deadzone - M; }
+                        if (m < -deadzone / 2) { uL += -deadzone - M; uR += -deadzone - M; }
+                        else if (m > deadzone / 2) { uL += deadzone - M; uR += deadzone - M; }
                         else { uL += 0 - M; uR += 0 - M; }
                     }
                 }
@@ -300,15 +290,15 @@ namespace toio
             }
 
             // truncate
-            if (Max(uL, uR) > MaxSpd)
+            if (Max(uL, uR) > maxSpd)
             {
-                uL -= Max(uL, uR) - MaxSpd;
-                uR -= Max(uL, uR) - MaxSpd;
+                uL -= Max(uL, uR) - maxSpd;
+                uR -= Max(uL, uR) - maxSpd;
             }
-            else if (Min(uL, uR) < -MaxSpd)
+            else if (Min(uL, uR) < -maxSpd)
             {
-                uL -= Min(uL, uR) + MaxSpd;
-                uR -= Min(uL, uR) + MaxSpd;
+                uL -= Min(uL, uR) + maxSpd;
+                uR -= Min(uL, uR) + maxSpd;
             }
 
             // transform order
@@ -339,7 +329,7 @@ namespace toio
                     translate = 0;
 
                     // Help rotate back to insider
-                    if (Abs(rotate) < 2*Deadzone
+                    if (Abs(rotate) < 2*deadzone
                         && (x - CenterX > rx && y - CenterY > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
                             || x - CenterX > rx && y - CenterY < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
                             || x - CenterX < -rx && y - CenterY < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
@@ -349,7 +339,7 @@ namespace toio
                             || y - CenterY > ry && Abs(x - CenterX) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
                             || y - CenterY < -ry && Abs(x - CenterX) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
                             )
-                    ) rotate = 2*Deadzone * Sign(rotate);
+                    ) rotate = 2*deadzone * Sign(rotate);
                 }
 
                 // currently inside : limit duration
@@ -476,7 +466,7 @@ namespace toio
                 double translate = maxSpd * clip(1 - (Abs(drad) - Deg2Rad(10)) / Deg2Rad(endRad), 0, 1);
 
                 // Decelerate as getting close to target.
-                translate *= clip(dist, Deadzone * 0.5, Max(maxSpd, Deadzone) * 0.5) / (Max(maxSpd, Deadzone) * 0.5);
+                translate *= clip(dist, deadzone * 0.5, Max(maxSpd, deadzone) * 0.5) / (Max(maxSpd, deadzone) * 0.5);
 
                 // Angular velocity
                 double w = dradPred / (rotateTime / 1000.0);
@@ -485,7 +475,7 @@ namespace toio
                 // Linearly combine turning raidus method and angular velocity method.
                 // Cause turning radius does not work on low "translate",
                 // while angular velocity is weak on high "translate".
-                double miu = (Abs(translate) / MaxSpd); // weight of turning radius method
+                double miu = (Abs(translate) / this.maxSpd); // weight of turning radius method
                 rotate *= Abs(translate / 50) * miu + 1 * (1 - miu);
 
                 return new Movement(this, translate, rotate, rotateTime, false);
@@ -541,8 +531,8 @@ namespace toio
                 double rotate = w * TireWidthDot / VDotOverU;
 
                 // Deadzone processing
-                if (Abs(rotate) < 2 * Deadzone)
-                    rotate = 2 * Deadzone * Sign(rotate);
+                if (Abs(rotate) < 2 * deadzone)
+                    rotate = 2 * deadzone * Sign(rotate);
 
                 // Calculate duration
                 w = rotate * VDotOverU / TireWidthDot;
@@ -587,9 +577,9 @@ namespace toio
             if (dist < 0){
                 dist = -dist; translate = -translate;
             }
-            if (Abs(translate) < Deadzone)
+            if (Abs(translate) < deadzone)
                 return new Movement(this, 0, 0, 10, false, order:Cube.ORDER_TYPE.Strong);
-            translate = clip(translate, -MaxSpd, MaxSpd);
+            translate = clip(translate, -maxSpd, maxSpd);
 
             // Speed
             var spd = Abs(translate) * VDotOverU;
@@ -610,9 +600,9 @@ namespace toio
             if (drad < 0){
                 drad = -drad; rotate = -rotate;
             }
-            if (Abs(rotate) < 2 * Deadzone)
+            if (Abs(rotate) < 2 * deadzone)
                 return new Movement(this, 0, 0, 10, false, order:Cube.ORDER_TYPE.Strong);
-            rotate = clip(rotate, -2*MaxSpd, 2*MaxSpd);
+            rotate = clip(rotate, -2*maxSpd, 2*maxSpd);
 
             // Angular velocity
             var w = Abs(rotate) * VDotOverU / TireWidthDot;
