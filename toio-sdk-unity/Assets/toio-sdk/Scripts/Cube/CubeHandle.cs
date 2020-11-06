@@ -26,12 +26,23 @@ namespace toio
         public static double lag = 0.130;
 
         // --- Parameters ---
+        [Obsolete("Deprecated. Please use borderRect.center.x instead.", false)]
         public int CenterX = 250;
+        [Obsolete("Deprecated. Please use borderRect.center.y instead.", false)]
         public int CenterY = 250;
+        [Obsolete("Deprecated.", false)]
         public int SizeX = 410;
+        [Obsolete("Deprecated.", false)]
         public int SizeY = 410;
+        [Obsolete("Deprecated. Please use borderRect.width instead.", false)]
         public int RangeX = 370;
+        [Obsolete("Deprecated. Please use borderRect.height instead.", false)]
         public int RangeY = 370;
+        /// <summary>
+        /// RectInt that defines border.
+        /// ボーダーを定義する RectInt。
+        /// </summary>
+        public RectInt borderRect = Mat.GetRectForMatType(Mat.MatType.toio_collection_front);
 
         // --- Properties ---
         public Vector pos { get; protected set; }
@@ -322,7 +333,11 @@ namespace toio
             if (border)
             {
                 // parameters
-                double rx = (double)RangeX / 2; double ry = (double)RangeY / 2; double e = 0.4;
+                double cx = (double)(borderRect.center.x);
+                double cy = (double)(borderRect.center.y);
+                double rx = (double)(borderRect.width) / 2;
+                double ry = (double)(borderRect.height) / 2;
+                double e = 0.4;
                 // predicted final stopping state, assuming not output current order.
                 double x = this.stopXPred, y = this.stopYPred, rad = this.radPred;
                 // predicted state if not stopping.
@@ -331,29 +346,29 @@ namespace toio
                 double predRad = this.radPred;
 
                 // currently outside and going further : stop transition
-                if ((Abs(x - CenterX) >= rx || Abs(y - CenterY) >= ry)
-                    && (Abs(predX - CenterX) >= rx && Abs(predX - CenterX) >= Abs(x - CenterX)
-                        || Abs(predY - CenterY) >= ry && Abs(predY - CenterY) >= Abs(y - CenterY)))
+                if ((Abs(x - cx) >= rx || Abs(y - cy) >= ry)
+                    && (Abs(predX - cx) >= rx && Abs(predX - cx) >= Abs(x - cx)
+                        || Abs(predY - cy) >= ry && Abs(predY - cy) >= Abs(y - cy)))
                 {
                     // stop
                     translate = 0;
 
                     // Help rotate back to insider
                     if (Abs(rotate) < 2*Deadzone
-                        && (x - CenterX > rx && y - CenterY > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
-                            || x - CenterX > rx && y - CenterY < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
-                            || x - CenterX < -rx && y - CenterY < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
-                            || x - CenterX < -rx && y - CenterY > ry && (0 < rad && rad < 0 + e || PI / 2 < -rad && -rad < PI / 2 + e)
-                            || x - CenterX > rx && Abs(y - CenterY) <= ry && (PI / 2 - e < rad && rad < PI / 2 || PI / 2 - e < -rad && -rad < PI / 2)
-                            || x - CenterX < -rx && Abs(y - CenterY) <= ry && (PI / 2 < rad && rad < PI / 2 + e || PI / 2 < -rad && -rad < PI / 2 + e)
-                            || y - CenterY > ry && Abs(x - CenterX) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
-                            || y - CenterY < -ry && Abs(x - CenterX) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
+                        && (x - cx > rx && y - cy > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
+                            || x - cx > rx && y - cy < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
+                            || x - cx < -rx && y - cy < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
+                            || x - cx < -rx && y - cy > ry && (0 < rad && rad < 0 + e || PI / 2 < -rad && -rad < PI / 2 + e)
+                            || x - cx > rx && Abs(y - cy) <= ry && (PI / 2 - e < rad && rad < PI / 2 || PI / 2 - e < -rad && -rad < PI / 2)
+                            || x - cx < -rx && Abs(y - cy) <= ry && (PI / 2 < rad && rad < PI / 2 + e || PI / 2 < -rad && -rad < PI / 2 + e)
+                            || y - cy > ry && Abs(x - cx) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
+                            || y - cy < -ry && Abs(x - cx) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
                             )
                     ) rotate = 2*Deadzone * Sign(rotate);
                 }
 
                 // currently inside : limit duration
-                else if (Abs(x - CenterX) < rx && Abs(y - CenterY) < ry)
+                else if (Abs(x - cx) < rx && Abs(y - cy) < ry)
                 {
                     var _dt = 0.05f;
                     var now = Time.time;
@@ -366,7 +381,7 @@ namespace toio
                         predRad = Rad(predRad);
                         predX += Cos(predRad) * (spdL + spdR) / 2 * _dt;
                         predY += Sin(predRad) * (spdL + spdR) / 2 * _dt;
-                        if (Abs(predX - CenterX) >= rx || Abs(predY - CenterY) >= ry)
+                        if (Abs(predX - cx) >= rx || Abs(predY - cy) >= ry)
                         {
                             dur = (int)(t * 1000 - _dt * 1000);
                             if (dur < 10) dur = 0;
