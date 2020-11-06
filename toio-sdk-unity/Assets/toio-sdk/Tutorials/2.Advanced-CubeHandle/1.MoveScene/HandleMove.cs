@@ -85,7 +85,7 @@ namespace toio.tutorial
                     Debug.Log("ボーダー制限は、予測モデルによって継続時間を制限することで、後退や回転の場合でも効く。");
 
                     // moveで前進：　前進指令 80、回転指令 30、(希望)継続時間 2000
-                    cubeManager.handles[1].Move(-80, 30, 2000);
+                    cubeManager.handles[1].Move(-80, 40, 2000);
                 }
                 else if (phase == 5)
                 {
