@@ -4,7 +4,6 @@ using toio;
 using System.Collections.Generic;
 
 public class Sample_Sensor : MonoBehaviour
-
 {
     Cube cube;
 
