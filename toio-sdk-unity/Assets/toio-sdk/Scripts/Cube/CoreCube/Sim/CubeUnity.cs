@@ -81,17 +81,17 @@ namespace toio
         public override int rightSpeed { get; protected set; }
 
         // コールバック
-        public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
-        public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
-        public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
-        public override CallbackProvider idCallback { get { return this._idCallback; } }
-        public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
-        public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
-        public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
-        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
-        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
-        public override CallbackProvider shakeCallback { get { return this._shakeCallback; } }
-        public override CallbackProvider motorSpeedCallback { get { return this._motorSpeedCallback; } }
+        public override CallbackProviderInterface buttonCallback { get { return this._buttonCallback; } }
+        public override CallbackProviderInterface slopeCallback { get { return this._slopeCallback; } }
+        public override CallbackProviderInterface collisionCallback { get { return this._collisionCallback; } }
+        public override CallbackProviderInterface idCallback { get { return this._idCallback; } }
+        public override CallbackProviderInterface standardIdCallback { get { return this._standardIdCallback; } }
+        public override CallbackProviderInterface idMissedCallback { get { return this._idMissedCallback; } }
+        public override CallbackProviderInterface standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        public override CallbackProviderInterface doubleTapCallback { get { return this._doubleTapCallback; } }
+        public override CallbackProviderInterface poseCallback { get { return this._poseCallback; } }
+        public override CallbackProviderInterface shakeCallback { get { return this._shakeCallback; } }
+        public override CallbackProviderInterface motorSpeedCallback { get { return this._motorSpeedCallback; } }
 
         ///////////////   RETRIEVE INFO   ////////////
 

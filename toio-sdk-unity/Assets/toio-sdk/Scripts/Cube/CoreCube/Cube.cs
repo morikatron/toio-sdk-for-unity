@@ -160,7 +160,8 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
-        public virtual void EnableMotorRead(bool valid){ UnsupportedWarning(); }
+        //public virtual void EnableMotorRead(bool valid){ UnsupportedWarning(); }
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -168,29 +169,29 @@ namespace toio
         // 非対応コールバック
         private UnsupportingCallbackProvider unsupportingCallback;
         // ボタンコールバック
-        public virtual CallbackProvider buttonCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface buttonCallback { get { return this.unsupportingCallback; } }
         // 傾きコールバック
-        public virtual CallbackProvider slopeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface slopeCallback { get { return this.unsupportingCallback; } }
         // 衝突コールバック
-        public virtual CallbackProvider collisionCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface collisionCallback { get { return this.unsupportingCallback; } }
         // 座標角度コールバック
-        public virtual CallbackProvider idCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface idCallback { get { return this.unsupportingCallback; } }
         // StandardID コールバック
-        public virtual CallbackProvider standardIdCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface standardIdCallback { get { return this.unsupportingCallback; } }
         // ID Missed コールバック
-        public virtual CallbackProvider idMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface idMissedCallback { get { return this.unsupportingCallback; } }
         // StandardID Missed コールバック
-        public virtual CallbackProvider standardIdMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface standardIdMissedCallback { get { return this.unsupportingCallback; } }
 
         // Double Tap コールバック
-        public virtual CallbackProvider doubleTapCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface doubleTapCallback { get { return this.unsupportingCallback; } }
         // 姿態検出コールバック
-        public virtual CallbackProvider poseCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface poseCallback { get { return this.unsupportingCallback; } }
 
         // シェイクコールバック
-        public virtual CallbackProvider shakeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface shakeCallback { get { return this.unsupportingCallback; } }
         // モータースピードコールバック
-        public virtual CallbackProvider motorSpeedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProviderInterface motorSpeedCallback { get { return this.unsupportingCallback; } }
 
 
         public Cube()
@@ -391,17 +392,25 @@ namespace toio
             Weak
         }
 
-        public class CallbackProvider
+        public interface CallbackProviderInterface
+        {
+            void AddListener(string key, Action<Cube> listener);
+            void RemoveListener(string key);
+            void ClearListener();
+            void Notify(Cube target);
+        }
+
+        public class CallbackProvider : CallbackProviderInterface
         {
             protected Dictionary<string, Action<Cube>> listenerTable = new Dictionary<string, Action<Cube>>();
             protected List<Action<Cube>> listenerList = new List<Action<Cube>>();
 
-            public virtual void AddListener(string key, Action<Cube> listener)
+            public void AddListener(string key, Action<Cube> listener)
             {
                 this.listenerTable[key] = listener;
                 this.listenerList.Add(listener);
             }
-            public virtual void RemoveListener(string key)
+            public void RemoveListener(string key)
             {
                 if (this.listenerTable.ContainsKey(key))
                 {
@@ -409,12 +418,12 @@ namespace toio
                     this.listenerTable.Remove(key);
                 }
             }
-            public virtual void ClearListener()
+            public void ClearListener()
             {
                 listenerTable.Clear();
                 listenerList.Clear();
             }
-            public virtual void Notify(Cube target)
+            public void Notify(Cube target)
             {
                 foreach (var listener in this.listenerList)
                 {
@@ -423,30 +432,31 @@ namespace toio
             }
         }
 
-        public class UnsupportingCallbackProvider : CallbackProvider
+        public class UnsupportingCallbackProvider : CallbackProviderInterface
         {
             private Cube owner;
             public UnsupportingCallbackProvider(Cube owner)
             {
                 this.owner = owner;
             }
-            public override void AddListener(string key, Action<Cube> listener)
+            public void AddListener(string key, Action<Cube> listener)
             {
                 owner.UnsupportedWarning();
             }
-            public override void RemoveListener(string key)
+            public void RemoveListener(string key)
             {
                 owner.UnsupportedWarning();
             }
-            public override void ClearListener()
+            public void ClearListener()
             {
                 owner.UnsupportedWarning();
             }
-            public override void Notify(Cube target)
+            public void Notify(Cube target)
             {
                 owner.UnsupportedWarning();
             }
         }
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      実装関数

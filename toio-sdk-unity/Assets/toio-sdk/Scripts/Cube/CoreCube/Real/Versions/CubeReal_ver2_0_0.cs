@@ -41,19 +41,19 @@ namespace toio
         public override int maxSpd { get { return 100; } }
 
         // ボタンコールバック
-        public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
+        public override CallbackProviderInterface buttonCallback { get { return this._buttonCallback; } }
         // 傾きコールバック
-        public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
+        public override CallbackProviderInterface slopeCallback { get { return this._slopeCallback; } }
         // 衝突コールバック
-        public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
+        public override CallbackProviderInterface collisionCallback { get { return this._collisionCallback; } }
         // 座標角度コールバック
-        public override CallbackProvider idCallback { get { return this._idCallback; } }
+        public override CallbackProviderInterface idCallback { get { return this._idCallback; } }
         // StandardIDコールバック
-        public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
+        public override CallbackProviderInterface standardIdCallback { get { return this._standardIdCallback; } }
         // ID Missedコールバック
-        public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
+        public override CallbackProviderInterface idMissedCallback { get { return this._idMissedCallback; } }
         // StandardID Missedコールバック
-        public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        public override CallbackProviderInterface standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
 
         public CubeReal_ver2_0_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
@@ -354,13 +354,13 @@ namespace toio
         //      CoreCube API < recv >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        protected override void Recv_battery(byte[] data)
+        protected virtual void Recv_battery(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_battery
             this.battery = data[0];
         }
 
-        protected override void Recv_Id(byte[] data)
+        protected virtual void Recv_Id(byte[] data)
         {
             int type = data[0];
 
@@ -402,7 +402,7 @@ namespace toio
             }
         }
 
-        protected override void Recv_button(byte[] data)
+        protected virtual void Recv_button(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_button
             int type = data[0];
@@ -413,7 +413,7 @@ namespace toio
             }
         }
 
-        protected override void Recv_sensor(byte[] data)
+        protected virtual void Recv_sensor(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor
             int type = data[0];

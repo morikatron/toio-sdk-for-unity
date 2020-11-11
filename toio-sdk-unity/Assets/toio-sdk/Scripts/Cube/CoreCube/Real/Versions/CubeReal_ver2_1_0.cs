@@ -23,9 +23,9 @@ namespace toio
         public override int maxSpd { get { return 115; } }
 
         // ダブルタップコールバック
-        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
+        public override CallbackProviderInterface doubleTapCallback { get { return this._doubleTapCallback; } }
         // 姿勢コールバック
-        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
+        public override CallbackProviderInterface poseCallback { get { return this._poseCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
@@ -61,7 +61,7 @@ namespace toio
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-        //      CoreCube API < subscribe >
+        //      CoreCube API < recv >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         protected override void Recv_sensor(byte[] data)
