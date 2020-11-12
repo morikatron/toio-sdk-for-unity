@@ -62,13 +62,13 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
 | モーションセンサー | [ダブルタップ検出](https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出)                                        | o             | ※            |
 |                    | [姿勢検出](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
-| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                              | o             | o            |
-|                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | x             | x            |
-|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
-|                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | x             | x            |
-|                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | x             | x            |
-|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
-| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | x             | x            |
+| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
+|                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | o             | o            |
+|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | o             | o            |
+|                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | o             | o            |
+|                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | o             | o            |
+|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | o             | o            |
+| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | o             | x            |
 
 #### ファームウェアバージョン 2.2.0
 
@@ -221,6 +221,10 @@ public bool isGrounded { get; protected set; }
 // ファームウェアバージョン毎に異なるため用意されています。
 public int maxSpd { get; }
 
+// キューブの最低速度を表す変数
+// ファームウェアバージョン毎に異なるため用意されています。
+public int deadzone { get; }
+
 // ver2.1.0
 // キューブのダブルタップ状態
 // 一度タップされてから一定時間内に再度タップされます。
@@ -228,9 +232,29 @@ public int maxSpd { get; }
 public virtual bool isDoubleTap { get; protected set; }
 
 // キューブの姿態
-// キューブの水平面に対する姿勢が変化したときに値が変わります
+// キューブの水平面に対する姿勢が変化したときに値が変わります。
 // コールバック機能：poseCallback
 public virtual PoseType pose { get; protected set; }
+
+// 目標指定付きモーターの制御識別値
+// 対応する目標指定付きモーター制御の応答を識別するための値です。
+// コールバック機能：targetMoveCallback
+public virtual int motorConfigID { get; protected set; }
+
+// 目標指定付きモーターの応答内容
+// 書き込まれた後、必ず1回だけ通知されます。
+// コールバック機能：targetMoveCallback
+public virtual RespondType motorRespond { get; protected set; }
+
+// 複数目標指定付きモーターの制御識別値
+// 対応する複数目標指定付きモーター制御の応答を識別するための値です。
+// コールバック機能：multiTargetMoveCallback
+public virtual int multiConfigID { get; protected set; }
+
+// 複数目標指定付きモーターの応答内容
+// 書き込まれた後、必ず1回だけ通知されます。
+// コールバック機能：multiTargetMoveCallback
+public virtual RespondType multiRespond { get; protected set; }
 
 // ver2.2.0
 // キューブのシェイク状態
@@ -280,6 +304,10 @@ public virtual CallbackProvider standardIdMissedCallback { get; }
 public virtual CallbackProvider doubleTapCallback { get; }
 // 姿態検出コールバック
 public virtual CallbackProvider poseCallback { get; }
+// 目標指定付きモーター制御の応答コールバック
+public virtual CallbackProvider targetMoveCallback { get; }
+// 複数目標指定付きモーター制御の応答コールバック
+public virtual CallbackProvider multiTargetMoveCallback { get; }
 
 // ver2.2.0
 // シェイクコールバック
@@ -504,4 +532,133 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
 
+<br>
+
+### TargetMove
+
+```C#
+public virtual void TargetMove(int configID, int timeOut, int setMaxSpd,
+                            int targetX, int targetY, int targetAngle,
+                            MoveType moveType, SpeedType speedType,
+                            RotationType rotationType, ORDER_TYPE order);
+```
+キューブのモーターを目標指定付き制御します<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
+
+- configID
+  - 定義 : 制御識別値
+  - 範囲 : 0~255
+- timeOut
+  - 定義 : タイムアウト時間
+  - 範囲 : 0~255; 0 のみ例外的に 10 秒になります
+- setMaxSpd
+  - 定義 : モーターの最大速度指示値
+  - 範囲 : 10~255
+- targetX
+  - 定義 : 目標地点の X 座標値
+  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+- targetY
+  - 定義 : 目標地点の Y 座標値
+  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+- targetAngle
+  - 定義 : 目標地点でのキューブの角度Θ
+  - 範囲 : 0~360
+- moveType
+  - 定義 : 移動タイプ
+  - 種類 : rotatingMove, roundForwardMove, roundBeforeMove
+- speedType
+  - 定義 : モーターの速度変化タイプ
+  - 種類 : uniformSpeed, acceleration, deceleration, variableSpeed
+- rotationType
+  - 定義 : 回転タイプ
+  - 種類 : absoluteLeastAngle, absoluteClockwise, absoluteCounterClockwise, relativeClockwise, relativeCounterClockwise, notRotated, original
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### MultiTargetMove
+
+```C#
+public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
+                            	int[] targetXList, int[] targetYList, int[] targetAngleList,
+                            	WriteType writeType, MoveType moveType, SpeedType speedType,
+                            	RotationType[] rotationTypeList, ORDER_TYPE order);
+```
+
+キューブのモーターを複数目標指定付き制御します<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)
+
+- configID
+  - 定義 : 制御識別値
+  - 範囲 : 0~255
+- timeOut
+  - 定義 : タイムアウト時間
+  - 範囲 : 0~255; 0 のみ例外的に 10 秒になります
+- setMaxSpd
+  - 定義 : モーターの最大速度指示値
+  - 範囲 : 10~115
+- targetXList
+  - 定義 : 目標地点の X 座標値の集合
+  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+- targetYList
+  - 定義 : 目標地点の Y 座標値の集合
+  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+- targetAngleList
+  - 定義 : 目標地点でのキューブの角度Θの集合
+  - 範囲 : 0~360
+- writeType
+  - 定義 : 書き込み操作の追加設定
+  - 種類 : write, add
+- moveType
+  - 定義 : 移動タイプ
+  - 種類 : rotatingMove, roundForwardMove, roundBeforeMove
+- speedType
+  - 定義 : モーターの速度変化タイプ
+  - 種類 : uniformSpeed, acceleration, deceleration, variableSpeed
+- rotationTypeList
+  - 定義 : 回転タイプの集合
+  - 種類 : absoluteLeastAngle, absoluteClockwise, absoluteCounterClockwise, relativeClockwise, relativeCounterClockwise, notRotated, original
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### AccelerationMove
+
+```C#
+public virtual void AccelerationTargetMove(int targetSpeed, int Acceleration, int rotationSpeed,
+                            	AccRotationType accRotationType, AccMoveType accMoveType, 
+				PriorityType priorityType, int controlTime, ORDER_TYPE order);
+```
+
+キューブの加速度指定付きモーターを制御します<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
+
+- targetSpeed
+  - 定義 : キューブの並進速度
+  - 範囲 : 8~115
+- Acceleration
+  - 定義 : キューブの加速度
+  - 範囲 : 0~255; 0の場合「キューブの並進速度」で指定した速度になります
+- rotationSpeed
+  - 定義 : キューブの向きの回転速度[度/秒]
+  - 範囲 : 0~65535
+- accRotationType
+  - 定義 : キューブの向きの回転方向
+  - 種類 : Clockwise, CounterClockwise
+- accMoveType
+  - 定義 : キューブの進行方向
+  - 種類 : forward, backward
+- priorityType
+  - 定義 : 優先指定
+  - 種類 : translation, rotation
+- controlTime
+  - 定義 : 制御時間[10ミリ秒]
+  - 範囲 : 0~255; 0は「時間制限無し」です
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
 <br>
