@@ -280,72 +280,42 @@ namespace toio.Simulator
 
 
         // ============ Sound ============
-        protected Cube.SoundOperation[] sounds = null;
-        protected int playingSound=-1;
-        protected int soundRepeat;
-        protected float soundTimeElipsed = 0;
-        protected int soundRepeatedCnt = 0;
-        protected Queue<Cube.SoundOperation[]> soundsQ = new Queue<Cube.SoundOperation[]>();
-        protected Queue<int> soundRepeatQ = new Queue<int>();
-        protected Queue<float> soundTimeQ = new Queue<float>();
+        protected float soundCmdElipsed = 0;
+        protected struct SoundSenarioCmd
+        {
+            public byte repeat;
+            public Cube.SoundOperation[] sounds;
+            public float tRecv;
+            public float period;
+        }
+        protected Queue<SoundSenarioCmd> soundSenarioCmdQ = new Queue<SoundSenarioCmd>();
+        protected SoundSenarioCmd currSoundSenarioCmd = default;
+
         protected void SoundScheduler(float dt, float t)
         {
-            soundTimeElipsed += dt;
+            soundCmdElipsed += dt;
 
             // ----- Simulate Lag -----
-            while (soundTimeQ.Count > 0 && t > soundTimeQ.Peek() + cube.delay){
-                soundTimeElipsed = 0;
-                sounds = soundsQ.Dequeue();
-                soundRepeat = soundRepeatQ.Dequeue();
-                soundTimeQ.Dequeue();
+            while (soundSenarioCmdQ.Count > 0 && t > soundSenarioCmdQ.Peek().tRecv + cube.delay){
+                soundCmdElipsed = 0;
+                currSoundSenarioCmd = soundSenarioCmdQ.Dequeue();
             }
 
             // ----- Excute Order -----
-            if (sounds == null) cube._StopSound();
+            if (currSoundSenarioCmd.period*currSoundSenarioCmd.repeat <= soundCmdElipsed)
+                cube._StopSound();
             else
             {
-                // Calc. period
-                float period = 0;
+                // Index of current operation
+                float sum = 0; int index=0; var sounds = currSoundSenarioCmd.sounds;
                 for (int i=0; i<sounds.Length; ++i){
-                    period += sounds[i].durationMs/1000f;
-                }
-                if (period == 0){
-                    soundRepeatedCnt = 0;
-                    sounds = null;
-                    cube._StopSound();
-                }
-                // Next repeat?
-                if (soundTimeElipsed >= period)
-                {
-                    soundRepeatedCnt += (int)(soundTimeElipsed/period);
-                    soundTimeElipsed %= period;
-                }
-                // Repeat over
-                if (soundRepeatedCnt >= soundRepeat && soundRepeat > 0)
-                {
-                    soundRepeatedCnt = 0;
-                    sounds = null;
-                    cube._StopSound();
-                }
-                else if (sounds != null)
-                {
-                    // Index of current operation
-                    float sum = 0; int index=0;
-                    for (int i=0; i<sounds.Length; ++i){
-                        sum += sounds[i].durationMs/1000f;
-                        if (soundTimeElipsed < sum){
-                            index = i;
-                            break;
-                        }
-                    }
-                    // Play
-                    int sound = sounds[index].note_number;
-                    if (sound != playingSound){
-                        playingSound = sound;
-                        if (sound >= 128) cube._StopSound();
-                        else cube._PlaySound(sound, sounds[index].volume);
+                    sum += sounds[i].durationMs/1000f;
+                    if (soundCmdElipsed%currSoundSenarioCmd.period < sum){
+                        index = i;
+                        break;
                     }
                 }
+                cube._PlaySound(sounds[index].note_number, sounds[index].volume);
             }
         }
 
@@ -375,6 +345,7 @@ namespace toio.Simulator
         public override void SetLights(int repeatCount, Cube.LightOperation[] operations)
         {
             if (operations.Length == 0) return;
+            operations = operations.Take(29).ToArray();
 
             LightSenarioCmd cmd = new LightSenarioCmd();
             cmd.lights = operations;
@@ -390,11 +361,18 @@ namespace toio.Simulator
         public override void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         {
             if (operations.Length == 0) return;
-            repeatCount = Mathf.Clamp(repeatCount, 0, 255);
             operations = operations.Take(59).ToArray();
-            soundsQ.Enqueue(operations);
-            soundRepeatQ.Enqueue(repeatCount);
-            soundTimeQ.Enqueue(Time.time);
+
+            SoundSenarioCmd cmd = new SoundSenarioCmd();
+            cmd.sounds = operations;
+            cmd.repeat = (byte)Mathf.Clamp(repeatCount, 0, 255);
+            // calc. period
+            cmd.period = 0;
+            for (int i=0; i<cmd.sounds.Length; ++i){
+                cmd.period += cmd.sounds[i].durationMs/1000f;
+            }
+            cmd.tRecv = Time.time;
+            soundSenarioCmdQ.Enqueue(cmd);
         }
         public override void PlayPresetSound(int soundId, int volume)
         {
@@ -407,9 +385,7 @@ namespace toio.Simulator
         {
             Cube.SoundOperation[] ops = new Cube.SoundOperation[1];
             ops[0] = new Cube.SoundOperation(100, 0, 128);
-            soundsQ.Enqueue(ops);
-            soundRepeatQ.Enqueue(1);
-            soundTimeQ.Enqueue(Time.time);
+            PlaySound(1, ops);
         }
 
         // 水平検出の閾値
