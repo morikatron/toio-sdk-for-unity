@@ -216,70 +216,63 @@ namespace toio.Simulator
         }
 
         // ============ Light ============
-        protected Cube.LightOperation[] lights = null;
-        protected int lightRepeat;
-        protected float lightTimeElipsed = 0;
-        protected int lightRepeatedCnt = 0;
-        protected bool lightLasting = false;
-        protected Queue<Cube.LightOperation[]> lightsQ = new Queue<Cube.LightOperation[]>();
-        protected Queue<int> lightRepeatQ = new Queue<int>();
-        protected Queue<bool> lightLastingQ = new Queue<bool>();
-        protected Queue<float> lightTimeQ = new Queue<float>();
+        protected float lightCmdElipsed = 0;
+        protected struct LightCmd
+        {
+            public byte r, g, b;
+            public short duration;    // ms
+            public float tRecv;
+        }
+        protected Queue<LightCmd> lightCmdQ = new Queue<LightCmd>();
+        protected LightCmd currLightCmd = default;
+
+        protected struct LightSenarioCmd
+        {
+            public byte repeat;
+            public Cube.LightOperation[] lights;
+            public float tRecv;
+            public float period;    // s
+        }
+        protected Queue<LightSenarioCmd> lightSenarioCmdQ = new Queue<LightSenarioCmd>();
+        protected LightSenarioCmd currLightSenarioCmd = default;
+
         protected void LightScheduler(float dt, float t)
         {
-            lightTimeElipsed += dt;
+            lightCmdElipsed += dt;
 
             // ----- Simulate Lag -----
-            while (lightTimeQ.Count > 0 && t > lightTimeQ.Peek() + cube.delay ){
-                lightTimeElipsed = 0;
-                lights = lightsQ.Dequeue();
-                lightRepeat = lightRepeatQ.Dequeue();
-                lightTimeQ.Dequeue();
-                lightLasting = lightLastingQ.Dequeue();
+            while (lightCmdQ.Count > 0 && t > lightCmdQ.Peek().tRecv + cube.delay){
+                lightCmdElipsed = 0;
+                currLightCmd = lightCmdQ.Dequeue();
+            }
+            while (lightSenarioCmdQ.Count > 0 && t > lightSenarioCmdQ.Peek().tRecv + cube.delay){
+                lightCmdElipsed = 0;
+                currLightSenarioCmd = lightSenarioCmdQ.Dequeue();
             }
 
             // ----- Excute Order -----
-            if (lights == null)  cube._StopLight();
-            else if (lightLasting){
-                if (lightTimeElipsed==0)
-                    // Turn on Light
-                    cube._SetLight(lights[0].red, lights[0].green, lights[0].blue);
-            }
-            else
+            if (currLightCmd.tRecv >= currLightSenarioCmd.tRecv)    // light cmd
             {
-                // Calc. period
-                float period = 0;
-                for (int i=0; i<lights.Length; ++i){
-                    period += lights[i].durationMs/1000f;
-                }
-                if (period==0){
-                    lightRepeatedCnt = 0;
-                    lights = null;
+                if (currLightCmd.duration==0 || lightCmdElipsed < currLightCmd.duration/1000f)
+                    cube._SetLight(currLightCmd.r, currLightCmd.g, currLightCmd.b);
+                else cube._StopLight();
+            }
+            else    // light senario cmd
+            {
+                if (currLightSenarioCmd.period*currLightSenarioCmd.repeat <= lightCmdElipsed){
                     cube._StopLight();
                 }
-                // Next repeat?
-                if (lightTimeElipsed >= period){
-                    lightRepeatedCnt += (int)(lightTimeElipsed/period);
-                    lightTimeElipsed %= period;
-                }
-                // Repeat over
-                if (lightRepeatedCnt >= lightRepeat && lightRepeat > 0){
-                    lightRepeatedCnt = 0;
-                    lights = null;
-                    cube._StopLight();
-                }
-                else if (lights != null)
+                else
                 {
                     // Index of current operation
-                    float sum = 0; int index=0;
+                    float sum = 0; int index=0; var lights = currLightSenarioCmd.lights;
                     for (int i=0; i<lights.Length; ++i){
                         sum += lights[i].durationMs/1000f;
-                        if (lightTimeElipsed < sum){
+                        if (lightCmdElipsed % currLightSenarioCmd.period < sum){
                             index = i;
                             break;
                         }
                     }
-                    // Turn on Light
                     cube._SetLight(lights[index].red, lights[index].green, lights[index].blue);
                 }
             }
@@ -369,32 +362,30 @@ namespace toio.Simulator
         }
         public override void StopLight()
         {
-            Cube.LightOperation[] ops = new Cube.LightOperation[1];
-            ops[0] = new Cube.LightOperation(100, 0, 0, 0);
-            lightsQ.Enqueue(ops);
-            lightRepeatQ.Enqueue(1);
-            lightTimeQ.Enqueue(Time.time);
-            lightLastingQ.Enqueue(false);
+            SetLight(0, 0, 0, 100);
         }
         public override void SetLight(int r, int g, int b, int durationMS)
         {
-            durationMS = Mathf.Clamp(durationMS / 10, 0, 255)*10;
-            Cube.LightOperation[] ops = new Cube.LightOperation[1];
-            ops[0] = new Cube.LightOperation((short)durationMS, (byte)r, (byte)g, (byte)b);
-            lightsQ.Enqueue(ops);
-            lightRepeatQ.Enqueue(1);
-            lightTimeQ.Enqueue(Time.time);
-            lightLastingQ.Enqueue(durationMS==0);
+            LightCmd cmd = new LightCmd();
+            cmd.r = (byte)r; cmd.g = (byte)g; cmd.b = (byte)b;
+            cmd.duration = (short)durationMS;
+            cmd.tRecv = Time.time;
+            lightCmdQ.Enqueue(cmd);
         }
         public override void SetLights(int repeatCount, Cube.LightOperation[] operations)
         {
             if (operations.Length == 0) return;
-            repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            operations = operations.Take(29).ToArray();
-            lightsQ.Enqueue(operations);
-            lightRepeatQ.Enqueue((byte)repeatCount);
-            lightTimeQ.Enqueue(Time.time);
-            lightLastingQ.Enqueue(false);
+
+            LightSenarioCmd cmd = new LightSenarioCmd();
+            cmd.lights = operations;
+            cmd.repeat = (byte)Mathf.Clamp(repeatCount, 0, 255);
+            // calc. period
+            cmd.period = 0;
+            for (int i=0; i<cmd.lights.Length; ++i){
+                cmd.period += cmd.lights[i].durationMs/1000f;
+            }
+            cmd.tRecv = Time.time;
+            lightSenarioCmdQ.Enqueue(cmd);
         }
         public override void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         {
