@@ -183,28 +183,34 @@ namespace toio.Simulator
 
 
         // ============ Motor ============
-        protected float motorDuration = 0;
-        protected float motorTimeElipsed = 0;
-        protected Queue<int> motorLeftQ = new Queue<int>();
-        protected Queue<int> motorRightQ = new Queue<int>();
-        protected Queue<int> motorDurationQ = new Queue<int>();
-        protected Queue<float> motorTimeQ = new Queue<float>();
-
-        protected void MotorScheduler(float dt, float t)
+        protected float motorCmdElipsed = 0;
+        protected struct MotorTimeCmd
         {
-            motorTimeElipsed += dt;
+            public int left, right, duration;
+            public float tRecv;
+        }
+        protected Queue<MotorTimeCmd> motorTimeCmdQ = new Queue<MotorTimeCmd>(); // command queue
+        protected MotorTimeCmd currMotorTimeCmd = default;  // current command
 
-            // ----- Simulate Lag -----
-            while (motorTimeQ.Count > 0 && t > motorTimeQ.Peek() + cube.delay ){
-                motorTimeElipsed = 0;
-                motorDuration = motorDurationQ.Dequeue()/1000f;
-                motorLeft = motorLeftQ.Dequeue();
-                motorRight = motorRightQ.Dequeue();
-                motorTimeQ.Dequeue();
+
+        protected virtual void MotorScheduler(float dt, float t)
+        {
+            motorCmdElipsed += dt;
+
+            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv + cube.delay)
+            {
+                motorCmdElipsed = 0;
+                currMotorTimeCmd = motorTimeCmdQ.Dequeue();
             }
 
             // ----- Excute Order -----
-            if (motorTimeElipsed > motorDuration && motorDuration > 0){
+            if (motorCmdElipsed < currMotorTimeCmd.duration/1000f)
+            {
+                motorLeft = currMotorTimeCmd.left;
+                motorRight = currMotorTimeCmd.right;
+            }
+            else
+            {
                 motorLeft = 0; motorRight = 0;
             }
         }
@@ -354,10 +360,12 @@ namespace toio.Simulator
         // ============ Commands ============
         public override void Move(int left, int right, int durationMS)
         {
-                motorDurationQ.Enqueue(Mathf.Clamp(durationMS, 0, 2550));
-                motorLeftQ.Enqueue( Mathf.Clamp(left, -maxMotor, maxMotor));
-                motorRightQ.Enqueue( Mathf.Clamp(right, -maxMotor, maxMotor));
-                motorTimeQ.Enqueue(Time.time);
+            MotorTimeCmd cmd = new MotorTimeCmd();
+            cmd.left = Mathf.Clamp(left, -maxMotor, maxMotor);
+            cmd.right = Mathf.Clamp(right, -maxMotor, maxMotor);
+            cmd.duration = Mathf.Clamp(durationMS, 0, 2550);
+            cmd.tRecv = Time.time;
+            motorTimeCmdQ.Enqueue(cmd);
         }
         public override void StopLight()
         {
