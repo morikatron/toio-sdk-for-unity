@@ -59,8 +59,8 @@ public static double TireWidthDot { get; }      // 左右車輪の間隔（マ�
 public static double VDotOverU { get; }         // 速度と指示値の比例 (dot/sec) / cmd
 public static double DotPerM { get; }           // マット単位とメートルの比例 dot / mm
 public static readonly float MotorTau = 0.04f;  // モーターの一次遅れ要素 sec
-public double Deadzone { get; }                 // モーター指示値のデッドゾーン（実例化の際固定される）
-public int MaxSpd { get; }                      // 最大速度指示値（実例化の際固定される）
+public double deadzone { get; }                 // モーター指示値のデッドゾーン（実例化の際固定される）
+public int maxSpd { get; }                      // 最大速度指示値（実例化の際固定される）
 ```
 
 ### パラメーター
