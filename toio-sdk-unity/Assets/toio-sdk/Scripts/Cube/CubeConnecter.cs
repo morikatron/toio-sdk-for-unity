@@ -125,7 +125,7 @@ namespace toio
                             cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
                             break;
                     }
-                    await cube.StartNotifications();
+                    await cube.Initialize();
                     this.isConnecting = false;
                     return cube;
                 }
@@ -159,7 +159,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    await (cube as CubeReal).StartNotifications();
+                    await (cube as CubeReal).Initialize();
                     this.isConnecting = false;
                 }
                 catch (System.Exception)
@@ -268,7 +268,7 @@ namespace toio
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
                     var cube = this.versionTable["2.0.0"](peripheral, characteristicTable);
-                    await cube.StartNotifications();
+                    await cube.Initialize();
                     this.isConnecting = false;
                     return cube;
                 }
@@ -302,7 +302,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    await (cube as CubeReal).StartNotifications();
+                    await (cube as CubeReal).Initialize();
                     this.isConnecting = false;
                 }
                 catch (System.Exception)
