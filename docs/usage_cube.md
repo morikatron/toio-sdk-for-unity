@@ -534,6 +534,23 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
 
 <br>
 
+### ConfigDoubleTapInterval
+
+```C#
+public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのダブルタップ検出の時間間隔を設定します <br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定)
+
+- interval
+  - 定義 : ダブルタップ検出の時間間隔
+  - 範囲 : 1~7
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
 ### TargetMove
 
 ```C#
@@ -550,28 +567,45 @@ public virtual void TargetMove(int configID, int timeOut, int setMaxSpd,
   - 範囲 : 0~255
 - timeOut
   - 定義 : タイムアウト時間
-  - 範囲 : 0~255; 0 のみ例外的に 10 秒になります
+  - 範囲 : 0~255
+    -  0 のみ例外的に 10 秒になる
 - setMaxSpd
   - 定義 : モーターの最大速度指示値
   - 範囲 : 10~255
 - targetX
   - 定義 : 目標地点の X 座標値
-  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+  - 範囲 : 0~65535
+    - 65535 は「書き込み操作時と同じ」という意味になる
 - targetY
   - 定義 : 目標地点の Y 座標値
-  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+  - 範囲 : 0~65535
+    - 65535 は「書き込み操作時と同じ」という意味になる
 - targetAngle
   - 定義 : 目標地点でのキューブの角度Θ
   - 範囲 : 0~360
 - moveType
   - 定義 : 移動タイプ
-  - 種類 : rotatingMove, roundForwardMove, roundBeforeMove
+  - 種類 : 
+    - rotatingMove : 回転しながら移動
+    - roundForwardMove : 回転しながら移動（後退なし）
+    - roundBeforeMove ; 回転してから移動
 - speedType
   - 定義 : モーターの速度変化タイプ
-  - 種類 : uniformSpeed, acceleration, deceleration, variableSpeed
+  - 種類 :
+    - uniformSpeed : 速度一定
+    - acceleration : 目標地点まで徐々に加速
+    - deceleration : 目標地点まで徐々に減速
+    - variableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
 - rotationType
   - 定義 : 回転タイプ
-  - 種類 : absoluteLeastAngle, absoluteClockwise, absoluteCounterClockwise, relativeClockwise, relativeCounterClockwise, notRotated, original
+  - 種類 : 
+    - absoluteLeastAngle : 絶対角度 回転量が少ない方向
+    - absoluteClockwise : 絶対角度 正方向(時計回り)
+    - absoluteCounterClockwise : 絶対角度 負方向(反時計回り)
+    - relativeClockwise : 相対角度 正方向(時計回り)
+    - relativeCounterClockwise : 相対角度 負方向(反時計回り)
+    - notRotated : 回転しない
+    - original : 書き込み操作時と同じ 回転量が少ない方向
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -595,31 +629,50 @@ public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
   - 範囲 : 0~255
 - timeOut
   - 定義 : タイムアウト時間
-  - 範囲 : 0~255; 0 のみ例外的に 10 秒になります
+  - 範囲 : 0~255
+    -  0 のみ例外的に 10 秒になる
 - setMaxSpd
   - 定義 : モーターの最大速度指示値
   - 範囲 : 10~115
 - targetXList
-  - 定義 : 目標地点の X 座標値の集合
-  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+  - 定義 : 各目標地点の X 座標値の集合
+  - 範囲 : 0~65535
+    - 65535 は「書き込み操作時と同じ」という意味になる
 - targetYList
-  - 定義 : 目標地点の Y 座標値の集合
-  - 範囲 : 0~65535; 65535 は「書き込み操作時と同じ」という意味になります
+  - 定義 : 各目標地点の Y 座標値の集合
+  - 範囲 : 0~65535
+    - 65535 は「書き込み操作時と同じ」という意味になる
 - targetAngleList
   - 定義 : 目標地点でのキューブの角度Θの集合
   - 範囲 : 0~360
 - writeType
   - 定義 : 書き込み操作の追加設定
-  - 種類 : write, add
+  - 種類 : 
+    - write : 上書き
+    - add : 追加
 - moveType
   - 定義 : 移動タイプ
-  - 種類 : rotatingMove, roundForwardMove, roundBeforeMove
+  - 種類 : 
+    - rotatingMove : 回転しながら移動
+    - roundForwardMove : 回転しながら移動（後退なし）
+    - roundBeforeMove ; 回転してから移動
 - speedType
   - 定義 : モーターの速度変化タイプ
-  - 種類 : uniformSpeed, acceleration, deceleration, variableSpeed
+  - 種類 :
+    - uniformSpeed : 速度一定
+    - acceleration : 目標地点まで徐々に加速
+    - deceleration : 目標地点まで徐々に減速
+    - variableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
 - rotationTypeList
-  - 定義 : 回転タイプの集合
-  - 種類 : absoluteLeastAngle, absoluteClockwise, absoluteCounterClockwise, relativeClockwise, relativeCounterClockwise, notRotated, original
+  - 定義 : 毎回回転タイプの集合
+  - 種類 : 
+    - absoluteLeastAngle : 絶対角度 回転量が少ない方向
+    - absoluteClockwise : 絶対角度 正方向(時計回り)
+    - absoluteCounterClockwise : 絶対角度 負方向(反時計回り)
+    - relativeClockwise : 相対角度 正方向(時計回り)
+    - relativeCounterClockwise : 相対角度 負方向(反時計回り)
+    - notRotated : 回転しない
+    - original : 書き込み操作時と同じ 回転量が少ない方向
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -629,7 +682,7 @@ public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
 ### AccelerationMove
 
 ```C#
-public virtual void AccelerationTargetMove(int targetSpeed, int Acceleration, int rotationSpeed,
+public virtual void AccelerationTargetMove(int targetSpeed, int acceleration, int rotationSpeed,
                             	AccRotationType accRotationType, AccMoveType accMoveType, 
 				PriorityType priorityType, int controlTime, ORDER_TYPE order);
 ```
@@ -640,24 +693,32 @@ public virtual void AccelerationTargetMove(int targetSpeed, int Acceleration, in
 - targetSpeed
   - 定義 : キューブの並進速度
   - 範囲 : 8~115
-- Acceleration
+- acceleration
   - 定義 : キューブの加速度
-  - 範囲 : 0~255; 0の場合「キューブの並進速度」で指定した速度になります
+  - 範囲 : 0~255; 
+    -  0 の場合「キューブの並進速度」で指定した速度になる
 - rotationSpeed
   - 定義 : キューブの向きの回転速度[度/秒]
   - 範囲 : 0~65535
 - accRotationType
   - 定義 : キューブの向きの回転方向
-  - 種類 : Clockwise, CounterClockwise
+  - 種類 : 
+    - Clockwise : 正方向(時計回り)
+    - CounterClockwise : 負方向(反時計回り)
 - accMoveType
   - 定義 : キューブの進行方向
-  - 種類 : forward, backward
+  - 種類 : 
+    - forward : 前進
+    - backward : 後退
 - priorityType
   - 定義 : 優先指定
-  - 種類 : translation, rotation
+  - 種類 : 
+    - translation : 並進速度を優先し、回転速度を調整する
+    - rotation : 回転速度を優先し、並進速度を調整する
 - controlTime
-  - 定義 : 制御時間[10ミリ秒]
-  - 範囲 : 0~255; 0は「時間制限無し」です
+  - 定義 : 制御時間[10ms]
+  - 範囲 : 0~255; 
+    -  0 は「時間制限無し」という意味になる
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
