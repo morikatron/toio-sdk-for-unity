@@ -53,14 +53,16 @@ namespace toio.tutorial
                 {
                     Debug.Log("---------- Phase 2 - デッドゾン対処 ----------");
                     Debug.Log("MoveRaw と move は入力表現が違う。move の方がもっと直感的になっている。MoveRaw はほぼそのままの入力を Cube.move に渡すが、move は【デッドゾン対処】と【ボーダー制限】を行っている。");
-                    Debug.Log("赤キューブは MoveRaw(-9, 1, 100)、緑キューブは等価に move(-4, -10, 100)、デッドゾンは 10。");
+                    Debug.Log("デッドゾーンより小さい等価的な命令を、赤キューブが MoveRaw で、緑キューブが Move で実行。");
                     Debug.Log("緑キューブだけが動いた。");
 
-                    // MoveRawで前進：　左モーター指令 -9、右モーター指令 1、継続時間 100
-                    cubeManager.handles[0].MoveRaw(-9, 1, 100);
+                    // MoveRawで前進：　左モーター指令 -deadzone+1、右モーター指令 1、継続時間 100
+                    var dz0 = cubeManager.cubes[0].deadzone;
+                    cubeManager.handles[0].MoveRaw(dz0-1, -dz0+1, 100);
 
-                    // moveで前進：　前進指令 -4、回転指令 -10、(希望)継続時間 100
-                    cubeManager.handles[1].Move(-4, -10, 100);
+                    // moveで前進：　等価的に、前進指令 0、回転指令 2*dz1、(希望)継続時間 100
+                    var dz1 = cubeManager.cubes[1].deadzone;
+                    cubeManager.handles[1].Move(0, 2*dz1, 100);
                 }
                 else if (phase == 3)
                 {
