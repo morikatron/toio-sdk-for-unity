@@ -588,7 +588,7 @@ public virtual void TargetMove(int configID, int timeOut, int setMaxSpd,
   - 種類 : 
     - rotatingMove : 回転しながら移動
     - roundForwardMove : 回転しながら移動（後退なし）
-    - roundBeforeMove ; 回転してから移動
+    - roundBeforeMove : 回転してから移動
 - speedType
   - 定義 : モーターの速度変化タイプ
   - 種類 :
@@ -655,7 +655,7 @@ public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
   - 種類 : 
     - rotatingMove : 回転しながら移動
     - roundForwardMove : 回転しながら移動（後退なし）
-    - roundBeforeMove ; 回転してから移動
+    - roundBeforeMove : 回転してから移動
 - speedType
   - 定義 : モーターの速度変化タイプ
   - 種類 :
@@ -695,7 +695,7 @@ public virtual void AccelerationTargetMove(int targetSpeed, int acceleration, in
   - 範囲 : 8~115
 - acceleration
   - 定義 : キューブの加速度
-  - 範囲 : 0~255; 
+  - 範囲 : 0~255
     -  0 の場合「キューブの並進速度」で指定した速度になる
 - rotationSpeed
   - 定義 : キューブの向きの回転速度[度/秒]
@@ -717,7 +717,7 @@ public virtual void AccelerationTargetMove(int targetSpeed, int acceleration, in
     - rotation : 回転速度を優先し、並進速度を調整する
 - controlTime
   - 定義 : 制御時間[10ms]
-  - 範囲 : 0~255; 
+  - 範囲 : 0~255
     -  0 は「時間制限無し」という意味になる
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
