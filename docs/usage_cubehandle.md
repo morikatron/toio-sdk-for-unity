@@ -69,12 +69,13 @@ public int maxSpd { get; }                      // 最大速度指示値（実�
 public static double dt = 1.0 / 60 * 3;     // 制御の周期 50ms
 public static double lag = 0.130;           // ラグ
 
-public int CenterX = 250;   // マットの中央のｘ座標
-public int CenterY = 250;   // マットの中央のｙ座標
-public int SizeX = 410;     // マットのｘ軸方向のサイズ
-public int SizeY = 410;     // マットのｙ軸方向のサイズ
-public int RangeX = 370;    // マットのｘ軸方向の行動範囲（Moveのボーダー制限用）
-public int RangeY = 370;    // マットのｙ軸方向の行動範囲（Moveのボーダー制限用）
+public int CenterX = 250;   // !!! Deprecated !!!  マットの中央のｘ座標
+public int CenterY = 250;   // !!! Deprecated !!!  マットの中央のｙ座標
+public int SizeX = 410;     // !!! Deprecated !!!  マットのｘ軸方向のサイズ
+public int SizeY = 410;     // !!! Deprecated !!!  マットのｙ軸方向のサイズ
+public int RangeX = 370;    // !!! Deprecated !!!  マットのｘ軸方向の行動範囲（Moveのボーダー制限用）
+public int RangeY = 370;    // !!! Deprecated !!!  マットのｙ軸方向の行動範囲（Moveのボーダー制限用）
+public RectInt borderRect   // ボーダーの範囲を表す RectInt
 ```
 
 ### プロパティ
@@ -128,14 +129,23 @@ public bool idle;           // この Movement が実行されるか
 #### Exec
 
 ```c#
-public Movement Exec();
+public Movement Exec(bool border=true);
 ```
 
-メンバー変数 handle の Move を呼んで実行します
+ボーダーの有無を指定し、メンバー変数 handle の Move を呼んで実行します
 
 <br>
 
 ## 2.3. 基本メソッド
+
+### SetBorderRect
+
+```c#
+public void SetBorderRect(RectInt matRect, int margin=20)
+```
+マットのサイズを表す RectInt と margin によって、ボーダー borderRect を設定する。
+
+> ※マットの RectInt は、Mat クラスの GetRectForMatType メソッドに MatType を指定して便利に取得することができます。
 
 ### Update
 

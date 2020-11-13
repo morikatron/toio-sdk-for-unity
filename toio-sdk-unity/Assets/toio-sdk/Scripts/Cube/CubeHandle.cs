@@ -26,12 +26,35 @@ namespace toio
         public static double lag = 0.130;
 
         // --- Parameters ---
-        public int CenterX = 250;
-        public int CenterY = 250;
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int CenterX {get{return (int)borderRect.center.x;} set{borderRect = new RectInt(value-RangeX/2, CenterY-RangeY/2, RangeX, RangeY);}}
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int CenterY {get{return (int)borderRect.center.y;} set{borderRect = new RectInt(CenterX-RangeX/2, value-RangeY/2, RangeX, RangeY);}}
+        [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeX = 410;
+        [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeY = 410;
-        public int RangeX = 370;
-        public int RangeY = 370;
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int RangeX {get{return (int)borderRect.width;} set{borderRect = new RectInt(CenterX-value/2, CenterY-RangeY/2, value, RangeY);}}
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int RangeY {get{return (int)borderRect.height;} set{borderRect = new RectInt(CenterX-RangeX/2, CenterY-value/2, RangeX, value);}}
+        /// <summary>
+        /// RectInt that defines border.
+        /// ボーダーを定義する RectInt。
+        /// </summary>
+        public RectInt borderRect = new RectInt(65, 65, 370, 370);  // default is based on toio_collection_front mat
+        /// <summary>
+        /// Set borderRect from RectInt defining dimension of Mat and margin.
+        /// マットのサイズを表す RectInt と margin によって、borderRect を設定する。
+        /// </summary>
+        public void SetBorderRect(RectInt matRect, int margin=20)
+        {
+            int xmin = Min(matRect.xMin + margin, (int)matRect.center.x);
+            int ymin = Min(matRect.yMin + margin, (int)matRect.center.y);
+            int w = Max(matRect.width - margin * 2, 0);
+            int h = Max(matRect.height - margin * 2, 0);
+            borderRect = new RectInt(xmin, ymin, w, h);
+        }
 
         // --- Properties ---
         public Vector pos { get; protected set; }
@@ -312,7 +335,11 @@ namespace toio
             if (border)
             {
                 // parameters
-                double rx = (double)RangeX / 2; double ry = (double)RangeY / 2; double e = 0.4;
+                double cx = (double)(borderRect.center.x);
+                double cy = (double)(borderRect.center.y);
+                double rx = (double)(borderRect.width) / 2;
+                double ry = (double)(borderRect.height) / 2;
+                double e = 0.4;
                 // predicted final stopping state, assuming not output current order.
                 double x = this.stopXPred, y = this.stopYPred, rad = this.radPred;
                 // predicted state if not stopping.
@@ -321,29 +348,29 @@ namespace toio
                 double predRad = this.radPred;
 
                 // currently outside and going further : stop transition
-                if ((Abs(x - CenterX) >= rx || Abs(y - CenterY) >= ry)
-                    && (Abs(predX - CenterX) >= rx && Abs(predX - CenterX) >= Abs(x - CenterX)
-                        || Abs(predY - CenterY) >= ry && Abs(predY - CenterY) >= Abs(y - CenterY)))
+                if ((Abs(x - cx) >= rx || Abs(y - cy) >= ry)
+                    && (Abs(predX - cx) >= rx && Abs(predX - cx) >= Abs(x - cx)
+                        || Abs(predY - cy) >= ry && Abs(predY - cy) >= Abs(y - cy)))
                 {
                     // stop
                     translate = 0;
 
                     // Help rotate back to insider
                     if (Abs(rotate) < 2*deadzone
-                        && (x - CenterX > rx && y - CenterY > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
-                            || x - CenterX > rx && y - CenterY < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
-                            || x - CenterX < -rx && y - CenterY < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
-                            || x - CenterX < -rx && y - CenterY > ry && (0 < rad && rad < 0 + e || PI / 2 < -rad && -rad < PI / 2 + e)
-                            || x - CenterX > rx && Abs(y - CenterY) <= ry && (PI / 2 - e < rad && rad < PI / 2 || PI / 2 - e < -rad && -rad < PI / 2)
-                            || x - CenterX < -rx && Abs(y - CenterY) <= ry && (PI / 2 < rad && rad < PI / 2 + e || PI / 2 < -rad && -rad < PI / 2 + e)
-                            || y - CenterY > ry && Abs(x - CenterX) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
-                            || y - CenterY < -ry && Abs(x - CenterX) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
+                        && (x - cx > rx && y - cy > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
+                            || x - cx > rx && y - cy < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
+                            || x - cx < -rx && y - cy < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
+                            || x - cx < -rx && y - cy > ry && (0 < rad && rad < 0 + e || PI / 2 < -rad && -rad < PI / 2 + e)
+                            || x - cx > rx && Abs(y - cy) <= ry && (PI / 2 - e < rad && rad < PI / 2 || PI / 2 - e < -rad && -rad < PI / 2)
+                            || x - cx < -rx && Abs(y - cy) <= ry && (PI / 2 < rad && rad < PI / 2 + e || PI / 2 < -rad && -rad < PI / 2 + e)
+                            || y - cy > ry && Abs(x - cx) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
+                            || y - cy < -ry && Abs(x - cx) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
                             )
                     ) rotate = 2*deadzone * Sign(rotate);
                 }
 
-                // currently inside : limit duration
-                else if (Abs(x - CenterX) < rx && Abs(y - CenterY) < ry)
+                // currently inside or outside but returning : limit duration
+                else
                 {
                     var _dt = 0.05f;
                     var now = Time.time;
@@ -354,9 +381,12 @@ namespace toio
                     {
                         predRad += (float)((spdL - spdR) / TireWidthDot) * _dt;
                         predRad = Rad(predRad);
-                        predX += Cos(predRad) * (spdL + spdR) / 2 * _dt;
-                        predY += Sin(predRad) * (spdL + spdR) / 2 * _dt;
-                        if (Abs(predX - CenterX) >= rx || Abs(predY - CenterY) >= ry)
+                        var dx = Cos(predRad) * (spdL + spdR) / 2 * _dt;
+                        var dy = Sin(predRad) * (spdL + spdR) / 2 * _dt;
+                        predX += dx;
+                        predY += dy;
+                        if (Abs(predX - cx) >= rx && Abs(predX+dx - cx) >= Abs(predX - cx)
+                            || Abs(predY - cy) >= ry && Abs(predY+dy - cy) >= Abs(predY - cy) )
                         {
                             dur = (int)(t * 1000 - _dt * 1000);
                             if (dur < 10) dur = 0;

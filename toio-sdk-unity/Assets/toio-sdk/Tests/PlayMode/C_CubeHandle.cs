@@ -37,7 +37,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator b_move()
+        public IEnumerator b_Move()
         {
             Start();
 
@@ -47,6 +47,43 @@ namespace toio.Tests
             {
                 handle.Update();
                 handle.Move(80, 25, 2000);
+            });
+
+            test.update = TestUntil_Seconds(2);
+
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator b_Move_Outside_In()
+        {
+            Start();
+
+            var handle = new CubeHandle(test.CreateCube(65, 300));
+            handle.borderRect = new RectInt(100, 100, 300, 300);
+
+            test.init = (() =>
+            {
+                handle.Update();
+                handle.Move(80, 30, 2000);
+            });
+
+            test.update = TestUntil_Seconds(2);
+
+            yield return new MonoBehaviourTest<test>();
+        }
+        [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator b_Move_Outside_Out()
+        {
+            Start();
+
+            var handle = new CubeHandle(test.CreateCube(65, 300, angle:180));
+            handle.borderRect = new RectInt(100, 100, 300, 300);
+
+            test.init = (() =>
+            {
+                handle.Update();
+                handle.Move(80, 30, 2000);
             });
 
             test.update = TestUntil_Seconds(2);
