@@ -39,6 +39,7 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return 100; } }
+        public override int deadzone { get { return 10; } }
 
         // ボタンコールバック
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }

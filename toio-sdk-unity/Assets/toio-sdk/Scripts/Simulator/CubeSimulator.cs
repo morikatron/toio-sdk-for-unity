@@ -404,14 +404,21 @@ namespace toio.Simulator
             LED.GetComponent<Renderer>().material.color = Color.black;
         }
 
+        private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
-            int octave = (int)(soundId/12);
-            int idx = (int)(soundId%12);
-            var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+            if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+            if (soundId != playingSoundId)
+            {
+                playingSoundId = soundId;
+                int octave = (int)(soundId/12);
+                int idx = (int)(soundId%12);
+                var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+                audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+                audioSource.clip = aCubeOnSlot;
+            }
             audioSource.volume = (float)volume/256;
-            audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-            audioSource.clip = aCubeOnSlot;
-            audioSource.Play();
+            if (!audioSource.isPlaying)
+                audioSource.Play();
         }
         internal void _StopSound(){
             audioSource.clip = null;

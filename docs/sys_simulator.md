@@ -74,7 +74,7 @@ public enum MatType
     toio_collection_back = 1,
     simple_playmat = 2,
     developer = 3,
-    Custom = 4  // 座標範囲をカスタマイズ
+    custom = 4  // 座標範囲をカスタマイズ
 }
 
 public MatType matType;
@@ -82,41 +82,33 @@ public MatType matType;
 // マットのタイプ、座標範囲の変更を反映
 internal void ApplyMatType()
 {
+    // Resize
+    if (matType != MatType.custom)
+    {
+        var rect = GetRectForMatType(matType);
+        xMin = rect.xMin; xMax = rect.xMax;
+        yMin = rect.yMin; yMax = rect.yMax;
+    }
+    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+
+    // Change material
     switch (matType){
         case MatType.toio_collection_front:
-            xMin = 45; xMax = 455; yMin = 45; yMax = 455;
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
             break;
         case MatType.toio_collection_back:
-            xMin = 545; xMax = 955; yMin = 45; yMax = 455;
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
             break;
         case MatType.simple_playmat:
-            xMin = 98; xMax = 402; yMin = 142; yMax = 358;
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
             break;
         case MatType.developer:
-            switch (developerMatType){
-                case DeveloperMatType._1: xMin = 34; xMax = 339; yMin = 35; yMax = 250; break;
-                case DeveloperMatType._2: xMin = 34; xMax = 339; yMin = 251; yMax = 466; break;
-                case DeveloperMatType._3: xMin = 34; xMax = 339; yMin = 467; yMax = 682; break;
-                case DeveloperMatType._4: xMin = 34; xMax = 339; yMin = 683; yMax = 898; break;
-                case DeveloperMatType._5: xMin = 340; xMax = 644; yMin = 35; yMax = 250; break;
-                case DeveloperMatType._6: xMin = 340; xMax = 644; yMin = 251; yMax = 466; break;
-                case DeveloperMatType._7: xMin = 340; xMax = 644; yMin = 467; yMax = 682; break;
-                case DeveloperMatType._8: xMin = 340; xMax = 644; yMin = 683; yMax = 898; break;
-                case DeveloperMatType._9: xMin = 645; xMax = 949; yMin = 35; yMax = 250; break;
-                case DeveloperMatType._10: xMin = 645; xMax = 949; yMin = 251; yMax = 466; break;
-                case DeveloperMatType._11: xMin = 645; xMax = 949; yMin = 467; yMax = 682; break;
-                case DeveloperMatType._12: xMin = 645; xMax = 949; yMin = 683; yMax = 898; break;
-            }
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
             break;
-        case MatType.Custom:
+        case MatType.custom:
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
             break;
     }
-    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 }
 ```
 

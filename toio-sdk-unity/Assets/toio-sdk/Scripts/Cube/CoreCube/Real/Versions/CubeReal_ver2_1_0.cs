@@ -21,6 +21,7 @@ namespace toio
         public override PoseType pose { get; protected set; }
         public override string version { get { return "2.1.0"; } }
         public override int maxSpd { get { return 115; } }
+        public override int deadzone { get { return 8; } }
 
         // ダブルタップコールバック
         public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
