@@ -130,77 +130,78 @@ namespace toio
 
         private void Recv_Button(bool pressed)
         {
-                isPressed = pressed;
-                this.buttonCallback.Notify(this);
+            isPressed = pressed;
+            this.buttonCallback.Notify(this);
         }
 
         private void Recv_StandardId(uint standardId, int deg)
         {
-                this.standardId = standardId;
-                this.angle = deg;
-                this.sensorAngle = deg;
-                this.isGrounded = true;
-                this.standardIdCallback.Notify(this);
+            this.standardId = standardId;
+            this.angle = deg;
+            this.sensorAngle = deg;
+            this.isGrounded = true;
+            this.standardIdCallback.Notify(this);
         }
 
         protected void Recv_PositionId(int x, int y, int deg, int xSensor, int ySensor)
         {
-                this.x = x;
-                this.y = y;
-                this.angle = deg;
-                this.sensorX = xSensor;
-                this.sensorY = ySensor;
-                this.sensorAngle = deg;
-                this.isGrounded = true;
-                this.idCallback.Notify(this);
+            this.x = x;
+            this.y = y;
+            this.angle = deg;
+            this.sensorX = xSensor;
+            this.sensorY = ySensor;
+            this.sensorAngle = deg;
+            this.isGrounded = true;
+            this.idCallback.Notify(this);
         }
 
         protected void Recv_PositionIdMissed()
         {
-                this.isGrounded = false;
-                this.idMissedCallback.Notify(this);
+            this.isGrounded = false;
+            this.idMissedCallback.Notify(this);
         }
         protected void Recv_StandardIdMissed()
         {
-                this.isGrounded = false;
-                this.standardIdMissedCallback.Notify(this);
+            this.isGrounded = false;
+            this.standardIdMissedCallback.Notify(this);
         }
 
         private void Recv_Sloped(bool sloped)
         {
-                this.isSloped = sloped;
-                this.slopeCallback.Notify(this);
+            this.isSloped = sloped;
+            this.slopeCallback.Notify(this);
         }
 
         private void Recv_CollisionDetected(bool collisionDetected)
         {
-                this.isCollisionDetected = collisionDetected;
-                this.collisionCallback.Notify(this);
+            this.isCollisionDetected = collisionDetected;
+            this.collisionCallback.Notify(this);
         }
 
         private void Recv_DoubleTap(bool doubleTap)
         {
-                this.isDoubleTap = doubleTap;
-                this.doubleTapCallback.Notify(this);
+            this.isDoubleTap = doubleTap;
+            this.doubleTapCallback.Notify(this);
         }
 
         private void Recv_Pose(PoseType posed)
         {
-                this.pose = posed;
-                this.poseCallback.Notify(this);
+            this.pose = posed;
+            this.poseCallback.Notify(this);
         }
 
         private void Recv_Shake(bool shake)
         {
-                this.isShake = shake;
-                this.shakeCallback.Notify(this);
+            this.isShake = shake;
+            this.shakeCallback.Notify(this);
         }
 
         private void Recv_MotorSpeed(int left, int right)
         {
-                this.leftSpeed = left;
-                this.rightSpeed = right;
-                this.motorSpeedCallback.Notify(this);
+            this.leftSpeed = left;
+            this.rightSpeed = right;
+            this.motorSpeedCallback.Notify(this);
+        }
 
         protected void Recv_Config(bool isEnabledMotorSpeed)
         {
