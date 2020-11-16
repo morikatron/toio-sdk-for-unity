@@ -12,16 +12,21 @@ namespace toio
 
         public CubeUnity(GameObject gameObject)
         {
+            this.unsupportingCallback = new UnsupportingCallbackProvider(this);
+
             this.gameObject = gameObject;
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
 
             // Automatically enable motor speed reading
-            this.motorSpeedCallback.onAddListener += (() =>
+            if (simulator.version>=CubeSimulator.Version.v2_2_0)
             {
-                if (this.simulator.ready && this.isInitialized)
-                    this.simulator.EnableMotorSpeed(true);
-            });
+                this.motorSpeedCallback.onAddListener += (() =>
+                {
+                    if (this.simulator.ready && this.isInitialized)
+                        this.simulator.EnableMotorSpeed(true);
+                });
+            }
         }
         public bool Init()
         {
@@ -121,10 +126,20 @@ namespace toio
         public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
         public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
         public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
-        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
-        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
-        public override CallbackProvider shakeCallback { get { return this._shakeCallback; } }
-        public override CallbackProvider motorSpeedCallback { get { return this._motorSpeedCallback; } }
+        // 2.1.0
+        public override CallbackProvider doubleTapCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._doubleTapCallback;
+            else return this.unsupportingCallback; } }
+        public override CallbackProvider poseCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._poseCallback;
+            else return this.unsupportingCallback; } }
+        // 2.2.0
+        public override CallbackProvider shakeCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._shakeCallback;
+            else return this.unsupportingCallback; } }
+        public override CallbackProvider motorSpeedCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._motorSpeedCallback;
+            else return this.unsupportingCallback; } }
 
         ///////////////   RETRIEVE INFO   ////////////
 
@@ -206,7 +221,6 @@ namespace toio
         protected void Recv_Config(bool isEnabledMotorSpeed)
         {
             this.isEnabledMotorSpeed = isEnabledMotorSpeed;
-            Debug.Log(isEnabledMotorSpeed);
         }
 
 
@@ -311,8 +325,16 @@ namespace toio
             CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.SetSlopeThreshold(angle), order, "configSlopeThreshold", angle);
 #endif
         }
-        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { }
+        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedSimWarning(); }
+        public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedSimWarning(); }
 
+
+        // 非対応コールバック
+        private UnsupportingCallbackProvider unsupportingCallback;
+        protected void UnsupportedSimWarning()
+        {
+            Debug.LogWarningFormat("呼ばれた関数はシミュレータで対応しておりません。");
+        }
 
     }
 }
