@@ -204,7 +204,8 @@ namespace toio.Simulator
             }
 
             // ----- Excute Order -----
-            if (motorCmdElipsed < currMotorTimeCmd.duration/1000f)
+            if (currMotorTimeCmd.duration==0
+                || motorCmdElipsed < currMotorTimeCmd.duration/1000f)
             {
                 motorLeft = currMotorTimeCmd.left;
                 motorRight = currMotorTimeCmd.right;
@@ -259,7 +260,8 @@ namespace toio.Simulator
             }
             else    // light senario cmd
             {
-                if (currLightSenarioCmd.period*currLightSenarioCmd.repeat <= lightCmdElipsed){
+                if (currLightSenarioCmd.period==0
+                    || currLightSenarioCmd.repeat>0 && currLightSenarioCmd.period*currLightSenarioCmd.repeat <= lightCmdElipsed){
                     cube._StopLight();
                 }
                 else
@@ -302,7 +304,8 @@ namespace toio.Simulator
             }
 
             // ----- Excute Order -----
-            if (currSoundSenarioCmd.period*currSoundSenarioCmd.repeat <= soundCmdElipsed)
+            if (currSoundSenarioCmd.period==0
+                || currSoundSenarioCmd.repeat>0 && currSoundSenarioCmd.period*currSoundSenarioCmd.repeat <= soundCmdElipsed)
                 cube._StopSound();
             else
             {
