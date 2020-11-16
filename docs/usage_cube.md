@@ -512,13 +512,13 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
 ###  ConfigDoubleTapInterval
 
 ```C#
-public void  ConfigDoubleTapInterval(int level, ORDER_TYPE order=ORDER_TYPE.Strong);
+public void  ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 キューブのダブルタップ検出の時間間隔を設定します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定)
 
-- level
+- interval
   - 定義 : ダブルタップ検出の時間間隔
   - 範囲 : 1~7
 - order
