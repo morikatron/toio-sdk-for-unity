@@ -159,9 +159,9 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnMissedID(Cube c)
     {
-        this.textPositionID.text = "PositionID";
-        this.textStandardID.text = "StandardID";
-        this.textAngle.text = " Angle";
+        this.textPositionID.text = "PositionID Missed";
+        this.textStandardID.text = "StandardID Missed";
+        this.textAngle.text = "Angle Missed";
     }
 
     public void OnSpeed(Cube c)
