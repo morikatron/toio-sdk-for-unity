@@ -254,6 +254,9 @@ public virtual int rightSpeed { get; protected set; }
 ```C#
 public class CallbackProvider
 {
+    public virtual Action onAddListener { get; set; }
+    public virtual Action onRemoveListener { get; set; }
+    public virtual Action onClearListener { get; set; }
     public virtual void AddListener(string key, Action<Cube> listener);
     public virtual void RemoveListener(string key);
     public virtual void ClearListener();
