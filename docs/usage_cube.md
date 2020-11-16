@@ -62,13 +62,13 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
 | モーションセンサー | [ダブルタップ検出](https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出)                                        | o             | ※            |
 |                    | [姿勢検出](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
-| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                              | o             | o            |
+| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
 |                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | x             | x            |
 |                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
 |                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | x             | x            |
 |                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | x             | x            |
 |                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
-| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | x             | x            |
+| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | o             | x            |
 
 #### ファームウェアバージョン 2.2.0
 
@@ -254,6 +254,9 @@ public virtual int rightSpeed { get; protected set; }
 ```C#
 public class CallbackProvider
 {
+    public virtual Action onAddListener { get; set; }
+    public virtual Action onRemoveListener { get; set; }
+    public virtual Action onClearListener { get; set; }
     public virtual void AddListener(string key, Action<Cube> listener);
     public virtual void RemoveListener(string key);
     public virtual void ClearListener();
@@ -500,6 +503,24 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
 - level
   - 定義 : 衝突検知の閾値
   - 範囲 : 1~10
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+###  ConfigDoubleTapInterval
+
+```C#
+public void  ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのダブルタップ検出の時間間隔を設定します<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定)
+
+- interval
+  - 定義 : ダブルタップ検出の時間間隔
+  - 範囲 : 1~7
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong

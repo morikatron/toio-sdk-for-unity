@@ -20,18 +20,41 @@ namespace toio
         public static double VDotOverU { get { return CubeSimulator.VDotOverU; } } // (dot/sec) / cmd
         public static double DotPerM { get { return Mat.DotPerM; } } // dot / mm
         public static readonly float MotorTau = 0.04f;
-        public double Deadzone { get; protected set; }
-        public int MaxSpd { get; protected set; }
+        public double deadzone { get { return cube.deadzone; } }
+        public int maxSpd { get { return cube.maxSpd; } }
         public static double dt = 1.0 / 60 * 3;
         public static double lag = 0.130;
 
         // --- Parameters ---
-        public int CenterX = 250;
-        public int CenterY = 250;
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int CenterX {get{return (int)borderRect.center.x;} set{borderRect = new RectInt(value-RangeX/2, CenterY-RangeY/2, RangeX, RangeY);}}
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int CenterY {get{return (int)borderRect.center.y;} set{borderRect = new RectInt(CenterX-RangeX/2, value-RangeY/2, RangeX, RangeY);}}
+        [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeX = 410;
+        [Obsolete("Deprecated. Not needed by CubeHandle.", false)]
         public int SizeY = 410;
-        public int RangeX = 370;
-        public int RangeY = 370;
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int RangeX {get{return (int)borderRect.width;} set{borderRect = new RectInt(CenterX-value/2, CenterY-RangeY/2, value, RangeY);}}
+        [Obsolete("Deprecated. Please use borderRect instead.", false)]
+        public int RangeY {get{return (int)borderRect.height;} set{borderRect = new RectInt(CenterX-RangeX/2, CenterY-value/2, RangeX, value);}}
+        /// <summary>
+        /// RectInt that defines border.
+        /// ボーダーを定義する RectInt。
+        /// </summary>
+        public RectInt borderRect = new RectInt(65, 65, 370, 370);  // default is based on toio_collection_front mat
+        /// <summary>
+        /// Set borderRect from RectInt defining dimension of Mat and margin.
+        /// マットのサイズを表す RectInt と margin によって、borderRect を設定する。
+        /// </summary>
+        public void SetBorderRect(RectInt matRect, int margin=20)
+        {
+            int xmin = Min(matRect.xMin + margin, (int)matRect.center.x);
+            int ymin = Min(matRect.yMin + margin, (int)matRect.center.y);
+            int w = Max(matRect.width - margin * 2, 0);
+            int h = Max(matRect.height - margin * 2, 0);
+            borderRect = new RectInt(xmin, ymin, w, h);
+        }
 
         // --- Properties ---
         public Vector pos { get; protected set; }
@@ -72,16 +95,6 @@ namespace toio
         public CubeHandle(Cube _cube)
         {
             this.cube = _cube;
-
-            if (this.cube.version == "2.0.0"){
-                MaxSpd = 100; Deadzone = 10;
-            }
-            else if (this.cube.version == "2.1.0"){
-                MaxSpd = 115; Deadzone = 8;
-            }
-            else{
-                MaxSpd = 100; Deadzone = 10;
-            }
         }
 
 
@@ -206,8 +219,8 @@ namespace toio
         /// </summary>
         public void MoveRaw(double uL, double uR, int durationMs = 1000, Cube.ORDER_TYPE order = Cube.ORDER_TYPE.Weak)
         {
-            uL = clip(uL, -MaxSpd, MaxSpd);
-            uR = clip(uR, -MaxSpd, MaxSpd);
+            uL = clip(uL, -maxSpd, maxSpd);
+            uR = clip(uR, -maxSpd, maxSpd);
             if (durationMs < 10)
             {
                 if (durationMs <= 5)
@@ -255,44 +268,44 @@ namespace toio
             {
 
                 var l = uL; var r = uR; var M = Max(l, r); var m = Min(l, r);
-                if ((l == 0 || l >= Deadzone || l <= -Deadzone) && (r == 0 || r >= Deadzone || r <= -Deadzone))
+                if ((l == 0 || l >= deadzone || l <= -deadzone) && (r == 0 || r >= deadzone || r <= -deadzone))
                 {
                     // Outside deadzone
                 }
-                else if (Abs(l - r) < Deadzone)
+                else if (Abs(l - r) < deadzone)
                 {
-                    if ((l + r) > 0) { uL += Deadzone - m; uR += Deadzone - m; }
-                    else if ((l + r) < 0) { uL += -Deadzone - M; uR += -Deadzone - M; }
+                    if ((l + r) > 0) { uL += deadzone - m; uR += deadzone - m; }
+                    else if ((l + r) < 0) { uL += -deadzone - M; uR += -deadzone - M; }
                     else { } //uL=Sign(uL)*Deadzone; uR=Sign(uR)*Deadzone;}
                 }
-                else if (Abs(l - r) < 2 * Deadzone)
+                else if (Abs(l - r) < 2 * deadzone)
                 {
                     if ((l + r) > 0)
                     {
                         if (m < 0) { uL += 0 - m; uR += 0 - m; }
-                        else if (m < Deadzone / 2) { uL += 0 - m; uR += 0 - m; }
-                        else { uL += Deadzone - m; uR += Deadzone - m; }
+                        else if (m < deadzone / 2) { uL += 0 - m; uR += 0 - m; }
+                        else { uL += deadzone - m; uR += deadzone - m; }
                     }
                     else if ((l + r) < 0)
                     {
                         if (M > 0) { uL += 0 - M; uR += 0 - M; }
-                        else if (M > -Deadzone / 2) { uL += 0 - M; uR += 0 - M; }
-                        else { uL += -Deadzone - M; uR += -Deadzone - M; }
+                        else if (M > -deadzone / 2) { uL += 0 - M; uR += 0 - M; }
+                        else { uL += -deadzone - M; uR += -deadzone - M; }
                     }
-                    else { uL = Sign(l) * Deadzone; uR = Sign(r) * Deadzone; }
+                    else { uL = Sign(l) * deadzone; uR = Sign(r) * deadzone; }
                 }
                 else
                 {
                     if ((l + r) > 0)
                     {
-                        if (m < -Deadzone / 2) { uL += -Deadzone - m; uR += -Deadzone - m; }
-                        else if (m > Deadzone / 2) { uL += Deadzone - m; uR += Deadzone - m; }
+                        if (m < -deadzone / 2) { uL += -deadzone - m; uR += -deadzone - m; }
+                        else if (m > deadzone / 2) { uL += deadzone - m; uR += deadzone - m; }
                         else { uL += 0 - m; uR += 0 - m; }
                     }
                     else
                     {
-                        if (m < -Deadzone / 2) { uL += -Deadzone - M; uR += -Deadzone - M; }
-                        else if (m > Deadzone / 2) { uL += Deadzone - M; uR += Deadzone - M; }
+                        if (m < -deadzone / 2) { uL += -deadzone - M; uR += -deadzone - M; }
+                        else if (m > deadzone / 2) { uL += deadzone - M; uR += deadzone - M; }
                         else { uL += 0 - M; uR += 0 - M; }
                     }
                 }
@@ -300,15 +313,15 @@ namespace toio
             }
 
             // truncate
-            if (Max(uL, uR) > MaxSpd)
+            if (Max(uL, uR) > maxSpd)
             {
-                uL -= Max(uL, uR) - MaxSpd;
-                uR -= Max(uL, uR) - MaxSpd;
+                uL -= Max(uL, uR) - maxSpd;
+                uR -= Max(uL, uR) - maxSpd;
             }
-            else if (Min(uL, uR) < -MaxSpd)
+            else if (Min(uL, uR) < -maxSpd)
             {
-                uL -= Min(uL, uR) + MaxSpd;
-                uR -= Min(uL, uR) + MaxSpd;
+                uL -= Min(uL, uR) + maxSpd;
+                uR -= Min(uL, uR) + maxSpd;
             }
 
             // transform order
@@ -322,7 +335,11 @@ namespace toio
             if (border)
             {
                 // parameters
-                double rx = (double)RangeX / 2; double ry = (double)RangeY / 2; double e = 0.4;
+                double cx = (double)(borderRect.center.x);
+                double cy = (double)(borderRect.center.y);
+                double rx = (double)(borderRect.width) / 2;
+                double ry = (double)(borderRect.height) / 2;
+                double e = 0.4;
                 // predicted final stopping state, assuming not output current order.
                 double x = this.stopXPred, y = this.stopYPred, rad = this.radPred;
                 // predicted state if not stopping.
@@ -331,29 +348,29 @@ namespace toio
                 double predRad = this.radPred;
 
                 // currently outside and going further : stop transition
-                if ((Abs(x - CenterX) >= rx || Abs(y - CenterY) >= ry)
-                    && (Abs(predX - CenterX) >= rx && Abs(predX - CenterX) >= Abs(x - CenterX)
-                        || Abs(predY - CenterY) >= ry && Abs(predY - CenterY) >= Abs(y - CenterY)))
+                if ((Abs(x - cx) >= rx || Abs(y - cy) >= ry)
+                    && (Abs(predX - cx) >= rx && Abs(predX - cx) >= Abs(x - cx)
+                        || Abs(predY - cy) >= ry && Abs(predY - cy) >= Abs(y - cy)))
                 {
                     // stop
                     translate = 0;
 
                     // Help rotate back to insider
-                    if (Abs(rotate) < 2*Deadzone
-                        && (x - CenterX > rx && y - CenterY > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
-                            || x - CenterX > rx && y - CenterY < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
-                            || x - CenterX < -rx && y - CenterY < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
-                            || x - CenterX < -rx && y - CenterY > ry && (0 < rad && rad < 0 + e || PI / 2 < -rad && -rad < PI / 2 + e)
-                            || x - CenterX > rx && Abs(y - CenterY) <= ry && (PI / 2 - e < rad && rad < PI / 2 || PI / 2 - e < -rad && -rad < PI / 2)
-                            || x - CenterX < -rx && Abs(y - CenterY) <= ry && (PI / 2 < rad && rad < PI / 2 + e || PI / 2 < -rad && -rad < PI / 2 + e)
-                            || y - CenterY > ry && Abs(x - CenterX) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
-                            || y - CenterY < -ry && Abs(x - CenterX) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
+                    if (Abs(rotate) < 2*deadzone
+                        && (x - cx > rx && y - cy > ry && (PI - e < rad && rad < PI || PI / 2 - e < -rad && -rad < PI / 2)
+                            || x - cx > rx && y - cy < -ry && (PI - e < -rad && -rad < PI || PI / 2 - e < rad && rad < PI / 2)
+                            || x - cx < -rx && y - cy < -ry && (0 < -rad && -rad < 0 + e || PI / 2 < rad && rad < PI / 2 + e)
+                            || x - cx < -rx && y - cy > ry && (0 < rad && rad < 0 + e || PI / 2 < -rad && -rad < PI / 2 + e)
+                            || x - cx > rx && Abs(y - cy) <= ry && (PI / 2 - e < rad && rad < PI / 2 || PI / 2 - e < -rad && -rad < PI / 2)
+                            || x - cx < -rx && Abs(y - cy) <= ry && (PI / 2 < rad && rad < PI / 2 + e || PI / 2 < -rad && -rad < PI / 2 + e)
+                            || y - cy > ry && Abs(x - cx) <= rx && (0 < rad && rad < e || PI - e < rad && rad < PI)
+                            || y - cy < -ry && Abs(x - cx) <= rx && (0 < -rad && -rad < e || PI - e < -rad && -rad < PI)
                             )
-                    ) rotate = 2*Deadzone * Sign(rotate);
+                    ) rotate = 2*deadzone * Sign(rotate);
                 }
 
-                // currently inside : limit duration
-                else if (Abs(x - CenterX) < rx && Abs(y - CenterY) < ry)
+                // currently inside or outside but returning : limit duration
+                else
                 {
                     var _dt = 0.05f;
                     var now = Time.time;
@@ -364,9 +381,12 @@ namespace toio
                     {
                         predRad += (float)((spdL - spdR) / TireWidthDot) * _dt;
                         predRad = Rad(predRad);
-                        predX += Cos(predRad) * (spdL + spdR) / 2 * _dt;
-                        predY += Sin(predRad) * (spdL + spdR) / 2 * _dt;
-                        if (Abs(predX - CenterX) >= rx || Abs(predY - CenterY) >= ry)
+                        var dx = Cos(predRad) * (spdL + spdR) / 2 * _dt;
+                        var dy = Sin(predRad) * (spdL + spdR) / 2 * _dt;
+                        predX += dx;
+                        predY += dy;
+                        if (Abs(predX - cx) >= rx && Abs(predX+dx - cx) >= Abs(predX - cx)
+                            || Abs(predY - cy) >= ry && Abs(predY+dy - cy) >= Abs(predY - cy) )
                         {
                             dur = (int)(t * 1000 - _dt * 1000);
                             if (dur < 10) dur = 0;
@@ -476,7 +496,7 @@ namespace toio
                 double translate = maxSpd * clip(1 - (Abs(drad) - Deg2Rad(10)) / Deg2Rad(endRad), 0, 1);
 
                 // Decelerate as getting close to target.
-                translate *= clip(dist, Deadzone * 0.5, Max(maxSpd, Deadzone) * 0.5) / (Max(maxSpd, Deadzone) * 0.5);
+                translate *= clip(dist, deadzone * 0.5, Max(maxSpd, deadzone) * 0.5) / (Max(maxSpd, deadzone) * 0.5);
 
                 // Angular velocity
                 double w = dradPred / (rotateTime / 1000.0);
@@ -485,7 +505,7 @@ namespace toio
                 // Linearly combine turning raidus method and angular velocity method.
                 // Cause turning radius does not work on low "translate",
                 // while angular velocity is weak on high "translate".
-                double miu = (Abs(translate) / MaxSpd); // weight of turning radius method
+                double miu = (Abs(translate) / this.maxSpd); // weight of turning radius method
                 rotate *= Abs(translate / 50) * miu + 1 * (1 - miu);
 
                 return new Movement(this, translate, rotate, rotateTime, false);
@@ -541,8 +561,8 @@ namespace toio
                 double rotate = w * TireWidthDot / VDotOverU;
 
                 // Deadzone processing
-                if (Abs(rotate) < 2 * Deadzone)
-                    rotate = 2 * Deadzone * Sign(rotate);
+                if (Abs(rotate) < 2 * deadzone)
+                    rotate = 2 * deadzone * Sign(rotate);
 
                 // Calculate duration
                 w = rotate * VDotOverU / TireWidthDot;
@@ -587,9 +607,9 @@ namespace toio
             if (dist < 0){
                 dist = -dist; translate = -translate;
             }
-            if (Abs(translate) < Deadzone)
+            if (Abs(translate) < deadzone)
                 return new Movement(this, 0, 0, 10, false, order:Cube.ORDER_TYPE.Strong);
-            translate = clip(translate, -MaxSpd, MaxSpd);
+            translate = clip(translate, -maxSpd, maxSpd);
 
             // Speed
             var spd = Abs(translate) * VDotOverU;
@@ -610,9 +630,9 @@ namespace toio
             if (drad < 0){
                 drad = -drad; rotate = -rotate;
             }
-            if (Abs(rotate) < 2 * Deadzone)
+            if (Abs(rotate) < 2 * deadzone)
                 return new Movement(this, 0, 0, 10, false, order:Cube.ORDER_TYPE.Strong);
-            rotate = clip(rotate, -2*MaxSpd, 2*MaxSpd);
+            rotate = clip(rotate, -2*maxSpd, 2*maxSpd);
 
             // Angular velocity
             var w = Abs(rotate) * VDotOverU / TireWidthDot;
@@ -653,10 +673,14 @@ namespace toio
             this.order = order;
         }
 
-        public Movement Exec()
+        /// <summary>
+        /// Execute this movement with/out border
+        /// この movement を実行する（ボーダーの有り無しの指定付き）
+        /// </summary>
+        public Movement Exec(bool border=true)
         {
             if (handle!=null)
-                return handle.Move(this);
+                return handle.Move(this, border);
             throw new NullReferenceException("Movement.Exec() called without CubeHandle set.");
         }
 

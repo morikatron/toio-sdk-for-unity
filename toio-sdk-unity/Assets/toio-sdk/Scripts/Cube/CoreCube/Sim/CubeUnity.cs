@@ -73,6 +73,7 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return simulator.maxMotor; } }
+        public override int deadzone { get { return simulator.deadzone; } }
         // ver2.1.0
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }

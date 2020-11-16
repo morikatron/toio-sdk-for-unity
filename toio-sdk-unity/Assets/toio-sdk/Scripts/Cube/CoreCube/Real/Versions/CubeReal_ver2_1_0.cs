@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace toio
 {
@@ -19,6 +21,7 @@ namespace toio
         public override PoseType pose { get; protected set; }
         public override string version { get { return "2.1.0"; } }
         public override int maxSpd { get { return 115; } }
+        public override int deadzone { get { return 8; } }
 
         // ダブルタップコールバック
         public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
@@ -29,6 +32,38 @@ namespace toio
         : base(peripheral, characteristicTable)
         {
         }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < send >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// キューブのダブルタップ検出の時間間隔を設定します
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定
+        /// </summary>
+        /// <param name="interval">ダブルタップ検出の時間間隔</param>
+        /// <param name="order">命令の優先度</param>
+        public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order)
+        {
+            if (!this.isConnected) { return; }
+
+            interval = Mathf.Clamp(interval, 1, 7);
+
+            byte[] buff = new byte[3];
+            buff[0] = 0x17;
+            buff[1] = 0;
+            buff[2] = BitConverter.GetBytes(interval)[0];
+
+            this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigDoubleTapinterval", interval);
+        }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < recv >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         protected override void Recv_sensor(byte[] data)
         {

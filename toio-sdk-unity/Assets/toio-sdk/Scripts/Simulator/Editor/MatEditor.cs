@@ -43,7 +43,7 @@ namespace toio.Simulator
 
 
             // Custom Mat Range
-            if (mat.matType == Mat.MatType.Custom)
+            if (mat.matType == Mat.MatType.custom)
             {
                 var xMin_new = (int)EditorGUILayout.IntField("x Min", xMin.intValue);
                 var xMax_new = (int)EditorGUILayout.IntField("x Max", xMax.intValue);
