@@ -7,25 +7,21 @@ namespace toio
     {
         GameObject gameObject;
         CubeSimulator simulator;
-
-        // コールバック
-        CallbackProvider _buttonCallback = new CallbackProvider();
-        CallbackProvider _slopeCallback = new CallbackProvider();
-        CallbackProvider _collisionCallback = new CallbackProvider();
-        CallbackProvider _idCallback = new CallbackProvider();
-        CallbackProvider _standardIdCallback = new CallbackProvider();
-        CallbackProvider _idMissedCallback = new CallbackProvider();
-        CallbackProvider _standardIdMissedCallback = new CallbackProvider();
-        CallbackProvider _doubleTapCallback = new CallbackProvider();
-        CallbackProvider _poseCallback = new CallbackProvider();
-        CallbackProvider _shakeCallback = new CallbackProvider();
-        CallbackProvider _motorSpeedCallback = new CallbackProvider();
+        public string objName { get { return this.simulator.gameObject.name; } }
+        private bool isInitialized = false;
 
         public CubeUnity(GameObject gameObject)
         {
             this.gameObject = gameObject;
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
+
+            // Automatically enable motor speed reading
+            this.motorSpeedCallback.onAddListener += (() =>
+            {
+                if (this.simulator.ready && this.isInitialized)
+                    this.simulator.EnableMotorSpeed(true);
+            });
         }
         public bool Init()
         {
@@ -45,20 +41,27 @@ namespace toio
 
                 simulator.StartNotification_Shake(this.Recv_Shake);
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
+                simulator.StartNotification_Config(this.Recv_Config);
 
+                this.isInitialized = true;
                 return true;
             }
             return false;
         }
 
-        public override string id { get; protected set; }
-        public override int battery { get { return 100; } protected set { } }
+        /////////////// PROPERTY ///////////////
+
         public override string version { get {
                 if (simulator.version == CubeSimulator.Version.v2_0_0) return "2.0.0";
                 else if (simulator.version == CubeSimulator.Version.v2_1_0) return "2.1.0";
                 else if (simulator.version == CubeSimulator.Version.v2_2_0) return "2.2.0";
                 return "2.2.0";
         } }
+        public override string id { get; protected set; }
+        public override string addr { get { return id; } }
+        public override bool isConnected { get { return simulator.ready; } }
+        public override int battery { get { return 100; } protected set { } }
+
         public override int x { get; protected set; }
         public override int y { get; protected set; }
         public override Vector2 pos { get { return new Vector2(x, y); } }
@@ -79,10 +82,38 @@ namespace toio
         public override PoseType pose { get; protected set; }
         // ver2.2.0
         public override bool isShake { get; protected set; }
-        public override int leftSpeed { get; protected set; }
-        public override int rightSpeed { get; protected set; }
+        protected bool isEnabledMotorSpeed = false;
+        protected int _leftSpeed = -1;
+        protected int _rightSpeed = -1;
+        public override int leftSpeed {
+            get {
+                if (this.isEnabledMotorSpeed) return this._leftSpeed;
+                else if (this.isInitialized && this.simulator.ready) this.simulator.EnableMotorSpeed(true);
+                return -1;
+            }
+            protected set { this._leftSpeed = value; }
+        }
+        public override int rightSpeed {
+            get {
+                if (this.isEnabledMotorSpeed) return this._rightSpeed;
+                else if (this.isInitialized && this.simulator.ready) this.simulator.EnableMotorSpeed(true);
+                return -1;
+            }
+            protected set { this._rightSpeed = value; }
+        }
 
         // コールバック
+        CallbackProvider _buttonCallback = new CallbackProvider();
+        CallbackProvider _slopeCallback = new CallbackProvider();
+        CallbackProvider _collisionCallback = new CallbackProvider();
+        CallbackProvider _idCallback = new CallbackProvider();
+        CallbackProvider _standardIdCallback = new CallbackProvider();
+        CallbackProvider _idMissedCallback = new CallbackProvider();
+        CallbackProvider _standardIdMissedCallback = new CallbackProvider();
+        CallbackProvider _doubleTapCallback = new CallbackProvider();
+        CallbackProvider _poseCallback = new CallbackProvider();
+        CallbackProvider _shakeCallback = new CallbackProvider();
+        CallbackProvider _motorSpeedCallback = new CallbackProvider();
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
         public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
         public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
@@ -170,6 +201,11 @@ namespace toio
                 this.leftSpeed = left;
                 this.rightSpeed = right;
                 this.motorSpeedCallback.Notify(this);
+
+        protected void Recv_Config(bool isEnabledMotorSpeed)
+        {
+            this.isEnabledMotorSpeed = isEnabledMotorSpeed;
+            Debug.Log(isEnabledMotorSpeed);
         }
 
 
@@ -264,6 +300,8 @@ namespace toio
             CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.SetLights(repeatCount, operations), order, "turnOnLightWithScenario", repeatCount, operations);
 #endif
         }
+
+        // Config
         public override void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
 #if RELEASE
@@ -274,10 +312,6 @@ namespace toio
         }
         public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { }
 
-        //  no use
-        public override string addr { get { return id; } }
-        public override bool isConnected { get { return simulator.ready; } }
 
-        public string objName { get { return this.simulator.gameObject.name; } }
     }
 }

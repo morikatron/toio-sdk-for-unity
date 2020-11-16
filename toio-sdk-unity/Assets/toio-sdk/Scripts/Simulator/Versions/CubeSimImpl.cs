@@ -99,6 +99,8 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
         public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
         { NotSupportedWarning(); }
+        public virtual void StartNotification_Config(System.Action<bool> action)
+        { NotSupportedWarning(); }
 
 
 
@@ -161,6 +163,8 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
 
         protected virtual void NotSupportedWarning()
-        { Debug.LogWarning("Not Supported in this firmware version."); }
+        {
+            // Debug.LogWarning("Not Supported in this firmware version.");
+        }
     }
 }

@@ -319,6 +319,15 @@ namespace toio.Simulator
             impl.StartNotification_MotorSpeed(action);
         }
 
+        /// <summary>
+        /// 設定の応答の読み出しコールバックを設定する
+        /// 引数：モーター速度設定応答
+        /// </summary>
+        public void StartNotification_Config(System.Action<bool> action)
+        {
+            impl.StartNotification_Config(action);
+        }
+
 
         // ============ コマンド ============
 
