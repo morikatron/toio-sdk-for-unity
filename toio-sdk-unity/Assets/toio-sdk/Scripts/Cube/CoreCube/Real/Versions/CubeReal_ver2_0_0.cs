@@ -355,13 +355,13 @@ namespace toio
         //      CoreCube API < recv >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        protected override void Recv_battery(byte[] data)
+        protected virtual void Recv_battery(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_battery
             this.battery = data[0];
         }
 
-        protected override void Recv_Id(byte[] data)
+        protected virtual void Recv_Id(byte[] data)
         {
             int type = data[0];
 
@@ -403,7 +403,7 @@ namespace toio
             }
         }
 
-        protected override void Recv_button(byte[] data)
+        protected virtual void Recv_button(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_button
             int type = data[0];
@@ -414,7 +414,7 @@ namespace toio
             }
         }
 
-        protected override void Recv_sensor(byte[] data)
+        protected virtual void Recv_sensor(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor
             int type = data[0];
