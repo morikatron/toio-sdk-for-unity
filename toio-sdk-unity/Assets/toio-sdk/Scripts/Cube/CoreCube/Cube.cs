@@ -160,8 +160,6 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
-        //public virtual void EnableMotorRead(bool valid){ UnsupportedWarning(); }
-
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -169,29 +167,29 @@ namespace toio
         // 非対応コールバック
         private UnsupportingCallbackProvider unsupportingCallback;
         // ボタンコールバック
-        public virtual CallbackProviderInterface buttonCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider buttonCallback { get { return this.unsupportingCallback; } }
         // 傾きコールバック
-        public virtual CallbackProviderInterface slopeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider slopeCallback { get { return this.unsupportingCallback; } }
         // 衝突コールバック
-        public virtual CallbackProviderInterface collisionCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider collisionCallback { get { return this.unsupportingCallback; } }
         // 座標角度コールバック
-        public virtual CallbackProviderInterface idCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider idCallback { get { return this.unsupportingCallback; } }
         // StandardID コールバック
-        public virtual CallbackProviderInterface standardIdCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider standardIdCallback { get { return this.unsupportingCallback; } }
         // ID Missed コールバック
-        public virtual CallbackProviderInterface idMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider idMissedCallback { get { return this.unsupportingCallback; } }
         // StandardID Missed コールバック
-        public virtual CallbackProviderInterface standardIdMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider standardIdMissedCallback { get { return this.unsupportingCallback; } }
 
         // Double Tap コールバック
-        public virtual CallbackProviderInterface doubleTapCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider doubleTapCallback { get { return this.unsupportingCallback; } }
         // 姿態検出コールバック
-        public virtual CallbackProviderInterface poseCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider poseCallback { get { return this.unsupportingCallback; } }
 
         // シェイクコールバック
-        public virtual CallbackProviderInterface shakeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider shakeCallback { get { return this.unsupportingCallback; } }
         // モータースピードコールバック
-        public virtual CallbackProviderInterface motorSpeedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider motorSpeedCallback { get { return this.unsupportingCallback; } }
 
 
         public Cube()
@@ -392,38 +390,36 @@ namespace toio
             Weak
         }
 
-        public interface CallbackProviderInterface
+        public class CallbackProvider
         {
-            void AddListener(string key, Action<Cube> listener);
-            void RemoveListener(string key);
-            void ClearListener();
-            void Notify(Cube target);
-        }
-
-        public class CallbackProvider : CallbackProviderInterface
-        {
+            public virtual Action onAddListener { get; set; }
+            public virtual Action onRemoveListener { get; set; }
+            public virtual Action onClearListener { get; set; }
             protected Dictionary<string, Action<Cube>> listenerTable = new Dictionary<string, Action<Cube>>();
             protected List<Action<Cube>> listenerList = new List<Action<Cube>>();
 
-            public void AddListener(string key, Action<Cube> listener)
+            public virtual void AddListener(string key, Action<Cube> listener)
             {
+                this.onAddListener?.Invoke();
                 this.listenerTable[key] = listener;
                 this.listenerList.Add(listener);
             }
-            public void RemoveListener(string key)
+            public virtual void RemoveListener(string key)
             {
+                this.onRemoveListener?.Invoke();
                 if (this.listenerTable.ContainsKey(key))
                 {
                     this.listenerList.Remove(this.listenerTable[key]);
                     this.listenerTable.Remove(key);
                 }
             }
-            public void ClearListener()
+            public virtual void ClearListener()
             {
-                listenerTable.Clear();
-                listenerList.Clear();
+                this.onClearListener?.Invoke();
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
             }
-            public void Notify(Cube target)
+            public virtual void Notify(Cube target)
             {
                 foreach (var listener in this.listenerList)
                 {
@@ -432,26 +428,30 @@ namespace toio
             }
         }
 
-        public class UnsupportingCallbackProvider : CallbackProviderInterface
+        public class UnsupportingCallbackProvider : CallbackProvider
         {
+            public override Action onAddListener { get { owner.UnsupportedWarning(); return default; } set { owner.UnsupportedWarning(); } }
+            public override Action onRemoveListener { get { owner.UnsupportedWarning(); return default; } set { owner.UnsupportedWarning(); } }
+            public override Action onClearListener { get { owner.UnsupportedWarning(); return default; } set { owner.UnsupportedWarning(); } }
+
             private Cube owner;
             public UnsupportingCallbackProvider(Cube owner)
             {
                 this.owner = owner;
             }
-            public void AddListener(string key, Action<Cube> listener)
+            public override void AddListener(string key, Action<Cube> listener)
             {
                 owner.UnsupportedWarning();
             }
-            public void RemoveListener(string key)
+            public override void RemoveListener(string key)
             {
                 owner.UnsupportedWarning();
             }
-            public void ClearListener()
+            public override void ClearListener()
             {
                 owner.UnsupportedWarning();
             }
-            public void Notify(Cube target)
+            public override void Notify(Cube target)
             {
                 owner.UnsupportedWarning();
             }

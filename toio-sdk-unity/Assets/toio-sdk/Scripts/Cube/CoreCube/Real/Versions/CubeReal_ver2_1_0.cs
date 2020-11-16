@@ -23,9 +23,9 @@ namespace toio
         public override int maxSpd { get { return 115; } }
 
         // ダブルタップコールバック
-        public override CallbackProviderInterface doubleTapCallback { get { return this._doubleTapCallback; } }
+        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
         // 姿勢コールバック
-        public override CallbackProviderInterface poseCallback { get { return this._poseCallback; } }
+        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)

@@ -41,19 +41,19 @@ namespace toio
         public override int maxSpd { get { return 100; } }
 
         // ボタンコールバック
-        public override CallbackProviderInterface buttonCallback { get { return this._buttonCallback; } }
+        public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
         // 傾きコールバック
-        public override CallbackProviderInterface slopeCallback { get { return this._slopeCallback; } }
+        public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
         // 衝突コールバック
-        public override CallbackProviderInterface collisionCallback { get { return this._collisionCallback; } }
+        public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
         // 座標角度コールバック
-        public override CallbackProviderInterface idCallback { get { return this._idCallback; } }
+        public override CallbackProvider idCallback { get { return this._idCallback; } }
         // StandardIDコールバック
-        public override CallbackProviderInterface standardIdCallback { get { return this._standardIdCallback; } }
+        public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
         // ID Missedコールバック
-        public override CallbackProviderInterface idMissedCallback { get { return this._idMissedCallback; } }
+        public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
         // StandardID Missedコールバック
-        public override CallbackProviderInterface standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
 
         public CubeReal_ver2_0_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
