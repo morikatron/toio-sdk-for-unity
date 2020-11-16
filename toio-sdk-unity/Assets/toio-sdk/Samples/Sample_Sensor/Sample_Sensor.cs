@@ -33,8 +33,8 @@ public class Sample_Sensor : MonoBehaviour
         cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedID);    // standardId missedイベント
         cube.poseCallback.AddListener("Sample_Sensor", OnPose);                    // 姿勢イベント
         cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);          // ダブルタップイベント
-        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  // 
-        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             // 
+        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  //
+        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             //
 
         this.textBattery = GameObject.Find("TextBattery").GetComponent<Text>();
         this.textCollision = GameObject.Find("TextCollision").GetComponent<Text>();
@@ -55,7 +55,6 @@ public class Sample_Sensor : MonoBehaviour
     public void TurnRight() { cube.Move(60, 30, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
-    public void EnableMotor() { /*cube.EnableMotorRead(true);*/ }
 
     public void FixedUpdate()
     {
@@ -169,7 +168,7 @@ public class Sample_Sensor : MonoBehaviour
     {
         this.textSpeed.text = "Speed:" + " L=" + c.leftSpeed.ToString() + " R=" + c.rightSpeed.ToString();
     }
-    
+
     public void OnShake(Cube c)
     {
         if (c.isShake)
