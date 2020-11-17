@@ -122,8 +122,10 @@ namespace toio
         }
 
         //キューブのモーター速度情報を取得
-        protected virtual void Recv_motor(byte[] data)
+        protected override void Recv_motor(byte[] data)
         {
+            base.Recv_motor(data);
+
             // https://toio.github.io/toio-spec/docs/ble_motor
             int type = data[0];
             if (0xe0 == type)

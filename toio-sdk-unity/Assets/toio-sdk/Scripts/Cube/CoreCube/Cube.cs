@@ -52,18 +52,43 @@ namespace toio
 
         // ver2.1.0
         // コアキューブのダブルタップ状態
-        public virtual bool isDoubleTap { get; protected set; }
+        public virtual bool isDoubleTap {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
         // コアキューブの姿勢状態
-        public virtual PoseType pose { get; protected set; }
+        public virtual PoseType pose {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
+        // 目標指定付きモーターの制御識別値
+        public virtual int motorConfigID {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
+        // 目標指定付きモーターの応答内容
+        public virtual RespondType motorRespond {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
+        // 複数目標指定付きモーターの制御識別値
+        public virtual int multiConfigID {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
+        // 複数目標指定付きモーターの応答内容
+        public virtual RespondType multiRespond {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
 
         // ver2.2.0
         // コアキューブのシェイク状態
-        public virtual bool isShake { get; protected set; }
+        public virtual bool isShake {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
         // コアキューブのモーター ID 1（左）の速度
-        public virtual int leftSpeed { get; protected set; }
+        public virtual int leftSpeed {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
         // コアキューブのモーター ID 2（右）の速度
-        public virtual int rightSpeed { get; protected set; }
-
+        public virtual int rightSpeed {
+            get{UnsupportedWarning(); return default;}
+            protected set{UnsupportedWarning();}}
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -162,6 +187,55 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
+        /// <summary>
+        /// キューブのモーターを目標指定付き制御します
+        /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
+        /// </summary>
+        /// <param name="configID">制御識別値</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="setMaxSpd">モーターの最大速度指示値</param>
+        /// <param name="targetX">目標地点のX座標値</param>
+        /// <param name="targetY">目標地点のY座標値</param>
+        /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
+        /// <param name="moveType">移動タイプ</param>
+        /// <param name="speedType">モーターの速度変化タイプ</param>
+        /// <param name="rotationType">回転タイプ</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order,
+                                        params object[] paraList) { UnsupportedWarning(); }
+
+        /// <summary>
+        /// キューブのモーターを複数目標指定付き制御します
+        /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
+        /// </summary>
+        /// <param name="configID">制御識別値</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="setMaxSpd">モーターの最大速度指示値</param>
+        /// <param name="targetXList">目標地点のX座標値の集合</param>
+        /// <param name="targetYList">目標地点のY座標値の集合</param>
+        /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
+        /// <param name="writeType">書き込み操作の追加設定</param>
+        /// <param name="moveType">移動タイプ</param>
+        /// <param name="speedType">モーターの速度変化タイプ</param>
+        /// <param name="rotationTypeList">回転タイプ</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList,ORDER_TYPE order,
+                                            params object[] paraList) { UnsupportedWarning(); }
+
+        /// <summary>
+        /// キューブの加速度指定付きモーターを制御します
+        /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御
+        /// </summary>
+        /// <param name="targetSpeed">キューブの並進速度</param>
+        /// <param name="Acceleration">キューブの加速度、100msごとの速度の増加分</param>
+        /// <param name="rotationSpeed">キューブの向きの回転速度[度/秒]</param>
+        /// <param name="accRotationType">キューブの向きの回転方向</param>
+        /// <param name="accMoveType">キューブの進行方向</param>
+        /// <param name="priority">回転や並進の優先指定</param>
+        /// <param name="controlTime">制御時間[10ms]</param>
+        public virtual void AccelerationMove(int targetSpeed, int Acceleration, ORDER_TYPE order, 
+                                            params object[] paraList) { UnsupportedWarning(); }
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -183,16 +257,21 @@ namespace toio
         // StandardID Missed コールバック
         public virtual CallbackProvider standardIdMissedCallback { get { return this.unsupportingCallback; } }
 
+        // ver2.1.0
         // Double Tap コールバック
         public virtual CallbackProvider doubleTapCallback { get { return this.unsupportingCallback; } }
         // 姿態検出コールバック
         public virtual CallbackProvider poseCallback { get { return this.unsupportingCallback; } }
+        // 目標指定付きモーター制御の応答コールバック
+        public virtual CallbackProvider targetMoveCallback { get { return this.unsupportingCallback; } }
+        // 複数目標指定付きモーター制御の応答コールバック
+        public virtual CallbackProvider multiTargetMoveCallback { get { return this.unsupportingCallback; } }
 
+        // ver2.2.0
         // シェイクコールバック
         public virtual CallbackProvider shakeCallback { get { return this.unsupportingCallback; } }
         // モータースピードコールバック
         public virtual CallbackProvider motorSpeedCallback { get { return this.unsupportingCallback; } }
-
 
         public Cube()
         {
@@ -242,7 +321,80 @@ namespace toio
             }
         }
 
+        // 目標指定付き制御
+        public enum MoveType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#移動タイプ
+            rotatingMove=0,       // 回転しながら移動
+            roundForwardMove=1,   // 回転しながら移動（後退なし）
+            roundBeforeMove=2     // 回転してから移動
+        };
 
+        public enum SpeedType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度変化タイプ
+            uniformSpeed=0,   // 速度一定
+            acceleration=1,   // 目標地点まで徐々に加速
+            deceleration=2,   // 目標地点まで徐々に減速
+            variableSpeed=3   // 中間地点まで徐々に加速し、そこから目標地点まで減速
+        };
+
+        public enum RotationType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#目標地点でのキューブの角度-θ
+            absoluteLeastAngle=0,         // 絶対角度 回転量が少ない方向
+            absoluteClockwise=1,          // 絶対角度 正方向(時計回り)
+            absoluteCounterClockwise=2,   // 絶対角度 負方向(反時計回り)
+            relativeClockwise=3,          // 相対角度 正方向(時計回り)
+            relativeCounterClockwise=4,   // 相対角度 負方向(反時計回り)
+            notRotated=5,                 // 回転しない
+            original=6                    // 書き込み操作時と同じ 回転量が少ない方向
+        };
+
+        public enum WriteType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#書き込み操作の追加設定
+            Write=0,        // 上書き
+            Add=1,          // 追加
+        };
+
+        // 加速度指定付き制御
+        public enum AccRotationType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#キューブの向きの回転方向
+            Clockwise=0,        // 正方向(時計回り)
+            CounterClockwise=1, // 負方向(反時計回り)
+        };
+
+        public enum AccMoveType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#キューブの進行方向
+            forward=0,          // 前進
+            backward=1,         // 後退
+        };
+
+        public enum PriorityType
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#優先指定
+            translation=0,      // 並進速度を優先し、回転速度を調整します
+            rotation=1,         // 回転速度を優先し、並進速度を調整します
+        };
+
+        // 制御の応答
+        public enum RespondType
+        {
+            // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#応答内容-1
+            normal=0,           // 目標に到達した時
+            timeout=1,          // 指定したタイムアウト時間を経過した時
+            toioIDmissed=2,     // toio ID がない場所にキューブが置かれた時
+            parameterError=3,   // 座標 X, 座標 Y, 角度の全てが現在と同じだった時
+            powerOffError=4,    // 電源を切られた時
+            otherWrite=5,       // 複数目標指定付きモーター制御以外のモーター制御が書き込まれた時
+            NonSupport=6,       // 指定したモーターの最大速度指示値が8未満の時
+            AddRefuse=7         // 書き込み操作の追加ができない時
+        };
+
+        // 姿態
         public enum PoseType
         {
             up=1,
@@ -253,6 +405,7 @@ namespace toio
             left=6
         };
 
+        // 効果音
         public enum NOTE_NUMBER : byte
         {
             C0 = 0,
@@ -386,6 +539,7 @@ namespace toio
             NO_SOUND = 128
         }
 
+        // 命令
         public enum ORDER_TYPE : int
         {
             Strong,
