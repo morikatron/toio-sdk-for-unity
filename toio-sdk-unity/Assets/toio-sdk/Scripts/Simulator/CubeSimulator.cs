@@ -319,6 +319,15 @@ namespace toio.Simulator
             impl.StartNotification_MotorSpeed(action);
         }
 
+        /// <summary>
+        /// 設定の応答の読み出しコールバックを設定する
+        /// 引数：モーター速度設定応答
+        /// </summary>
+        public void StartNotification_Config(System.Action<bool> action)
+        {
+            impl.StartNotification_Config(action);
+        }
+
 
         // ============ コマンド ============
 
@@ -374,12 +383,23 @@ namespace toio.Simulator
             impl.StopSound();
         }
 
+
+        // ============ 設定 ============
+
         /// <summary>
         /// 水平検出の閾値を設定する（度）
         /// </summary>
         public void SetSlopeThreshold(int degree)
         {
             impl.SetSlopeThreshold(degree);
+        }
+
+        /// <summary>
+        /// モーターの速度情報の取得の設定
+        /// </summary>
+        public void EnableMotorSpeed(bool enabled)
+        {
+            impl.EnableMotorSpeed(enabled);
         }
 
 
