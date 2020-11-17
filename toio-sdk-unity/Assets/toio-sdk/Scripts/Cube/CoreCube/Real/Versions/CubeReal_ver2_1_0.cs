@@ -59,7 +59,7 @@ namespace toio
             int configID = 0;
             int timeOut = 255;
             MoveType moveType = 0;
-            int setMaxSpd = 0;
+            int setMaxSpd = 80;
             SpeedType speedType = 0;
             RotationType rotationType = 0;
 
@@ -103,7 +103,7 @@ namespace toio
             int configID = 0;
             int timeOut = 255;
             MoveType moveType = 0;
-            int setMaxSpd = 0;
+            int setMaxSpd = 80;
             SpeedType speedType = 0;
             WriteType writeType = 0;
             RotationType[] rotationTypeList = new RotationType [targetXList.Length];

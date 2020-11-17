@@ -191,16 +191,11 @@ namespace toio
         /// キューブのモーターを目標指定付き制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
         /// </summary>
-        /// <param name="configID">制御識別値</param>
-        /// <param name="timeOut">タイムアウト時間(秒)</param>
-        /// <param name="setMaxSpd">モーターの最大速度指示値</param>
         /// <param name="targetX">目標地点のX座標値</param>
         /// <param name="targetY">目標地点のY座標値</param>
         /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
-        /// <param name="moveType">移動タイプ</param>
-        /// <param name="speedType">モーターの速度変化タイプ</param>
-        /// <param name="rotationType">回転タイプ</param>
         /// <param name="order">命令の優先度</param>
+        /// <param name="paraList">他のパラメータ</param>
         public virtual void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order,
                                         params object[] paraList) { UnsupportedWarning(); }
 
@@ -208,18 +203,12 @@ namespace toio
         /// キューブのモーターを複数目標指定付き制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
         /// </summary>
-        /// <param name="configID">制御識別値</param>
-        /// <param name="timeOut">タイムアウト時間(秒)</param>
-        /// <param name="setMaxSpd">モーターの最大速度指示値</param>
         /// <param name="targetXList">目標地点のX座標値の集合</param>
         /// <param name="targetYList">目標地点のY座標値の集合</param>
         /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
-        /// <param name="writeType">書き込み操作の追加設定</param>
-        /// <param name="moveType">移動タイプ</param>
-        /// <param name="speedType">モーターの速度変化タイプ</param>
-        /// <param name="rotationTypeList">回転タイプ</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList,ORDER_TYPE order,
+        /// <param name="paraList">他のパラメータ</param>
+        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList,　ORDER_TYPE order,
                                             params object[] paraList) { UnsupportedWarning(); }
 
         /// <summary>
@@ -227,13 +216,10 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御
         /// </summary>
         /// <param name="targetSpeed">キューブの並進速度</param>
-        /// <param name="Acceleration">キューブの加速度、100msごとの速度の増加分</param>
-        /// <param name="rotationSpeed">キューブの向きの回転速度[度/秒]</param>
-        /// <param name="accRotationType">キューブの向きの回転方向</param>
-        /// <param name="accMoveType">キューブの進行方向</param>
-        /// <param name="priority">回転や並進の優先指定</param>
-        /// <param name="controlTime">制御時間[10ms]</param>
-        public virtual void AccelerationMove(int targetSpeed, int Acceleration, ORDER_TYPE order, 
+        /// <param name="Acceleration">キューブの加速度、100msごとの速度の変わる分</param>
+        /// <param name="order">命令の優先度</param>
+        /// <param name="paraList">他のパラメータ</param>
+        public virtual void AccelerationMove(int targetSpeed, int Acceleration, ORDER_TYPE order,
                                             params object[] paraList) { UnsupportedWarning(); }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
