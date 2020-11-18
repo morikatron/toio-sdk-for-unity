@@ -19,7 +19,7 @@ namespace toio
             public bool isConfigResponseSucceeded = false;
             public bool wasTimeOut = false;
         }
-        
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
