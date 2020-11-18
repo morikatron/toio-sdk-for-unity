@@ -23,6 +23,7 @@ public class Sample_Sensor : MonoBehaviour
     {
         var peripheral = await new NearestScanner().Scan();
         cube = await new CubeConnecter().Connect(peripheral);
+        await cube.ConfigMotorRead(true);
         // コールバック登録
         cube.collisionCallback.AddListener("Sample_Sensor", OnCollision);          // 衝突イベント
         cube.slopeCallback.AddListener("Sample_Sensor", OnSlope);                  // 傾きイベント
