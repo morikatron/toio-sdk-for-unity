@@ -43,7 +43,7 @@ namespace toio
             {
                 if (null == this.motorReadRequest)
                 {
-                    Debug.Log("モーター速度が有効化されていません. ConfigMotorSpeed関数を実行して有効化して下さい.");
+                    Debug.Log("モーター速度が有効化されていません. ConfigMotorRead関数を実行して有効化して下さい.");
                     return -1;
                 }
                 else if (!this.motorReadRequest.valid || !this.motorReadRequest.hasMotorResponse) { return -1; }
@@ -57,7 +57,7 @@ namespace toio
             {
                 if (null == this.motorReadRequest)
                 {
-                    Debug.Log("モーター速度が有効化されていません. ConfigMotorSpeed関数を実行して有効化して下さい.");
+                    Debug.Log("モーター速度が有効化されていません. ConfigMotorRead関数を実行して有効化して下さい.");
                     return -1;
                 }
                 else if (!this.motorReadRequest.valid || !this.motorReadRequest.hasMotorResponse) { return -1; }
