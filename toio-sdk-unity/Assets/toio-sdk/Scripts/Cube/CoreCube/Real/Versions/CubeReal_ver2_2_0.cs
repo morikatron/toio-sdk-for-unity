@@ -213,6 +213,7 @@ namespace toio
             {
                 this.motorReadRequest.hasConfigResponse = true;
                 this.motorReadRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+                this.motorSpeedCallback.Notify(this);
             }
         }
    }
