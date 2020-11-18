@@ -177,7 +177,7 @@ namespace toio.Simulator
 
         private void Start()
         {
-            #if !UNITY_EDITOR   // Editor以外で実行される場合は自身を無効かします
+            #if !(UNITY_EDITOR || UNITY_STANDALONE)   // Editor以外で実行される場合は自身を無効かします
                 this.gameObject.SetActive(false);
             #else
                 this.rb = GetComponent<Rigidbody>();

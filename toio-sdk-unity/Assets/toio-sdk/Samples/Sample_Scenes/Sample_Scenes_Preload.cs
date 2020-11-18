@@ -27,7 +27,7 @@ public class Sample_Scenes_Preload : MonoBehaviour
         cm = new CubeManager();
         // await cm.MultiConnect(1);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         // Keep Cubes across scenes
         foreach (var c in GameObject.FindGameObjectsWithTag("Cube"))
             DontDestroyOnLoad(c);
