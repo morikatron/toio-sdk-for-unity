@@ -348,6 +348,7 @@ namespace toio
                 this.targetXList = targetXList;
                 this.targetYList = targetYList;
                 this.targetAngleList = targetAngleList;
+                this.multiRotationTypeList = (multiRotationTypeList == null)?new TargetRotationType[targetYList.Length]:multiRotationTypeList;
                 this.order = order;
                 this.configID = configID;
                 this.timeOut = timeOut;
@@ -355,7 +356,6 @@ namespace toio
                 this.setMaxSpd = setMaxSpd;
                 this.targetSpeedType = targetSpeedType;
                 this.multiWriteType = multiWriteType;
-                this.multiRotationTypeList = multiRotationTypeList;
             }
         }
 
