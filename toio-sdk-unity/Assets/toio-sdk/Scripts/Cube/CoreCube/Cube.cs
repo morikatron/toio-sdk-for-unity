@@ -171,7 +171,7 @@ namespace toio
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.2f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); return UniTask.CompletedTask; }
+        public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); return UniTask.CompletedTask; }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
