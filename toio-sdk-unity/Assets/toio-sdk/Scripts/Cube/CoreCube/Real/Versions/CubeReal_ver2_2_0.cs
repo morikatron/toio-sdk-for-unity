@@ -130,7 +130,7 @@ namespace toio
                 buff[0] = 0x1c;
                 buff[1] = 0;
                 buff[2] = BitConverter.GetBytes(valid)[0];
-                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMotorSpeed", valid, timeOutSec, callback, order);
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMotorRead", valid, timeOutSec, callback, order);
             });
 
             while(!this.motorReadRequest.hasConfigResponse)
