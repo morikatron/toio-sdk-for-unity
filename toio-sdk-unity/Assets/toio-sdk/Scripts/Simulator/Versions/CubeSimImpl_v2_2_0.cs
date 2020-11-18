@@ -43,16 +43,11 @@ namespace toio.Simulator
         public override int leftMotorSpeed {get; protected set;}
         public override int rightMotorSpeed {get; protected set;}
         protected System.Action<int, int> motorSpeedCallback = null;
-        public override void EnableMotorSpeed(bool enabled)
-        {
-            this.motorSpeedEnabled = enabled;
-            this.configCallback?.Invoke(true);  // TODO probably not same as REAL
-        }
         public override void StartNotification_MotorSpeed(System.Action<int, int> action)
         {
             this.motorSpeedCallback = action;
-            if (motorSpeedEnabled)
-                this.motorSpeedCallback.Invoke(leftMotorSpeed, rightMotorSpeed);
+            if (this.motorSpeedEnabled)
+                this.motorSpeedCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
         }
 
         protected void _SetMotorSpeed(int left, int right)
@@ -73,10 +68,16 @@ namespace toio.Simulator
         }
 
         // ---------- Config -----------
-        protected System.Action<bool> configCallback = null;
-        public override void StartNotification_Config(System.Action<bool> action)
+        protected System.Action<bool> configMotorReadCallback = null;
+        public override void StartNotification_ConfigMotorRead(System.Action<bool> action)
         {
-            this.configCallback = action;
+            this.configMotorReadCallback = action;
+        }
+        public override void ConfigMotorRead(bool enabled)
+        {
+            this.motorSpeedEnabled = enabled;
+            this.configMotorReadCallback?.Invoke(enabled);  // TODO probably not same as REAL
+            // this.motorReadCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
         }
 
 
