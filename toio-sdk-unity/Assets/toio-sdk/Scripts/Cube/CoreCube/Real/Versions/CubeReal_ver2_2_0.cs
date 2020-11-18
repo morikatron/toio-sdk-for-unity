@@ -114,6 +114,7 @@ namespace toio
                     callback?.Invoke(false, this);
                     return;
                 }
+                await UniTask.Delay(50);
             }
 
             this.motorReadRequest = new MotorReadRequest();
