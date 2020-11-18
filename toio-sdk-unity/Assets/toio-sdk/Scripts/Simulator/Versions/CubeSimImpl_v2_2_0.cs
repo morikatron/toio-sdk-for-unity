@@ -87,7 +87,22 @@ namespace toio.Simulator
             base.SimulateMotionSensor();
 
             SimulateShake();
+        }
+
+
+        // ============ Simulate ============
+        public override void Simulate()
+        {
+            SimulateIDSensor();
+            SimulateMotionSensor();
             SimulateMotorSpeedSensor();
+
+            float dt = Time.deltaTime;
+            float currentTime = Time.time;
+            MotorScheduler(dt, currentTime);
+            LightScheduler(dt, currentTime);
+            SoundScheduler(dt, currentTime);
+            SimulateMotor();
         }
 
     }
