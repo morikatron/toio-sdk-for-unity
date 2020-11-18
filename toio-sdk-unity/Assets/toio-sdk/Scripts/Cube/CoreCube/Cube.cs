@@ -47,6 +47,8 @@ namespace toio
         public abstract bool isGrounded { get; protected set; }
         // コアキューブの最高速度
         public abstract int maxSpd { get; }
+        // コアキューブのモーター指令のデッドゾーン
+        public abstract int deadzone { get; }
 
         // ver2.1.0
         // コアキューブのダブルタップ状態
@@ -151,6 +153,14 @@ namespace toio
         /// <param name="level">衝突検知の閾値</param>
         /// <param name="order">命令の優先度</param>
         public virtual void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+
+        /// <summary>
+        /// キューブのダブルタップ検出の時間間隔を設定します
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定
+        /// </summary>
+        /// <param name="interval">ダブルタップ検出の時間間隔</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
@@ -384,16 +394,21 @@ namespace toio
 
         public class CallbackProvider
         {
+            public virtual Action onAddListener { get; set; }
+            public virtual Action onRemoveListener { get; set; }
+            public virtual Action onClearListener { get; set; }
             protected Dictionary<string, Action<Cube>> listenerTable = new Dictionary<string, Action<Cube>>();
             protected List<Action<Cube>> listenerList = new List<Action<Cube>>();
 
             public virtual void AddListener(string key, Action<Cube> listener)
             {
+                this.onAddListener?.Invoke();
                 this.listenerTable[key] = listener;
                 this.listenerList.Add(listener);
             }
             public virtual void RemoveListener(string key)
             {
+                this.onRemoveListener?.Invoke();
                 if (this.listenerTable.ContainsKey(key))
                 {
                     this.listenerList.Remove(this.listenerTable[key]);
@@ -402,8 +417,9 @@ namespace toio
             }
             public virtual void ClearListener()
             {
-                listenerTable.Clear();
-                listenerList.Clear();
+                this.onClearListener?.Invoke();
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
             }
             public virtual void Notify(Cube target)
             {
@@ -416,6 +432,10 @@ namespace toio
 
         public class UnsupportingCallbackProvider : CallbackProvider
         {
+            public override Action onAddListener { get { owner.UnsupportedWarning(); return default; } set { owner.UnsupportedWarning(); } }
+            public override Action onRemoveListener { get { owner.UnsupportedWarning(); return default; } set { owner.UnsupportedWarning(); } }
+            public override Action onClearListener { get { owner.UnsupportedWarning(); return default; } set { owner.UnsupportedWarning(); } }
+
             private Cube owner;
             public UnsupportingCallbackProvider(Cube owner)
             {
@@ -438,6 +458,7 @@ namespace toio
                 owner.UnsupportedWarning();
             }
         }
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      実装関数

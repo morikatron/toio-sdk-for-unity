@@ -7,25 +7,26 @@ namespace toio
     {
         GameObject gameObject;
         CubeSimulator simulator;
-
-        // コールバック
-        CallbackProvider _buttonCallback = new CallbackProvider();
-        CallbackProvider _slopeCallback = new CallbackProvider();
-        CallbackProvider _collisionCallback = new CallbackProvider();
-        CallbackProvider _idCallback = new CallbackProvider();
-        CallbackProvider _standardIdCallback = new CallbackProvider();
-        CallbackProvider _idMissedCallback = new CallbackProvider();
-        CallbackProvider _standardIdMissedCallback = new CallbackProvider();
-        CallbackProvider _doubleTapCallback = new CallbackProvider();
-        CallbackProvider _poseCallback = new CallbackProvider();
-        CallbackProvider _shakeCallback = new CallbackProvider();
-        CallbackProvider _motorSpeedCallback = new CallbackProvider();
+        public string objName { get { return this.simulator.gameObject.name; } }
+        private bool isInitialized = false;
 
         public CubeUnity(GameObject gameObject)
         {
+            this.unsupportingCallback = new UnsupportingCallbackProvider(this);
+
             this.gameObject = gameObject;
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
+
+            // Automatically enable motor speed reading
+            if (simulator.version>=CubeSimulator.Version.v2_2_0)
+            {
+                this.motorSpeedCallback.onAddListener += (() =>
+                {
+                    if (this.simulator.ready && this.isInitialized)
+                        this.simulator.EnableMotorSpeed(true);
+                });
+            }
         }
         public bool Init()
         {
@@ -45,19 +46,27 @@ namespace toio
 
                 simulator.StartNotification_Shake(this.Recv_Shake);
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
+                simulator.StartNotification_Config(this.Recv_Config);
 
+                this.isInitialized = true;
                 return true;
             }
             return false;
         }
 
-        public override string id { get; protected set; }
-        public override int battery { get { return 100; } protected set { } }
+        /////////////// PROPERTY ///////////////
+
         public override string version { get {
                 if (simulator.version == CubeSimulator.Version.v2_0_0) return "2.0.0";
                 else if (simulator.version == CubeSimulator.Version.v2_1_0) return "2.1.0";
-                return "2.0.0";
+                else if (simulator.version == CubeSimulator.Version.v2_2_0) return "2.2.0";
+                return "2.2.0";
         } }
+        public override string id { get; protected set; }
+        public override string addr { get { return id; } }
+        public override bool isConnected { get { return simulator.ready; } }
+        public override int battery { get { return 100; } protected set { } }
+
         public override int x { get; protected set; }
         public override int y { get; protected set; }
         public override Vector2 pos { get { return new Vector2(x, y); } }
@@ -72,15 +81,44 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return simulator.maxMotor; } }
+        public override int deadzone { get { return simulator.deadzone; } }
         // ver2.1.0
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
         // ver2.2.0
         public override bool isShake { get; protected set; }
-        public override int leftSpeed { get; protected set; }
-        public override int rightSpeed { get; protected set; }
+        protected bool isEnabledMotorSpeed = false;
+        protected int _leftSpeed = -1;
+        protected int _rightSpeed = -1;
+        public override int leftSpeed {
+            get {
+                if (this.isEnabledMotorSpeed) return this._leftSpeed;
+                else if (this.isInitialized && this.simulator.ready) this.simulator.EnableMotorSpeed(true);
+                return -1;
+            }
+            protected set { this._leftSpeed = value; }
+        }
+        public override int rightSpeed {
+            get {
+                if (this.isEnabledMotorSpeed) return this._rightSpeed;
+                else if (this.isInitialized && this.simulator.ready) this.simulator.EnableMotorSpeed(true);
+                return -1;
+            }
+            protected set { this._rightSpeed = value; }
+        }
 
         // コールバック
+        CallbackProvider _buttonCallback = new CallbackProvider();
+        CallbackProvider _slopeCallback = new CallbackProvider();
+        CallbackProvider _collisionCallback = new CallbackProvider();
+        CallbackProvider _idCallback = new CallbackProvider();
+        CallbackProvider _standardIdCallback = new CallbackProvider();
+        CallbackProvider _idMissedCallback = new CallbackProvider();
+        CallbackProvider _standardIdMissedCallback = new CallbackProvider();
+        CallbackProvider _doubleTapCallback = new CallbackProvider();
+        CallbackProvider _poseCallback = new CallbackProvider();
+        CallbackProvider _shakeCallback = new CallbackProvider();
+        CallbackProvider _motorSpeedCallback = new CallbackProvider();
         public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
         public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
         public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
@@ -88,86 +126,101 @@ namespace toio
         public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
         public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
         public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
-        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
-        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
-        public override CallbackProvider shakeCallback { get { return this._shakeCallback; } }
-        public override CallbackProvider motorSpeedCallback { get { return this._motorSpeedCallback; } }
+        // 2.1.0
+        public override CallbackProvider doubleTapCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._doubleTapCallback;
+            else return this.unsupportingCallback; } }
+        public override CallbackProvider poseCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._poseCallback;
+            else return this.unsupportingCallback; } }
+        // 2.2.0
+        public override CallbackProvider shakeCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._shakeCallback;
+            else return this.unsupportingCallback; } }
+        public override CallbackProvider motorSpeedCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._motorSpeedCallback;
+            else return this.unsupportingCallback; } }
 
         ///////////////   RETRIEVE INFO   ////////////
 
         private void Recv_Button(bool pressed)
         {
-                isPressed = pressed;
-                this.buttonCallback.Notify(this);
+            isPressed = pressed;
+            this.buttonCallback.Notify(this);
         }
 
         private void Recv_StandardId(uint standardId, int deg)
         {
-                this.standardId = standardId;
-                this.angle = deg;
-                this.sensorAngle = deg;
-                this.isGrounded = true;
-                this.standardIdCallback.Notify(this);
+            this.standardId = standardId;
+            this.angle = deg;
+            this.sensorAngle = deg;
+            this.isGrounded = true;
+            this.standardIdCallback.Notify(this);
         }
 
         protected void Recv_PositionId(int x, int y, int deg, int xSensor, int ySensor)
         {
-                this.x = x;
-                this.y = y;
-                this.angle = deg;
-                this.sensorX = xSensor;
-                this.sensorY = ySensor;
-                this.sensorAngle = deg;
-                this.isGrounded = true;
-                this.idCallback.Notify(this);
+            this.x = x;
+            this.y = y;
+            this.angle = deg;
+            this.sensorX = xSensor;
+            this.sensorY = ySensor;
+            this.sensorAngle = deg;
+            this.isGrounded = true;
+            this.idCallback.Notify(this);
         }
 
         protected void Recv_PositionIdMissed()
         {
-                this.isGrounded = false;
-                this.idMissedCallback.Notify(this);
+            this.isGrounded = false;
+            this.idMissedCallback.Notify(this);
         }
         protected void Recv_StandardIdMissed()
         {
-                this.isGrounded = false;
-                this.standardIdMissedCallback.Notify(this);
+            this.isGrounded = false;
+            this.standardIdMissedCallback.Notify(this);
         }
 
         private void Recv_Sloped(bool sloped)
         {
-                this.isSloped = sloped;
-                this.slopeCallback.Notify(this);
+            this.isSloped = sloped;
+            this.slopeCallback.Notify(this);
         }
 
         private void Recv_CollisionDetected(bool collisionDetected)
         {
-                this.isCollisionDetected = collisionDetected;
-                this.collisionCallback.Notify(this);
+            this.isCollisionDetected = collisionDetected;
+            this.collisionCallback.Notify(this);
         }
 
         private void Recv_DoubleTap(bool doubleTap)
         {
-                this.isDoubleTap = doubleTap;
-                this.doubleTapCallback.Notify(this);
+            this.isDoubleTap = doubleTap;
+            this.doubleTapCallback.Notify(this);
         }
 
         private void Recv_Pose(PoseType posed)
         {
-                this.pose = posed;
-                this.poseCallback.Notify(this);
+            this.pose = posed;
+            this.poseCallback.Notify(this);
         }
 
         private void Recv_Shake(bool shake)
         {
-                this.isShake = shake;
-                this.shakeCallback.Notify(this);
+            this.isShake = shake;
+            this.shakeCallback.Notify(this);
         }
 
         private void Recv_MotorSpeed(int left, int right)
         {
-                this.leftSpeed = left;
-                this.rightSpeed = right;
-                this.motorSpeedCallback.Notify(this);
+            this.leftSpeed = left;
+            this.rightSpeed = right;
+            this.motorSpeedCallback.Notify(this);
+        }
+
+        protected void Recv_Config(bool isEnabledMotorSpeed)
+        {
+            this.isEnabledMotorSpeed = isEnabledMotorSpeed;
         }
 
 
@@ -262,6 +315,8 @@ namespace toio
             CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.SetLights(repeatCount, operations), order, "turnOnLightWithScenario", repeatCount, operations);
 #endif
         }
+
+        // Config
         public override void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
 #if RELEASE
@@ -270,12 +325,16 @@ namespace toio
             CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.SetSlopeThreshold(angle), order, "configSlopeThreshold", angle);
 #endif
         }
-        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { }
+        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedSimWarning(); }
+        public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedSimWarning(); }
 
-        //  no use
-        public override string addr { get { return id; } }
-        public override bool isConnected { get { return simulator.ready; } }
 
-        public string objName { get { return this.simulator.gameObject.name; } }
+        // 非対応コールバック
+        private UnsupportingCallbackProvider unsupportingCallback;
+        protected void UnsupportedSimWarning()
+        {
+            Debug.LogWarningFormat("呼ばれた関数はシミュレータで対応しておりません。");
+        }
+
     }
 }

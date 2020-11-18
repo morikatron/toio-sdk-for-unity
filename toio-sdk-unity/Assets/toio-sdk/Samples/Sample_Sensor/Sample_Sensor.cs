@@ -4,7 +4,6 @@ using toio;
 using System.Collections.Generic;
 
 public class Sample_Sensor : MonoBehaviour
-
 {
     Cube cube;
 
@@ -17,6 +16,8 @@ public class Sample_Sensor : MonoBehaviour
     UnityEngine.UI.Text textAngle;
     UnityEngine.UI.Text textDoubleTap;
     UnityEngine.UI.Text textPose;
+    UnityEngine.UI.Text textShake;
+    UnityEngine.UI.Text textSpeed;
 
     async void Start()
     {
@@ -32,6 +33,8 @@ public class Sample_Sensor : MonoBehaviour
         cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedID);    // standardId missedイベント
         cube.poseCallback.AddListener("Sample_Sensor", OnPose);                    // 姿勢イベント
         cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);          // ダブルタップイベント
+        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  //
+        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             //
 
         this.textBattery = GameObject.Find("TextBattery").GetComponent<Text>();
         this.textCollision = GameObject.Find("TextCollision").GetComponent<Text>();
@@ -42,7 +45,16 @@ public class Sample_Sensor : MonoBehaviour
         this.textAngle = GameObject.Find("TextAngle").GetComponent<Text>();
         this.textDoubleTap = GameObject.Find("TextDoubleTap").GetComponent<Text>();
         this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
+        this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
+        this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
+
     }
+
+    public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void Backward() { cube.Move(-40, -40, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void TurnRight() { cube.Move(60, 30, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+    public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
 
     public void FixedUpdate()
     {
@@ -147,9 +159,25 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnMissedID(Cube c)
     {
-        this.textPositionID.text = "PositionID";
-        this.textStandardID.text = "StandardID";
-        this.textAngle.text = " Angle";
+        this.textPositionID.text = "PositionID Missed";
+        this.textStandardID.text = "StandardID Missed";
+        this.textAngle.text = "Angle Missed";
     }
 
+    public void OnSpeed(Cube c)
+    {
+        this.textSpeed.text = "Speed:" + " L=" + c.leftSpeed.ToString() + " R=" + c.rightSpeed.ToString();
+    }
+
+    public void OnShake(Cube c)
+    {
+        if (c.isShake)
+        {
+            this.textShake.text = "Shake: True";
+        }
+        else
+        {
+            this.textShake.text = "Shake: False";
+        }
+    }
 }

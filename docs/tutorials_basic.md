@@ -18,60 +18,6 @@
 本 SDK は同じソースコードで、シミュレータ環境とスマートデバイス環境の両方で toio™コア キューブ （以降キューブ） を動かすことが出来ます。
 以下の説明は、シミュレータ環境での動作を前提として説明します。
 
-## シミュレータ
-
-最初に簡単にシミュレータについて説明しておきます。
-
-キューブと通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作をチェックする環境があると非常に便利です。
-そこで toio SDK for Unity では、テスト用の仮想環境としてシミュレータを用意しています。
-
-詳細は技術ドキュメントの「[シミュレータ](usage_simulator.md)」にまとめてありますのでそちらを参照してください。
-
-### 構成
-
-シミュレータは `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つの prefab から構成されています。
-
-- Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/info_position_id)を模したもの
-- StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/info_standard_id)を模したもの
-- Cube … toio™コア キューブを模したもの
-- Stage … シミュレーション環境に必要な一通りの機能をセットにしたもの
-
-Mat、StandardID、Cube は実物を模したもので、必要に応じて Unity のシーン上に配置して使ってください。
-
-Stage は、通常一つのマットだけを使う場合、Unity のシーンで必要なものをセットにし、便利機能を加えたものです。
-本チュートリアルは全て Stage を使っています。
-
-<div align="center"><img src="res/tutorial/RealAndSimCube.png"></div>
-
-
-### 操作
-
-シミュレータ実行中に、Cube や Stage をマウスで操作することが出来ます。
-
-#### Cube オブジェクトに対する操作：
-
-| 操作 | 説明 |
-| :--: | :--: |
-| 左クリック | Cube のボタンを押す |
-| 右クリック | Cube を持ち上げる/キューブを放す |
-| 持ち上げ中にホイール操作 | Cube の角度を変更する |
-| 右ドラッグ | Cube を力で引っ張る |
-
-詳細は技術ドキュメントの「シミュレータ」[4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction) を参照してください。
-
-#### Stageに対する操作：
-
-| 操作 | 説明 |
-| :--: | :--: |
-| Ctrl+左クリック | 選択した Cube を[フォーカス](usage_simulator.md#52-キューブをフォーカス)/フォーカスの取り消し |
-| Ctrl+右クリック | 指定位置に「[ターゲットポール](usage_simulator.md#51-ターゲットポール)」を設置・取消
-
-詳細は技術ドキュメントの「シミュレータ」[「5.Stage-Prefab」](usage_simulator.md#5-Stage-Prefab)を参照してください。
-
-#### インスペクターからCubeオブジェクトの状態を変更
-
-Cube オブジェクトの CubeSimulator のインスペクターから、直接状態を変更すること、対応イベントを発生させることも出来ます。
-
 
 # 2. シーン作成
 

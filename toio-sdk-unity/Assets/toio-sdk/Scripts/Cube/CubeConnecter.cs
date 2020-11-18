@@ -105,7 +105,8 @@ namespace toio
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
                     var version = await this.GetProtocolVersion(characteristicTable[CubeReal.CHARACTERISTIC_CONFIG]);
                     CubeReal cube = null;
-                    switch(version) {
+                    switch(version)
+                    {
                         case "2.0.0":
                             cube = new CubeReal_ver2_0_0(peripheral, characteristicTable);
                             break;
@@ -125,7 +126,7 @@ namespace toio
                             cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
                             break;
                     }
-                    await cube.StartNotifications();
+                    await cube.Initialize();
                     this.isConnecting = false;
                     return cube;
                 }
@@ -159,7 +160,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    await (cube as CubeReal).StartNotifications();
+                    await (cube as CubeReal).Initialize();
                     this.isConnecting = false;
                 }
                 catch (System.Exception)
@@ -251,12 +252,10 @@ namespace toio
 #elif UNITY_WEBGL
         public class Impl : CubeConnecterInterface
         {
-            private Dictionary<string, Func<BLEPeripheralInterface, Dictionary<string, BLECharacteristicInterface>, CubeReal>> versionTable = new Dictionary<string, Func<BLEPeripheralInterface, Dictionary<string, BLECharacteristicInterface>, CubeReal>>();
             private bool isConnecting = false;
 
             public Impl()
             {
-                this.versionTable.Add("2.0.0", ((peri, chara) => { return new CubeReal_ver2_0_0(peri, chara); }));
             }
 
             public async UniTask<Cube> Connect(BLEPeripheralInterface peripheral)
@@ -267,8 +266,30 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    var cube = this.versionTable["2.0.0"](peripheral, characteristicTable);
-                    await cube.StartNotifications();
+                    var version = await this.GetProtocolVersion(characteristicTable[CubeReal.CHARACTERISTIC_CONFIG]);
+                    CubeReal cube = null;
+                    switch(version)
+                    {
+                        case "2.0.0":
+                            cube = new CubeReal_ver2_0_0(peripheral, characteristicTable);
+                            break;
+                        case "2.1.0":
+                            cube = new CubeReal_ver2_1_0(peripheral, characteristicTable);
+                            break;
+                        case "2.2.0":
+                            cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
+                            break;
+                        default:
+                            // Basically, BLE protocol version has backward compatibility,
+                            // so consider unknown version as the latest version.
+                            //
+                            // TODO:
+                            // - patch(build) number can be ignored (should be?)
+                            // - major number should be checked
+                            cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
+                            break;
+                    }
+                    await cube.Initialize();
                     this.isConnecting = false;
                     return cube;
                 }
@@ -302,7 +323,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    await (cube as CubeReal).StartNotifications();
+                    await (cube as CubeReal).Initialize();
                     this.isConnecting = false;
                 }
                 catch (System.Exception)
@@ -358,6 +379,37 @@ namespace toio
                 }
 
                 return characteristicTable;
+            }
+
+            /// <summary>
+            /// CoreCubeのプロトコルバージョンを取得.
+            /// 必要な遅延処理は機種によって異なります, デフォルトでは安全性優先で長めの遅延時間となっています.
+            /// 遅延時間を変更したい場合はoverrideを推奨.
+            /// </summary>
+            protected virtual async UniTask<string> GetProtocolVersion(BLECharacteristicInterface config)
+            {
+                await UniTask.Delay(500);
+
+                var start_time = Time.time;
+                string version = null;
+                while(null == version)
+                {
+                    byte[] buff = new byte[2];
+                    buff[0] = 1;
+                    buff[1] = 0;
+                    config.WriteValue(buff, true);
+
+                    await UniTask.Delay(500);
+
+                    config.ReadValue(((chara, resultBuff) =>
+                    {
+                        version = System.Text.Encoding.UTF8.GetString(resultBuff, 2, resultBuff.Length-2);
+                    }));
+
+                    await UniTask.Delay(500);
+                }
+
+                return version;
             }
         }
 #endif

@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+### Changed
+
+- Improve CubeHandle and Navigator's border feature
+  - [Mat] Add method `RectInt GetRectForMatType(MatType, DeveloperMatType)`.
+  - [CubeHandle] Add field `borderRect` and method `SetBorderRect`, and deprecate fields `CenterX` `CenterY` `SizeX` `SizeY` `RangeX` `RangeY`.
+  - [Navigator] Add overload for `AddBorder`.
+  - Corresponding changes in tutorials, samples, tests and documents.
+
+### Fixed
+
+- [CubeHandle] Fix border not working when cube going inside from outside.
+
+## [1.0.2](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.0.2) - 2020-11-05
+
+### Fixed
+
+- Add an optional argument 'border' to method 'Movement.Exec()'
+- Fix link error when installing a unity asset that include Assembly-Definition-Files
+
 ## [1.0.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.0.1) - 2020-10-08
 
 ### Added

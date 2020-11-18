@@ -319,6 +319,15 @@ namespace toio.Simulator
             impl.StartNotification_MotorSpeed(action);
         }
 
+        /// <summary>
+        /// 設定の応答の読み出しコールバックを設定する
+        /// 引数：モーター速度設定応答
+        /// </summary>
+        public void StartNotification_Config(System.Action<bool> action)
+        {
+            impl.StartNotification_Config(action);
+        }
+
 
         // ============ コマンド ============
 
@@ -374,12 +383,23 @@ namespace toio.Simulator
             impl.StopSound();
         }
 
+
+        // ============ 設定 ============
+
         /// <summary>
         /// 水平検出の閾値を設定する（度）
         /// </summary>
         public void SetSlopeThreshold(int degree)
         {
             impl.SetSlopeThreshold(degree);
+        }
+
+        /// <summary>
+        /// モーターの速度情報の取得の設定
+        /// </summary>
+        public void EnableMotorSpeed(bool enabled)
+        {
+            impl.EnableMotorSpeed(enabled);
         }
 
 
@@ -404,14 +424,21 @@ namespace toio.Simulator
             LED.GetComponent<Renderer>().material.color = Color.black;
         }
 
+        private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
-            int octave = (int)(soundId/12);
-            int idx = (int)(soundId%12);
-            var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+            if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+            if (soundId != playingSoundId)
+            {
+                playingSoundId = soundId;
+                int octave = (int)(soundId/12);
+                int idx = (int)(soundId%12);
+                var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+                audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+                audioSource.clip = aCubeOnSlot;
+            }
             audioSource.volume = (float)volume/256;
-            audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-            audioSource.clip = aCubeOnSlot;
-            audioSource.Play();
+            if (!audioSource.isPlaying)
+                audioSource.Play();
         }
         internal void _StopSound(){
             audioSource.clip = null;

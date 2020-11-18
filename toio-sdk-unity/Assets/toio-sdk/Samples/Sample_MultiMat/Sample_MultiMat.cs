@@ -23,12 +23,7 @@ public class Sample_MultiMat : MonoBehaviour
             navi.mode = Navigator.Mode.BOIDS_AVOID;
             cm.navigators.Add(navi);
 
-            handle.CenterX = 455;
-            handle.CenterY = 455;
-            handle.SizeX = 820;
-            handle.SizeY = 820;
-            handle.RangeX = 720;
-            handle.RangeY = 720;
+            handle.borderRect = new RectInt(95, 95, 720, 720);
             navi.ClearWall();
             navi.AddBorder(70, x1:0, x2:910, y1:0, y2:910);
         }
