@@ -92,7 +92,8 @@ namespace toio
         /// </summary>
         /// <param name="valid">有効無効フラグ</param>
         /// <param name="timeOutSec">タイムアウト(秒)</param>
-        /// <param name="callback">終了コールバック</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
         public override async UniTask ConfigMotorRead(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
         {
 #if !RELEASE
