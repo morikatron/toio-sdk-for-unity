@@ -13,8 +13,6 @@ namespace toio
 
         public CubeUnity(GameObject gameObject)
         {
-            this.unsupportingCallback = new CallbackProvider<Cube>.NotSupported(this);
-
             this.gameObject = gameObject;
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
@@ -124,17 +122,17 @@ namespace toio
         // 2.1.0
         public override CallbackProvider<Cube> doubleTapCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._doubleTapCallback;
-            else return this.unsupportingCallback; } }
+            else return CallbackProvider<Cube>.NotSupported.Get(this); } }
         public override CallbackProvider<Cube> poseCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._poseCallback;
-            else return this.unsupportingCallback; } }
+            else return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 2.2.0
         public override CallbackProvider<Cube> shakeCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._shakeCallback;
-            else return this.unsupportingCallback; } }
+            else return CallbackProvider<Cube>.NotSupported.Get(this); } }
         public override CallbackProvider<Cube> motorSpeedCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._motorSpeedCallback;
-            else return this.unsupportingCallback; } }
+            else return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
         ///////////////   RETRIEVE INFO   ////////////
 
@@ -332,7 +330,6 @@ namespace toio
         }
 
         // 非対応コールバック
-        private CallbackProvider<Cube> unsupportingCallback;
         protected void UnsupportedSimWarning()
         {
             Debug.LogWarningFormat("呼ばれた関数はシミュレータで対応しておりません。");

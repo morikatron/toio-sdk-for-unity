@@ -227,42 +227,39 @@ namespace toio
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        // 非対応コールバック
-        private CallbackProvider<Cube> unsupportingCallback;
         // ボタンコールバック
-        public virtual CallbackProvider<Cube> buttonCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> buttonCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 傾きコールバック
-        public virtual CallbackProvider<Cube> slopeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> slopeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 衝突コールバック
-        public virtual CallbackProvider<Cube> collisionCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> collisionCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 座標角度コールバック
-        public virtual CallbackProvider<Cube> idCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> idCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // StandardID コールバック
-        public virtual CallbackProvider<Cube> standardIdCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> standardIdCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // ID Missed コールバック
-        public virtual CallbackProvider<Cube> idMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> idMissedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // StandardID Missed コールバック
-        public virtual CallbackProvider<Cube> standardIdMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> standardIdMissedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
         // ver2.1.0
         // Double Tap コールバック
-        public virtual CallbackProvider<Cube> doubleTapCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> doubleTapCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 姿態検出コールバック
-        public virtual CallbackProvider<Cube> poseCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> poseCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 目標指定付きモーター制御の応答コールバック
-        public virtual CallbackProvider<Cube> targetMoveCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> targetMoveCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public virtual CallbackProvider<Cube> multiTargetMoveCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> multiTargetMoveCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
         // ver2.2.0
         // シェイクコールバック
-        public virtual CallbackProvider<Cube> shakeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> shakeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // モータースピードコールバック
-        public virtual CallbackProvider<Cube> motorSpeedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> motorSpeedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
         public Cube()
         {
-            this.unsupportingCallback = new CallbackProvider<Cube>.NotSupported(this);
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -666,12 +663,23 @@ namespace toio
         {
             public class NotSupported : CallbackProvider<T>
             {
-                private Cube owner;
-                public NotSupported(Cube owner) { this.owner = owner; }
-                public override void AddListener(string key, Action<T> listener) { owner.NotSupportedWarning(); }
-                public override void RemoveListener(string key) { owner.NotSupportedWarning(); }
-                public override void ClearListener() { owner.NotSupportedWarning(); }
-                public override void Notify(T target) { owner.NotSupportedWarning(); }
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T target) { NotSupportedWarning(this.version); }
             }
 
             protected Dictionary<string, Action<T>> listenerTable = new Dictionary<string, Action<T>>();
