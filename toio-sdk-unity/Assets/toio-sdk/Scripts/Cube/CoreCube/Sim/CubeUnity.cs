@@ -74,10 +74,28 @@ namespace toio
         public override int maxSpd { get { return simulator.maxMotor; } }
         public override int deadzone { get { return simulator.deadzone; } }
         // ver2.1.0
-        public override bool isDoubleTap { get; protected set; }
-        public override PoseType pose { get; protected set; }
+        protected bool _isDoubleTap = false;
+        public override bool isDoubleTap {
+            get {
+                if (this.simulator.version>=CubeSimulator.Version.v2_1_0) return _isDoubleTap;
+                UnsupportedVersionWarning(); return default;
+            }
+            protected set { _isDoubleTap = value; } }
+        protected PoseType _pose;
+        public override PoseType pose {
+            get {
+                if (this.simulator.version>=CubeSimulator.Version.v2_1_0) return _pose;
+                UnsupportedVersionWarning(); return default;
+            }
+            protected set { _pose = value; } }
         // ver2.2.0
-        public override bool isShake { get; protected set; }
+        protected bool _isShake = false;
+        public override bool isShake {
+            get {
+                if (this.simulator.version>=CubeSimulator.Version.v2_2_0) return _isShake;
+                UnsupportedVersionWarning(); return default;
+            }
+            protected set { _isShake = value; } }
         protected bool isEnabledMotorSpeed = false;
         protected bool isCalled_ConfigMotorRead = false;
 
@@ -85,6 +103,7 @@ namespace toio
         protected int _rightSpeed = -1;
         public override int leftSpeed {
             get {
+                if (this.simulator.version < CubeSimulator.Version.v2_2_0) { UnsupportedVersionWarning(); return -1; }
                 if (this.isEnabledMotorSpeed) return this._leftSpeed;
                 else if (!isCalled_ConfigMotorRead)
                     Debug.Log("モーター速度が有効化されていません. ConfigMotorRead関数を実行して有効化して下さい.");
@@ -94,6 +113,7 @@ namespace toio
         }
         public override int rightSpeed {
             get {
+                if (this.simulator.version < CubeSimulator.Version.v2_2_0) { UnsupportedVersionWarning(); return -1; }
                 if (this.isEnabledMotorSpeed) return this._rightSpeed;
                 else if (!isCalled_ConfigMotorRead)
                     Debug.Log("モーター速度が有効化されていません. ConfigMotorRead関数を実行して有効化して下さい.");
@@ -336,6 +356,10 @@ namespace toio
         protected void UnsupportedSimWarning()
         {
             Debug.LogWarningFormat("呼ばれた関数はシミュレータで対応しておりません。");
+        }
+        protected void UnsupportedVersionWarning()
+        {
+            Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", this.version, "https://toio.github.io/toio-spec/versions");
         }
 
     }
