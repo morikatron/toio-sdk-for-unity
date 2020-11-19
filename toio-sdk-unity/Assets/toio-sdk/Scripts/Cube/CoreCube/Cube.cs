@@ -286,10 +286,10 @@ namespace toio
                                     int targetAngle,
                                     int configID = 0,
                                     int timeOut = 255,
-                                    TargetMoveType targetMoveType = TargetMoveType.rotatingMove,
+                                    TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
                                     int setMaxSpd = 80,
-                                    TargetSpeedType targetSpeedType = TargetSpeedType.uniformSpeed,
-                                    TargetRotationType targetRotationType = TargetRotationType.absoluteLeastAngle)
+                                    TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+                                    TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle)
             {
                 this.targetX = targetX;
                 this.targetY = targetY;
@@ -333,9 +333,9 @@ namespace toio
                                     TargetRotationType[] multiRotationTypeList = null,
                                     int configID = 0,
                                     int timeOut = 255,
-                                    TargetMoveType targetMoveType = TargetMoveType.rotatingMove,
+                                    TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
                                     int setMaxSpd = 80,
-                                    TargetSpeedType targetSpeedType = TargetSpeedType.uniformSpeed,
+                                    TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
                                     MultiWriteType multiWriteType = MultiWriteType.Write
                                     )
             {
@@ -374,8 +374,8 @@ namespace toio
                                 int Acceleration,
                                 int rotationSpeed = 0,
                                 AccRotationType accRotationType = AccRotationType.Clockwise,
-                                AccMoveType accMoveType = AccMoveType.forward,
-                                AccSpeedPriorityType accSpeedPriorityType = AccSpeedPriorityType.translation,
+                                AccMoveType accMoveType = AccMoveType.Forward,
+                                AccSpeedPriorityType accSpeedPriorityType = AccSpeedPriorityType.Translation,
                                 int controlTime = 0)
             {
                 this.targetSpeed = targetSpeed;
@@ -431,30 +431,30 @@ namespace toio
         public enum TargetMoveType
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#移動タイプ
-            rotatingMove=0,       // 回転しながら移動
-            roundForwardMove=1,   // 回転しながら移動（後退なし）
-            roundBeforeMove=2     // 回転してから移動
+            RotatingMove=0,       // 回転しながら移動
+            RoundForwardMove=1,   // 回転しながら移動（後退なし）
+            RoundBeforeMove=2     // 回転してから移動
         };
 
         public enum TargetSpeedType
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度変化タイプ
-            uniformSpeed=0,   // 速度一定
-            acceleration=1,   // 目標地点まで徐々に加速
-            deceleration=2,   // 目標地点まで徐々に減速
-            variableSpeed=3   // 中間地点まで徐々に加速し、そこから目標地点まで減速
+            UniformSpeed=0,   // 速度一定
+            Acceleration=1,   // 目標地点まで徐々に加速
+            Deceleration=2,   // 目標地点まで徐々に減速
+            VariableSpeed=3   // 中間地点まで徐々に加速し、そこから目標地点まで減速
         };
 
         public enum TargetRotationType
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#目標地点でのキューブの角度-θ
-            absoluteLeastAngle=0,         // 絶対角度 回転量が少ない方向
-            absoluteClockwise=1,          // 絶対角度 正方向(時計回り)
-            absoluteCounterClockwise=2,   // 絶対角度 負方向(反時計回り)
-            relativeClockwise=3,          // 相対角度 正方向(時計回り)
-            relativeCounterClockwise=4,   // 相対角度 負方向(反時計回り)
-            notRotated=5,                 // 回転しない
-            original=6                    // 書き込み操作時と同じ 回転量が少ない方向
+            AbsoluteLeastAngle=0,         // 絶対角度 回転量が少ない方向
+            AbsoluteClockwise=1,          // 絶対角度 正方向(時計回り)
+            AbsoluteCounterClockwise=2,   // 絶対角度 負方向(反時計回り)
+            RelativeClockwise=3,          // 相対角度 正方向(時計回り)
+            RelativeCounterClockwise=4,   // 相対角度 負方向(反時計回り)
+            NotRotated=5,                 // 回転しない
+            Original=6                    // 書き込み操作時と同じ 回転量が少ない方向
         };
 
         public enum MultiWriteType
@@ -475,27 +475,27 @@ namespace toio
         public enum AccMoveType
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#キューブの進行方向
-            forward=0,          // 前進
-            backward=1,         // 後退
+            Forward=0,          // 前進
+            Backward=1,         // 後退
         };
 
         public enum AccSpeedPriorityType
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#優先指定
-            translation=0,      // 並進速度を優先し、回転速度を調整します
-            rotation=1,         // 回転速度を優先し、並進速度を調整します
+            Translation=0,      // 並進速度を優先し、回転速度を調整します
+            Rotation=1,         // 回転速度を優先し、並進速度を調整します
         };
 
         // 制御の応答
         public enum TargetMoveRespondType
         {
             // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#応答内容-1
-            normal=0,           // 目標に到達した時
-            timeout=1,          // 指定したタイムアウト時間を経過した時
-            toioIDmissed=2,     // toio ID がない場所にキューブが置かれた時
-            parameterError=3,   // 座標 X, 座標 Y, 角度の全てが現在と同じだった時
-            powerOffError=4,    // 電源を切られた時
-            otherWrite=5,       // 複数目標指定付きモーター制御以外のモーター制御が書き込まれた時
+            Normal=0,           // 目標に到達した時
+            Timeout=1,          // 指定したタイムアウト時間を経過した時
+            ToioIDmissed=2,     // toio ID がない場所にキューブが置かれた時
+            ParameterError=3,   // 座標 X, 座標 Y, 角度の全てが現在と同じだった時
+            PowerOffError=4,    // 電源を切られた時
+            OtherWrite=5,       // 複数目標指定付きモーター制御以外のモーター制御が書き込まれた時
             NonSupport=6,       // 指定したモーターの最大速度指示値が8未満の時
             AddRefuse=7         // 書き込み操作の追加ができない時
         };
