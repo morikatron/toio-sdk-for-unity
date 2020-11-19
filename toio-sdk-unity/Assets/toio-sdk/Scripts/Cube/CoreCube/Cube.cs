@@ -659,9 +659,9 @@ namespace toio
             Weak
         }
 
-        public class CallbackProvider<T>
+        public class CallbackProvider<T1>
         {
-            public class NotSupported : CallbackProvider<T>
+            public class NotSupported : CallbackProvider<T1>
             {
                 public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
                 public static NotSupported Get(Cube cube)
@@ -676,16 +676,16 @@ namespace toio
                 }
                 private string version;
                 public NotSupported(string version) { this.version = version; }
-                public override void AddListener(string key, Action<T> listener) { NotSupportedWarning(this.version); }
+                public override void AddListener(string key, Action<T1> listener) { NotSupportedWarning(this.version); }
                 public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
                 public override void ClearListener() { NotSupportedWarning(this.version); }
-                public override void Notify(T target) { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1) { NotSupportedWarning(this.version); }
             }
 
-            protected Dictionary<string, Action<T>> listenerTable = new Dictionary<string, Action<T>>();
-            protected List<Action<T>> listenerList = new List<Action<T>>();
+            protected Dictionary<string, Action<T1>> listenerTable = new Dictionary<string, Action<T1>>();
+            protected List<Action<T1>> listenerList = new List<Action<T1>>();
 
-            public virtual void AddListener(string key, Action<T> listener)
+            public virtual void AddListener(string key, Action<T1> listener)
             {
                 this.listenerTable[key] = listener;
                 this.listenerList.Add(listener);
@@ -703,11 +703,170 @@ namespace toio
                 this.listenerTable.Clear();
                 this.listenerList.Clear();
             }
-            public virtual void Notify(T target)
+            public virtual void Notify(T1 p1)
             {
                 foreach (var listener in this.listenerList)
                 {
-                    listener.Invoke(target);
+                    listener.Invoke(p1);
+                }
+            }
+        }
+
+        public class CallbackProvider<T1, T2>
+        {
+            public class NotSupported : CallbackProvider<T1, T2>
+            {
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1, T2> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1, T2 p2) { NotSupportedWarning(this.version); }
+            }
+
+            protected Dictionary<string, Action<T1, T2>> listenerTable = new Dictionary<string, Action<T1, T2>>();
+            protected List<Action<T1, T2>> listenerList = new List<Action<T1, T2>>();
+
+            public virtual void AddListener(string key, Action<T1, T2> listener)
+            {
+                this.listenerTable[key] = listener;
+                this.listenerList.Add(listener);
+            }
+            public virtual void RemoveListener(string key)
+            {
+                if (this.listenerTable.ContainsKey(key))
+                {
+                    this.listenerList.Remove(this.listenerTable[key]);
+                    this.listenerTable.Remove(key);
+                }
+            }
+            public virtual void ClearListener()
+            {
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
+            }
+            public virtual void Notify(T1 p1, T2 p2)
+            {
+                foreach (var listener in this.listenerList)
+                {
+                    listener.Invoke(p1, p2);
+                }
+            }
+        }
+
+        public class CallbackProvider<T1, T2, T3>
+        {
+            public class NotSupported : CallbackProvider<T1, T2, T3>
+            {
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1, T2, T3> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1, T2 p2, T3 p3) { NotSupportedWarning(this.version); }
+            }
+
+            protected Dictionary<string, Action<T1, T2, T3>> listenerTable = new Dictionary<string, Action<T1, T2, T3>>();
+            protected List<Action<T1, T2, T3>> listenerList = new List<Action<T1, T2, T3>>();
+
+            public virtual void AddListener(string key, Action<T1, T2, T3> listener)
+            {
+                this.listenerTable[key] = listener;
+                this.listenerList.Add(listener);
+            }
+            public virtual void RemoveListener(string key)
+            {
+                if (this.listenerTable.ContainsKey(key))
+                {
+                    this.listenerList.Remove(this.listenerTable[key]);
+                    this.listenerTable.Remove(key);
+                }
+            }
+            public virtual void ClearListener()
+            {
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
+            }
+            public virtual void Notify(T1 p1, T2 p2, T3 p3)
+            {
+                foreach (var listener in this.listenerList)
+                {
+                    listener.Invoke(p1, p2, p3);
+                }
+            }
+        }
+
+        public class CallbackProvider<T1, T2, T3, T4>
+        {
+            public class NotSupported : CallbackProvider<T1, T2, T3, T4>
+            {
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1, T2, T3, T4> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1, T2 p2, T3 p3, T4 p4) { NotSupportedWarning(this.version); }
+            }
+
+            protected Dictionary<string, Action<T1, T2, T3, T4>> listenerTable = new Dictionary<string, Action<T1, T2, T3, T4>>();
+            protected List<Action<T1, T2, T3, T4>> listenerList = new List<Action<T1, T2, T3, T4>>();
+
+            public virtual void AddListener(string key, Action<T1, T2, T3, T4> listener)
+            {
+                this.listenerTable[key] = listener;
+                this.listenerList.Add(listener);
+            }
+            public virtual void RemoveListener(string key)
+            {
+                if (this.listenerTable.ContainsKey(key))
+                {
+                    this.listenerList.Remove(this.listenerTable[key]);
+                    this.listenerTable.Remove(key);
+                }
+            }
+            public virtual void ClearListener()
+            {
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
+            }
+            public virtual void Notify(T1 p1, T2 p2, T3 p3, T4 p4)
+            {
+                foreach (var listener in this.listenerList)
+                {
+                    listener.Invoke(p1, p2, p3, p4);
                 }
             }
         }
