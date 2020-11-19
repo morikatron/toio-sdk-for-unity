@@ -13,7 +13,7 @@ namespace toio
 
         public CubeUnity(GameObject gameObject)
         {
-            this.unsupportingCallback = new UnsupportingCallbackProvider(this);
+            this.unsupportingCallback = new CallbackProvider<Cube>.NotSupported(this);
 
             this.gameObject = gameObject;
             id = gameObject.GetInstanceID().ToString();
@@ -103,36 +103,36 @@ namespace toio
         }
 
         // コールバック
-        CallbackProvider _buttonCallback = new CallbackProvider();
-        CallbackProvider _slopeCallback = new CallbackProvider();
-        CallbackProvider _collisionCallback = new CallbackProvider();
-        CallbackProvider _idCallback = new CallbackProvider();
-        CallbackProvider _standardIdCallback = new CallbackProvider();
-        CallbackProvider _idMissedCallback = new CallbackProvider();
-        CallbackProvider _standardIdMissedCallback = new CallbackProvider();
-        CallbackProvider _doubleTapCallback = new CallbackProvider();
-        CallbackProvider _poseCallback = new CallbackProvider();
-        CallbackProvider _shakeCallback = new CallbackProvider();
-        CallbackProvider _motorSpeedCallback = new CallbackProvider();
-        public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
-        public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
-        public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
-        public override CallbackProvider idCallback { get { return this._idCallback; } }
-        public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
-        public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
-        public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _slopeCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _collisionCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _idCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _standardIdCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _idMissedCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _standardIdMissedCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _doubleTapCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _poseCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
+        CallbackProvider<Cube> _motorSpeedCallback = new CallbackProvider<Cube>();
+        public override CallbackProvider<Cube> buttonCallback { get { return this._buttonCallback; } }
+        public override CallbackProvider<Cube> slopeCallback { get { return this._slopeCallback; } }
+        public override CallbackProvider<Cube> collisionCallback { get { return this._collisionCallback; } }
+        public override CallbackProvider<Cube> idCallback { get { return this._idCallback; } }
+        public override CallbackProvider<Cube> standardIdCallback { get { return this._standardIdCallback; } }
+        public override CallbackProvider<Cube> idMissedCallback { get { return this._idMissedCallback; } }
+        public override CallbackProvider<Cube> standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
         // 2.1.0
-        public override CallbackProvider doubleTapCallback { get {
+        public override CallbackProvider<Cube> doubleTapCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._doubleTapCallback;
             else return this.unsupportingCallback; } }
-        public override CallbackProvider poseCallback { get {
+        public override CallbackProvider<Cube> poseCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._poseCallback;
             else return this.unsupportingCallback; } }
         // 2.2.0
-        public override CallbackProvider shakeCallback { get {
+        public override CallbackProvider<Cube> shakeCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._shakeCallback;
             else return this.unsupportingCallback; } }
-        public override CallbackProvider motorSpeedCallback { get {
+        public override CallbackProvider<Cube> motorSpeedCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._motorSpeedCallback;
             else return this.unsupportingCallback; } }
 
@@ -332,7 +332,7 @@ namespace toio
         }
 
         // 非対応コールバック
-        private UnsupportingCallbackProvider unsupportingCallback;
+        private CallbackProvider<Cube> unsupportingCallback;
         protected void UnsupportedSimWarning()
         {
             Debug.LogWarningFormat("呼ばれた関数はシミュレータで対応しておりません。");

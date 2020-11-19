@@ -12,13 +12,13 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         protected Vector2 _pos = Vector2.zero;
         protected Vector2 _sensorPos = Vector2.zero;
-        protected CallbackProvider _buttonCallback = new CallbackProvider();
-        protected CallbackProvider _slopeCallback = new CallbackProvider();
-        protected CallbackProvider _collisionCallback = new CallbackProvider();
-        protected CallbackProvider _idCallback = new CallbackProvider();
-        protected CallbackProvider _standardIdCallback = new CallbackProvider();
-        protected CallbackProvider _idMissedCallback = new CallbackProvider();
-        protected CallbackProvider _standardIdMissedCallback = new CallbackProvider();
+        protected CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _slopeCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _collisionCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _idCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _standardIdCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _idMissedCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _standardIdMissedCallback = new CallbackProvider<Cube>();
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
@@ -42,19 +42,19 @@ namespace toio
         public override int deadzone { get { return 10; } }
 
         // ボタンコールバック
-        public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
+        public override CallbackProvider<Cube> buttonCallback { get { return this._buttonCallback; } }
         // 傾きコールバック
-        public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
+        public override CallbackProvider<Cube> slopeCallback { get { return this._slopeCallback; } }
         // 衝突コールバック
-        public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
+        public override CallbackProvider<Cube> collisionCallback { get { return this._collisionCallback; } }
         // 座標角度コールバック
-        public override CallbackProvider idCallback { get { return this._idCallback; } }
+        public override CallbackProvider<Cube> idCallback { get { return this._idCallback; } }
         // StandardIDコールバック
-        public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
+        public override CallbackProvider<Cube> standardIdCallback { get { return this._standardIdCallback; } }
         // ID Missedコールバック
-        public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
+        public override CallbackProvider<Cube> idMissedCallback { get { return this._idMissedCallback; } }
         // StandardID Missedコールバック
-        public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        public override CallbackProvider<Cube> standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
 
         public CubeReal_ver2_0_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)

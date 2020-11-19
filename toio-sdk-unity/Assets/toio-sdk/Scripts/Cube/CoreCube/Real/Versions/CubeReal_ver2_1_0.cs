@@ -10,10 +10,10 @@ namespace toio
         //      内部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        protected CallbackProvider _doubleTapCallback = new CallbackProvider();
-        protected CallbackProvider _poseCallback = new CallbackProvider();
-        protected CallbackProvider _targetMoveCallback = new CallbackProvider();
-        protected CallbackProvider _multiTargetMoveCallback = new CallbackProvider();
+        protected CallbackProvider<Cube> _doubleTapCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _poseCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _targetMoveCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _multiTargetMoveCallback = new CallbackProvider<Cube>();
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
@@ -30,13 +30,13 @@ namespace toio
         public override int deadzone { get { return 8; } }
 
         // ダブルタップコールバック
-        public override CallbackProvider doubleTapCallback { get { return this._doubleTapCallback; } }
+        public override CallbackProvider<Cube> doubleTapCallback { get { return this._doubleTapCallback; } }
         // 姿勢コールバック
-        public override CallbackProvider poseCallback { get { return this._poseCallback; } }
+        public override CallbackProvider<Cube> poseCallback { get { return this._poseCallback; } }
         // 目標指定付きモーター制御の応答コールバック
-        public override CallbackProvider targetMoveCallback { get { return this._targetMoveCallback; } }
+        public override CallbackProvider<Cube> targetMoveCallback { get { return this._targetMoveCallback; } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public override CallbackProvider multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
+        public override CallbackProvider<Cube> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)

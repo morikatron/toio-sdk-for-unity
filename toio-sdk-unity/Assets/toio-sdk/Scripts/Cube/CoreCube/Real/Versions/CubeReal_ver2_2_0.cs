@@ -25,8 +25,8 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         private bool isInitialized = false;
-        protected CallbackProvider _shakeCallback = new CallbackProvider();
-        protected CallbackProvider _motorSpeedCallback = new CallbackProvider();
+        protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _motorSpeedCallback = new CallbackProvider<Cube>();
         private MotorReadRequest motorReadRequest = null;
         private int _leftSpeed = -1;
         private int _rightSpeed = -1;
@@ -67,8 +67,8 @@ namespace toio
         }
 
         // シェイクコールバック
-        public override CallbackProvider shakeCallback { get { return this._shakeCallback; } }
-        public override CallbackProvider motorSpeedCallback { get { return this._motorSpeedCallback; } }
+        public override CallbackProvider<Cube> shakeCallback { get { return this._shakeCallback; } }
+        public override CallbackProvider<Cube> motorSpeedCallback { get { return this._motorSpeedCallback; } }
 
         public CubeReal_ver2_2_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
