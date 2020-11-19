@@ -323,9 +323,9 @@ namespace toio.Simulator
         /// 設定の応答の読み出しコールバックを設定する
         /// 引数：モーター速度設定応答
         /// </summary>
-        public void StartNotification_Config(System.Action<bool> action)
+        public void StartNotification_ConfigMotorRead(System.Action<bool> action)
         {
-            impl.StartNotification_Config(action);
+            impl.StartNotification_ConfigMotorRead(action);
         }
 
 
@@ -397,9 +397,9 @@ namespace toio.Simulator
         /// <summary>
         /// モーターの速度情報の取得の設定
         /// </summary>
-        public void EnableMotorSpeed(bool enabled)
+        public void ConfigMotorRead(bool enabled)
         {
-            impl.EnableMotorSpeed(enabled);
+            impl.ConfigMotorRead(enabled);
         }
 
 
