@@ -453,7 +453,7 @@ namespace toio
             AbsoluteCounterClockwise=2,   // 絶対角度 負方向(反時計回り)
             RelativeClockwise=3,          // 相対角度 正方向(時計回り)
             RelativeCounterClockwise=4,   // 相対角度 負方向(反時計回り)
-            NotRotated=5,                 // 回転しない
+            NotRotate=5,                  // 回転しない
             Original=6                    // 書き込み操作時と同じ 回転量が少ない方向
         };
 
@@ -497,7 +497,7 @@ namespace toio
             PowerOffError=4,    // 電源を切られた時
             OtherWrite=5,       // 複数目標指定付きモーター制御以外のモーター制御が書き込まれた時
             NonSupport=6,       // 指定したモーターの最大速度指示値が8未満の時
-            AddRefuse=7         // 書き込み操作の追加ができない時
+            AddRefused=7        // 書き込み操作の追加ができない時
         };
 
         // 姿態
