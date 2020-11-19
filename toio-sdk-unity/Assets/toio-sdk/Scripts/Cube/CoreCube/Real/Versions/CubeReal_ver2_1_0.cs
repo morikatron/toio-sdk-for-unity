@@ -51,7 +51,7 @@ namespace toio
         //      CoreCube API < send >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         // キューブのモーターを目標指定付き制御します
-        public override void TargetMove(TargetMoveConfig config)
+        public override void TargetMove(TargetMoveConfig config, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -70,11 +70,11 @@ namespace toio
             buff[11] = (byte)(config.targetAngle & 0xFF);
             buff[12] = (byte)((((int)config.targetRotationType & 0x0007) << 5 ) | ((config.targetAngle & 0x1FFF) >> 8));
 
-            this.Request(CHARACTERISTIC_MOTOR, buff, false, config.order, "TargetMove", config);
+            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove", config);
         }
 
         // キューブのモーターを複数目標指定付き制御します
-        public override void MultiTargetMove(MultiMoveConfig config)
+        public override void MultiTargetMove(MultiMoveConfig config, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -97,11 +97,11 @@ namespace toio
                 buff[i * 6 + 12] = (byte)(config.targetAngleList[i] & 0xFF);
                 buff[i * 6 + 13] = (byte)((((int)config.multiRotationTypeList[i] & 0x0007) << 5 ) | ((config.targetAngleList[i] & 0x1FFF) >> 8));
             }
-            this.Request(CHARACTERISTIC_MOTOR, buff, false, config.order, "MultiTargetMove", config);
+            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "MultiTargetMove", config);
         }
 
         // キューブの加速度指定付きモーターを制御します
-        public override void AccelerationMove(AccMoveConfig config)
+        public override void AccelerationMove(AccMoveConfig config, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
             byte[] buff = new byte[9];
@@ -115,7 +115,7 @@ namespace toio
             buff[7] = (byte)config.accSpeedPriorityType;
             buff[8] = (byte)(config.controlTime & 0xFF);
 
-            this.Request(CHARACTERISTIC_MOTOR, buff, false, config.order, "AccelerationMove", config);
+            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "AccelerationMove", config);
         }
 
         // キューブのダブルタップ検出の時間間隔を設定します
@@ -176,7 +176,6 @@ namespace toio
                 {
                     this.pose = _pose;
                     this.poseCallback.Notify(this);
-
                 }
             }
         }
