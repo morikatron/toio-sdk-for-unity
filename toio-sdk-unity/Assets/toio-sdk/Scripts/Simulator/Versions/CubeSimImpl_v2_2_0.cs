@@ -39,19 +39,24 @@ namespace toio.Simulator
 
 
         // ---------- Motor Speed -----------
+        protected bool motorSpeedEnabled = false;
         public override int leftMotorSpeed {get; protected set;}
         public override int rightMotorSpeed {get; protected set;}
         protected System.Action<int, int> motorSpeedCallback = null;
         public override void StartNotification_MotorSpeed(System.Action<int, int> action)
         {
             this.motorSpeedCallback = action;
-            this.motorSpeedCallback.Invoke(leftMotorSpeed, rightMotorSpeed);
+            if (this.motorSpeedEnabled)
+                this.motorSpeedCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
         }
 
         protected void _SetMotorSpeed(int left, int right)
         {
-            if (this.leftMotorSpeed != left || this.rightMotorSpeed != right)
-                this.motorSpeedCallback?.Invoke(left, right);
+            left = Mathf.Abs(left);
+            right = Mathf.Abs(right);
+            if (motorSpeedEnabled)
+                if (this.leftMotorSpeed != left || this.rightMotorSpeed != right)
+                    this.motorSpeedCallback?.Invoke(left, right);
             this.leftMotorSpeed = left;
             this.rightMotorSpeed = right;
         }
@@ -62,6 +67,19 @@ namespace toio.Simulator
             _SetMotorSpeed(left, right);
         }
 
+        // ---------- Config -----------
+        protected System.Action<bool> configMotorReadCallback = null;
+        public override void StartNotification_ConfigMotorRead(System.Action<bool> action)
+        {
+            this.configMotorReadCallback = action;
+        }
+        public override void ConfigMotorRead(bool enabled)
+        {
+            this.motorSpeedEnabled = enabled;
+            this.configMotorReadCallback?.Invoke(enabled);  // TODO probably not same as REAL
+            // this.motorReadCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
+        }
+
 
         // ----------- Simulate -----------
         protected override void SimulateMotionSensor()
@@ -69,7 +87,22 @@ namespace toio.Simulator
             base.SimulateMotionSensor();
 
             SimulateShake();
+        }
+
+
+        // ============ Simulate ============
+        public override void Simulate()
+        {
+            SimulateIDSensor();
+            SimulateMotionSensor();
             SimulateMotorSpeedSensor();
+
+            float dt = Time.deltaTime;
+            float currentTime = Time.time;
+            MotorScheduler(dt, currentTime);
+            LightScheduler(dt, currentTime);
+            SoundScheduler(dt, currentTime);
+            SimulateMotor();
         }
 
     }

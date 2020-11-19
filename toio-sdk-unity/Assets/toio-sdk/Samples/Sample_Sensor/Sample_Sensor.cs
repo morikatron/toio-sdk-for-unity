@@ -21,8 +21,25 @@ public class Sample_Sensor : MonoBehaviour
 
     async void Start()
     {
+        // UI の取得
+        this.textBattery = GameObject.Find("TextBattery").GetComponent<Text>();
+        this.textCollision = GameObject.Find("TextCollision").GetComponent<Text>();
+        this.textFlat = GameObject.Find("TextFlat").GetComponent<Text>();
+        this.textPositionID = GameObject.Find("TextPositionID").GetComponent<Text>();
+        this.textStandardID = GameObject.Find("TextStandardID").GetComponent<Text>();
+        this.textButton = GameObject.Find("TextButton").GetComponent<Text>();
+        this.textAngle = GameObject.Find("TextAngle").GetComponent<Text>();
+        this.textDoubleTap = GameObject.Find("TextDoubleTap").GetComponent<Text>();
+        this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
+        this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
+        this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
+
+        // Cube の接続
         var peripheral = await new NearestScanner().Scan();
         cube = await new CubeConnecter().Connect(peripheral);
+        // モーター速度の読み取りをオンにする
+        await cube.ConfigMotorRead(true);
+
         // コールバック登録
         cube.collisionCallback.AddListener("Sample_Sensor", OnCollision);          // 衝突イベント
         cube.slopeCallback.AddListener("Sample_Sensor", OnSlope);                  // 傾きイベント
@@ -36,18 +53,6 @@ public class Sample_Sensor : MonoBehaviour
         cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  //
         cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             //
 
-        this.textBattery = GameObject.Find("TextBattery").GetComponent<Text>();
-        this.textCollision = GameObject.Find("TextCollision").GetComponent<Text>();
-        this.textFlat = GameObject.Find("TextFlat").GetComponent<Text>();
-        this.textPositionID = GameObject.Find("TextPositionID").GetComponent<Text>();
-        this.textStandardID = GameObject.Find("TextStandardID").GetComponent<Text>();
-        this.textButton = GameObject.Find("TextButton").GetComponent<Text>();
-        this.textAngle = GameObject.Find("TextAngle").GetComponent<Text>();
-        this.textDoubleTap = GameObject.Find("TextDoubleTap").GetComponent<Text>();
-        this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
-        this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
-        this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
-
     }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
@@ -56,9 +61,9 @@ public class Sample_Sensor : MonoBehaviour
     public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
 
-    public void FixedUpdate()
+    public void Update()
     {
-        if(cube != null)
+        if (cube != null)
         {
             if (cube.isConnected)
             {
@@ -159,9 +164,9 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnMissedID(Cube c)
     {
-        this.textPositionID.text = "PositionID";
-        this.textStandardID.text = "StandardID";
-        this.textAngle.text = " Angle";
+        this.textPositionID.text = "PositionID Missed";
+        this.textStandardID.text = "StandardID Missed";
+        this.textAngle.text = "Angle Missed";
     }
 
     public void OnSpeed(Cube c)
