@@ -54,43 +54,43 @@ namespace toio
         // ver2.1.0
         // コアキューブのダブルタップ状態
         public virtual bool isDoubleTap {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
         // コアキューブの姿勢状態
         public virtual PoseType pose {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
 
         // 目標指定付きモーターの制御識別値
         public virtual int motorConfigID {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
         // 目標指定付きモーターの応答内容
         public virtual TargetMoveRespondType motorRespond {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
         // 複数目標指定付きモーターの制御識別値
         public virtual int multiConfigID {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
         // 複数目標指定付きモーターの応答内容
         public virtual TargetMoveRespondType multiRespond {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
 
         // ver2.2.0
         // コアキューブのシェイク状態
         public virtual bool isShake {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
         // コアキューブのモーター ID 1（左）の速度
         public virtual int leftSpeed {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
         // コアキューブのモーター ID 2（右）の速度
         public virtual int rightSpeed {
-            get{UnsupportedWarning(); return default;}
-            protected set{UnsupportedWarning();}}
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -104,7 +104,7 @@ namespace toio
         /// <param name="right">右モーター速度</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak) { UnsupportedWarning(); }
+        public virtual void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブ底面についている LED を制御します
@@ -115,7 +115,7 @@ namespace toio
         /// <param name="blue">青色の強さ</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブ底面についている LED を連続的に制御します
@@ -124,14 +124,14 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブ底面についている LED を消灯させます
         /// https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public virtual void TurnLedOff(ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TurnLedOff(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブからあらかじめ用意された効果音を再生します
@@ -140,7 +140,7 @@ namespace toio
         /// <param name="soundId">サウンドID</param>
         /// <param name="volume">音量</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブから任意の音を再生します
@@ -149,7 +149,7 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブから任意の音を再生します
@@ -157,14 +157,14 @@ namespace toio
         /// </summary>
         /// <param name="buff">命令プロトコル</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの音再生を停止します
         /// https://toio.github.io/toio-spec/docs/ble_sound#再生の停止
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public virtual void StopSound(ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void StopSound(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの水平検出のしきい値を設定します
@@ -172,7 +172,7 @@ namespace toio
         /// </summary>
         /// <param name="angle">傾き検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの衝突検出のしきい値を設定します
@@ -180,7 +180,7 @@ namespace toio
         /// </summary>
         /// <param name="level">衝突検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブのダブルタップ検出の時間間隔を設定します
@@ -188,7 +188,7 @@ namespace toio
         /// </summary>
         /// <param name="interval">ダブルタップ検出の時間間隔</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブのモーターを目標指定付き制御します
@@ -196,7 +196,7 @@ namespace toio
         /// </summary>
         /// <param name="config">目標指定付き制御の設定構造体</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TargetMove(TargetMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TargetMove(TargetMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
@@ -204,7 +204,7 @@ namespace toio
         /// </summary>
         /// <param name="config">複数目標指定付き制御の設定構造体</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void MultiTargetMove(MultiMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void MultiTargetMove(MultiMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
@@ -212,7 +212,7 @@ namespace toio
         /// </summary>
         /// <param name="config">加速度指定付き制御の設定構造体</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void AccelerationMove(AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void AccelerationMove(AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// キューブのモーター速度情報の取得の有効化・無効化を設定します
         /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
@@ -221,7 +221,7 @@ namespace toio
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); return UniTask.CompletedTask; }
+        public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
@@ -668,10 +668,10 @@ namespace toio
             {
                 private Cube owner;
                 public NotSupported(Cube owner) { this.owner = owner; }
-                public override void AddListener(string key, Action<T> listener) { owner.UnsupportedWarning(); }
-                public override void RemoveListener(string key) { owner.UnsupportedWarning(); }
-                public override void ClearListener() { owner.UnsupportedWarning(); }
-                public override void Notify(T target) { owner.UnsupportedWarning(); }
+                public override void AddListener(string key, Action<T> listener) { owner.NotSupportedWarning(); }
+                public override void RemoveListener(string key) { owner.NotSupportedWarning(); }
+                public override void ClearListener() { owner.NotSupportedWarning(); }
+                public override void Notify(T target) { owner.NotSupportedWarning(); }
             }
 
             protected Dictionary<string, Action<T>> listenerTable = new Dictionary<string, Action<T>>();
@@ -708,9 +708,14 @@ namespace toio
         //      実装関数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        protected void UnsupportedWarning()
+        protected void NotSupportedWarning()
         {
             Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", this.version, "https://toio.github.io/toio-spec/versions");
+        }
+
+        protected static void NotSupportedWarning(string version)
+        {
+            Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", version, "https://toio.github.io/toio-spec/versions");
         }
 
         protected void NotImplementedWarning()
