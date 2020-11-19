@@ -710,7 +710,7 @@ namespace toio
 
         protected void NotSupportedWarning()
         {
-            Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", this.version, "https://toio.github.io/toio-spec/versions");
+            NotSupportedWarning(this.version);
         }
 
         protected static void NotSupportedWarning(string version)
