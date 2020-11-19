@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace toio
 {
@@ -162,6 +163,16 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
 
+        /// <summary>
+        /// キューブのモーター速度情報の取得の有効化・無効化を設定します
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
+        /// </summary>
+        /// <param name="valid">有効無効フラグ</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); return UniTask.CompletedTask; }
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -241,7 +252,6 @@ namespace toio
                 this.blue = blue;
             }
         }
-
 
         public enum PoseType
         {
@@ -459,7 +469,6 @@ namespace toio
             }
         }
 
-
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      実装関数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -467,6 +476,11 @@ namespace toio
         protected void UnsupportedWarning()
         {
             Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", this.version, "https://toio.github.io/toio-spec/versions");
+        }
+
+        protected void NotImplementedWarning()
+        {
+            Debug.LogWarning("実装が存在しない機能が呼ばれました.");
         }
     }
 }

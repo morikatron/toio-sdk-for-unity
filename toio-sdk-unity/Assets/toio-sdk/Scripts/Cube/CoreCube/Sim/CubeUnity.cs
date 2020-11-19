@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using toio.Simulator;
+using Cysharp.Threading.Tasks;
 
 namespace toio
 {
@@ -8,7 +10,6 @@ namespace toio
         GameObject gameObject;
         CubeSimulator simulator;
         public string objName { get { return this.simulator.gameObject.name; } }
-        private bool isInitialized = false;
 
         public CubeUnity(GameObject gameObject)
         {
@@ -18,15 +19,6 @@ namespace toio
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
 
-            // Automatically enable motor speed reading
-            if (simulator.version>=CubeSimulator.Version.v2_2_0)
-            {
-                this.motorSpeedCallback.onAddListener += (() =>
-                {
-                    if (this.simulator.ready && this.isInitialized)
-                        this.simulator.EnableMotorSpeed(true);
-                });
-            }
         }
         public bool Init()
         {
@@ -46,9 +38,8 @@ namespace toio
 
                 simulator.StartNotification_Shake(this.Recv_Shake);
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
-                simulator.StartNotification_Config(this.Recv_Config);
+                simulator.StartNotification_ConfigMotorRead(this.Recv_ConfigMotorRead);
 
-                this.isInitialized = true;
                 return true;
             }
             return false;
@@ -88,12 +79,15 @@ namespace toio
         // ver2.2.0
         public override bool isShake { get; protected set; }
         protected bool isEnabledMotorSpeed = false;
+        protected bool isCalled_ConfigMotorRead = false;
+
         protected int _leftSpeed = -1;
         protected int _rightSpeed = -1;
         public override int leftSpeed {
             get {
                 if (this.isEnabledMotorSpeed) return this._leftSpeed;
-                else if (this.isInitialized && this.simulator.ready) this.simulator.EnableMotorSpeed(true);
+                else if (!isCalled_ConfigMotorRead)
+                    Debug.Log("モーター速度が有効化されていません. ConfigMotorRead関数を実行して有効化して下さい.");
                 return -1;
             }
             protected set { this._leftSpeed = value; }
@@ -101,7 +95,8 @@ namespace toio
         public override int rightSpeed {
             get {
                 if (this.isEnabledMotorSpeed) return this._rightSpeed;
-                else if (this.isInitialized && this.simulator.ready) this.simulator.EnableMotorSpeed(true);
+                else if (!isCalled_ConfigMotorRead)
+                    Debug.Log("モーター速度が有効化されていません. ConfigMotorRead関数を実行して有効化して下さい.");
                 return -1;
             }
             protected set { this._rightSpeed = value; }
@@ -218,9 +213,10 @@ namespace toio
             this.motorSpeedCallback.Notify(this);
         }
 
-        protected void Recv_Config(bool isEnabledMotorSpeed)
+        protected void Recv_ConfigMotorRead(bool valid)
         {
-            this.isEnabledMotorSpeed = isEnabledMotorSpeed;
+            this.isEnabledMotorSpeed = valid;
+            this.motorSpeedCallback.Notify(this);
         }
 
 
@@ -327,7 +323,13 @@ namespace toio
         }
         public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedSimWarning(); }
         public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedSimWarning(); }
-
+        public override async UniTask ConfigMotorRead(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
+        {
+            isCalled_ConfigMotorRead = true;
+            this.simulator.ConfigMotorRead(valid);
+            await UniTask.Delay(0);
+            callback?.Invoke(true, this);
+        }
 
         // 非対応コールバック
         private UnsupportingCallbackProvider unsupportingCallback;
