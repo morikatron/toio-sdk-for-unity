@@ -252,43 +252,40 @@ public virtual int rightSpeed { get; protected set; }
 ## 3.2. コールバック
 
 ```C#
-public class CallbackProvider
+public class CallbackProvider<T...>
 {
-    public virtual Action onAddListener { get; set; }
-    public virtual Action onRemoveListener { get; set; }
-    public virtual Action onClearListener { get; set; }
-    public virtual void AddListener(string key, Action<Cube> listener);
+    public virtual void AddListener(string key, Action<T...> listener);
     public virtual void RemoveListener(string key);
     public virtual void ClearListener();
-    public virtual void Notify(Cube target);
+    public virtual void Notify(T... param...);
 }
 
 // ボタンコールバック
-public virtual CallbackProvider buttonCallback { get; }
+public virtual CallbackProvider<Cube> buttonCallback { get; }
 // 傾きコールバック
-public virtual CallbackProvider slopeCallback { get; }
+public virtual CallbackProvider<Cube> slopeCallback { get; }
 // 衝突コールバック
-public virtual CallbackProvider collisionCallback { get; }
+public virtual CallbackProvider<Cube> collisionCallback { get; }
 // 座標角度コールバック
-public virtual CallbackProvider idCallback { get; }
+public virtual CallbackProvider<Cube> idCallback { get; }
 // 座標角度 Missed コールバック
-public virtual CallbackProvider idMissedCallback { get; }
+public virtual CallbackProvider<Cube> idMissedCallback { get; }
 // StandardID コールバック
-public virtual CallbackProvider standardIdCallback { get; }
+public virtual CallbackProvider<Cube> standardIdCallback { get; }
 // StandardID Missed コールバック
-public virtual CallbackProvider standardIdMissedCallback { get; }
+public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
 
 // ver2.1.0
 // ダブルタップコールバック
-public virtual CallbackProvider doubleTapCallback { get; }
+public virtual CallbackProvider<Cube> doubleTapCallback { get; }
 // 姿態検出コールバック
-public virtual CallbackProvider poseCallback { get; }
+public virtual CallbackProvider<Cube> poseCallback { get; }
 
 // ver2.2.0
 // シェイクコールバック
-public virtual CallbackProvider shakeCallback { get; }
+public virtual CallbackProvider<Cube> shakeCallback { get; }
 // モータースピードコールバック
-public virtual CallbackProvider motorSpeedCallback { get; }
+public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
 ```
 
 ## 3.3. メソッド
