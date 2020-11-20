@@ -528,3 +528,26 @@ public void  ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.S
   - 種類 : Weak, Strong
 
 <br>
+
+### ConfigMotorRead
+
+```C#
+public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのモーター速度情報の取得の有効化・無効化を設定します<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
+
+- valid
+  - 定義 : 有効無効フラグ
+  - 種類 : true, false
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
