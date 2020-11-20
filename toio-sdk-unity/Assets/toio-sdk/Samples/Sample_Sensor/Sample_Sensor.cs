@@ -76,22 +76,22 @@ public class Sample_Sensor : MonoBehaviour
     {
         switch (cube.pose)
         {
-            case Cube.PoseType.up:
+            case Cube.PoseType.Up:
                 this.textPose.text = "Pose: Up";
                 break;
-            case Cube.PoseType.down:
+            case Cube.PoseType.Down:
                 this.textPose.text = "Pose: Down";
                 break;
-            case Cube.PoseType.front:
+            case Cube.PoseType.Front:
                 this.textPose.text = "Pose: Front";
                 break;
-            case Cube.PoseType.back:
+            case Cube.PoseType.Back:
                 this.textPose.text = "Pose: Back";
                 break;
-            case Cube.PoseType.right:
+            case Cube.PoseType.Right:
                 this.textPose.text = "Pose: Right";
                 break;
-            case Cube.PoseType.left:
+            case Cube.PoseType.Left:
                 this.textPose.text = "Pose: Left";
                 break;
             default:
