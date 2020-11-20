@@ -95,8 +95,6 @@ namespace toio.Simulator
         public virtual int rightMotorSpeed {
             get{ NotSupportedWarning(); return default; }
             protected set{ NotSupportedWarning(); }}
-        public virtual void ConfigMotorRead(bool enabled)
-        { NotSupportedWarning(); }
         public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
         { NotSupportedWarning(); }
         public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
@@ -145,6 +143,7 @@ namespace toio.Simulator
 
 
         // ============ Commands ============
+        // ---------- 2.0.0 ----------
         public virtual void Move(int left, int right, int durationMS)
         { NotSupportedWarning(); }
         public virtual void StopLight()
@@ -159,7 +158,19 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
         public virtual void StopSound()
         { NotSupportedWarning(); }
-        public virtual void SetSlopeThreshold(int angle)
+        public virtual void ConfigSlopeThreshold(int angle)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.1.0 ----------
+        public virtual void TargetMove(int targetX, int targetY, int targetAngle, Cube.TargetMoveConfig config)
+        { NotSupportedWarning(); }
+        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, Cube.MultiMoveConfig config)
+        { NotSupportedWarning(); }
+        public virtual void AccelerationMove(int targetSpeed, int acceleration, Cube.AccMoveConfig config)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.2.0 ----------
+        public virtual void ConfigMotorRead(bool enabled)
         { NotSupportedWarning(); }
 
         protected virtual void NotSupportedWarning()

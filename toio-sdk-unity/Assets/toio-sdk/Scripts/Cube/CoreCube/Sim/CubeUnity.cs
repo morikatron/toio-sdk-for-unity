@@ -338,16 +338,37 @@ namespace toio
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.SetSlopeThreshold(angle), order);
 #else
-            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.SetSlopeThreshold(angle), order, "configSlopeThreshold", angle);
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigSlopeThreshold(angle), order, "configSlopeThreshold", angle);
 #endif
         }
         public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { NotImplementedWarning(); }
 
         // -------- ver2.1.0 --------
         public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { NotImplementedWarning(); }
-        public override void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
-        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
-        public override void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public override void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
+        {
+#if RELEASE
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.TargetMove(targetX, targetY, targetAngle, config), order);
+#else
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.TargetMove(targetX, targetY, targetAngle, config), order, "targetMove", targetX, targetY, targetAngle, config);
+#endif
+        }
+        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
+        {
+#if RELEASE
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.MultiTargetMove(targetXList, targetYList, targetAngleList, config), order);
+#else
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.MultiTargetMove(targetXList, targetYList, targetAngleList, config), order, "multiTargetMove", targetXList, targetYList, targetAngleList, config);
+#endif
+        }
+        public override void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+#if RELEASE
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.AccelerationMove(targetSpeed, acceleration, config), order);
+#else
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.AccelerationMove(targetSpeed, acceleration, config), order, "accelerationMove", targetSpeed, acceleration, config);
+#endif
+        }
 
         // -------- ver2.2.0 --------
         public override async UniTask ConfigMotorRead(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)

@@ -331,6 +331,7 @@ namespace toio.Simulator
 
         // ============ コマンド ============
 
+        // --------- 2.0.0 --------
         /// <summary>
         /// モーター：時間指定付きモーター制御
         /// </summary>
@@ -383,17 +384,31 @@ namespace toio.Simulator
             impl.StopSound();
         }
 
-
-        // ============ 設定 ============
-
         /// <summary>
         /// 水平検出の閾値を設定する（度）
         /// </summary>
-        public void SetSlopeThreshold(int degree)
+        public void ConfigSlopeThreshold(int degree)
         {
-            impl.SetSlopeThreshold(degree);
+            impl.ConfigSlopeThreshold(degree);
         }
 
+        // --------- 2.1.0 --------
+        public void TargetMove(int targetX, int targetY, int targetAngle, Cube.TargetMoveConfig config)
+        {
+            impl.TargetMove(targetX, targetY, targetAngle, config);
+        }
+
+        public void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, Cube.MultiMoveConfig config)
+        {
+            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, config);
+        }
+
+        public void AccelerationMove(int targetSpeed, int acceleration, Cube.AccMoveConfig config)
+        {
+            impl.AccelerationMove(targetSpeed, acceleration, config);
+        }
+
+        // --------- 2.2.0 --------
         /// <summary>
         /// モーターの速度情報の取得の設定
         /// </summary>

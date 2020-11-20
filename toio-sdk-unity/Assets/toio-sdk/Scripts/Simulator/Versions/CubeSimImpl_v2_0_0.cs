@@ -393,7 +393,7 @@ namespace toio.Simulator
 
         // 水平検出の閾値
         protected int slopeThreshold = 45;
-        public override void SetSlopeThreshold(int degree)
+        public override void ConfigSlopeThreshold(int degree)
         {
             slopeThreshold = degree;
         }
