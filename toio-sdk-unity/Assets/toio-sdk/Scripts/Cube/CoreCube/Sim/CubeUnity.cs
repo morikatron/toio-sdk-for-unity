@@ -273,7 +273,7 @@ namespace toio
             for (int i = 0; i < length; i++)
             {
                 data[i] = new SoundOperation();
-                data[i].durationMs = (short)(buff[start + i * 3] * 10);
+                data[i].durationMs = (ushort)(buff[start + i * 3] * 10);
                 data[i].note_number = buff[start + i * 3 + 1];
                 data[i].volume = buff[start + i * 3 + 2];
             }
