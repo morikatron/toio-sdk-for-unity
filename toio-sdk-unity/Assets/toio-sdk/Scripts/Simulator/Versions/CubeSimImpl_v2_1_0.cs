@@ -16,7 +16,7 @@ namespace toio.Simulator
 
         // ============ Motion Sensor ============
         // ---------- Pose -----------
-        protected Cube.PoseType _pose = Cube.PoseType.up;
+        protected Cube.PoseType _pose = Cube.PoseType.Up;
         public override Cube.PoseType pose {
             get{ return _pose; }
             internal set{
@@ -37,27 +37,27 @@ namespace toio.Simulator
         {
             if(Vector3.Angle(Vector3.up, cube.transform.up)<slopeThreshold)
             {
-                this.pose = Cube.PoseType.up;
+                this.pose = Cube.PoseType.Up;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.up)>180-slopeThreshold)
             {
-                this.pose = Cube.PoseType.down;
+                this.pose = Cube.PoseType.Down;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.forward)<slopeThreshold)
             {
-                this.pose = Cube.PoseType.front;
+                this.pose = Cube.PoseType.Front;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.forward)>180-slopeThreshold)
             {
-                this.pose = Cube.PoseType.back;
+                this.pose = Cube.PoseType.Back;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.right)<slopeThreshold)
             {
-                this.pose = Cube.PoseType.right;
+                this.pose = Cube.PoseType.Right;
             }
             else if(Vector3.Angle(Vector3.up, cube.transform.right)>180-slopeThreshold)
             {
-                this.pose = Cube.PoseType.left;
+                this.pose = Cube.PoseType.Left;
             }
         }
 

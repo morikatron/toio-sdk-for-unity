@@ -56,7 +56,7 @@ namespace toio
             buff[1] = (byte)(config.configID & 0xFF);
             buff[2] = (byte)(config.timeOut & 0xFF);
             buff[3] = (byte)config.targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(config.setMaxSpd, deadzone, maxSpd);
+            buff[4] = (byte)Mathf.Clamp(config.maxSpd, deadzone, maxSpd);
             buff[5] = (byte)config.targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)(targetX & 0xFF);
@@ -67,18 +67,6 @@ namespace toio
             buff[12] = (byte)((((int)config.targetRotationType & 0x0007) << 5 ) | ((targetAngle & 0x1FFF) >> 8));
 
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove", config);
-        }
-        public override void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(configID:0), order);
-        }
-        public override void TargetMove(Vector2Int targetPos, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            TargetMove(targetPos.x, targetPos.y, targetAngle, config, order);
-        }
-        public override void TargetMove(Vector2Int targetPos, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            TargetMove(targetPos, targetAngle, new TargetMoveConfig(configID:0), order);
         }
 
         // キューブのモーターを複数目標指定付き制御します
@@ -95,7 +83,7 @@ namespace toio
             buff[1] = (byte)(config.configID & 0xFF);
             buff[2] = (byte)(config.timeOut & 0xFF);
             buff[3] = (byte)config.targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(config.setMaxSpd, deadzone, maxSpd);
+            buff[4] = (byte)Mathf.Clamp(config.maxSpd, deadzone, maxSpd);
             buff[5] = (byte)config.targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)config.multiWriteType;
@@ -110,27 +98,6 @@ namespace toio
                 buff[i * 6 + 13] = (byte)((((int)multiRotationTypeList[i] & 0x0007) << 5 ) | ((targetAngleList[i] & 0x1FFF) >> 8));
             }
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "MultiTargetMove", config);
-        }
-        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(configID:0), order);
-        }
-        public override void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            int[] targetXList = new int[targetPosList.Length];
-            int[] targetYList = new int[targetPosList.Length];
-
-            for (int i = 0; i < targetPosList.Length; i++)
-            {
-                targetXList[i] = targetPosList[i].x;
-                targetYList[i] = targetPosList[i].y;
-            }
-
-            MultiTargetMove(targetXList, targetYList, targetAngleList, config, order);
-        }
-        public override void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            MultiTargetMove(targetPosList, targetAngleList, new MultiMoveConfig(configID:0), order);
         }
 
         // キューブの加速度指定付きモーターを制御します
@@ -149,10 +116,6 @@ namespace toio
             buff[8] = (byte)(config.controlTime & 0xFF);
 
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "AccelerationMove", config);
-        }
-        public override void AccelerationMove(int targetSpeed, int acceleration, ORDER_TYPE order = ORDER_TYPE.Strong)
-        {
-            AccelerationMove(targetSpeed, acceleration, new AccMoveConfig(controlTime:0), order);
         }
 
         // キューブのダブルタップ検出の時間間隔を設定します
