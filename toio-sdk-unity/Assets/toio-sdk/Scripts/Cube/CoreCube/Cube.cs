@@ -184,6 +184,15 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
         /// <summary>
+        /// キューブのモーターを目標指定付き制御します(ベクトル座標入力)
+        /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
+        /// </summary>
+        /// <param name="targetPos">目標地点XとYの座標値2Dベクトル</param>
+        /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
+        /// <param name="config">目標指定付き制御の設定構造体</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void TargetMove(Vector2Int targetPos, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        /// <summary>
         /// キューブのモーターを目標指定付き制御します（デフォルトの設定で）
         /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
         /// </summary>
@@ -192,6 +201,14 @@ namespace toio
         /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
         /// <param name="order">命令の優先度</param>
         public virtual void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        /// <summary>
+        /// キューブのモーターを目標指定付き制御します（ベクトル座標入力 と デフォルトの設定で）
+        /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
+        /// </summary>
+        /// <param name="targetPos">目標地点XとYの座標値2Dベクトル</param>
+        /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void TargetMove(Vector2Int targetPos, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
@@ -204,6 +221,15 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
         /// <summary>
+        /// キューブのモーターを複数目標指定付き制御します(ベクトル座標入力)
+        /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
+        /// </summary>
+        /// <param name="targetPosList">目標地点のX座標値の集合</param>
+        /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
+        /// <param name="config">複数目標指定付き制御の設定構造体</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        /// <summary>
         /// キューブのモーターを複数目標指定付き制御します（デフォルトの設定で）
         /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
         /// </summary>
@@ -212,6 +238,14 @@ namespace toio
         /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
         /// <param name="order">命令の優先度</param>
         public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        /// <summary>
+        /// キューブのモーターを複数目標指定付き制御します（ベクトル座標入力 と デフォルトの設定で）
+        /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
+        /// </summary>
+        /// <param name="targetPosList">目標地点のX座標値の集合</param>
+        /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します

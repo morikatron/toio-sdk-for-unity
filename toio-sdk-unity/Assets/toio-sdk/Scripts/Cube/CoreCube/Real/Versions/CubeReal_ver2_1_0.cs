@@ -72,6 +72,14 @@ namespace toio
         {
             TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(), order);
         }
+        public override void TargetMove(Vector2Int targetPos, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
+        {
+            TargetMove(targetPos.x, targetPos.y, targetAngle, config, order);
+        }
+        public override void TargetMove(Vector2Int targetPos, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong)
+        {
+            TargetMove(targetPos, targetAngle, new TargetMoveConfig(), order);
+        }
 
         // キューブのモーターを複数目標指定付き制御します
         public override void MultiTargetMove(
@@ -106,6 +114,23 @@ namespace toio
         public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
             MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(), order);
+        }
+        public override void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
+        {
+            int[] targetXList = new int[targetPosList.Length];
+            int[] targetYList = new int[targetPosList.Length];
+
+            for (int i = 0; i < targetPosList.Length; i++)
+            {
+                targetXList[i] = targetPosList[i].x;
+                targetYList[i] = targetPosList[i].y;
+            }
+
+            MultiTargetMove(targetXList, targetYList, targetAngleList, config, order);
+        }
+        public override void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
+        {
+            MultiTargetMove(targetPosList, targetAngleList, new MultiMoveConfig(), order);
         }
 
         // キューブの加速度指定付きモーターを制御します
