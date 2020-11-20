@@ -120,42 +120,43 @@ namespace toio
             protected set { this._rightSpeed = value; }
         }
 
-        // コールバック
-        CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _slopeCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _collisionCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _idCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _standardIdCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _idMissedCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _standardIdMissedCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _doubleTapCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _poseCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
-        CallbackProvider<Cube> _motorSpeedCallback = new CallbackProvider<Cube>();
+
+        /////////////// Callbacks to user ///////////////
+        protected CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> buttonCallback { get { return this._buttonCallback; } }
+        protected CallbackProvider<Cube> _slopeCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> slopeCallback { get { return this._slopeCallback; } }
+        protected CallbackProvider<Cube> _collisionCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> collisionCallback { get { return this._collisionCallback; } }
+        protected CallbackProvider<Cube> _idCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> idCallback { get { return this._idCallback; } }
+        protected CallbackProvider<Cube> _standardIdCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> standardIdCallback { get { return this._standardIdCallback; } }
+        protected CallbackProvider<Cube> _idMissedCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> idMissedCallback { get { return this._idMissedCallback; } }
+        protected CallbackProvider<Cube> _standardIdMissedCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
         // 2.1.0
+        protected CallbackProvider<Cube> _doubleTapCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> doubleTapCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._doubleTapCallback;
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        protected CallbackProvider<Cube> _poseCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> poseCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._poseCallback;
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 2.2.0
+        protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> shakeCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._shakeCallback;
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        protected CallbackProvider<Cube> _motorSpeedCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> motorSpeedCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_2_0) return this._motorSpeedCallback;
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
-        ///////////////   RETRIEVE INFO   ////////////
 
+        /////////////// Callbacks from CubeSimulator ///////////////
         private void Recv_Button(bool pressed)
         {
             isPressed = pressed;
@@ -240,6 +241,7 @@ namespace toio
 
         ///////////////   COMMAND API  ///////////////
 
+        // -------- ver2.0.0 --------
         public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
 #if RELEASE
@@ -340,7 +342,14 @@ namespace toio
 #endif
         }
         public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { NotImplementedWarning(); }
+
+        // -------- ver2.1.0 --------
         public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { NotImplementedWarning(); }
+        public override void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public override void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
+        // -------- ver2.2.0 --------
         public override async UniTask ConfigMotorRead(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
         {
             isCalled_ConfigMotorRead = true;
