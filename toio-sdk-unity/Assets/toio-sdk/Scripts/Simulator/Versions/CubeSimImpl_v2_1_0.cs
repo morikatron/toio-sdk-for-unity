@@ -14,6 +14,170 @@ namespace toio.Simulator
         public  CubeSimImpl_v2_1_0(CubeSimulator cube) : base(cube){}
 
 
+        // ============ Motor ============
+
+        protected override void MotorScheduler(float dt, float t)
+        {
+            motorCmdElipsed += dt;
+
+            string currCmd = "";
+            float latestRecvTime = 0;
+
+            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv + cube.delay)
+            {
+                motorCmdElipsed = 0;
+                currMotorTimeCmd = motorTimeCmdQ.Dequeue();
+                currCmd = "Time"; latestRecvTime = currMotorTimeCmd.tRecv;
+            }
+            while (motorTargetCmdQ.Count>0 && t > motorTargetCmdQ.Peek().tRecv + cube.delay)
+            {
+                motorCmdElipsed = 0;
+                currMotorTargetCmd = motorTargetCmdQ.Dequeue();
+                if (currMotorTargetCmd.tRecv > latestRecvTime)
+                {
+                    currCmd = "Target"; latestRecvTime = currMotorTargetCmd.tRecv;
+                }
+            }
+            while (motorMultiTargetCmdQ.Count>0 && t > motorMultiTargetCmdQ.Peek().tRecv + cube.delay)
+            {
+                motorCmdElipsed = 0;
+                currMotorMultiTargetCmd = motorMultiTargetCmdQ.Dequeue();
+                if (currMotorMultiTargetCmd.tRecv > latestRecvTime)
+                {
+                    currCmd = "MultiTarget"; latestRecvTime = currMotorMultiTargetCmd.tRecv;
+                }
+            }
+            while (motorAccCmdQ.Count>0 && t > motorAccCmdQ.Peek().tRecv + cube.delay)
+            {
+                motorCmdElipsed = 0;
+                currMotorAccCmd = motorAccCmdQ.Dequeue();
+                if (currMotorAccCmd.tRecv > latestRecvTime)
+                {
+                    currCmd = "Acc"; latestRecvTime = currMotorAccCmd.tRecv;
+                }
+            }
+
+            // ----- Excute Order -----
+            switch (currCmd)
+            {
+                case "Time":
+                {
+                    if (currMotorTimeCmd.duration==0
+                        || motorCmdElipsed < currMotorTimeCmd.duration/1000f)
+                    {
+                        motorLeft = currMotorTimeCmd.left;
+                        motorRight = currMotorTimeCmd.right;
+                    }
+                    else
+                    {
+                        motorLeft = 0; motorRight = 0;
+                    }
+                    break;
+                }
+                case "Target":
+                {
+                    TargetMoveController();
+                    break;
+                }
+                case "MultiTarget":
+                {
+                    MultiTargetMoveController();
+                    break;
+                }
+                case "Acc":
+                {
+                    AccMoveController();
+                    break;
+                }
+            }
+
+        }
+
+
+        // -------- Target Move --------
+        protected struct MotorTargetCmd
+        {
+            public ushort x, y, deg;
+            public Cube.TargetMoveConfig config;
+            public float tRecv;
+        }
+        protected Queue<MotorTargetCmd> motorTargetCmdQ = new Queue<MotorTargetCmd>(); // command queue
+        protected MotorTargetCmd currMotorTargetCmd = default;  // current command
+
+        protected virtual void TargetMoveController()
+        {
+
+        }
+
+        // COMMAND API
+        public override void TargetMove(int targetX, int targetY, int targetAngle, Cube.TargetMoveConfig config)
+        {
+            MotorTargetCmd cmd = new MotorTargetCmd();
+            cmd.x = (ushort)targetX;
+            cmd.y = (ushort)targetY;
+            cmd.deg = (ushort)targetAngle;
+            cmd.config = config;
+            cmd.tRecv = Time.time;
+            motorTargetCmdQ.Enqueue(cmd);
+        }
+
+
+        // -------- Multi Target Move --------
+        protected struct MotorMultiTargetCmd
+        {
+            public ushort[] xs, ys, degs;
+            public Cube.MultiMoveConfig config;
+            public float tRecv;
+        }
+        protected Queue<MotorMultiTargetCmd> motorMultiTargetCmdQ = new Queue<MotorMultiTargetCmd>(); // command queue
+        protected MotorMultiTargetCmd currMotorMultiTargetCmd = default;  // current command
+
+        protected virtual void MultiTargetMoveController()
+        {
+
+        }
+
+        // COMMAND API
+        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, Cube.MultiMoveConfig config)
+        {
+            MotorMultiTargetCmd cmd = new MotorMultiTargetCmd();
+            cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)x));
+            cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)x));
+            cmd.degs = Array.ConvertAll(targetAngleList, new Converter<int, ushort>(x=>(ushort)x));
+            cmd.config = config;
+            cmd.tRecv = Time.time;
+            motorMultiTargetCmdQ.Enqueue(cmd);
+        }
+
+
+        // -------- Acceleration Move --------
+        protected struct MotorAccCmd
+        {
+            public byte spd, acc;
+            public Cube.AccMoveConfig config;
+            public float tRecv;
+        }
+        protected Queue<MotorAccCmd> motorAccCmdQ = new Queue<MotorAccCmd>(); // command queue
+        protected MotorAccCmd currMotorAccCmd = default;  // current command
+
+        protected virtual void AccMoveController()
+        {
+
+        }
+
+        // COMMAND API
+        public override void AccelerationMove(int targetSpeed, int acceleration, Cube.AccMoveConfig config)
+        {
+            MotorAccCmd cmd = new MotorAccCmd();
+            cmd.spd = (byte)targetSpeed;
+            cmd.acc = (byte)acceleration;
+            cmd.config = config;
+            cmd.tRecv = Time.time;
+            motorAccCmdQ.Enqueue(cmd);
+        }
+
+
+
         // ============ Motion Sensor ============
         // ---------- Pose -----------
         protected Cube.PoseType _pose = Cube.PoseType.up;
