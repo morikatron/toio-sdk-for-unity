@@ -304,29 +304,29 @@ namespace toio
         public struct TargetMoveConfig
         {
             // 制御識別値
-            public int configID;
+            public byte configID;
             // タイムアウト時間(秒)
-            public int timeOut;
+            public byte timeOut;
             // 移動タイプ
             public TargetMoveType targetMoveType;
             // モーターの最大速度指示値
-            public int setMaxSpd;
+            public byte maxSpd;
             // モーターの速度変化タイプ
             public TargetSpeedType targetSpeedType;
             // 回転タイプ
             public TargetRotationType targetRotationType;
 
-            public TargetMoveConfig(int configID = 0,
-                                    int timeOut = 255,
+            public TargetMoveConfig(byte configID = 0,
+                                    byte timeOut = 255,
                                     TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-                                    int setMaxSpd = 80,
+                                    byte maxSpd = 80,
                                     TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
                                     TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle)
             {
                 this.configID = configID;
                 this.timeOut = timeOut;
                 this.targetMoveType = targetMoveType;
-                this.setMaxSpd = setMaxSpd;
+                this.maxSpd = maxSpd;
                 this.targetSpeedType = targetSpeedType;
                 this.targetRotationType = targetRotationType;
             }
@@ -338,23 +338,23 @@ namespace toio
             // 回転タイプの集合
             public TargetRotationType[] multiRotationTypeList;
             // 制御識別値
-            public int configID;
+            public byte configID;
             // タイムアウト時間(秒)
-            public int timeOut;
+            public byte timeOut;
             // 移動タイプ
             public TargetMoveType targetMoveType;
             // モーターの最大速度指示値
-            public int setMaxSpd;
+            public byte maxSpd;
             // モーターの速度変化タイプ
             public TargetSpeedType targetSpeedType;
             // 書き込み操作の追加設定
             public MultiWriteType multiWriteType;
 
             public MultiMoveConfig(TargetRotationType[] multiRotationTypeList = null,
-                                    int configID = 0,
-                                    int timeOut = 255,
+                                    byte configID = 0,
+                                    byte timeOut = 255,
                                     TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-                                    int setMaxSpd = 80,
+                                    byte maxSpd = 80,
                                     TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
                                     MultiWriteType multiWriteType = MultiWriteType.Write
                                     )
@@ -363,7 +363,7 @@ namespace toio
                 this.configID = configID;
                 this.timeOut = timeOut;
                 this.targetMoveType = targetMoveType;
-                this.setMaxSpd = setMaxSpd;
+                this.maxSpd = maxSpd;
                 this.targetSpeedType = targetSpeedType;
                 this.multiWriteType = multiWriteType;
             }
@@ -373,7 +373,7 @@ namespace toio
         public struct AccMoveConfig
         {
             // キューブの向きの回転速度[度/秒]
-            public int rotationSpeed;
+            public ushort rotationSpeed;
             // キューブの向きの回転方向
             public AccRotationType accRotationType;
             // キューブの進行方向
@@ -381,13 +381,13 @@ namespace toio
             // 回転や並進の優先指定
             public AccPriorityType accPriorityType;
             // 制御時間[10ms]
-            public int controlTime;
+            public byte controlTime;
 
-            public AccMoveConfig(int rotationSpeed = 0,
+            public AccMoveConfig(ushort rotationSpeed = 0,
                                 AccRotationType accRotationType = AccRotationType.Clockwise,
                                 AccMoveType accMoveType = AccMoveType.Forward,
                                 AccPriorityType accSpeedPriorityType = AccPriorityType.Translation,
-                                int controlTime = 0)
+                                byte controlTime = 0)
             {
                 this.rotationSpeed = rotationSpeed;
                 this.accRotationType = accRotationType;
