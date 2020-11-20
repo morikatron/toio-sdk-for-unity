@@ -400,18 +400,18 @@ namespace toio
         // 発音ごとの設定構造体
         public struct SoundOperation
         {
-            public Int16 durationMs; // ミリ秒
+            public ushort durationMs; // ミリ秒
             public byte volume;      // 音量(0~255)
             public byte note_number; // 音符(0~128)
 
-            public SoundOperation(Int16 durationMs = 0, byte volume = 0, byte note_number = 0)
+            public SoundOperation(ushort durationMs = 0, byte volume = 0, byte note_number = 0)
             {
                 this.durationMs = durationMs;
                 this.volume = volume;
                 this.note_number = note_number;
             }
 
-            public SoundOperation(Int16 durationMs = 0, byte volume = 0, NOTE_NUMBER note_number = 0)
+            public SoundOperation(ushort durationMs = 0, byte volume = 0, NOTE_NUMBER note_number = 0)
             {
                 this.durationMs = durationMs;
                 this.volume = volume;
@@ -422,12 +422,12 @@ namespace toio
         // 発光ごとの設定構造体
         public struct LightOperation
         {
-            public Int16 durationMs; // ミリ秒
+            public ushort durationMs; // ミリ秒
             public byte red;         // 赤色の強さ
             public byte green;       // 緑色の強さ
             public byte blue;        // 青色の強さ
 
-            public LightOperation(Int16 durationMs = 0, byte red = 0, byte green = 0, byte blue = 0)
+            public LightOperation(ushort durationMs = 0, byte red = 0, byte green = 0, byte blue = 0)
             {
                 this.durationMs = durationMs;
                 this.red = red;
@@ -437,7 +437,7 @@ namespace toio
         }
 
         // 目標指定付き制御のパラメータ種類
-        public enum TargetMoveType
+        public enum TargetMoveType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#移動タイプ
             RotatingMove=0,       // 回転しながら移動
@@ -445,7 +445,7 @@ namespace toio
             RoundBeforeMove=2     // 回転してから移動
         };
 
-        public enum TargetSpeedType
+        public enum TargetSpeedType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度変化タイプ
             UniformSpeed=0,   // 速度一定
@@ -454,7 +454,7 @@ namespace toio
             VariableSpeed=3   // 中間地点まで徐々に加速し、そこから目標地点まで減速
         };
 
-        public enum TargetRotationType
+        public enum TargetRotationType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#目標地点でのキューブの角度-θ
             AbsoluteLeastAngle=0,         // 絶対角度 回転量が少ない方向
@@ -466,7 +466,7 @@ namespace toio
             Original=6                    // 書き込み操作時と同じ 回転量が少ない方向
         };
 
-        public enum MultiWriteType
+        public enum MultiWriteType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#書き込み操作の追加設定
             Write=0,        // 上書き
@@ -474,21 +474,21 @@ namespace toio
         };
 
         // 加速度指定付き制御のパラメータ種類
-        public enum AccRotationType
+        public enum AccRotationType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#キューブの向きの回転方向
             Clockwise=0,        // 正方向(時計回り)
             CounterClockwise=1, // 負方向(反時計回り)
         };
 
-        public enum AccMoveType
+        public enum AccMoveType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#キューブの進行方向
             Forward=0,          // 前進
             Backward=1,         // 後退
         };
 
-        public enum AccPriorityType
+        public enum AccPriorityType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#優先指定
             Translation=0,      // 並進速度を優先し、回転速度を調整します
@@ -496,7 +496,7 @@ namespace toio
         };
 
         // 制御の応答
-        public enum TargetMoveRespondType
+        public enum TargetMoveRespondType: byte
         {
             // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#応答内容-1
             Normal=0,           // 目標に到達した時
@@ -510,7 +510,7 @@ namespace toio
         };
 
         // 姿態
-        public enum PoseType
+        public enum PoseType: byte
         {
             up=1,
             down=2,
