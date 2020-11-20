@@ -512,12 +512,12 @@ namespace toio
         // 姿態
         public enum PoseType: byte
         {
-            up=1,
-            down=2,
-            front=3,
-            back=4,
-            right=5,
-            left=6
+            Up=1,
+            Down=2,
+            Front=3,
+            Back=4,
+            Right=5,
+            Left=6
         };
 
         // 効果音
