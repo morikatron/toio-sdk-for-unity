@@ -252,12 +252,16 @@ public virtual int rightSpeed { get; protected set; }
 ## 3.2. コールバック
 
 ```C#
+// CallbackProvider<T1>
+// CallbackProvider<T1, T2>
+// CallbackProvider<T1, T2, T3>
+// CallbackProvider<T1, T2, T3, T4>
 public class CallbackProvider<T...>
 {
     public virtual void AddListener(string key, Action<T...> listener);
     public virtual void RemoveListener(string key);
     public virtual void ClearListener();
-    public virtual void Notify(T... param...);
+    public virtual void Notify(T... args);
 }
 
 // ボタンコールバック
