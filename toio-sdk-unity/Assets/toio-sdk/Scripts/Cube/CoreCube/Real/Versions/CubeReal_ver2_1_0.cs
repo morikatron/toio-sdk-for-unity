@@ -70,7 +70,7 @@ namespace toio
         }
         public override void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
-            TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(), order);
+            TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(configID:0), order);
         }
         public override void TargetMove(Vector2Int targetPos, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
@@ -78,7 +78,7 @@ namespace toio
         }
         public override void TargetMove(Vector2Int targetPos, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
-            TargetMove(targetPos, targetAngle, new TargetMoveConfig(), order);
+            TargetMove(targetPos, targetAngle, new TargetMoveConfig(configID:0), order);
         }
 
         // キューブのモーターを複数目標指定付き制御します
@@ -113,7 +113,7 @@ namespace toio
         }
         public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
-            MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(), order);
+            MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(configID:0), order);
         }
         public override void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
@@ -130,7 +130,7 @@ namespace toio
         }
         public override void MultiTargetMove(Vector2Int[] targetPosList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
         {
-            MultiTargetMove(targetPosList, targetAngleList, new MultiMoveConfig(), order);
+            MultiTargetMove(targetPosList, targetAngleList, new MultiMoveConfig(configID:0), order);
         }
 
         // キューブの加速度指定付きモーターを制御します
@@ -152,7 +152,7 @@ namespace toio
         }
         public override void AccelerationMove(int targetSpeed, int acceleration, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
-            AccelerationMove(targetSpeed, acceleration, new AccMoveConfig(), order);
+            AccelerationMove(targetSpeed, acceleration, new AccMoveConfig(controlTime:0), order);
         }
 
         // キューブのダブルタップ検出の時間間隔を設定します
