@@ -60,7 +60,7 @@ namespace toio
             buff[1] = (byte)(config.configID & 0xFF);
             buff[2] = (byte)(config.timeOut & 0xFF);
             buff[3] = (byte)config.targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(config.setMaxSpd, deadzone, maxSpd);
+            buff[4] = (byte)Mathf.Clamp(config.maxSpd, deadzone, maxSpd);
             buff[5] = (byte)config.targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)(targetX & 0xFF);
@@ -87,7 +87,7 @@ namespace toio
             buff[1] = (byte)(config.configID & 0xFF);
             buff[2] = (byte)(config.timeOut & 0xFF);
             buff[3] = (byte)config.targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(config.setMaxSpd, deadzone, maxSpd);
+            buff[4] = (byte)Mathf.Clamp(config.maxSpd, deadzone, maxSpd);
             buff[5] = (byte)config.targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)config.multiWriteType;
