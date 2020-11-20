@@ -53,7 +53,7 @@ namespace toio
         }
 
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         public class Impl : CubeConnecterInterface
         {
             public async UniTask<Cube> Connect(BLEPeripheralInterface peripheral)

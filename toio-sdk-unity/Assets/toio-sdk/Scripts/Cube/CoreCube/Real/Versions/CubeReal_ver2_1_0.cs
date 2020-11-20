@@ -12,8 +12,8 @@ namespace toio
 
         protected CallbackProvider<Cube> _doubleTapCallback = new CallbackProvider<Cube>();
         protected CallbackProvider<Cube> _poseCallback = new CallbackProvider<Cube>();
-        protected CallbackProvider<Cube> _targetMoveCallback = new CallbackProvider<Cube>();
-        protected CallbackProvider<Cube> _multiTargetMoveCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube, int, TargetMoveRespondType> _targetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
+        protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
@@ -21,10 +21,6 @@ namespace toio
 
         public override bool isDoubleTap { get; protected set; }
         public override PoseType pose { get; protected set; }
-        public override int motorConfigID {get;protected set;}
-        public override TargetMoveRespondType motorRespond {get;protected set;}
-        public override int multiConfigID {get;protected set;}
-        public override TargetMoveRespondType multiRespond {get;protected set;}
         public override string version { get { return "2.1.0"; } }
         public override int maxSpd { get { return 115; } }
         public override int deadzone { get { return 8; } }
@@ -34,9 +30,9 @@ namespace toio
         // 姿勢コールバック
         public override CallbackProvider<Cube> poseCallback { get { return this._poseCallback; } }
         // 目標指定付きモーター制御の応答コールバック
-        public override CallbackProvider<Cube> targetMoveCallback { get { return this._targetMoveCallback; } }
+        public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return this._targetMoveCallback; } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public override CallbackProvider<Cube> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
+        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
@@ -146,16 +142,12 @@ namespace toio
             // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#目標指定付きモーター制御の応答
             if (0x83 == type)
             {
-                this.motorConfigID = data[1];
-                this.motorRespond = (TargetMoveRespondType)data[2];
-                this.targetMoveCallback.Notify(this);
+                this.targetMoveCallback.Notify(this, data[1], (TargetMoveRespondType)data[2]);
             }
             // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#複数目標指定付きモーター制御の応答
             else if (0x84 == type)
             {
-                this.multiConfigID = data[1];
-                this.multiRespond = (TargetMoveRespondType)data[2];
-                this.multiTargetMoveCallback.Notify(this);
+                this.multiTargetMoveCallback.Notify(this, data[1], (TargetMoveRespondType)data[2]);
             }
         }
 

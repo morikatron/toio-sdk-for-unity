@@ -61,7 +61,7 @@ namespace toio
             this.impl.ScanAsync(coroutineObject, callback, autoRunning);
         }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// Impl for Unity.
         /// </summary>

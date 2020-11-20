@@ -61,23 +61,6 @@ namespace toio
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
 
-        // 目標指定付きモーターの制御識別値
-        public virtual int motorConfigID {
-            get{NotSupportedWarning(); return default;}
-            protected set{NotSupportedWarning();}}
-        // 目標指定付きモーターの応答内容
-        public virtual TargetMoveRespondType motorRespond {
-            get{NotSupportedWarning(); return default;}
-            protected set{NotSupportedWarning();}}
-        // 複数目標指定付きモーターの制御識別値
-        public virtual int multiConfigID {
-            get{NotSupportedWarning(); return default;}
-            protected set{NotSupportedWarning();}}
-        // 複数目標指定付きモーターの応答内容
-        public virtual TargetMoveRespondType multiRespond {
-            get{NotSupportedWarning(); return default;}
-            protected set{NotSupportedWarning();}}
-
         // ver2.2.0
         // コアキューブのシェイク状態
         public virtual bool isShake {
@@ -230,6 +213,7 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong) { MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(), order); }
 
+
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御
@@ -282,9 +266,9 @@ namespace toio
         // 姿態検出コールバック
         public virtual CallbackProvider<Cube> poseCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 目標指定付きモーター制御の応答コールバック
-        public virtual CallbackProvider<Cube> targetMoveCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public virtual CallbackProvider<Cube> multiTargetMoveCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        public virtual CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
 
         // ver2.2.0
         // シェイクコールバック

@@ -52,7 +52,6 @@ public class Sample_Sensor : MonoBehaviour
         cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);          // ダブルタップイベント
         cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  //
         cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             //
-
     }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
