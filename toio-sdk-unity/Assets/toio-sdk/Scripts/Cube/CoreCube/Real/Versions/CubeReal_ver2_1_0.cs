@@ -47,46 +47,66 @@ namespace toio
         //      CoreCube API < send >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         // キューブのモーターを目標指定付き制御します
-        public override void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
+        public override void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){
             if (!this.isConnected) { return; }
 
             byte[] buff = new byte[13];
             buff[0] = 3;
-            buff[1] = (byte)(config.configID & 0xFF);
-            buff[2] = (byte)(config.timeOut & 0xFF);
-            buff[3] = (byte)config.targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(config.maxSpd, deadzone, maxSpd);
-            buff[5] = (byte)config.targetSpeedType;
+            buff[1] = (byte)(configID & 0xFF);
+            buff[2] = (byte)(timeOut & 0xFF);
+            buff[3] = (byte)targetMoveType;
+            buff[4] = (byte)Mathf.Clamp(maxSpd, deadzone, maxSpd);
+            buff[5] = (byte)targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)(targetX & 0xFF);
             buff[8] = (byte)((targetX >> 8) & 0xFF);
             buff[9] = (byte)(targetY & 0xFF);
             buff[10] = (byte)((targetY >> 8) & 0xFF);
             buff[11] = (byte)(targetAngle & 0xFF);
-            buff[12] = (byte)((((int)config.targetRotationType & 0x0007) << 5 ) | ((targetAngle & 0x1FFF) >> 8));
+            buff[12] = (byte)((((int)targetRotationType & 0x0007) << 5 ) | ((targetAngle & 0x1FFF) >> 8));
 
-            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove", config);
+            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove",
+                targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
         }
 
         // キューブのモーターを複数目標指定付き制御します
         public override void MultiTargetMove(
-            int[] targetXList, int[] targetYList, int[] targetAngleList,
-            MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            TargetRotationType[] multiRotationTypeList = null,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            MultiWriteType multiWriteType = MultiWriteType.Write,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){
             if (!this.isConnected) { return; }
 
-            var multiRotationTypeList = config.multiRotationTypeList==null? new TargetRotationType[targetXList.Length] : config.multiRotationTypeList;
+            multiRotationTypeList = multiRotationTypeList==null? new TargetRotationType[targetXList.Length] : multiRotationTypeList;
 
             byte[] buff = new byte[targetXList.Length * 6 + 8];
             buff[0] = 4;
-            buff[1] = (byte)(config.configID & 0xFF);
-            buff[2] = (byte)(config.timeOut & 0xFF);
-            buff[3] = (byte)config.targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(config.maxSpd, deadzone, maxSpd);
-            buff[5] = (byte)config.targetSpeedType;
+            buff[1] = (byte)(configID & 0xFF);
+            buff[2] = (byte)(timeOut & 0xFF);
+            buff[3] = (byte)targetMoveType;
+            buff[4] = (byte)Mathf.Clamp(maxSpd, deadzone, maxSpd);
+            buff[5] = (byte)targetSpeedType;
             buff[6] = 0;
-            buff[7] = (byte)config.multiWriteType;
+            buff[7] = (byte)multiWriteType;
 
             for (int i = 0; i < targetXList.Length; i++)
             {
@@ -97,25 +117,36 @@ namespace toio
                 buff[i * 6 + 12] = (byte)(targetAngleList[i] & 0xFF);
                 buff[i * 6 + 13] = (byte)((((int)multiRotationTypeList[i] & 0x0007) << 5 ) | ((targetAngleList[i] & 0x1FFF) >> 8));
             }
-            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "MultiTargetMove", config);
+            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "MultiTargetMove",
+                targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut,
+                targetMoveType, maxSpd, targetSpeedType, multiWriteType);
         }
 
         // キューブの加速度指定付きモーターを制御します
-        public override void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong)
-        {
+        public override void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed = 0,
+            AccRotationType accRotationType = AccRotationType.Clockwise,
+            AccMoveType accMoveType = AccMoveType.Forward,
+            AccPriorityType accPriorityType = AccPriorityType.Translation,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){
             if (!this.isConnected) { return; }
             byte[] buff = new byte[9];
             buff[0] = 5;
             buff[1] = (byte)(Mathf.Clamp(targetSpeed, deadzone, maxSpd) & 0xFF);
             buff[2] = (byte)(acceleration & 0xFF);
-            buff[3] = (byte)(config.rotationSpeed & 0xFF);
-            buff[4] = (byte)((config.rotationSpeed >> 8) & 0xFF);
-            buff[5] = (byte)config.accRotationType;
-            buff[6] = (byte)config.accMoveType;
-            buff[7] = (byte)config.accPriorityType;
-            buff[8] = (byte)(config.controlTime & 0xFF);
+            buff[3] = (byte)(rotationSpeed & 0xFF);
+            buff[4] = (byte)((rotationSpeed >> 8) & 0xFF);
+            buff[5] = (byte)accRotationType;
+            buff[6] = (byte)accMoveType;
+            buff[7] = (byte)accPriorityType;
+            buff[8] = (byte)(controlTime & 0xFF);
 
-            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "AccelerationMove", config);
+            this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "AccelerationMove",
+                targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime);
         }
 
         // キューブのダブルタップ検出の時間間隔を設定します
