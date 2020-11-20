@@ -185,6 +185,7 @@ namespace toio
         /// <param name="targetMoveType">移動タイプ</param>
         /// <param name="maxSpd">モーターの最大速度指示値</param>
         /// <param name="targetSpeedType">モーターの速度変化タイプ</param>
+        /// <param name="targetRotationType">回転タイプ</param>
         /// <param name="order">命令の優先度</param>
         public virtual void TargetMove(
             int targetX,
