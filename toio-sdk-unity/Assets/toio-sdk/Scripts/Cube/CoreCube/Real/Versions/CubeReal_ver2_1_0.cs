@@ -72,10 +72,6 @@ namespace toio
 
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove", config);
         }
-        public override void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(), order);
-        }
 
         // キューブのモーターを複数目標指定付き制御します
         public override void MultiTargetMove(
@@ -107,10 +103,6 @@ namespace toio
             }
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "MultiTargetMove", config);
         }
-        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
-            MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(), order);
-        }
 
         // キューブの加速度指定付きモーターを制御します
         public override void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong)
@@ -128,10 +120,6 @@ namespace toio
             buff[8] = (byte)(config.controlTime & 0xFF);
 
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "AccelerationMove", config);
-        }
-        public override void AccelerationMove(int targetSpeed, int acceleration, ORDER_TYPE order = ORDER_TYPE.Strong)
-        {
-            AccelerationMove(targetSpeed, acceleration, new AccMoveConfig(), order);
         }
 
         // キューブのダブルタップ検出の時間間隔を設定します

@@ -208,7 +208,7 @@ namespace toio
         /// <param name="targetY">目標地点のY座標値</param>
         /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong) { TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(), order); }
 
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
@@ -228,7 +228,7 @@ namespace toio
         /// <param name="targetYList">目標地点のY座標値の集合</param>
         /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong) { MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(), order); }
 
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
@@ -246,7 +246,7 @@ namespace toio
         /// <param name="targetSpeed">キューブの並進速度</param>
         /// <param name="acceleration">キューブの加速度、100msごとの速度の増加分</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void AccelerationMove(int targetSpeed, int acceleration, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void AccelerationMove(int targetSpeed, int acceleration, ORDER_TYPE order = ORDER_TYPE.Strong) { AccelerationMove(targetSpeed, acceleration, new AccMoveConfig(), order); }
 
         /// キューブのモーター速度情報の取得の有効化・無効化を設定します
         /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
