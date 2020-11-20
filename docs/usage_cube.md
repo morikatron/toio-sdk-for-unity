@@ -256,7 +256,7 @@ public virtual int rightSpeed { get; protected set; }
 // CallbackProvider<T1, T2>
 // CallbackProvider<T1, T2, T3>
 // CallbackProvider<T1, T2, T3, T4>
-// ※以下は疑似コード
+// ※疑似コード
 public class CallbackProvider<T...>
 {
     public virtual void AddListener(string key, Action<T...> listener);
