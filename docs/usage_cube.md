@@ -229,46 +229,26 @@ public int deadzone { get; }
 // キューブのダブルタップ状態
 // 一度タップされてから一定時間内に再度タップされます。
 // コールバック機能：doubleTapCallback
-public virtual bool isDoubleTap { get; protected set; }
+public bool isDoubleTap { get; protected set; }
 
 // キューブの姿態
 // キューブの水平面に対する姿勢が変化したときに値が変わります。
 // コールバック機能：poseCallback
-public virtual PoseType pose { get; protected set; }
-
-// 目標指定付きモーターの制御識別値
-// 対応する目標指定付きモーター制御の応答を識別するための値です。
-// コールバック機能：targetMoveCallback
-public virtual int motorConfigID { get; protected set; }
-
-// 目標指定付きモーターの応答内容
-// 書き込まれた後、必ず1回だけ通知されます。
-// コールバック機能：targetMoveCallback
-public virtual RespondType motorRespond { get; protected set; }
-
-// 複数目標指定付きモーターの制御識別値
-// 対応する複数目標指定付きモーター制御の応答を識別するための値です。
-// コールバック機能：multiTargetMoveCallback
-public virtual int multiConfigID { get; protected set; }
-
-// 複数目標指定付きモーターの応答内容
-// 書き込まれた後、必ず1回だけ通知されます。
-// コールバック機能：multiTargetMoveCallback
-public virtual RespondType multiRespond { get; protected set; }
+public PoseType pose { get; protected set; }
 
 // ver2.2.0
 // キューブのシェイク状態
 // キューブを振ると振った強さに応じて値が変わります。
 // コールバック機能：shakeCallback
-public virtual bool isShake { get; protected set; }
+public bool isShake { get; protected set; }
 
 // キューブのモーター ID 1（左）の速度
 // コールバック機能：motorSpeedCallback
-public virtual int leftSpeed { get; protected set; }
+public int leftSpeed { get; protected set; }
 
 // キューブのモーター ID 2（右）の速度
 // コールバック機能：motorSpeedCallback
-public virtual int rightSpeed { get; protected set; }
+public int rightSpeed { get; protected set; }
 ```
 
 <br>
@@ -288,35 +268,35 @@ public class CallbackProvider
 }
 
 // ボタンコールバック
-public virtual CallbackProvider buttonCallback { get; }
+public virtual CallbackProvider<Cube> buttonCallback { get; }
 // 傾きコールバック
-public virtual CallbackProvider slopeCallback { get; }
+public virtual CallbackProvider<Cube> slopeCallback { get; }
 // 衝突コールバック
-public virtual CallbackProvider collisionCallback { get; }
+public virtual CallbackProvider<Cube> collisionCallback { get; }
 // 座標角度コールバック
-public virtual CallbackProvider idCallback { get; }
+public virtual CallbackProvider<Cube> idCallback { get; }
 // 座標角度 Missed コールバック
-public virtual CallbackProvider idMissedCallback { get; }
+public virtual CallbackProvider<Cube> idMissedCallback { get; }
 // StandardID コールバック
-public virtual CallbackProvider standardIdCallback { get; }
+public virtual CallbackProvider<Cube> standardIdCallback { get; }
 // StandardID Missed コールバック
-public virtual CallbackProvider standardIdMissedCallback { get; }
+public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
 
 // ver2.1.0
 // ダブルタップコールバック
-public virtual CallbackProvider doubleTapCallback { get; }
+public virtual CallbackProvider<Cube> doubleTapCallback { get; }
 // 姿態検出コールバック
-public virtual CallbackProvider poseCallback { get; }
+public virtual CallbackProvider<Cube> poseCallback { get; }
 // 目標指定付きモーター制御の応答コールバック
-public virtual CallbackProvider targetMoveCallback { get; }
+public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
 // 複数目標指定付きモーター制御の応答コールバック
-public virtual CallbackProvider multiTargetMoveCallback { get; }
+public virtual CallbackProvider<Cube, int, TargetMoveRespondType>  multiTargetMoveCallback { get; }
 
 // ver2.2.0
 // シェイクコールバック
-public virtual CallbackProvider shakeCallback { get; }
+public virtual CallbackProvider<Cube> shakeCallback { get; }
 // モータースピードコールバック
-public virtual CallbackProvider motorSpeedCallback { get; }
+public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
 ```
 
 ## 3.3. メソッド
@@ -554,27 +534,32 @@ public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.St
   - 種類 : Weak, Strong
 
 <br>
+
 ### TargetMove
 
 ```C#
-public virtual void TargetMove(int configID, int timeOut, int setMaxSpd,
-                            int targetX, int targetY, int targetAngle,
-                            MoveType moveType, SpeedType speedType,
-                            RotationType rotationType, ORDER_TYPE order);
+public void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
+public void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte timeOut = 0,
+            byte maxSpd = 80,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 キューブのモーターを目標指定付き制御します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
 
-- configID
-  - 定義 : 制御識別値
-  - 範囲 : 0~255
-- timeOut
-  - 定義 : タイムアウト時間
-  - 範囲 : 0~255
-    -  0 のみ例外的に 10 秒になる
-- setMaxSpd
-  - 定義 : モーターの最大速度指示値
-  - 範囲 : 10~255
 - targetX
   - 定義 : 目標地点の X 座標値
   - 範囲 : 0~65535
@@ -586,29 +571,39 @@ public virtual void TargetMove(int configID, int timeOut, int setMaxSpd,
 - targetAngle
   - 定義 : 目標地点でのキューブの角度Θ
   - 範囲 : 0~360
-- moveType
+- configID
+  - 定義 : 制御識別値
+  - 範囲 : 0~255
+- timeOut
+  - 定義 : タイムアウト時間
+  - 範囲 : 0~255
+    -  0 のみ例外的に 10 秒になる
+- targetMoveType
   - 定義 : 移動タイプ
-  - 種類 : 
-    - rotatingMove : 回転しながら移動
-    - roundForwardMove : 回転しながら移動（後退なし）
-    - roundBeforeMove : 回転してから移動
-- speedType
+  - 種類 :
+    - RotatingMove : 回転しながら移動
+    - RoundForwardMove : 回転しながら移動（後退なし）
+    - RoundBeforeMove : 回転してから移動
+- maxSpd
+  - 定義 : モーターの最大速度指示値
+  - 範囲 : 10~255
+- targetSpeedType
   - 定義 : モーターの速度変化タイプ
   - 種類 :
-    - uniformSpeed : 速度一定
-    - acceleration : 目標地点まで徐々に加速
-    - deceleration : 目標地点まで徐々に減速
-    - variableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
-- rotationType
+    - UniformSpeed : 速度一定
+    - Acceleration : 目標地点まで徐々に加速
+    - Deceleration : 目標地点まで徐々に減速
+    - VariableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
+- targetRotationType
   - 定義 : 回転タイプ
-  - 種類 : 
-    - absoluteLeastAngle : 絶対角度 回転量が少ない方向
-    - absoluteClockwise : 絶対角度 正方向(時計回り)
-    - absoluteCounterClockwise : 絶対角度 負方向(反時計回り)
-    - relativeClockwise : 相対角度 正方向(時計回り)
-    - relativeCounterClockwise : 相対角度 負方向(反時計回り)
-    - notRotated : 回転しない
-    - original : 書き込み操作時と同じ 回転量が少ない方向
+  - 種類 :
+    - AbsoluteLeastAngle : 絶対角度 回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度 正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度 負方向(反時計回り)
+    - RelativeClockwise : 相対角度 正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
+    - NotRotate : 回転しない
+    - Original : 書き込み操作時と同じ 回転量が少ない方向
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -618,25 +613,30 @@ public virtual void TargetMove(int configID, int timeOut, int setMaxSpd,
 ### MultiTargetMove
 
 ```C#
-public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
-                            	int[] targetXList, int[] targetYList, int[] targetAngleList,
-                            	WriteType writeType, MoveType moveType, SpeedType speedType,
-                            	RotationType[] rotationTypeList, ORDER_TYPE order);
+public void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            TargetRotationType[] multiRotationTypeList = null,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            MultiWriteType multiWriteType = MultiWriteType.Write,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
+public void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            byte timeOut = 0,
+            byte maxSpd = 80,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
 キューブのモーターを複数目標指定付き制御します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)
 
-- configID
-  - 定義 : 制御識別値
-  - 範囲 : 0~255
-- timeOut
-  - 定義 : タイムアウト時間
-  - 範囲 : 0~255
-    -  0 のみ例外的に 10 秒になる
-- setMaxSpd
-  - 定義 : モーターの最大速度指示値
-  - 範囲 : 10~115
 - targetXList
   - 定義 : 各目標地点の X 座標値の集合
   - 範囲 : 0~65535
@@ -648,34 +648,44 @@ public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
 - targetAngleList
   - 定義 : 目標地点でのキューブの角度Θの集合
   - 範囲 : 0~360
-- writeType
-  - 定義 : 書き込み操作の追加設定
-  - 種類 : 
-    - write : 上書き
-    - add : 追加
-- moveType
+- multiRotationTypeList
+  - 定義 : 毎回回転タイプの集合
+  - 種類 :
+    - AbsoluteLeastAngle : 絶対角度 回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度 正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度 負方向(反時計回り)
+    - RelativeClockwise : 相対角度 正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
+    - NotRotated : 回転しない
+    - Original : 書き込み操作時と同じ 回転量が少ない方向
+- configID
+  - 定義 : 制御識別値
+  - 範囲 : 0~255
+- timeOut
+  - 定義 : タイムアウト時間
+  - 範囲 : 0~255
+    -  0 のみ例外的に 10 秒になる
+- targetMoveType
   - 定義 : 移動タイプ
-  - 種類 : 
-    - rotatingMove : 回転しながら移動
-    - roundForwardMove : 回転しながら移動（後退なし）
-    - roundBeforeMove : 回転してから移動
-- speedType
+  - 種類 :
+    - RotatingMove : 回転しながら移動
+    - RoundForwardMove : 回転しながら移動（後退なし）
+    - RoundBeforeMove : 回転してから移動
+- maxSpd
+  - 定義 : モーターの最大速度指示値
+  - 範囲 : 10~115
+- targetSpeedType
   - 定義 : モーターの速度変化タイプ
   - 種類 :
-    - uniformSpeed : 速度一定
-    - acceleration : 目標地点まで徐々に加速
-    - deceleration : 目標地点まで徐々に減速
-    - variableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
-- rotationTypeList
-  - 定義 : 毎回回転タイプの集合
-  - 種類 : 
-    - absoluteLeastAngle : 絶対角度 回転量が少ない方向
-    - absoluteClockwise : 絶対角度 正方向(時計回り)
-    - absoluteCounterClockwise : 絶対角度 負方向(反時計回り)
-    - relativeClockwise : 相対角度 正方向(時計回り)
-    - relativeCounterClockwise : 相対角度 負方向(反時計回り)
-    - notRotated : 回転しない
-    - original : 書き込み操作時と同じ 回転量が少ない方向
+    - UniformSpeed : 速度一定
+    - Acceleration : 目標地点まで徐々に加速
+    - Deceleration : 目標地点まで徐々に減速
+    - VariableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
+- multiWriteType
+  - 定義 : 書き込み操作の追加設定
+  - 種類 :
+    - Write : 上書き
+    - Add : 追加
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -685,9 +695,21 @@ public virtual void MultiTargetMove(int configID, int timeOut, int setMaxSpd,
 ### AccelerationMove
 
 ```C#
-public virtual void AccelerationTargetMove(int targetSpeed, int acceleration, int rotationSpeed,
-                            	AccRotationType accRotationType, AccMoveType accMoveType, 
-				PriorityType priorityType, int controlTime, ORDER_TYPE order);
+public void AccelerationTargetMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed = 0,
+            AccRotationType accRotationType = AccRotationType.Clockwise,
+            AccMoveType accMoveType = AccMoveType.Forward,
+            AccPriorityType accPriorityType = AccPriorityType.Translation,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
+public void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            AccMoveType accMoveType = AccMoveType.Forward,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
 キューブの加速度指定付きモーターを制御します<br>
@@ -705,19 +727,19 @@ public virtual void AccelerationTargetMove(int targetSpeed, int acceleration, in
   - 範囲 : 0~65535
 - accRotationType
   - 定義 : キューブの向きの回転方向
-  - 種類 : 
+  - 種類 :
     - Clockwise : 正方向(時計回り)
     - CounterClockwise : 負方向(反時計回り)
 - accMoveType
   - 定義 : キューブの進行方向
-  - 種類 : 
-    - forward : 前進
-    - backward : 後退
-- priorityType
+  - 種類 :
+    - Forward : 前進
+    - Backward : 後退
+- accPriorityType
   - 定義 : 優先指定
-  - 種類 : 
-    - translation : 並進速度を優先し、回転速度を調整する
-    - rotation : 回転速度を優先し、並進速度を調整する
+  - 種類 :
+    - Translation : 並進速度を優先し、回転速度を調整する
+    - Rotation : 回転速度を優先し、並進速度を調整する
 - controlTime
   - 定義 : 制御時間[10ms]
   - 範囲 : 0~255
