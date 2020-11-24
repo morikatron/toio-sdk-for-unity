@@ -180,18 +180,44 @@ namespace toio
         /// <param name="targetX">目標地点のX座標値</param>
         /// <param name="targetY">目標地点のY座標値</param>
         /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
-        /// <param name="config">目標指定付き制御の設定構造体</param>
+        /// <param name="configID">制御識別値</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="targetMoveType">移動タイプ</param>
+        /// <param name="maxSpd">モーターの最大速度指示値</param>
+        /// <param name="targetSpeedType">モーターの速度変化タイプ</param>
+        /// <param name="targetRotationType">回転タイプ</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ) { NotSupportedWarning(); }
+
         /// <summary>
-        /// キューブのモーターを目標指定付き制御します（デフォルトの設定で）
+        /// キューブのモーターを目標指定付き制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
         /// </summary>
         /// <param name="targetX">目標地点のX座標値</param>
         /// <param name="targetY">目標地点のY座標値</param>
         /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="maxSpd">モーターの最大速度指示値</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TargetMove(int targetX, int targetY, int targetAngle, ORDER_TYPE order=ORDER_TYPE.Strong) { TargetMove(targetX, targetY, targetAngle, new TargetMoveConfig(), order); }
+        public virtual void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte timeOut = 0,
+            byte maxSpd = 80,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ TargetMove(targetX, targetY, targetAngle, 0, timeOut, TargetMoveType.RotatingMove, maxSpd, TargetSpeedType.UniformSpeed, TargetRotationType.AbsoluteLeastAngle, order); }
 
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
@@ -200,19 +226,46 @@ namespace toio
         /// <param name="targetXList">目標地点のX座標値の集合</param>
         /// <param name="targetYList">目標地点のY座標値の集合</param>
         /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
-        /// <param name="config">複数目標指定付き制御の設定構造体</param>
+        /// <param name="multiRotationTypeList">回転タイプの集合</param>
+        /// <param name="configID">制御識別値</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="targetMoveType">移動タイプ</param>
+        /// <param name="maxSpd">モーターの最大速度指示値</param>
+        /// <param name="targetSpeedType">モーターの速度変化タイプ</param>
+        /// <param name="multiWriteType">書き込み操作の追加設定</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            TargetRotationType[] multiRotationTypeList = null,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            MultiWriteType multiWriteType = MultiWriteType.Write,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ NotSupportedWarning(); }
+
         /// <summary>
-        /// キューブのモーターを複数目標指定付き制御します（デフォルトの設定で）
+        /// キューブのモーターを複数目標指定付き制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
         /// </summary>
         /// <param name="targetXList">目標地点のX座標値の集合</param>
         /// <param name="targetYList">目標地点のY座標値の集合</param>
         /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="maxSpd">モーターの最大速度指示値</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, ORDER_TYPE order=ORDER_TYPE.Strong) { MultiTargetMove(targetXList, targetYList, targetAngleList, new MultiMoveConfig(), order); }
-
+        public virtual void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            byte timeOut = 0,
+            byte maxSpd = 80,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ MultiTargetMove(targetXList, targetYList, targetAngleList, null, 0, timeOut, TargetMoveType.RotatingMove, maxSpd, TargetSpeedType.UniformSpeed, MultiWriteType.Write, order); }
 
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
@@ -220,17 +273,39 @@ namespace toio
         /// </summary>
         /// <param name="targetSpeed">キューブの並進速度</param>
         /// <param name="acceleration">キューブの加速度、100msごとの速度の増加分</param>
-        /// <param name="config">加速度指定付き制御の設定構造体</param>
+        /// <param name="rotationSpeed">キューブの向きの回転速度[度/秒]</param>
+        /// <param name="accRotationType">キューブの向きの回転方向</param>
+        /// <param name="accMoveType">キューブの進行方向</param>
+        /// <param name="accPriorityType">回転や並進の優先指定</param>
+        /// <param name="controlTime">制御時間[10ms]</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed = 0,
+            AccRotationType accRotationType = AccRotationType.Clockwise,
+            AccMoveType accMoveType = AccMoveType.Forward,
+            AccPriorityType accPriorityType = AccPriorityType.Translation,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ NotSupportedWarning(); }
+
         /// <summary>
-        /// キューブの加速度指定付きモーターを制御します（デフォルトの設定で）
+        /// キューブの加速度指定付きモーターを制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御
         /// </summary>
         /// <param name="targetSpeed">キューブの並進速度</param>
         /// <param name="acceleration">キューブの加速度、100msごとの速度の増加分</param>
+        /// <param name="accMoveType">キューブの進行方向</param>
+        /// <param name="controlTime">制御時間[10ms]</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void AccelerationMove(int targetSpeed, int acceleration, ORDER_TYPE order = ORDER_TYPE.Strong) { AccelerationMove(targetSpeed, acceleration, new AccMoveConfig(), order); }
+        public virtual void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            AccMoveType accMoveType = AccMoveType.Forward,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ AccelerationMove(targetSpeed, acceleration, 0, AccRotationType.Clockwise, accMoveType, AccPriorityType.Translation, controlTime, order); }
 
         /// キューブのモーター速度情報の取得の有効化・無効化を設定します
         /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
@@ -283,103 +358,6 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部クラス
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-
-        // 目標指定付き制御の設定構造体
-        public struct TargetMoveConfig
-        {
-            // 制御識別値
-            public byte configID;
-            // タイムアウト時間(秒)
-            public byte timeOut;
-            // 移動タイプ
-            public TargetMoveType targetMoveType;
-            // モーターの最大速度指示値
-            public byte maxSpd;
-            // モーターの速度変化タイプ
-            public TargetSpeedType targetSpeedType;
-            // 回転タイプ
-            public TargetRotationType targetRotationType;
-
-            public TargetMoveConfig(byte configID = 0,
-                                    byte timeOut = 255,
-                                    TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-                                    byte maxSpd = 80,
-                                    TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
-                                    TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle)
-            {
-                this.configID = configID;
-                this.timeOut = timeOut;
-                this.targetMoveType = targetMoveType;
-                this.maxSpd = maxSpd;
-                this.targetSpeedType = targetSpeedType;
-                this.targetRotationType = targetRotationType;
-            }
-        }
-
-        // 複数目標指定付き制御の設定構造体
-        public struct MultiMoveConfig
-        {
-            // 回転タイプの集合
-            public TargetRotationType[] multiRotationTypeList;
-            // 制御識別値
-            public byte configID;
-            // タイムアウト時間(秒)
-            public byte timeOut;
-            // 移動タイプ
-            public TargetMoveType targetMoveType;
-            // モーターの最大速度指示値
-            public byte maxSpd;
-            // モーターの速度変化タイプ
-            public TargetSpeedType targetSpeedType;
-            // 書き込み操作の追加設定
-            public MultiWriteType multiWriteType;
-
-            public MultiMoveConfig(TargetRotationType[] multiRotationTypeList = null,
-                                    byte configID = 0,
-                                    byte timeOut = 255,
-                                    TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-                                    byte maxSpd = 80,
-                                    TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
-                                    MultiWriteType multiWriteType = MultiWriteType.Write
-                                    )
-            {
-                this.multiRotationTypeList = multiRotationTypeList;
-                this.configID = configID;
-                this.timeOut = timeOut;
-                this.targetMoveType = targetMoveType;
-                this.maxSpd = maxSpd;
-                this.targetSpeedType = targetSpeedType;
-                this.multiWriteType = multiWriteType;
-            }
-        }
-
-        // 加速度指定付き制御の設定構造体
-        public struct AccMoveConfig
-        {
-            // キューブの向きの回転速度[度/秒]
-            public ushort rotationSpeed;
-            // キューブの向きの回転方向
-            public AccRotationType accRotationType;
-            // キューブの進行方向
-            public AccMoveType accMoveType;
-            // 回転や並進の優先指定
-            public AccPriorityType accPriorityType;
-            // 制御時間[10ms]
-            public byte controlTime;
-
-            public AccMoveConfig(ushort rotationSpeed = 0,
-                                AccRotationType accRotationType = AccRotationType.Clockwise,
-                                AccMoveType accMoveType = AccMoveType.Forward,
-                                AccPriorityType accSpeedPriorityType = AccPriorityType.Translation,
-                                byte controlTime = 0)
-            {
-                this.rotationSpeed = rotationSpeed;
-                this.accRotationType = accRotationType;
-                this.accMoveType = accMoveType;
-                this.accPriorityType = accSpeedPriorityType;
-                this.controlTime = controlTime;
-            }
-        }
 
         // 発音ごとの設定構造体
         public struct SoundOperation
