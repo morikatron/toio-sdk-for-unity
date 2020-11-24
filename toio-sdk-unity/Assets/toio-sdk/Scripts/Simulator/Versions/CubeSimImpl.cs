@@ -162,12 +162,38 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
 
         // ---------- 2.1.0 ----------
-        public virtual void TargetMove(int targetX, int targetY, int targetAngle, Cube.TargetMoveConfig config)
-        { NotSupportedWarning(); }
-        public virtual void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, Cube.MultiMoveConfig config)
-        { NotSupportedWarning(); }
-        public virtual void AccelerationMove(int targetSpeed, int acceleration, Cube.AccMoveConfig config)
-        { NotSupportedWarning(); }
+        public virtual void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID,
+            byte timeOut,
+            Cube.TargetMoveType targetMoveType,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){ NotSupportedWarning(); }
+        public virtual void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            byte configID,
+            byte timeOut,
+            Cube.TargetMoveType targetMoveType,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){ NotSupportedWarning(); }
+        public virtual void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed,
+            Cube.AccRotationType accRotationType,
+            Cube.AccMoveType accMoveType,
+            Cube.AccPriorityType accPriorityType,
+            byte controlTime
+        ){ NotSupportedWarning(); }
 
         // ---------- 2.2.0 ----------
         public virtual void ConfigMotorRead(bool enabled)

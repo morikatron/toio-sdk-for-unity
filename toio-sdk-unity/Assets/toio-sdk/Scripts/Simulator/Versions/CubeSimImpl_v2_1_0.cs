@@ -98,8 +98,13 @@ namespace toio.Simulator
         protected struct MotorTargetCmd
         {
             public ushort x, y, deg;
-            public Cube.TargetMoveConfig config;
+            public byte configID, timeOut, maxSpd;
+            public Cube.TargetMoveType targetMoveType;
+            public Cube.TargetSpeedType targetSpeedType;
+            public Cube.TargetRotationType targetRotationType;
             public float tRecv;
+            public bool end;
+            public bool reach;
         }
         protected Queue<MotorTargetCmd> motorTargetCmdQ = new Queue<MotorTargetCmd>(); // command queue
         protected MotorTargetCmd currMotorTargetCmd = default;  // current command
@@ -110,13 +115,21 @@ namespace toio.Simulator
         }
 
         // COMMAND API
-        public override void TargetMove(int targetX, int targetY, int targetAngle, Cube.TargetMoveConfig config)
-        {
+        public override void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID,
+            byte timeOut,
+            Cube.TargetMoveType targetMoveType,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){
             MotorTargetCmd cmd = new MotorTargetCmd();
-            cmd.x = (ushort)targetX;
-            cmd.y = (ushort)targetY;
-            cmd.deg = (ushort)targetAngle;
-            cmd.config = config;
+            cmd.x = (ushort)targetX; cmd.y = (ushort)targetY; cmd.deg = (ushort)targetAngle;
+            cmd.configID = configID; cmd.timeOut = timeOut; cmd.targetMoveType = targetMoveType;
+            cmd.maxSpd = maxSpd; cmd.targetSpeedType = targetSpeedType; cmd.targetRotationType = targetRotationType;
             cmd.tRecv = Time.time;
             motorTargetCmdQ.Enqueue(cmd);
         }
@@ -126,7 +139,11 @@ namespace toio.Simulator
         protected struct MotorMultiTargetCmd
         {
             public ushort[] xs, ys, degs;
-            public Cube.MultiMoveConfig config;
+            public Cube.TargetRotationType[] multiRotationTypeList;
+            public byte configID, timeOut, maxSpd;
+            public Cube.TargetMoveType targetMoveType;
+            public Cube.TargetSpeedType targetSpeedType;
+            public Cube.MultiWriteType multiWriteType;
             public float tRecv;
         }
         protected Queue<MotorMultiTargetCmd> motorMultiTargetCmdQ = new Queue<MotorMultiTargetCmd>(); // command queue
@@ -138,13 +155,25 @@ namespace toio.Simulator
         }
 
         // COMMAND API
-        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, Cube.MultiMoveConfig config)
-        {
+        public override void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            byte configID,
+            byte timeOut,
+            Cube.TargetMoveType targetMoveType,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){
             MotorMultiTargetCmd cmd = new MotorMultiTargetCmd();
             cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)x));
             cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)x));
             cmd.degs = Array.ConvertAll(targetAngleList, new Converter<int, ushort>(x=>(ushort)x));
-            cmd.config = config;
+            cmd.multiRotationTypeList = multiRotationTypeList;
+            cmd.configID = configID; cmd.timeOut = timeOut; cmd.maxSpd = maxSpd;
+            cmd.targetMoveType = targetMoveType; cmd.targetSpeedType = targetSpeedType; cmd.multiWriteType = multiWriteType;
             cmd.tRecv = Time.time;
             motorMultiTargetCmdQ.Enqueue(cmd);
         }
@@ -153,8 +182,11 @@ namespace toio.Simulator
         // -------- Acceleration Move --------
         protected struct MotorAccCmd
         {
-            public byte spd, acc;
-            public Cube.AccMoveConfig config;
+            public byte spd, acc, controlTime;
+            public ushort rotationSpeed;
+            public Cube.AccRotationType accRotationType;
+            public Cube.AccMoveType accMoveType;
+            public Cube.AccPriorityType accPriorityType;
             public float tRecv;
         }
         protected Queue<MotorAccCmd> motorAccCmdQ = new Queue<MotorAccCmd>(); // command queue
@@ -166,12 +198,19 @@ namespace toio.Simulator
         }
 
         // COMMAND API
-        public override void AccelerationMove(int targetSpeed, int acceleration, Cube.AccMoveConfig config)
-        {
+        public override void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed,
+            Cube.AccRotationType accRotationType,
+            Cube.AccMoveType accMoveType,
+            Cube.AccPriorityType accPriorityType,
+            byte controlTime
+        ){
             MotorAccCmd cmd = new MotorAccCmd();
-            cmd.spd = (byte)targetSpeed;
-            cmd.acc = (byte)acceleration;
-            cmd.config = config;
+            cmd.spd = (byte)targetSpeed; cmd.acc = (byte)acceleration;
+            cmd.rotationSpeed = rotationSpeed; cmd.accRotationType = accRotationType;
+            cmd.accMoveType = accMoveType; cmd.accPriorityType = accPriorityType; cmd.controlTime = controlTime;
             cmd.tRecv = Time.time;
             motorAccCmdQ.Enqueue(cmd);
         }

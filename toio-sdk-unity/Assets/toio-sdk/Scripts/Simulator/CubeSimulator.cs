@@ -393,19 +393,45 @@ namespace toio.Simulator
         }
 
         // --------- 2.1.0 --------
-        public void TargetMove(int targetX, int targetY, int targetAngle, Cube.TargetMoveConfig config)
-        {
-            impl.TargetMove(targetX, targetY, targetAngle, config);
+        public void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID,
+            byte timeOut,
+            Cube.TargetMoveType targetMoveType,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){
+            impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
         }
 
-        public void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, Cube.MultiMoveConfig config)
-        {
-            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, config);
+        public void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            byte configID,
+            byte timeOut,
+            Cube.TargetMoveType targetMoveType,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){
+            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
         }
 
-        public void AccelerationMove(int targetSpeed, int acceleration, Cube.AccMoveConfig config)
-        {
-            impl.AccelerationMove(targetSpeed, acceleration, config);
+        public void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed,
+            Cube.AccRotationType accRotationType,
+            Cube.AccMoveType accMoveType,
+            Cube.AccPriorityType accPriorityType,
+            byte controlTime
+        ){
+            impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime);
         }
 
         // --------- 2.2.0 --------

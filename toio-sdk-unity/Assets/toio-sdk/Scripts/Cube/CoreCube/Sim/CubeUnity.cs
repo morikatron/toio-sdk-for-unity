@@ -345,28 +345,64 @@ namespace toio
 
         // -------- ver2.1.0 --------
         public override void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { NotImplementedWarning(); }
-        public override void TargetMove(int targetX, int targetY, int targetAngle, TargetMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
+        public override void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){
 #if RELEASE
-            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.TargetMove(targetX, targetY, targetAngle, config), order);
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType), order);
 #else
-            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.TargetMove(targetX, targetY, targetAngle, config), order, "targetMove", targetX, targetY, targetAngle, config);
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this,
+                () => simulator.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType),
+                order, "targetMove", targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
 #endif
         }
-        public override void MultiTargetMove(int[] targetXList, int[] targetYList, int[] targetAngleList, MultiMoveConfig config, ORDER_TYPE order=ORDER_TYPE.Strong)
-        {
+        public override void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            TargetRotationType[] multiRotationTypeList = null,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            MultiWriteType multiWriteType = MultiWriteType.Write,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){
 #if RELEASE
-            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.MultiTargetMove(targetXList, targetYList, targetAngleList, config), order);
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType), order);
 #else
-            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.MultiTargetMove(targetXList, targetYList, targetAngleList, config), order, "multiTargetMove", targetXList, targetYList, targetAngleList, config);
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this,
+                () => simulator.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList,
+                    configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType),
+                order, "multiTargetMove", targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
 #endif
         }
-        public override void AccelerationMove(int targetSpeed, int acceleration, AccMoveConfig config, ORDER_TYPE order = ORDER_TYPE.Strong)
-        {
+        public override void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed = 0,
+            AccRotationType accRotationType = AccRotationType.Clockwise,
+            AccMoveType accMoveType = AccMoveType.Forward,
+            AccPriorityType accPriorityType = AccPriorityType.Translation,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){
 #if RELEASE
-            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.AccelerationMove(targetSpeed, acceleration, config), order);
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime), order);
 #else
-            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.AccelerationMove(targetSpeed, acceleration, config), order, "accelerationMove", targetSpeed, acceleration, config);
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this,
+                () => simulator.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime),
+                order, "accelerationMove", targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime);
 #endif
         }
 
