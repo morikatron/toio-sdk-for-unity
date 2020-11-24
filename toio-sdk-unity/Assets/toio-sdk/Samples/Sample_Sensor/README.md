@@ -1,6 +1,6 @@
 ## Sample_Sensor
 
-> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/sensor)です。
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/sensor2_2_0/)です。
 
 <div align="center">
 <img src="/docs/res/samples/sensor.gif">
