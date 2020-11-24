@@ -217,7 +217,7 @@ namespace toio
             byte timeOut = 0,
             byte maxSpd = 80,
             ORDER_TYPE order = ORDER_TYPE.Strong
-        ){ TargetMove(targetX, targetY, targetAngle, timeOut:timeOut, maxSpd:maxSpd, order:order); }
+        ){ TargetMove(targetX, targetY, targetAngle, 0, timeOut, TargetMoveType.RotatingMove, maxSpd, TargetSpeedType.UniformSpeed, TargetRotationType.AbsoluteLeastAngle, order); }
 
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
@@ -265,7 +265,7 @@ namespace toio
             byte timeOut = 0,
             byte maxSpd = 80,
             ORDER_TYPE order = ORDER_TYPE.Strong
-        ){ MultiTargetMove(targetXList, targetYList, targetAngleList, timeOut:timeOut, maxSpd:maxSpd, order:order); }
+        ){ MultiTargetMove(targetXList, targetYList, targetAngleList, null, 0, timeOut, TargetMoveType.RotatingMove, maxSpd, TargetSpeedType.UniformSpeed, MultiWriteType.Write, order); }
 
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
@@ -305,7 +305,7 @@ namespace toio
             AccMoveType accMoveType = AccMoveType.Forward,
             byte controlTime = 0,
             ORDER_TYPE order = ORDER_TYPE.Strong
-        ){ AccelerationMove(targetSpeed, acceleration, accMoveType:accMoveType, controlTime:controlTime, order:order); }
+        ){ AccelerationMove(targetSpeed, acceleration, 0, AccRotationType.Clockwise, accMoveType, AccPriorityType.Translation, controlTime, order); }
 
         /// キューブのモーター速度情報の取得の有効化・無効化を設定します
         /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
