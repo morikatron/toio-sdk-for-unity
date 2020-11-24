@@ -154,7 +154,7 @@ namespace toio
         {
             if (!this.isConnected) { return; }
 
-            interval = Mathf.Clamp(interval, 1, 7);
+            interval = Mathf.Clamp(interval, 0, 7);
 
             byte[] buff = new byte[3];
             buff[0] = 0x17;
