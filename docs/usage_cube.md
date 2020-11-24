@@ -695,7 +695,7 @@ public void MultiTargetMove(
 ### AccelerationMove
 
 ```C#
-public void AccelerationTargetMove(
+public void AccelerationMove(
             int targetSpeed,
             int acceleration,
             ushort rotationSpeed = 0,
