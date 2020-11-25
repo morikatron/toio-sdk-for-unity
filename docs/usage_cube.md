@@ -549,13 +549,6 @@ public void TargetMove(
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong);
-public void TargetMove(
-            int targetX,
-            int targetY,
-            int targetAngle,
-            byte timeOut = 0,
-            byte maxSpd = 80,
-            ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 キューブのモーターを目標指定付き制御します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
@@ -624,13 +617,6 @@ public void MultiTargetMove(
             byte maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             MultiWriteType multiWriteType = MultiWriteType.Write,
-            ORDER_TYPE order = ORDER_TYPE.Strong);
-public void MultiTargetMove(
-            int[] targetXList,
-            int[] targetYList,
-            int[] targetAngleList,
-            byte timeOut = 0,
-            byte maxSpd = 80,
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
@@ -702,12 +688,6 @@ public void AccelerationMove(
             AccRotationType accRotationType = AccRotationType.Clockwise,
             AccMoveType accMoveType = AccMoveType.Forward,
             AccPriorityType accPriorityType = AccPriorityType.Translation,
-            byte controlTime = 0,
-            ORDER_TYPE order = ORDER_TYPE.Strong);
-public void AccelerationMove(
-            int targetSpeed,
-            int acceleration,
-            AccMoveType accMoveType = AccMoveType.Forward,
             byte controlTime = 0,
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
