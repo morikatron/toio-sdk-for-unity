@@ -232,22 +232,24 @@ namespace toio.Simulator
             // reach pos
             if (!cmd.reach && dpos.magnitude < 10)
             {
-                cmd.reach = true;
+                this.currMotorTargetCmd.reach = true;
                 if (cmd.targetRotationType == Cube.TargetRotationType.NotRotate)    // Not rotate
                 {
-                    this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Timeout);
-                    motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+                    this.currMotorTargetCmd.absoluteDeg = this.deg;
                 }
                 else if (cmd.targetRotationType == Cube.TargetRotationType.Original)    // Inital deg
-                    cmd.absoluteDeg = cmd.initialDeg;
+                    this.currMotorTargetCmd.absoluteDeg = cmd.initialDeg;
                 else if ((byte)cmd.targetRotationType <= 2)     // absolute deg
-                    cmd.absoluteDeg = cmd.deg;
+                    this.currMotorTargetCmd.absoluteDeg = cmd.deg;
                 else                                            // relative deg
-                    cmd.absoluteDeg = (this.deg + cmd.deg + 540)%360 -180;
+                    this.currMotorTargetCmd.absoluteDeg = (this.deg + cmd.deg + 540)%360 -180;
             }
             // reach deg
             if (cmd.reach && Mathf.Abs(this.deg-cmd.absoluteDeg)<15)
-            { motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return; }    // END
+            {
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Normal);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
 
             // ---- Rotate ----
             if (cmd.reach)
@@ -281,7 +283,7 @@ namespace toio.Simulator
                         break;
                     }
                 }
-                rotate *= 0.9f;
+                rotate *= 1.1f;
                 rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
             }
 
