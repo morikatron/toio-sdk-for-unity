@@ -27,6 +27,12 @@ namespace toio.Tests
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
             cube.TargetMove(300, 100, 0, targetMoveType:Cube.TargetMoveType.RotatingMove);
 
             test.update = TestUntil_Seconds(5);
@@ -84,6 +90,13 @@ namespace toio.Tests
         {
             Start();
             var cube = test.CreateCube(250, 400, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+
             cube.TargetMove(300, 100, 0,
                 targetMoveType: Cube.TargetMoveType.RotatingMove,
                 targetRotationType: Cube.TargetRotationType.NotRotate,
@@ -92,5 +105,6 @@ namespace toio.Tests
             test.update = TestUntil_Seconds(5);
             yield return new MonoBehaviourTest<test>();
         }
+
     }
 }
