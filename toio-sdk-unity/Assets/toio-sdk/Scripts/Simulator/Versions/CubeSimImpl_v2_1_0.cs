@@ -158,7 +158,7 @@ namespace toio.Simulator
             public float tRecv;
             // Temp vars
             public bool reach;
-            public float initialDeg, absoluteDeg, acc;
+            public float initialDeg, absoluteDeg, relativeDeg, lastDeg, acc;
         }
         protected Queue<MotorTargetCmd> motorTargetCmdQ = new Queue<MotorTargetCmd>(); // command queue
         protected MotorTargetCmd currMotorTargetCmd = default;  // current command
@@ -242,10 +242,14 @@ namespace toio.Simulator
                 else if ((byte)cmd.targetRotationType <= 2)     // absolute deg
                     this.currMotorTargetCmd.absoluteDeg = cmd.deg;
                 else                                            // relative deg
+                {
                     this.currMotorTargetCmd.absoluteDeg = (this.deg + cmd.deg + 540)%360 -180;
+                    this.currMotorTargetCmd.relativeDeg = cmd.deg;
+                    this.currMotorTargetCmd.lastDeg = this.deg;
+                }
             }
             // reach deg
-            if (cmd.reach && Mathf.Abs(this.deg-cmd.absoluteDeg)<15)
+            if (cmd.reach && Mathf.Abs(this.deg-cmd.absoluteDeg)<15 && cmd.relativeDeg<180)
             {
                 this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Normal);
                 motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
@@ -271,6 +275,14 @@ namespace toio.Simulator
                     }
                     case (Cube.TargetRotationType.RelativeClockwise):      // 相対角度 正方向(時計回り)
                     {
+                        if (cmd.relativeDeg<180) rotate = (ddeg + 360)%360;
+                        else
+                        {
+                            var ddegr = (this.deg - cmd.lastDeg +540)%360-180;
+                            this.currMotorTargetCmd.relativeDeg = cmd.relativeDeg = cmd.relativeDeg - ddegr;
+                            this.currMotorTargetCmd.lastDeg = this.deg;
+                            rotate = 360;
+                        }
                         break;
                     }
                     case (Cube.TargetRotationType.AbsoluteCounterClockwise):       // 絶対角度 負方向(反時計回り)
@@ -280,6 +292,14 @@ namespace toio.Simulator
                     }
                     case (Cube.TargetRotationType.RelativeCounterClockwise):      // 相対角度 負方向(反時計回り)
                     {
+                        if (cmd.relativeDeg<180) rotate = -(-ddeg + 360)%360;
+                        else
+                        {
+                            var ddegr = (this.deg - cmd.lastDeg +540)%360-180;
+                            this.currMotorTargetCmd.relativeDeg = cmd.relativeDeg = cmd.relativeDeg + ddegr;
+                            this.currMotorTargetCmd.lastDeg = this.deg;
+                            rotate = -360;
+                        }
                         break;
                     }
                 }

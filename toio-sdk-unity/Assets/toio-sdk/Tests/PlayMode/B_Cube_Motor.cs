@@ -85,6 +85,19 @@ namespace toio.Tests
             yield return new MonoBehaviourTest<test>();
         }
 
+        [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator move_bottom_RelativeCounterClockwise()
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.TargetMove(300, 400, 600,
+                targetMoveType:Cube.TargetMoveType.RotatingMove,
+                targetRotationType:Cube.TargetRotationType.RelativeCounterClockwise);
+
+            test.update = TestUntil_Seconds(5);
+            yield return new MonoBehaviourTest<test>();
+        }
+
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
         public IEnumerator move_top_VariableSpeed()
         {
