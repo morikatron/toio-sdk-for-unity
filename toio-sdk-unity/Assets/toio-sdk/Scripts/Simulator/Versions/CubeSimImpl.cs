@@ -117,8 +117,8 @@ namespace toio.Simulator
             // target speed
             float targetSpeedL = motorLeft * CubeSimulator.VDotOverU / Mat.DotPerM;
             float targetSpeedR = motorRight * CubeSimulator.VDotOverU / Mat.DotPerM;
-            if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
-            if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
+            // if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
+            // if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
             // 速度更新
             // update tires' speed

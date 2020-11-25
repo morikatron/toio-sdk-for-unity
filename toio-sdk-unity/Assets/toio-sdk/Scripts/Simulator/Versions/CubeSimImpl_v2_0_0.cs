@@ -329,6 +329,8 @@ namespace toio.Simulator
             MotorTimeCmd cmd = new MotorTimeCmd();
             cmd.left = Mathf.Clamp(left, -maxMotor, maxMotor);
             cmd.right = Mathf.Clamp(right, -maxMotor, maxMotor);
+            if (Mathf.Abs(cmd.left) < this.deadzone) cmd.left = 0;
+            if (Mathf.Abs(cmd.right) < this.deadzone) cmd.right = 0;
             cmd.duration = Mathf.Clamp(durationMS, 0, 2550);
             cmd.tRecv = Time.time;
             motorTimeCmdQ.Enqueue(cmd);
