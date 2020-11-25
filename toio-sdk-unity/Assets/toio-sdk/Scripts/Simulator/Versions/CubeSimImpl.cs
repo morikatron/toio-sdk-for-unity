@@ -81,6 +81,13 @@ namespace toio.Simulator
             internal set{ NotSupportedWarning(); }}
         public virtual void StartNotification_DoubleTap(System.Action<bool> action)
         { NotSupportedWarning(); }
+        // Target Move
+        public virtual void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+        // Multi Target Move
+        public virtual void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+
         // ---------- 2.2.0 ----------
         // Shake
         public virtual bool shake {

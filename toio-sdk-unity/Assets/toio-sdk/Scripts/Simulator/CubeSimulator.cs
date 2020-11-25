@@ -304,6 +304,22 @@ namespace toio.Simulator
         }
 
         /// <summary>
+        /// 目標指定付きモーター制御の応答コールバックを設定する
+        /// </summary>
+        public void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            impl.StartNotification_TargetMove(action);
+        }
+
+        /// <summary>
+        /// 複数目標指定付きモーター制御の応答コールバックを設定する
+        /// </summary>
+        public void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            impl.StartNotification_MultiTargetMove(action);
+        }
+
+        /// <summary>
         /// シェイク検出のイベントコールバックを設定する
         /// </summary>
         public void StartNotification_Shake(System.Action<bool> action)

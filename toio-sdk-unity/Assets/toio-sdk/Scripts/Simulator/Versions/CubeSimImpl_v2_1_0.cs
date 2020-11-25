@@ -114,6 +114,13 @@ namespace toio.Simulator
 
         }
 
+        // Callback
+        protected System.Action<int, Cube.TargetMoveRespondType> targetMoveCallback = null;
+        public override void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            this.targetMoveCallback = action;
+        }
+
         // COMMAND API
         public override void TargetMove(
             int targetX,
@@ -152,6 +159,13 @@ namespace toio.Simulator
         protected virtual void MultiTargetMoveController()
         {
 
+        }
+
+        // Callback
+        protected System.Action<int, Cube.TargetMoveRespondType> multiTargetMoveCallback = null;
+        public override void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            this.multiTargetMoveCallback = action;
         }
 
         // COMMAND API

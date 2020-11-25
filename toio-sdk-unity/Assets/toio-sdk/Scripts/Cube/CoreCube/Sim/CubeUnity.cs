@@ -33,6 +33,8 @@ namespace toio
 
                 simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
                 simulator.StartNotification_Pose(this.Recv_Pose);
+                simulator.StartNotification_TargetMove(this.Recv_TargetMove);
+                simulator.StartNotification_MultiTargetMove(this.Recv_MultiTargetMove);
 
                 simulator.StartNotification_Shake(this.Recv_Shake);
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
@@ -145,6 +147,15 @@ namespace toio
         public override CallbackProvider<Cube> poseCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._poseCallback;
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        protected CallbackProvider<Cube, int, TargetMoveRespondType> _targetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
+        public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._targetMoveCallback;
+            else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
+        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
+            else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+
         // 2.2.0
         protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> shakeCallback { get {
@@ -217,6 +228,15 @@ namespace toio
         {
             this.pose = posed;
             this.poseCallback.Notify(this);
+        }
+
+        private void Recv_TargetMove(int configID, TargetMoveRespondType response)
+        {
+            this.targetMoveCallback.Notify(this, configID, response);
+        }
+        private void Recv_MultiTargetMove(int configID, TargetMoveRespondType response)
+        {
+            this.multiTargetMoveCallback.Notify(this, configID, response);
         }
 
         private void Recv_Shake(bool shake)
