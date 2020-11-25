@@ -16,49 +16,83 @@ namespace toio.Simulator
 
         // ============ Motor ============
 
+        protected string motorCurrentCmdType = "";
         protected override void MotorScheduler(float dt, float t)
         {
             motorCmdElipsed += dt;
 
-            string currCmd = "";
             float latestRecvTime = 0;
+            bool newCmd = false;
 
             while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv + cube.delay)
             {
+                OnMotorOverwrite();
                 motorCmdElipsed = 0;
                 currMotorTimeCmd = motorTimeCmdQ.Dequeue();
-                currCmd = "Time"; latestRecvTime = currMotorTimeCmd.tRecv;
+                motorCurrentCmdType = "Time"; latestRecvTime = currMotorTimeCmd.tRecv;
+                newCmd = true;
             }
             while (motorTargetCmdQ.Count>0 && t > motorTargetCmdQ.Peek().tRecv + cube.delay)
             {
+                OnMotorOverwrite();
                 motorCmdElipsed = 0;
                 currMotorTargetCmd = motorTargetCmdQ.Dequeue();
                 if (currMotorTargetCmd.tRecv > latestRecvTime)
                 {
-                    currCmd = "Target"; latestRecvTime = currMotorTargetCmd.tRecv;
+                    motorCurrentCmdType = "Target"; latestRecvTime = currMotorTargetCmd.tRecv;
+                    newCmd = true;
                 }
             }
             while (motorMultiTargetCmdQ.Count>0 && t > motorMultiTargetCmdQ.Peek().tRecv + cube.delay)
             {
+                OnMotorOverwrite();
                 motorCmdElipsed = 0;
                 currMotorMultiTargetCmd = motorMultiTargetCmdQ.Dequeue();
                 if (currMotorMultiTargetCmd.tRecv > latestRecvTime)
                 {
-                    currCmd = "MultiTarget"; latestRecvTime = currMotorMultiTargetCmd.tRecv;
+                    motorCurrentCmdType = "MultiTarget"; latestRecvTime = currMotorMultiTargetCmd.tRecv;
+                    newCmd = true;
                 }
             }
             while (motorAccCmdQ.Count>0 && t > motorAccCmdQ.Peek().tRecv + cube.delay)
             {
+                OnMotorOverwrite();
                 motorCmdElipsed = 0;
                 currMotorAccCmd = motorAccCmdQ.Dequeue();
                 if (currMotorAccCmd.tRecv > latestRecvTime)
                 {
-                    currCmd = "Acc"; latestRecvTime = currMotorAccCmd.tRecv;
+                    motorCurrentCmdType = "Acc"; latestRecvTime = currMotorAccCmd.tRecv;
+                    newCmd = true;
+                }
+            }
+
+            // ----- Init -----
+            if (newCmd)
+            {
+                switch (motorCurrentCmdType)
+                {
+                    case "Time":
+                    {
+                        break;
+                    }
+                    case "Target":
+                    {
+                        TargetMoveInit();
+                        break;
+                    }
+                    case "MultiTarget":
+                    {
+                        break;
+                    }
+                    case "Acc":
+                    {
+                        break;
+                    }
                 }
             }
 
             // ----- Excute Order -----
-            switch (currCmd)
+            switch (motorCurrentCmdType)
             {
                 case "Time":
                 {
@@ -93,6 +127,25 @@ namespace toio.Simulator
 
         }
 
+        protected void OnMotorOverwrite()
+        {
+            switch (motorCurrentCmdType)
+            {
+                case "Time": break;
+                case "Target":
+                {
+                    this.targetMoveCallback?.Invoke(currMotorTargetCmd.configID, Cube.TargetMoveRespondType.OtherWrite);
+                    break;
+                }
+                case "MultiTarget":
+                {
+                    this.multiTargetMoveCallback?.Invoke(currMotorMultiTargetCmd.configID, Cube.TargetMoveRespondType.OtherWrite);
+                    break;
+                }
+                case "Acc": break;
+            }
+        }
+
 
         // -------- Target Move --------
         protected struct MotorTargetCmd
@@ -103,14 +156,191 @@ namespace toio.Simulator
             public Cube.TargetSpeedType targetSpeedType;
             public Cube.TargetRotationType targetRotationType;
             public float tRecv;
-            public bool end;
+            // Temp vars
             public bool reach;
+            public float initialDeg, absoluteDeg, acc;
         }
         protected Queue<MotorTargetCmd> motorTargetCmdQ = new Queue<MotorTargetCmd>(); // command queue
         protected MotorTargetCmd currMotorTargetCmd = default;  // current command
 
+        protected virtual void TargetMoveInit()
+        {
+            var cmd = currMotorTargetCmd;
+            float dist = Mathf.Sqrt( (cmd.x-this.x)*(cmd.x-this.x)+(cmd.y-this.y)*(cmd.y-this.y) );
+
+            // Unsupported
+            if (cmd.maxSpd < 10)
+            {
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ToioIDmissed);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
+            // toio ID missed Error
+            if (!this.onMat)
+            {
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ToioIDmissed);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
+            // Parameter Error
+            if (dist < 8 &&
+                cmd.targetRotationType==Cube.TargetRotationType.NotRotate
+                || cmd.targetRotationType==Cube.TargetRotationType.Original
+                || cmd.targetRotationType==Cube.TargetRotationType.RelativeClockwise && cmd.deg==0
+                || cmd.targetRotationType==Cube.TargetRotationType.RelativeCounterClockwise && cmd.deg==0
+                || (byte)cmd.targetRotationType<3 && Mathf.Abs((cmd.deg-this.deg+540)%-180)<5
+            ){
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
+            this.currMotorTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU
+                /2/dist;
+            this.currMotorTargetCmd.initialDeg = this.deg;
+        }
         protected virtual void TargetMoveController()
         {
+            var cmd = currMotorTargetCmd;
+            float translate=0, rotate=0;
+
+            // ---- Timeout ----
+            byte timeout = cmd.timeOut==0? (byte)10:cmd.timeOut;  // TODO delete byte after merge
+            if (motorCmdElipsed > timeout)
+            {
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Timeout);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
+            // ---- toio ID missed Error ----
+            if (!this.onMat)
+            {
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ToioIDmissed);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
+            // ---- Preprocess ----
+            Vector2 targetPos = new Vector2(cmd.x, cmd.y);
+            Vector2 pos = new Vector2(this.x, this.y);
+            var dpos = targetPos - pos;
+            var dir2tar = Vector2.SignedAngle(Vector2.right, dpos);
+            var deg2tar = (dir2tar - this.deg +540)%360 -180;   // use when moving forward
+            var deg2tar_back = (deg2tar+360)%360 -180;                // use when moving backward
+
+            bool tarOnFront = Mathf.Abs(deg2tar) <= 90;
+
+            // ---- Reach ----
+            // reach pos
+            if (!cmd.reach && dpos.magnitude < 10)
+            {
+                cmd.reach = true;
+                if (cmd.targetRotationType == Cube.TargetRotationType.NotRotate)    // Not rotate
+                {
+                    this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Timeout);
+                    motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+                }
+                else if (cmd.targetRotationType == Cube.TargetRotationType.Original)    // Inital deg
+                    cmd.absoluteDeg = cmd.initialDeg;
+                else if ((byte)cmd.targetRotationType <= 2)     // absolute deg
+                    cmd.absoluteDeg = cmd.deg;
+                else                                            // relative deg
+                    cmd.absoluteDeg = (this.deg + cmd.deg + 540)%360 -180;
+            }
+            // reach deg
+            if (cmd.reach && Mathf.Abs(this.deg-cmd.absoluteDeg)<15)
+            { motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return; }    // END
+
+            // ---- Rotate ----
+            if (cmd.reach)
+            {
+                var ddeg = (cmd.absoluteDeg - this.deg + 540)%360 -180;
+                // 回転タイプ
+                switch (cmd.targetRotationType)
+                {
+                    case (Cube.TargetRotationType.AbsoluteLeastAngle):       // 絶対角度 回転量が少ない方向
+                    case (Cube.TargetRotationType.Original):      // 書き込み操作時と同じ 回転量が少ない方向
+                    {
+                        rotate = ddeg;
+                        break;
+                    }
+                    case (Cube.TargetRotationType.AbsoluteClockwise):       // 絶対角度 正方向(時計回り)
+                    {
+                        rotate = (ddeg + 360)%360;
+                        break;
+                    }
+                    case (Cube.TargetRotationType.RelativeClockwise):      // 相対角度 正方向(時計回り)
+                    {
+                        break;
+                    }
+                    case (Cube.TargetRotationType.AbsoluteCounterClockwise):       // 絶対角度 負方向(反時計回り)
+                    {
+                        rotate = -(-ddeg + 360)%360;
+                        break;
+                    }
+                    case (Cube.TargetRotationType.RelativeCounterClockwise):      // 相対角度 負方向(反時計回り)
+                    {
+                        break;
+                    }
+                }
+                rotate *= 0.9f;
+                rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
+            }
+
+            // ---- Move ----
+            else
+            {
+                float spd = cmd.maxSpd;
+
+                // 速度変化タイプ
+                switch (cmd.targetSpeedType)
+                {
+                    case (Cube.TargetSpeedType.UniformSpeed):       // 速度一定
+                    { break; }
+                    case (Cube.TargetSpeedType.Acceleration):       // 目標地点まで徐々に加速
+                    {
+                        spd = this.deadzone + cmd.acc*motorCmdElipsed;
+                        break;
+                    }
+                    case (Cube.TargetSpeedType.Deceleration):       // 目標地点まで徐々に減速
+                    {
+                        spd = cmd.maxSpd - cmd.acc*motorCmdElipsed;
+                        break;
+                    }
+                    case (Cube.TargetSpeedType.VariableSpeed):      // 中間地点まで徐々に加速し、そこから目標地点まで減速
+                    {
+                        spd = cmd.maxSpd - 2*cmd.acc*Mathf.Abs(motorCmdElipsed - (cmd.maxSpd-this.deadzone)/cmd.acc/2);
+                        break;
+                    }
+                }
+
+                // 移動タイプ
+                switch (cmd.targetMoveType)
+                {
+                    case (Cube.TargetMoveType.RotatingMove):        // 回転しながら移動
+                    {
+                        rotate = tarOnFront? deg2tar : deg2tar_back;
+                        translate = tarOnFront? spd : -spd;
+                        break;
+                    }
+                    case (Cube.TargetMoveType.RoundForwardMove):    // 回転しながら移動（後退なし）
+                    {
+                        rotate = deg2tar;
+                        translate = spd;
+                        break;
+                    }
+                    case (Cube.TargetMoveType.RoundBeforeMove):     // 回転してから移動
+                    {
+                        rotate = deg2tar;
+                        if (Mathf.Abs(deg2tar) < 15) translate = spd;
+                        break;
+                    }
+                }
+                rotate *= 0.6f;
+                rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
+            }
+
+            // ---- Apply ----
+            motorLeft = translate + rotate;
+            motorRight = translate - rotate;
 
         }
 
