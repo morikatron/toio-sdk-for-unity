@@ -481,8 +481,19 @@ namespace toio.Simulator
             //     motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
             // }
 
-            // this.currMotorMultiTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU
-            //     /2/dist;
+            // Calc. Acceleration
+            float overallDist = 0;
+            for (int i=0; i<cmd.xs.Length; i++)
+            {
+                float d;
+                if (i==0)
+                    d = Mathf.Sqrt( (cmd.xs[i]-this.x)*(cmd.xs[i]-this.x)+(cmd.ys[i]-this.y)*(cmd.ys[i]-this.y) );
+                else
+                    d = Mathf.Sqrt( (cmd.xs[i]-cmd.xs[i-1])*(cmd.xs[i]-cmd.xs[i-1])+(cmd.ys[i]-cmd.ys[i-1])*(cmd.ys[i]-cmd.ys[i-1]) );
+                overallDist += d;
+            }
+            this.currMotorMultiTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU
+                /2/overallDist;
 
 
         }
