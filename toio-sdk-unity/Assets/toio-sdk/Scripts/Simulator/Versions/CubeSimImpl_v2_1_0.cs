@@ -706,7 +706,7 @@ namespace toio.Simulator
             cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)x));
             cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)x));
             cmd.degs = Array.ConvertAll(targetAngleList, new Converter<int, ushort>(x=>(ushort)x));
-            cmd.rotTypes = multiRotationTypeList;
+            cmd.rotTypes = multiRotationTypeList!=null? multiRotationTypeList : new Cube.TargetRotationType[targetXList.Length];
             cmd.configID = configID; cmd.timeOut = timeOut; cmd.maxSpd = maxSpd;
             cmd.targetMoveType = targetMoveType; cmd.targetSpeedType = targetSpeedType; cmd.multiWriteType = multiWriteType;
             cmd.tRecv = Time.time;
