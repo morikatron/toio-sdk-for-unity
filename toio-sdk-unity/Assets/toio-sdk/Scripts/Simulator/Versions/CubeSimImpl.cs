@@ -210,5 +210,12 @@ namespace toio.Simulator
         {
             // Debug.LogWarning("Not Supported in this firmware version.");
         }
+
+
+        // ============ Utils ============
+        protected float Deg(float d)
+        {
+            return (d%360 + 540)%360 -180;
+        }
     }
 }
