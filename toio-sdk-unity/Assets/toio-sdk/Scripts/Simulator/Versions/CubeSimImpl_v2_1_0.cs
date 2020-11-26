@@ -326,60 +326,81 @@ namespace toio.Simulator
             // ---- Move ----
             else
             {
-                float spd = cmd.maxSpd;
-
-                // 速度変化タイプ
-                switch (cmd.targetSpeedType)
-                {
-                    case (Cube.TargetSpeedType.UniformSpeed):       // 速度一定
-                    { break; }
-                    case (Cube.TargetSpeedType.Acceleration):       // 目標地点まで徐々に加速
-                    {
-                        spd = this.deadzone + cmd.acc*motorCmdElipsed;
-                        break;
-                    }
-                    case (Cube.TargetSpeedType.Deceleration):       // 目標地点まで徐々に減速
-                    {
-                        spd = cmd.maxSpd - cmd.acc*motorCmdElipsed;
-                        break;
-                    }
-                    case (Cube.TargetSpeedType.VariableSpeed):      // 中間地点まで徐々に加速し、そこから目標地点まで減速
-                    {
-                        spd = cmd.maxSpd - 2*cmd.acc*Mathf.Abs(motorCmdElipsed - (cmd.maxSpd-this.deadzone)/cmd.acc/2);
-                        break;
-                    }
-                }
-
-                // 移動タイプ
-                switch (cmd.targetMoveType)
-                {
-                    case (Cube.TargetMoveType.RotatingMove):        // 回転しながら移動
-                    {
-                        rotate = tarOnFront? deg2tar : deg2tar_back;
-                        translate = tarOnFront? spd : -spd;
-                        break;
-                    }
-                    case (Cube.TargetMoveType.RoundForwardMove):    // 回転しながら移動（後退なし）
-                    {
-                        rotate = deg2tar;
-                        translate = spd;
-                        break;
-                    }
-                    case (Cube.TargetMoveType.RoundBeforeMove):     // 回転してから移動
-                    {
-                        rotate = deg2tar;
-                        if (Mathf.Abs(deg2tar) < 15) translate = spd;
-                        break;
-                    }
-                }
-                rotate *= 0.6f;
-                rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
+                (translate, rotate) = TargetMove_MoveControl(
+                    cmd.x, cmd.y, cmd.maxSpd, cmd.targetSpeedType, cmd.acc, cmd.targetMoveType );
             }
 
             // ---- Apply ----
             motorLeft = translate + rotate;
             motorRight = translate - rotate;
 
+        }
+
+        protected (float, float) TargetMove_MoveControl(
+            ushort x, ushort y,
+            byte maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            float acc,
+            Cube.TargetMoveType targetMoveType
+        ){
+            float spd = maxSpd;
+            float translate=0, rotate=0;
+
+            Vector2 targetPos = new Vector2(x, y);
+            Vector2 pos = new Vector2(this.x, this.y);
+            var dpos = targetPos - pos;
+            var dir2tar = Vector2.SignedAngle(Vector2.right, dpos);
+            var deg2tar = Deg(dir2tar - this.deg);   // use when moving forward
+            var deg2tar_back = (deg2tar+360)%360 -180;                // use when moving backward
+            bool tarOnFront = Mathf.Abs(deg2tar) <= 90;
+
+            // 速度変化タイプ
+            switch (targetSpeedType)
+            {
+                case (Cube.TargetSpeedType.UniformSpeed):       // 速度一定
+                { break; }
+                case (Cube.TargetSpeedType.Acceleration):       // 目標地点まで徐々に加速
+                {
+                    spd = Mathf.Clamp(this.deadzone + acc*motorCmdElipsed, this.deadzone, maxSpd);
+                    break;
+                }
+                case (Cube.TargetSpeedType.Deceleration):       // 目標地点まで徐々に減速
+                {
+                    spd = Mathf.Clamp(maxSpd - acc*motorCmdElipsed, this.deadzone, maxSpd);
+                    break;
+                }
+                case (Cube.TargetSpeedType.VariableSpeed):      // 中間地点まで徐々に加速し、そこから目標地点まで減速
+                {
+                    spd = Mathf.Clamp(maxSpd - 2*acc*Mathf.Abs(motorCmdElipsed - (maxSpd-this.deadzone)/acc/2), this.deadzone, maxSpd);
+                    break;
+                }
+            }
+
+            // 移動タイプ
+            switch (targetMoveType)
+            {
+                case (Cube.TargetMoveType.RotatingMove):        // 回転しながら移動
+                {
+                    rotate = tarOnFront? deg2tar : deg2tar_back;
+                    translate = tarOnFront? spd : -spd;
+                    break;
+                }
+                case (Cube.TargetMoveType.RoundForwardMove):    // 回転しながら移動（後退なし）
+                {
+                    rotate = deg2tar;
+                    translate = spd;
+                    break;
+                }
+                case (Cube.TargetMoveType.RoundBeforeMove):     // 回転してから移動
+                {
+                    rotate = deg2tar;
+                    if (Mathf.Abs(deg2tar) < 15) translate = spd;
+                    break;
+                }
+            }
+            rotate *= 0.6f;
+            rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
+            return (translate, rotate);
         }
 
         // Callback
@@ -638,54 +659,8 @@ namespace toio.Simulator
             // ---- Move ----
             else
             {
-                float spd = cmd.maxSpd;
-
-                // 速度変化タイプ
-                switch (cmd.targetSpeedType)
-                {
-                    case (Cube.TargetSpeedType.UniformSpeed):       // 速度一定
-                    { break; }
-                    case (Cube.TargetSpeedType.Acceleration):       // 目標地点まで徐々に加速
-                    {
-                        spd = this.deadzone + cmd.acc*motorCmdElipsed;
-                        break;
-                    }
-                    case (Cube.TargetSpeedType.Deceleration):       // 目標地点まで徐々に減速
-                    {
-                        spd = cmd.maxSpd - cmd.acc*motorCmdElipsed;
-                        break;
-                    }
-                    case (Cube.TargetSpeedType.VariableSpeed):      // 中間地点まで徐々に加速し、そこから目標地点まで減速
-                    {
-                        spd = cmd.maxSpd - 2*cmd.acc*Mathf.Abs(motorCmdElipsed - (cmd.maxSpd-this.deadzone)/cmd.acc/2);
-                        break;
-                    }
-                }
-
-                // 移動タイプ
-                switch (cmd.targetMoveType)
-                {
-                    case (Cube.TargetMoveType.RotatingMove):        // 回転しながら移動
-                    {
-                        rotate = tarOnFront? deg2tar : deg2tar_back;
-                        translate = tarOnFront? spd : -spd;
-                        break;
-                    }
-                    case (Cube.TargetMoveType.RoundForwardMove):    // 回転しながら移動（後退なし）
-                    {
-                        rotate = deg2tar;
-                        translate = spd;
-                        break;
-                    }
-                    case (Cube.TargetMoveType.RoundBeforeMove):     // 回転してから移動
-                    {
-                        rotate = deg2tar;
-                        if (Mathf.Abs(deg2tar) < 15) translate = spd;
-                        break;
-                    }
-                }
-                rotate *= 0.6f;
-                rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
+                (translate, rotate) = TargetMove_MoveControl(
+                    cmd.xs[cmd.idx], cmd.ys[cmd.idx], cmd.maxSpd, cmd.targetSpeedType, cmd.acc, cmd.targetMoveType );
             }
 
             // ---- Apply ----
