@@ -198,16 +198,16 @@ namespace toio.Simulator
             }
 
             // Parameter Error
-            if (dist < 8 &&
-                cmd.targetRotationType==Cube.TargetRotationType.NotRotate
-                || cmd.targetRotationType==Cube.TargetRotationType.Original
-                || cmd.targetRotationType==Cube.TargetRotationType.RelativeClockwise && cmd.deg==0
-                || cmd.targetRotationType==Cube.TargetRotationType.RelativeCounterClockwise && cmd.deg==0
-                || (byte)cmd.targetRotationType<3 && Mathf.Abs(Deg(cmd.deg-this.deg))<5
-            ){
-                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
-                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
-            }
+            // if (dist < 8 &&
+            //     cmd.targetRotationType==Cube.TargetRotationType.NotRotate
+            //     || cmd.targetRotationType==Cube.TargetRotationType.Original
+            //     || cmd.targetRotationType==Cube.TargetRotationType.RelativeClockwise && cmd.deg==0
+            //     || cmd.targetRotationType==Cube.TargetRotationType.RelativeCounterClockwise && cmd.deg==0
+            //     || (byte)cmd.targetRotationType<3 && Mathf.Abs(Deg(cmd.deg-this.deg))<5
+            // ){
+            //     this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
+            //     motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            // }
 
             this.currMotorTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU
                 /2/dist;
