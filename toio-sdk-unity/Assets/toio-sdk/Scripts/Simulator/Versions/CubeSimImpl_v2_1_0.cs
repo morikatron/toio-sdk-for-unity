@@ -285,8 +285,7 @@ namespace toio.Simulator
             }
 
             // ---- Apply ----
-            motorLeft = translate + rotate;
-            motorRight = translate - rotate;
+            ApplyMotorControl(translate, rotate);
         }
 
         protected (float, float, float) TargetMove_RotateControl(
@@ -408,6 +407,27 @@ namespace toio.Simulator
             rotate *= 0.6f;
             rotate = Mathf.Clamp(rotate, -this.maxMotor, this.maxMotor);
             return (translate, rotate);
+        }
+
+        protected void ApplyMotorControl(float translate, float rotate)
+        {
+            // ---- Apply ----
+            var miu = Mathf.Abs(translate / this.maxMotor);
+            rotate *= miu * Mathf.Abs(translate/50) + (1-miu) * 1;
+            var uL = translate + rotate;
+            var uR = translate - rotate;
+            // truncate
+            if (Mathf.Max(uL, uR) > this.maxMotor)
+            {
+                uL -= Mathf.Max(uL, uR) - this.maxMotor;
+                uR -= Mathf.Max(uL, uR) - this.maxMotor;
+            }
+            else if (Mathf.Min(uL, uR) < -this.maxMotor)
+            {
+                uL -= Mathf.Min(uL, uR) + this.maxMotor;
+                uR -= Mathf.Min(uL, uR) + this.maxMotor;
+            }
+            motorLeft = uL; motorRight = uR;
         }
 
         // Callback
@@ -611,8 +631,7 @@ namespace toio.Simulator
             }
 
             // ---- Apply ----
-            motorLeft = translate + rotate;
-            motorRight = translate - rotate;
+            ApplyMotorControl(translate, rotate);
         }
 
         // Callback
