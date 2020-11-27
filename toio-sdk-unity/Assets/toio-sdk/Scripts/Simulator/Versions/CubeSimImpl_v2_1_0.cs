@@ -24,15 +24,18 @@ namespace toio.Simulator
             float latestRecvTime = 0;
             bool newCmd = false;
             string oldCmdType = motorCurrentCmdType;
+            MotorAccCmd oldAccCmd = currMotorAccCmd;
+            MotorMultiTargetCmd multiCmdTemp = default;
+
             byte oldConfigID = 0;
-            bool overwriteMulti = false;
             switch (motorCurrentCmdType)
             {
                 case "Target": { oldConfigID = currMotorTargetCmd.configID; break; }
                 case "MultiTarget": { oldConfigID = currMotorMultiTargetCmd.configID; break; }
                 case "Acc": { oldConfigID = currMotorAccCmd.configID; break; }
             }
-            MotorMultiTargetCmd multiCmdTemp = default;
+
+            bool overwriteMulti = false;
 
 
             // ----- Dequeue Commands -----
@@ -118,6 +121,15 @@ namespace toio.Simulator
                 {
                     nextMotorMultiTargetCmd = multiCmdTemp;
                 }
+            }
+
+            // ----- Acceleration -----
+            if (newCmd && motorCurrentCmdType == "Acc")
+            {
+                if (oldCmdType == "Acc")    // 前指令がAccの場合
+                    currMotorAccCmd.initialSpd = oldAccCmd.currSpd;   // 速度を継続する
+                else    // 前指令がAccじゃない場合
+                    currMotorAccCmd.acc = 0;    // 直ちに目標速度にする
             }
 
 
@@ -675,13 +687,59 @@ namespace toio.Simulator
             public Cube.AccMoveType accMoveType;
             public Cube.AccPriorityType accPriorityType;
             public float tRecv;
+            public float initialSpd, currSpd;
         }
         protected Queue<MotorAccCmd> motorAccCmdQ = new Queue<MotorAccCmd>(); // command queue
         protected MotorAccCmd currMotorAccCmd = default;  // current command
 
         protected virtual void AccMoveController()
         {
+            var cmd = currMotorAccCmd;
+            float translate=0, rotate=0;
 
+            // ---- Control Time ----
+            if (cmd.controlTime!=0 && motorCmdElipsed > (float)cmd.controlTime/100)
+            {
+                this.currMotorAccCmd.currSpd = 0;
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
+            // ---- Acceleration ----
+            float dirSpd = cmd.accMoveType==Cube.AccMoveType.Forward? 1:-1;
+            float targetSpd = dirSpd * cmd.spd;
+            float spd;
+            if (cmd.acc == 0)
+                spd = targetSpd;
+            else
+            {
+                if (motorCmdElipsed >= Mathf.Abs(targetSpd-cmd.initialSpd)/(cmd.acc/0.1f))   // Accelerate Over
+                    spd = targetSpd;
+                else
+                    spd = cmd.initialSpd + Mathf.Sign(targetSpd-cmd.initialSpd) * motorCmdElipsed*cmd.acc/0.1f;
+            }
+            this.currMotorAccCmd.currSpd = spd;
+            translate = spd;
+
+            // ---- Rotation ----
+            float dirRot = cmd.accRotationType==Cube.AccRotationType.Clockwise? 1:-1;
+            rotate = dirRot * cmd.rotationSpeed *Mathf.Deg2Rad * CubeSimulator.TireWidthDot/CubeSimulator.VDotOverU /2;
+
+
+            // ---- Priority ----
+            if (cmd.accPriorityType == Cube.AccPriorityType.Translation)
+            {
+                var limit = this.maxMotor - Mathf.Abs(translate);
+                rotate = Mathf.Clamp(rotate, -limit, limit);
+            }
+            else if (cmd.accPriorityType == Cube.AccPriorityType.Rotation)
+            {
+                var limit = this.maxMotor - Mathf.Abs(rotate);
+                translate = Mathf.Clamp(translate, -limit, limit);
+            }
+
+            // ---- Apply ----
+            motorLeft = translate + rotate;
+            motorRight = translate - rotate;
         }
 
         // COMMAND API
