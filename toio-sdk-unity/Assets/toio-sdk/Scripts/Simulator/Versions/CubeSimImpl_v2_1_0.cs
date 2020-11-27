@@ -668,9 +668,15 @@ namespace toio.Simulator
         ){
             MotorMultiTargetCmd cmd = new MotorMultiTargetCmd();
             cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)x));
+            if (cmd.xs.Length==0) return;
+            cmd.xs = cmd.xs.Take(29).ToArray();
             cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)x));
+            if (cmd.ys.Length==0) return;
+            cmd.ys = cmd.ys.Take(29).ToArray();
             cmd.degs = Array.ConvertAll(targetAngleList, new Converter<int, ushort>(x=>(ushort)x));
-            cmd.rotTypes = multiRotationTypeList!=null? multiRotationTypeList : new Cube.TargetRotationType[targetXList.Length];
+            if (cmd.degs.Length==0) return;
+            cmd.degs = cmd.degs.Take(29).ToArray();
+            cmd.rotTypes = multiRotationTypeList!=null? multiRotationTypeList : new Cube.TargetRotationType[cmd.xs.Length];
             cmd.configID = configID; cmd.timeOut = timeOut; cmd.maxSpd = maxSpd;
             cmd.targetMoveType = targetMoveType; cmd.targetSpeedType = targetSpeedType; cmd.multiWriteType = multiWriteType;
             cmd.tRecv = Time.time;
