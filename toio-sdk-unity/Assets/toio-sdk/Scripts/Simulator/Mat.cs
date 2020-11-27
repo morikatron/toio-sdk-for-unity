@@ -128,14 +128,14 @@ namespace toio.Simulator
         /// </summary>
         public int UnityDeg2MatDeg(float deg)
         {
-            return Mathf.RoundToInt(deg-this.transform.eulerAngles.y-90)%360;
+            return Mathf.RoundToInt((deg-this.transform.eulerAngles.y-90)%360+360)%360;
         }
         /// <summary>
         /// Unity上の角度をマットmat上の角度に変換
         /// </summary>
         public static int UnityDeg2MatDeg(float deg, Mat mat)
         {
-            if (mat == null) return (int)(deg-90)%360;
+            if (mat == null) return (int)((deg-90)%360+360)%360;
             else return mat.UnityDeg2MatDeg(deg);
         }
 

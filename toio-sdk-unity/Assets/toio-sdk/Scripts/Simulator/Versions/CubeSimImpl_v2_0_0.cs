@@ -52,6 +52,7 @@ namespace toio.Simulator
         }
         protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
         {
+            deg = (deg%360+360)%360;
             if (this.x != x || this.y != y || this.deg != deg || !this.onMat)
                 this.IDCallback?.Invoke(x, y, deg, xSensor, ySensor);
             this.x = x; this.y = y; this.deg = deg;
@@ -61,6 +62,7 @@ namespace toio.Simulator
         }
         protected void _SetSandardID(uint stdID, int deg)
         {
+            deg = (deg%360+360)%360;
             if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
                 this.standardIDCallback?.Invoke(stdID, deg);
             this.standardID = stdID;
