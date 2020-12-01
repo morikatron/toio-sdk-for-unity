@@ -111,6 +111,7 @@ namespace toio
         ){
             if (!this.isConnected) { return; }
             #if !RELEASE
+                if (29 < targetXList.Length){Debug.LogErrorFormat("[Cube.MultiTargetMove]追加目標数29を超えました. targetXList.Length={0}", targetXList.Length);}
                 if (255 < configID || configID < 0){Debug.LogErrorFormat("[Cube.MultiTargetMove]制御識別値範囲を超えました. configID={0}", configID);}
                 if (255 < timeOut || timeOut < 0){Debug.LogErrorFormat("[Cube.MultiTargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
                 if (this.maxSpd < maxSpd || maxSpd < 10){Debug.LogErrorFormat("[Cube.MultiTargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
@@ -135,7 +136,7 @@ namespace toio
             for (int i = 0; i < targetXList.Length; i++)
             {
                 #if !RELEASE
-                    if (29 < i){Debug.LogErrorFormat("[Cube.MultiTargetMove]追加目標数29を超えました. i={0}", i);}
+                    if (28 < i){break;}
                     if (65534 < targetXList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]X座標範囲を超えました. targetX={0}", targetXList[i]);}
                     if (65534 < targetYList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]Y座標範囲を超えました. targetY={0}", targetYList[i]);}
                     if (8191 < targetAngleList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngleList[i]);}
