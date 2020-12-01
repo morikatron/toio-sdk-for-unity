@@ -154,7 +154,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(6)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator targetMove_xyangle_noChanged() // x座標y座標 ->　0xffff RotationType ->　NotRotate
+        public IEnumerator targetMove_parameterError() // x座標y座標 ->　0xffff RotationType ->Original
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
@@ -168,7 +168,7 @@ namespace toio.Tests
                             Cube.TargetMoveType.RotatingMove,
                             30,
                             Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.NotRotate,
+                            Cube.TargetRotationType.Original,
                             Cube.ORDER_TYPE.Strong);
 
             test.update = TestUntil_Seconds(5);
