@@ -22,8 +22,9 @@ namespace toio.Tests
     /// </summary>
     public class B_Cube_Motor : CubePlayModeBase
     {
+
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_top_RotatingMove()
+        public IEnumerator  targetMove_speed_8() // speed -> 10未満
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
@@ -33,91 +34,175 @@ namespace toio.Tests
                     Debug.Log(res);
                 }
             );
-            cube.TargetMove(300, 100, 0, targetMoveType:Cube.TargetMoveType.RotatingMove);
-
-            test.update = TestUntil_Seconds(5);
-            yield return new MonoBehaviourTest<test>();
-        }
-
-        [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_bottom_RotatingMove()
-        {
-            Start();
-            var cube = test.CreateCube(250, 250, 270);
-            cube.TargetMove(300, 400, 0, targetMoveType:Cube.TargetMoveType.RotatingMove);
-
-            test.update = TestUntil_Seconds(5);
-            yield return new MonoBehaviourTest<test>();
-        }
-
-        [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_bottom_RoundForwardMove()
-        {
-            Start();
-            var cube = test.CreateCube(250, 250, 270);
-            cube.TargetMove(300, 400, 0, targetMoveType:Cube.TargetMoveType.RoundForwardMove);
-
-            test.update = TestUntil_Seconds(5);
-            yield return new MonoBehaviourTest<test>();
-        }
-
-        [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_bottom_RoundBeforeMove()
-        {
-            Start();
-            var cube = test.CreateCube(250, 250, 270);
-            cube.TargetMove(300, 400, 0, targetMoveType:Cube.TargetMoveType.RoundBeforeMove);
+            cube.TargetMove(100,100,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            8,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
 
             test.update = TestUntil_Seconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_bottom_AbsoluteCounterClockwise()
+        public IEnumerator targetMove_timeout() // timeout test
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
-            cube.TargetMove(300, 400, 0,
-                targetMoveType:Cube.TargetMoveType.RotatingMove,
-                targetRotationType:Cube.TargetRotationType.AbsoluteCounterClockwise);
-
-            test.update = TestUntil_Seconds(5);
-            yield return new MonoBehaviourTest<test>();
-        }
-
-        [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_bottom_RelativeCounterClockwise()
-        {
-            Start();
-            var cube = test.CreateCube(250, 250, 270);
-            cube.TargetMove(300, 400, 600,
-                targetMoveType:Cube.TargetMoveType.RotatingMove,
-                targetRotationType:Cube.TargetRotationType.RelativeCounterClockwise);
-
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            cube.TargetMove(100,400,270,0,2,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
             test.update = TestUntil_Seconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator move_top_VariableSpeed()
+        public IEnumerator targetMove_timeout_0() // timeout -> 0は10s
         {
             Start();
-            var cube = test.CreateCube(250, 400, 270);
+            var cube = test.CreateCube(60, 60, 270);
             cube.targetMoveCallback.AddListener("Test",
                 (c, configID, res) =>
                 {
                     Debug.Log(res);
                 }
             );
+            cube.TargetMove(450,450,270,0,0,
+                            Cube.TargetMoveType.RotatingMove,
+                            20,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+            test.update = TestUntil_Seconds(20);
+            yield return new MonoBehaviourTest<test>();
+        }
 
-            cube.TargetMove(300, 100, 0,
-                targetMoveType: Cube.TargetMoveType.RotatingMove,
-                targetRotationType: Cube.TargetRotationType.NotRotate,
-                targetSpeedType: Cube.TargetSpeedType.VariableSpeed);
+        [UnityTest, Order(3)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator targetMove_x_noChanged() // x座標 ->　0xffff
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            cube.TargetMove(65535,400,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
 
             test.update = TestUntil_Seconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
+        [UnityTest, Order(4)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator targetMove_xy_noChanged() // x座標y座標 ->　0xffff
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            cube.TargetMove(65535,65535,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(5);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(5)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator targetMove_angle_noChanged() // RotationType ->　NotRotate
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            cube.TargetMove(250,350,75,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.NotRotate,
+                            Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(5);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(6)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator targetMove_xyangle_noChanged() // x座標y座標 ->　0xffff RotationType ->　NotRotate
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            cube.TargetMove(65535,65535,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.NotRotate,
+                            Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(5);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(7)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator targetMove_otherWrite() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            var lastTime = Time.time;
+            cube.TargetMove(400,400,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+            
+            cube.TargetMove(400,400,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(5);
+            yield return new MonoBehaviourTest<test>();
+        }
     }
 }
