@@ -198,7 +198,7 @@ namespace toio.Simulator
             // Unsupported
             if (cmd.maxSpd < 10)
             {
-                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ToioIDmissed);
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.NonSupport);
                 motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
             }
 
