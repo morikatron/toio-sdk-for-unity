@@ -188,11 +188,20 @@ namespace toio.Simulator
 
         protected virtual void TargetMoveInit()
         {
+            var cmd = currMotorTargetCmd;
+
+            // Parameter Error
+            if (cmd.x==65535 && cmd.y==65535 && cmd.targetRotationType==Cube.TargetRotationType.Original)
+            {
+                this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
+                motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
+            }
+
             // x/y of value 0xffff means last x/y
             if (this.currMotorTargetCmd.x==65535) this.currMotorTargetCmd.x = (ushort)this.x;
             if (this.currMotorTargetCmd.y==65535) this.currMotorTargetCmd.y = (ushort)this.y;
 
-            var cmd = currMotorTargetCmd;
+            cmd = currMotorTargetCmd;
             float dist = Mathf.Sqrt( (cmd.x-this.x)*(cmd.x-this.x)+(cmd.y-this.y)*(cmd.y-this.y) );
 
             // Unsupported
