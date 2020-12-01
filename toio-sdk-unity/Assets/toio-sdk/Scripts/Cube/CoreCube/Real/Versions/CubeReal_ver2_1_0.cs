@@ -61,12 +61,12 @@ namespace toio
         ){
             if (!this.isConnected) { return; }
             #if !RELEASE
-                if (65534 < targetX){Debug.LogErrorFormat("[Cube.TargetMove]X座標範囲を超えました. targetX={0}", targetX);}
-                if (65534 < targetY){Debug.LogErrorFormat("[Cube.TargetMove]Y座標範囲を超えました. targetY={0}", targetY);}
-                if (8191 < targetAngle){Debug.LogErrorFormat("[Cube.TargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngle);}
-                if (255 < configID){Debug.LogErrorFormat("[Cube.TargetMove]制御識別値範囲を超えました. configID={0}", configID);}
-                if (255 < timeOut){Debug.LogErrorFormat("[Cube.TargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
-                if (this.maxSpd < maxSpd){Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
+                if (65534 < targetX || (targetX < 0 && targetX != -1)){Debug.LogErrorFormat("[Cube.TargetMove]X座標範囲を超えました. targetX={0}", targetX);}
+                if (65534 < targetY || (targetY < 0 && targetY != -1)){Debug.LogErrorFormat("[Cube.TargetMove]Y座標範囲を超えました. targetY={0}", targetY);}
+                if (8191 < targetAngle || targetAngle < 0){Debug.LogErrorFormat("[Cube.TargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngle);}
+                if (255 < configID || configID < 0){Debug.LogErrorFormat("[Cube.TargetMove]制御識別値範囲を超えました. configID={0}", configID);}
+                if (255 < timeOut || timeOut < 0){Debug.LogErrorFormat("[Cube.TargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
+                if (this.maxSpd < maxSpd || maxSpd < 10){Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
             #endif
 
             targetX = targetX == -1 ? 65535 : Mathf.Clamp(targetX, 0, 65534);
@@ -111,9 +111,9 @@ namespace toio
         ){
             if (!this.isConnected) { return; }
             #if !RELEASE
-                if (255 < configID){Debug.LogErrorFormat("[Cube.TargetMove]制御識別値範囲を超えました. configID={0}", configID);}
-                if (255 < timeOut){Debug.LogErrorFormat("[Cube.TargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
-                if (this.maxSpd < maxSpd){Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
+                if (255 < configID || configID < 0){Debug.LogErrorFormat("[Cube.MultiTargetMove]制御識別値範囲を超えました. configID={0}", configID);}
+                if (255 < timeOut || timeOut < 0){Debug.LogErrorFormat("[Cube.MultiTargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
+                if (this.maxSpd < maxSpd || maxSpd < 10){Debug.LogErrorFormat("[Cube.MultiTargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
             #endif
 
             multiRotationTypeList = multiRotationTypeList==null? new TargetRotationType[targetXList.Length] : multiRotationTypeList;
@@ -135,12 +135,13 @@ namespace toio
             for (int i = 0; i < targetXList.Length; i++)
             {
                 #if !RELEASE
-                    if (65534 < targetXList[i]){Debug.LogErrorFormat("[Cube.TargetMove]X座標範囲を超えました. targetX={0}", targetXList[i]);}
-                    if (65534 < targetYList[i]){Debug.LogErrorFormat("[Cube.TargetMove]Y座標範囲を超えました. targetY={0}", targetYList[i]);}
-                    if (8191 < targetAngleList[i]){Debug.LogErrorFormat("[Cube.TargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngleList[i]);}
+                    if (29 < i){Debug.LogErrorFormat("[Cube.MultiTargetMove]追加目標数29を超えました. i={0}", i);}
+                    if (65534 < targetXList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]X座標範囲を超えました. targetX={0}", targetXList[i]);}
+                    if (65534 < targetYList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]Y座標範囲を超えました. targetY={0}", targetYList[i]);}
+                    if (8191 < targetAngleList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngleList[i]);}
                 #endif
-                var targetX = targetXList[i] == -1 ? 65535 : Mathf.Clamp(targetXList[i], 0, 65535);
-                var targetY = targetYList[i] == -1 ? 65535 : Mathf.Clamp(targetYList[i], 0, 65535);
+                var targetX = targetXList[i] == -1 ? 65535 : Mathf.Clamp(targetXList[i], 0, 65534);
+                var targetY = targetYList[i] == -1 ? 65535 : Mathf.Clamp(targetYList[i], 0, 65534);
                 var targetAngle = Mathf.Clamp(targetAngleList[i], 0, 8191);
 
                 buff[i * 6 + 8] = (byte)(targetX & 0xFF);
@@ -172,10 +173,10 @@ namespace toio
             rotationSpeed = Math.Abs(rotationSpeed);
 
             #if !RELEASE
-                if (this.maxSpd < targetSpeed){Debug.LogErrorFormat("[Cube.AccelerationMove]直線速度範囲を超えました. targetSpeed={0}", targetSpeed);}
-                if (255 < acceleration){Debug.LogErrorFormat("[Cube.AccelerationMove]加速度範囲を超えました. acceleration={0}", acceleration);}
+                if (this.maxSpd < targetSpeed || targetSpeed < deadzone){Debug.LogErrorFormat("[Cube.AccelerationMove]直線速度範囲を超えました. targetSpeed={0}", targetSpeed);}
+                if (255 < acceleration || acceleration < 0){Debug.LogErrorFormat("[Cube.AccelerationMove]加速度範囲を超えました. acceleration={0}", acceleration);}
                 if (65535 < rotationSpeed){Debug.LogErrorFormat("[Cube.AccelerationMove]回転速度範囲を超えました. rotationSpeed={0}", rotationSpeed);}
-                if (255 < controlTime){Debug.LogErrorFormat("[Cube.AccelerationMove]制御時間範囲を超えました. controlTime={0}", controlTime);}
+                if (255 < controlTime || controlTime < 0){Debug.LogErrorFormat("[Cube.AccelerationMove]制御時間範囲を超えました. controlTime={0}", controlTime);}
             #endif
 
             targetSpeed = Mathf.Clamp(targetSpeed, deadzone, this.maxSpd);
