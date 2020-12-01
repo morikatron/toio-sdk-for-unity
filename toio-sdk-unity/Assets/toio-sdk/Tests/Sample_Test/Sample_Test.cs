@@ -7,6 +7,7 @@ public class Sample_Test : MonoBehaviour
 {
     Cube cube;
 
+    UnityEngine.UI.Text textNum;
     UnityEngine.UI.Text textRes;
     UnityEngine.UI.Text textPositionID;
     UnityEngine.UI.Text textAngle;
@@ -14,12 +15,12 @@ public class Sample_Test : MonoBehaviour
 
     async void Start()
     {
-        Random.InitState(0);
         // UI の取得
         this.textRes = GameObject.Find("TextRes").GetComponent<Text>();
         this.textPositionID = GameObject.Find("TextPositionID").GetComponent<Text>();
         this.textAngle = GameObject.Find("TextAngle").GetComponent<Text>();
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
+        this.textNum = GameObject.Find("TextNum").GetComponent<Text>();
         // Cube の接続
         var peripheral = await new NearestScanner().Scan();
         cube = await new CubeConnecter().Connect(peripheral);
@@ -57,7 +58,8 @@ public class Sample_Test : MonoBehaviour
             r=r+1;
         }
         if (r == 7){return;}
-
+        this.textNum.text = index.ToString();
+        Random.InitState(index);
         var x = Random.Range(100,400);
         var y = Random.Range(100,400);
         var a = Random.Range(0,720);
@@ -77,7 +79,7 @@ public class Sample_Test : MonoBehaviour
                         0,                               //0~255
                         255,                             //0~255
                         movetype,//0~2
-                        80,                              //10~110
+                        50,                              //10~110
                         speedtype,   //0~4
                         rotype, //0~2絶対角度 3~6 
                         Cube.ORDER_TYPE.Strong);
@@ -88,28 +90,62 @@ public class Sample_Test : MonoBehaviour
     
     public void test_1() {
         this.textRes.text =　"";
-        cube.TargetMove(196,
-                        128,
-                        628,
-                        0,255,                             
-                        Cube.TargetMoveType.RotatingMove,80,                              
-                        Cube.TargetSpeedType.UniformSpeed,
-                        Cube.TargetRotationType.AbsoluteLeastAngle, 
-                        Cube.ORDER_TYPE.Strong);}
-
-
+            cube.TargetMove(100,400,270,0,1,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
 
     public void test_2() {
         this.textRes.text =　"";
-        cube.TargetMove(164,
-                        111,
-                        94,
-                        0,255,                             
-                        Cube.TargetMoveType.RoundBeforeMove,80,                              
-                        Cube.TargetSpeedType.VariableSpeed,
-                        Cube.TargetRotationType.AbsoluteLeastAngle, 
-                        Cube.ORDER_TYPE.Strong);}
+            cube.TargetMove(450,450,270,0,0,
+                            Cube.TargetMoveType.RotatingMove,
+                            20,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
 
+    public void test_3() {
+        this.textRes.text =　"";
+            cube.TargetMove(65535,400,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
+    public void test_4() {
+        this.textRes.text =　"";
+            cube.TargetMove(65535,65535,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
+    public void test_5() {
+        this.textRes.text =　"";
+            cube.TargetMove(250,350,75,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.NotRotate,
+                            Cube.ORDER_TYPE.Strong);}
+    public void test_6() {
+        this.textRes.text =　"";
+            cube.TargetMove(65535,65535,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.Original,
+                            Cube.ORDER_TYPE.Strong);}
+    public void test_7() {
+        this.textRes.text =　"";
+            cube.TargetMove(100,100,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            8,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
     /*
     public void test2() {
         this.textRes.text =　"";
