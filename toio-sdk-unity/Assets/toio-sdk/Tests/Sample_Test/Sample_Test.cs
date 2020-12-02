@@ -83,157 +83,58 @@ public class Sample_Test : MonoBehaviour
         m=m+1;
         }
 
+    public void test_reset() {
+        this.textRes.text =　"";
+            cube.TargetMove(250,250,270,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
+
     public void test_11() {
         this.textRes.text =　"";
-            cube.TargetMove(326,146,592,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
+        int[] xl = new int[]{250,200};
+        int[] yl = new int[]{200,250};
+        int[] al = new int[]{200,300};
+        Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.AbsoluteClockwise};
+
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,80,
                             Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.MultiWriteType.Write,
                             Cube.ORDER_TYPE.Strong);}
 
-    public void test_12() {
+    public void test_add() {
         this.textRes.text =　"";
-            cube.TargetMove(374,218,266,0,255,
-                            Cube.TargetMoveType.RoundForwardMove,
-                            30,
+        int[] xl = new int[]{300,300};
+        int[] yl = new int[]{350,250};
+        int[] al = new int[]{80,120};
+        Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.AbsoluteClockwise};
+
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,80,
                             Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.MultiWriteType.Add,
                             Cube.ORDER_TYPE.Strong);}
 
-    public void test_21() {
+    public void test_Nosuppot() {
         this.textRes.text =　"";
-            cube.TargetMove(111,342,423,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.VariableSpeed,
-                            Cube.TargetRotationType.AbsoluteLeastAngle,
-                            Cube.ORDER_TYPE.Strong);}
+        int[] xl = new int[]{300,-1};
+        int[] yl = new int[]{350,-1};
+        int[] al = new int[]{80,120};
+        Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.Original};
 
-    public void test_22() {
-        this.textRes.text =　"";
-            cube.TargetMove(334,134,597,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,80,
                             Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-
-    public void test_31() {
-        this.textRes.text =　"";
-            cube.TargetMove(235,280,643,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.AbsoluteClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-
-    public void test_32() {
-        this.textRes.text =　"";
-            cube.TargetMove(327,317,190,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
-                            Cube.TargetSpeedType.Deceleration,
-                            Cube.TargetRotationType.AbsoluteClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-
-    public void test_41() {
-        this.textRes.text =　"";
-            cube.TargetMove(290,296,472,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-
-    public void test_42() {
-        this.textRes.text =　"";
-            cube.TargetMove(145,172,621,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.AbsoluteCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-
-    public void test_51() {
-        this.textRes.text =　"";
-            cube.TargetMove(272,181,557,0,255,
-                            Cube.TargetMoveType.RoundForwardMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.AbsoluteCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_52() {
-        this.textRes.text =　"";
-            cube.TargetMove(300,199,29,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.AbsoluteCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_61() {
-        this.textRes.text =　"";
-            cube.TargetMove(140,147,440,0,255,
-                            Cube.TargetMoveType.RoundForwardMove,
-                            30,
-                            Cube.TargetSpeedType.VariableSpeed,
-                            Cube.TargetRotationType.AbsoluteCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_62() {
-        this.textRes.text =　"";
-            cube.TargetMove(172,285,528,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.VariableSpeed,
-                            Cube.TargetRotationType.AbsoluteCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_71() {
-        this.textRes.text =　"";
-            cube.TargetMove(250,336,454,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.RelativeClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_72() {
-        this.textRes.text =　"";
-            cube.TargetMove(357,291,494,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.RelativeClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_81() {
-        this.textRes.text =　"";
-            cube.TargetMove(380,227,180,0,255,
-                            Cube.TargetMoveType.RoundBeforeMove,
-                            30,
-                            Cube.TargetSpeedType.VariableSpeed,
-                            Cube.TargetRotationType.RelativeCounterClockwise,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_82() {
-        this.textRes.text =　"";
-            cube.TargetMove(344,197,297,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
-                            Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.NotRotate,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_91() {
-        this.textRes.text =　"";
-            cube.TargetMove(366,373,427,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.Original,
-                            Cube.ORDER_TYPE.Strong);}
-    public void test_92() {
-        this.textRes.text =　"";
-            cube.TargetMove(186,287,61,0,255,
-                            Cube.TargetMoveType.RoundForwardMove,
-                            30,
-                            Cube.TargetSpeedType.Acceleration,
-                            Cube.TargetRotationType.Original,
+                            Cube.MultiWriteType.Add,
                             Cube.ORDER_TYPE.Strong);}
     /*
     public void test2() {
