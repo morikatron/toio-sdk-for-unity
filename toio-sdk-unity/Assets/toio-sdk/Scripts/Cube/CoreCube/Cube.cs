@@ -377,20 +377,6 @@ namespace toio
         };
 
         // 加速度指定付き制御のパラメータ種類
-        public enum AccRotationType: byte
-        {
-            // https://toio.github.io/toio-spec/docs/ble_motor#キューブの向きの回転方向
-            Clockwise=0,        // 正方向(時計回り)
-            CounterClockwise=1, // 負方向(反時計回り)
-        };
-
-        public enum AccMoveType: byte
-        {
-            // https://toio.github.io/toio-spec/docs/ble_motor#キューブの進行方向
-            Forward=0,          // 前進
-            Backward=1,         // 後退
-        };
-
         public enum AccPriorityType: byte
         {
             // https://toio.github.io/toio-spec/docs/ble_motor#優先指定
