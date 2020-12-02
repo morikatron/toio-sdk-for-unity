@@ -51,22 +51,37 @@ namespace toio
             int targetX,
             int targetY,
             int targetAngle,
-            byte configID = 0,
-            byte timeOut = 0,
+            int configID = 0,
+            int timeOut = 0,
             TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
+            int maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){
             if (!this.isConnected) { return; }
+            #if !RELEASE
+                if (65534 < targetX || (targetX < 0 && targetX != -1)){Debug.LogErrorFormat("[Cube.TargetMove]X座標範囲を超えました. targetX={0}", targetX);}
+                if (65534 < targetY || (targetY < 0 && targetY != -1)){Debug.LogErrorFormat("[Cube.TargetMove]Y座標範囲を超えました. targetY={0}", targetY);}
+                if (8191 < targetAngle || targetAngle < 0){Debug.LogErrorFormat("[Cube.TargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngle);}
+                if (255 < configID || configID < 0){Debug.LogErrorFormat("[Cube.TargetMove]制御識別値範囲を超えました. configID={0}", configID);}
+                if (255 < timeOut || timeOut < 0){Debug.LogErrorFormat("[Cube.TargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
+                if (this.maxSpd < maxSpd || maxSpd < 10){Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
+            #endif
+
+            targetX = targetX == -1 ? 65535 : Mathf.Clamp(targetX, 0, 65534);
+            targetY = targetY == -1 ? 65535 : Mathf.Clamp(targetY, 0, 65534);
+            targetAngle = Mathf.Clamp(targetAngle, 0, 8191);
+            configID = Mathf.Clamp(configID, 0, 255);
+            timeOut= Mathf.Clamp(timeOut, 0, 255);
+            maxSpd = Mathf.Clamp(maxSpd, 10, this.maxSpd);
 
             byte[] buff = new byte[13];
             buff[0] = 3;
-            buff[1] = (byte)(configID & 0xFF);
-            buff[2] = (byte)(timeOut & 0xFF);
+            buff[1] = (byte)configID;
+            buff[2] = (byte)timeOut;
             buff[3] = (byte)targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(maxSpd, deadzone, this.maxSpd);
+            buff[4] = (byte)maxSpd;
             buff[5] = (byte)targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)(targetX & 0xFF);
@@ -86,36 +101,56 @@ namespace toio
             int[] targetYList,
             int[] targetAngleList,
             TargetRotationType[] multiRotationTypeList = null,
-            byte configID = 0,
-            byte timeOut = 0,
+            int configID = 0,
+            int timeOut = 0,
             TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
+            int maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             MultiWriteType multiWriteType = MultiWriteType.Write,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){
             if (!this.isConnected) { return; }
+            #if !RELEASE
+                if (29 < targetXList.Length){Debug.LogErrorFormat("[Cube.MultiTargetMove]追加目標数29を超えました. targetXList.Length={0}", targetXList.Length);}
+                if (255 < configID || configID < 0){Debug.LogErrorFormat("[Cube.MultiTargetMove]制御識別値範囲を超えました. configID={0}", configID);}
+                if (255 < timeOut || timeOut < 0){Debug.LogErrorFormat("[Cube.MultiTargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);}
+                if (this.maxSpd < maxSpd || maxSpd < 10){Debug.LogErrorFormat("[Cube.MultiTargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);}
+            #endif
 
             multiRotationTypeList = multiRotationTypeList==null? new TargetRotationType[targetXList.Length] : multiRotationTypeList;
 
+            configID = Mathf.Clamp(configID, 0, 255);
+            timeOut= Mathf.Clamp(timeOut, 0, 255);
+            maxSpd = Mathf.Clamp(maxSpd, 10, this.maxSpd);
+
             byte[] buff = new byte[targetXList.Length * 6 + 8];
             buff[0] = 4;
-            buff[1] = (byte)(configID & 0xFF);
-            buff[2] = (byte)(timeOut & 0xFF);
+            buff[1] = (byte)configID;
+            buff[2] = (byte)timeOut;
             buff[3] = (byte)targetMoveType;
-            buff[4] = (byte)Mathf.Clamp(maxSpd, deadzone, this.maxSpd);
+            buff[4] = (byte)maxSpd;
             buff[5] = (byte)targetSpeedType;
             buff[6] = 0;
             buff[7] = (byte)multiWriteType;
 
             for (int i = 0; i < targetXList.Length; i++)
             {
-                buff[i * 6 + 8] = (byte)(targetXList[i] & 0xFF);
-                buff[i * 6 + 9] = (byte)((targetXList[i] >> 8) & 0xFF);
-                buff[i * 6 + 10] = (byte)(targetYList[i] & 0xFF);
-                buff[i * 6 + 11] = (byte)((targetYList[i] >> 8) & 0xFF);
-                buff[i * 6 + 12] = (byte)(targetAngleList[i] & 0xFF);
-                buff[i * 6 + 13] = (byte)((((int)multiRotationTypeList[i] & 0x0007) << 5 ) | ((targetAngleList[i] & 0x1FFF) >> 8));
+                #if !RELEASE
+                    if (28 < i){break;}
+                    if (65534 < targetXList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]X座標範囲を超えました. targetX={0}", targetXList[i]);}
+                    if (65534 < targetYList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]Y座標範囲を超えました. targetY={0}", targetYList[i]);}
+                    if (8191 < targetAngleList[i]){Debug.LogErrorFormat("[Cube.MultiTargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngleList[i]);}
+                #endif
+                var targetX = targetXList[i] == -1 ? 65535 : Mathf.Clamp(targetXList[i], 0, 65534);
+                var targetY = targetYList[i] == -1 ? 65535 : Mathf.Clamp(targetYList[i], 0, 65534);
+                var targetAngle = Mathf.Clamp(targetAngleList[i], 0, 8191);
+
+                buff[i * 6 + 8] = (byte)(targetX & 0xFF);
+                buff[i * 6 + 9] = (byte)((targetX >> 8) & 0xFF);
+                buff[i * 6 + 10] = (byte)(targetY & 0xFF);
+                buff[i * 6 + 11] = (byte)((targetY >> 8) & 0xFF);
+                buff[i * 6 + 12] = (byte)(targetAngle & 0xFF);
+                buff[i * 6 + 13] = (byte)((((int)multiRotationTypeList[i] & 0x0007) << 5 ) | ((targetAngle & 0x1FFF) >> 8));
             }
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "MultiTargetMove",
                 targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut,
@@ -126,17 +161,33 @@ namespace toio
         public override void AccelerationMove(
             int targetSpeed,
             int acceleration,
-            ushort rotationSpeed = 0,
-            AccRotationType accRotationType = AccRotationType.Clockwise,
-            AccMoveType accMoveType = AccMoveType.Forward,
+            int rotationSpeed = 0,
             AccPriorityType accPriorityType = AccPriorityType.Translation,
-            byte controlTime = 0,
+            int controlTime = 0,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){
             if (!this.isConnected) { return; }
+            AccMoveType accMoveType = targetSpeed > 0 ? AccMoveType.Forward : AccMoveType.Backward;
+            AccRotationType accRotationType = rotationSpeed > 0 ? AccRotationType.Clockwise : AccRotationType.CounterClockwise;
+
+            targetSpeed = Math.Abs(targetSpeed);
+            rotationSpeed = Math.Abs(rotationSpeed);
+
+            #if !RELEASE
+                if (this.maxSpd < targetSpeed || targetSpeed < deadzone){Debug.LogErrorFormat("[Cube.AccelerationMove]直線速度範囲を超えました. targetSpeed={0}", targetSpeed);}
+                if (255 < acceleration || acceleration < 0){Debug.LogErrorFormat("[Cube.AccelerationMove]加速度範囲を超えました. acceleration={0}", acceleration);}
+                if (65535 < rotationSpeed){Debug.LogErrorFormat("[Cube.AccelerationMove]回転速度範囲を超えました. rotationSpeed={0}", rotationSpeed);}
+                if (255 < controlTime || controlTime < 0){Debug.LogErrorFormat("[Cube.AccelerationMove]制御時間範囲を超えました. controlTime={0}", controlTime);}
+            #endif
+
+            targetSpeed = Mathf.Clamp(targetSpeed, deadzone, this.maxSpd);
+            acceleration = Mathf.Clamp(acceleration, 0, 255);
+            rotationSpeed = Mathf.Clamp(rotationSpeed, 0, 65535);
+            controlTime = Mathf.Clamp(controlTime, 0, 255);
+
             byte[] buff = new byte[9];
             buff[0] = 5;
-            buff[1] = (byte)(Mathf.Clamp(targetSpeed, deadzone, maxSpd) & 0xFF);
+            buff[1] = (byte)(targetSpeed & 0xFF);
             buff[2] = (byte)(acceleration & 0xFF);
             buff[3] = (byte)(rotationSpeed & 0xFF);
             buff[4] = (byte)((rotationSpeed >> 8) & 0xFF);

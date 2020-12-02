@@ -191,10 +191,10 @@ namespace toio
             int targetX,
             int targetY,
             int targetAngle,
-            byte configID = 0,
-            byte timeOut = 0,
+            int configID = 0,
+            int timeOut = 0,
             TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
+            int maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong
@@ -220,10 +220,10 @@ namespace toio
             int[] targetYList,
             int[] targetAngleList,
             TargetRotationType[] multiRotationTypeList = null,
-            byte configID = 0,
-            byte timeOut = 0,
+            int configID = 0,
+            int timeOut = 0,
             TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
+            int maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             MultiWriteType multiWriteType = MultiWriteType.Write,
             ORDER_TYPE order = ORDER_TYPE.Strong
@@ -236,19 +236,15 @@ namespace toio
         /// <param name="targetSpeed">キューブの並進速度</param>
         /// <param name="acceleration">キューブの加速度、100msごとの速度の増加分</param>
         /// <param name="rotationSpeed">キューブの向きの回転速度[度/秒]</param>
-        /// <param name="accRotationType">キューブの向きの回転方向</param>
-        /// <param name="accMoveType">キューブの進行方向</param>
         /// <param name="accPriorityType">回転や並進の優先指定</param>
         /// <param name="controlTime">制御時間[10ms]</param>
         /// <param name="order">命令の優先度</param>
         public virtual void AccelerationMove(
             int targetSpeed,
             int acceleration,
-            ushort rotationSpeed = 0,
-            AccRotationType accRotationType = AccRotationType.Clockwise,
-            AccMoveType accMoveType = AccMoveType.Forward,
+            int rotationSpeed = 0,
             AccPriorityType accPriorityType = AccPriorityType.Translation,
-            byte controlTime = 0,
+            int controlTime = 0,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){ NotSupportedWarning(); }
 
