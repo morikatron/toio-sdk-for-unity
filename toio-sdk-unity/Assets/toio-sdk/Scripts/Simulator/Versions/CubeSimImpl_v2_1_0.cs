@@ -32,7 +32,6 @@ namespace toio.Simulator
             {
                 case "Target": { oldConfigID = currMotorTargetCmd.configID; break; }
                 case "MultiTarget": { oldConfigID = currMotorMultiTargetCmd.configID; break; }
-                case "Acc": { oldConfigID = currMotorAccCmd.configID; break; }
             }
 
             bool overwriteMulti = false;
@@ -170,6 +169,10 @@ namespace toio.Simulator
         }
 
 
+        // -------- Target Move Parameters --------
+        protected float motorTargetPosTol = 10;
+        protected float motorTargetDegTol = 15;
+
         // -------- Target Move --------
         protected struct MotorTargetCmd
         {
@@ -241,7 +244,7 @@ namespace toio.Simulator
             float translate=0, rotate=0;
 
             // ---- Timeout ----
-            byte timeout = cmd.timeOut==0? (byte)10:cmd.timeOut;  // TODO delete byte after merge
+            byte timeout = cmd.timeOut==0? (byte)10:cmd.timeOut;
             if (motorCmdElipsed > timeout)
             {
                 this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Timeout);
@@ -262,7 +265,7 @@ namespace toio.Simulator
 
             // ---- Reach ----
             // reach pos
-            if (!cmd.reach && dpos.magnitude < 10)
+            if (!cmd.reach && dpos.magnitude < motorTargetPosTol)
             {
                 this.currMotorTargetCmd.reach = true;
                 if (cmd.targetRotationType == Cube.TargetRotationType.NotRotate)        // Not rotate
@@ -279,7 +282,7 @@ namespace toio.Simulator
                 }
             }
             // reach deg
-            if (cmd.reach && Mathf.Abs(Deg(this.deg-cmd.absoluteDeg))<15 && cmd.relativeDeg<180)
+            if (cmd.reach && Mathf.Abs(Deg(this.deg-cmd.absoluteDeg))<motorTargetDegTol && cmd.relativeDeg<180)
             {
                 this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Normal);
                 motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
@@ -377,7 +380,7 @@ namespace toio.Simulator
             Vector2 pos = new Vector2(this.x, this.y);
             var dpos = targetPos - pos;
             var dir2tar = Vector2.SignedAngle(Vector2.right, dpos);
-            var deg2tar = Deg(dir2tar - this.deg);   // use when moving forward
+            var deg2tar = Deg(dir2tar - this.deg);                    // use when moving forward
             var deg2tar_back = (deg2tar+360)%360 -180;                // use when moving backward
             bool tarOnFront = Mathf.Abs(deg2tar) <= 90;
 
@@ -421,7 +424,7 @@ namespace toio.Simulator
                 case (Cube.TargetMoveType.RoundBeforeMove):     // 回転してから移動
                 {
                     rotate = deg2tar;
-                    if (Mathf.Abs(deg2tar) < 15) translate = spd;
+                    if (Mathf.Abs(deg2tar) < motorTargetDegTol) translate = spd;
                     break;
                 }
             }
@@ -463,17 +466,36 @@ namespace toio.Simulator
             int targetX,
             int targetY,
             int targetAngle,
-            byte configID,
-            byte timeOut,
+            int configID,
+            int timeOut,
             Cube.TargetMoveType targetMoveType,
-            byte maxSpd,
+            int maxSpd,
             Cube.TargetSpeedType targetSpeedType,
             Cube.TargetRotationType targetRotationType
         ){
+#if !RELEASE
+            if (65535 < targetX || targetX<-1)
+                Debug.LogErrorFormat("[Cube.TargetMove]X座標範囲を超えました. targetX={0}", targetX);
+            if (65535 < targetY || targetY<-1)
+                Debug.LogErrorFormat("[Cube.TargetMove]Y座標範囲を超えました. targetY={0}", targetY);
+            if (8191 < targetAngle)
+                Debug.LogErrorFormat("[Cube.TargetMove]回転角度範囲を超えました. targetAngle={0}", targetAngle);
+            if (255 < configID)
+                Debug.LogErrorFormat("[Cube.TargetMove]制御識別値範囲を超えました. configID={0}", configID);
+            if (255 < timeOut)
+                Debug.LogErrorFormat("[Cube.TargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);
+            if (this.maxMotor < maxSpd)
+                Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);
+#endif
             MotorTargetCmd cmd = new MotorTargetCmd();
-            cmd.x = (ushort)targetX; cmd.y = (ushort)targetY; cmd.deg = (ushort)targetAngle;
-            cmd.configID = configID; cmd.timeOut = timeOut; cmd.targetMoveType = targetMoveType;
-            cmd.maxSpd = maxSpd; cmd.targetSpeedType = targetSpeedType; cmd.targetRotationType = targetRotationType;
+            cmd.x = (ushort)(targetX==-1?65535:Mathf.Clamp(targetX, 0, 65535));
+            cmd.y = (ushort)(targetY==-1?65535:Mathf.Clamp(targetY, 0, 65535));
+            cmd.deg = (ushort)Mathf.Clamp(targetAngle, 0, 8191);
+            cmd.configID = (byte)Mathf.Clamp(configID, 0, 255);
+            cmd.timeOut = (byte)Mathf.Clamp(timeOut, 0, 255);
+            cmd.targetMoveType = targetMoveType;
+            cmd.maxSpd = (byte)Mathf.Clamp(maxSpd, 10, this.maxMotor);
+            cmd.targetSpeedType = targetSpeedType; cmd.targetRotationType = targetRotationType;
             cmd.tRecv = Time.time;
             motorTargetCmdQ.Enqueue(cmd);
         }
@@ -568,7 +590,7 @@ namespace toio.Simulator
             float translate=0, rotate=0;
 
             // ---- Timeout ----
-            byte timeout = cmd.timeOut==0? (byte)10:cmd.timeOut;  // TODO delete byte after merge
+            byte timeout = cmd.timeOut==0? (byte)10:cmd.timeOut;
             if (cmd.elipsed > timeout)
             {
                 this.multiTargetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.Timeout);
@@ -589,7 +611,7 @@ namespace toio.Simulator
 
             // ---- Reach ----
             // reach pos
-            if (!cmd.reach && dpos.magnitude < 10)
+            if (!cmd.reach && dpos.magnitude < motorTargetPosTol)
             {
                 this.currMotorMultiTargetCmd.reach = true;
                 var rotType = cmd.rotTypes[cmd.idx];
@@ -668,26 +690,41 @@ namespace toio.Simulator
             int[] targetYList,
             int[] targetAngleList,
             Cube.TargetRotationType[] multiRotationTypeList,
-            byte configID,
-            byte timeOut,
+            int configID,
+            int timeOut,
             Cube.TargetMoveType targetMoveType,
-            byte maxSpd,
+            int maxSpd,
             Cube.TargetSpeedType targetSpeedType,
             Cube.MultiWriteType multiWriteType
         ){
+#if !RELEASE
+            if (targetXList.Length==0 || targetYList.Length==0 || targetAngleList.Length==0
+                || !(targetXList.Length==targetYList.Length && targetYList.Length==targetAngleList.Length))
+                Debug.LogErrorFormat("[Cube.TargetMove]座標・角度リストのサイズが不一致または０. targetXList.Length={0}, targetYList.Length={1}, targetAngleList.Length={2}", targetXList.Length, targetYList.Length, targetAngleList.Length);
+            if (255 < configID)
+                Debug.LogErrorFormat("[Cube.TargetMove]制御識別値範囲を超えました. configID={0}", configID);
+            if (255 < timeOut)
+                Debug.LogErrorFormat("[Cube.TargetMove]制御時間範囲を超えました. timeOut={0}", timeOut);
+            if (this.maxMotor < maxSpd)
+                Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);
+#endif
             MotorMultiTargetCmd cmd = new MotorMultiTargetCmd();
-            cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)x));
+            cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)(x==-1?65535:Mathf.Clamp(x, 0, 65535))));
             if (cmd.xs.Length==0) return;
             cmd.xs = cmd.xs.Take(29).ToArray();
-            cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)x));
+            cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)(x==-1?65535:Mathf.Clamp(x, 0, 65535))));
             if (cmd.ys.Length==0) return;
             cmd.ys = cmd.ys.Take(29).ToArray();
             cmd.degs = Array.ConvertAll(targetAngleList, new Converter<int, ushort>(x=>(ushort)x));
             if (cmd.degs.Length==0) return;
             cmd.degs = cmd.degs.Take(29).ToArray();
             cmd.rotTypes = multiRotationTypeList!=null? multiRotationTypeList : new Cube.TargetRotationType[cmd.xs.Length];
-            cmd.configID = configID; cmd.timeOut = timeOut; cmd.maxSpd = maxSpd;
-            cmd.targetMoveType = targetMoveType; cmd.targetSpeedType = targetSpeedType; cmd.multiWriteType = multiWriteType;
+            cmd.configID = (byte)Mathf.Clamp(configID, 0, 255);
+            cmd.timeOut = (byte)Mathf.Clamp(timeOut, 0, 255);
+            cmd.maxSpd = (byte)Mathf.Clamp(maxSpd, 10, this.maxMotor);
+            cmd.targetMoveType = targetMoveType;
+            cmd.targetSpeedType = targetSpeedType;
+            cmd.multiWriteType = multiWriteType;
             cmd.tRecv = Time.time;
             motorMultiTargetCmdQ.Enqueue(cmd);
         }
@@ -696,10 +733,8 @@ namespace toio.Simulator
         // -------- Acceleration Move --------
         protected struct MotorAccCmd
         {
-            public byte spd, acc, controlTime, configID;
-            public ushort rotationSpeed;
-            public Cube.AccRotationType accRotationType;
-            public Cube.AccMoveType accMoveType;
+            public byte acc, controlTime;
+            public int spd, rotationSpeed;
             public Cube.AccPriorityType accPriorityType;
             public float tRecv;
             public float initialSpd, currSpd;
@@ -720,8 +755,7 @@ namespace toio.Simulator
             }
 
             // ---- Acceleration ----
-            float dirSpd = cmd.accMoveType==Cube.AccMoveType.Forward? 1:-1;
-            float targetSpd = dirSpd * cmd.spd;
+            float targetSpd = cmd.spd;
             float spd;
             if (cmd.acc == 0)
                 spd = targetSpd;
@@ -736,8 +770,7 @@ namespace toio.Simulator
             translate = spd;
 
             // ---- Rotation ----
-            float dirRot = cmd.accRotationType==Cube.AccRotationType.Clockwise? 1:-1;
-            rotate = dirRot * cmd.rotationSpeed *Mathf.Deg2Rad * CubeSimulator.TireWidthDot/CubeSimulator.VDotOverU /2;
+            rotate = cmd.rotationSpeed *Mathf.Deg2Rad * CubeSimulator.TireWidthDot/CubeSimulator.VDotOverU /2;
 
 
             // ---- Priority ----
@@ -761,16 +794,22 @@ namespace toio.Simulator
         public override void AccelerationMove(
             int targetSpeed,
             int acceleration,
-            ushort rotationSpeed,
-            Cube.AccRotationType accRotationType,
-            Cube.AccMoveType accMoveType,
+            int rotationSpeed,
             Cube.AccPriorityType accPriorityType,
-            byte controlTime
+            int controlTime
         ){
+#if !RELEASE
+            if (this.maxMotor < targetSpeed) Debug.LogErrorFormat("[Cube.AccelerationMove]直線速度範囲を超えました. targetSpeed={0}", targetSpeed);
+            if (255 < acceleration) Debug.LogErrorFormat("[Cube.AccelerationMove]加速度範囲を超えました. acceleration={0}", acceleration);
+            if (65535 < rotationSpeed) Debug.LogErrorFormat("[Cube.AccelerationMove]回転速度範囲を超えました. rotationSpeed={0}", rotationSpeed);
+            if (255 < controlTime) Debug.LogErrorFormat("[Cube.AccelerationMove]制御時間範囲を超えました. controlTime={0}", controlTime);
+#endif
             MotorAccCmd cmd = new MotorAccCmd();
-            cmd.spd = (byte)targetSpeed; cmd.acc = (byte)acceleration;
-            cmd.rotationSpeed = rotationSpeed; cmd.accRotationType = accRotationType;
-            cmd.accMoveType = accMoveType; cmd.accPriorityType = accPriorityType; cmd.controlTime = controlTime;
+            cmd.spd = (byte)Mathf.Clamp(targetSpeed, this.deadzone, this.maxMotor);
+            cmd.acc = (byte)Mathf.Clamp(acceleration, 0, 255);
+            cmd.rotationSpeed = Mathf.Clamp(rotationSpeed, -65535, 65535);
+            cmd.accPriorityType = accPriorityType;
+            cmd.controlTime = (byte)Mathf.Clamp(controlTime, 0, 255);
             cmd.tRecv = Time.time;
             motorAccCmdQ.Enqueue(cmd);
         }

@@ -173,10 +173,10 @@ namespace toio.Simulator
             int targetX,
             int targetY,
             int targetAngle,
-            byte configID,
-            byte timeOut,
+            int configID,
+            int timeOut,
             Cube.TargetMoveType targetMoveType,
-            byte maxSpd,
+            int maxSpd,
             Cube.TargetSpeedType targetSpeedType,
             Cube.TargetRotationType targetRotationType
         ){ NotSupportedWarning(); }
@@ -185,21 +185,19 @@ namespace toio.Simulator
             int[] targetYList,
             int[] targetAngleList,
             Cube.TargetRotationType[] multiRotationTypeList,
-            byte configID,
-            byte timeOut,
+            int configID,
+            int timeOut,
             Cube.TargetMoveType targetMoveType,
-            byte maxSpd,
+            int maxSpd,
             Cube.TargetSpeedType targetSpeedType,
             Cube.MultiWriteType multiWriteType
         ){ NotSupportedWarning(); }
         public virtual void AccelerationMove(
             int targetSpeed,
             int acceleration,
-            ushort rotationSpeed,
-            Cube.AccRotationType accRotationType,
-            Cube.AccMoveType accMoveType,
+            int rotationSpeed,
             Cube.AccPriorityType accPriorityType,
-            byte controlTime
+            int controlTime
         ){ NotSupportedWarning(); }
 
         // ---------- 2.2.0 ----------
