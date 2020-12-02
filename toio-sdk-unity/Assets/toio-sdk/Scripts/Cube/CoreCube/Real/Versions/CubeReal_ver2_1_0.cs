@@ -167,8 +167,8 @@ namespace toio
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){
             if (!this.isConnected) { return; }
-            AccMoveType accMoveType = targetSpeed > 0 ? AccMoveType.Forward : AccMoveType.Backward;
-            AccRotationType accRotationType = rotationSpeed > 0 ? AccRotationType.Clockwise : AccRotationType.CounterClockwise;
+            int accMoveType = targetSpeed > 0 ? 0 : 1;
+            int accRotationType = rotationSpeed > 0 ? 0 : 1;
 
             targetSpeed = Math.Abs(targetSpeed);
             rotationSpeed = Math.Abs(rotationSpeed);
