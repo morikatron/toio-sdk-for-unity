@@ -7,6 +7,7 @@ public class Sample_Test : MonoBehaviour
 {
     Cube cube;
 
+    UnityEngine.UI.Text textNum;
     UnityEngine.UI.Text textRes;
     UnityEngine.UI.Text textPositionID;
     UnityEngine.UI.Text textAngle;
@@ -14,12 +15,12 @@ public class Sample_Test : MonoBehaviour
 
     async void Start()
     {
-        Random.InitState(0);
         // UI の取得
         this.textRes = GameObject.Find("TextRes").GetComponent<Text>();
         this.textPositionID = GameObject.Find("TextPositionID").GetComponent<Text>();
         this.textAngle = GameObject.Find("TextAngle").GetComponent<Text>();
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
+        this.textNum = GameObject.Find("TextNum").GetComponent<Text>();
         // Cube の接続
         var peripheral = await new NearestScanner().Scan();
         cube = await new CubeConnecter().Connect(peripheral);
@@ -33,16 +34,12 @@ public class Sample_Test : MonoBehaviour
         cube.multiTargetMoveCallback.AddListener("Sample_Sensor", OnTargetRespond);
     }
 
-
-    
     private int m = 0;//3
     private int s = 0;//4
     private int r = 0;//7
     private bool logflag = false;
     private int index = 0;
     private long start_t;
-
-
 
     public void test_random() {
 
@@ -57,7 +54,8 @@ public class Sample_Test : MonoBehaviour
             r=r+1;
         }
         if (r == 7){return;}
-
+        this.textNum.text = index.ToString();
+        Random.InitState(index);
         var x = Random.Range(100,400);
         var y = Random.Range(100,400);
         var a = Random.Range(0,720);
@@ -77,39 +75,67 @@ public class Sample_Test : MonoBehaviour
                         0,                               //0~255
                         255,                             //0~255
                         movetype,//0~2
-                        80,                              //10~110
+                        50,                              //10~110
                         speedtype,   //0~4
-                        rotype, //0~2絶対角度 3~6 
+                        rotype, //0~2絶対角度 3~6
                         Cube.ORDER_TYPE.Strong);
-        
+
         m=m+1;
         }
 
-    
-    public void test_1() {
+    public void test_reset() {
         this.textRes.text =　"";
-        cube.TargetMove(196,
-                        128,
-                        628,
-                        0,255,                             
-                        Cube.TargetMoveType.RotatingMove,80,                              
-                        Cube.TargetSpeedType.UniformSpeed,
-                        Cube.TargetRotationType.AbsoluteLeastAngle, 
-                        Cube.ORDER_TYPE.Strong);}
+            cube.TargetMove(250,250,270,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);}
 
-
-
-    public void test_2() {
+    public void test_11() {
         this.textRes.text =　"";
-        cube.TargetMove(164,
-                        111,
-                        94,
-                        0,255,                             
-                        Cube.TargetMoveType.RoundBeforeMove,80,                              
-                        Cube.TargetSpeedType.VariableSpeed,
-                        Cube.TargetRotationType.AbsoluteLeastAngle, 
-                        Cube.ORDER_TYPE.Strong);}
+        int[] xl = new int[]{250,200};
+        int[] yl = new int[]{200,250};
+        int[] al = new int[]{200,300};
+        Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.AbsoluteClockwise};
 
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.MultiWriteType.Write,
+                            Cube.ORDER_TYPE.Strong);}
+
+    public void test_add() {
+        this.textRes.text =　"";
+        int[] xl = new int[]{300,300};
+        int[] yl = new int[]{350,250};
+        int[] al = new int[]{80,120};
+        Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.AbsoluteClockwise};
+
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.MultiWriteType.Add,
+                            Cube.ORDER_TYPE.Strong);}
+
+    public void test_Nosuppot() {
+        this.textRes.text =　"";
+        int[] xl = new int[]{300,-1};
+        int[] yl = new int[]{350,-1};
+        int[] al = new int[]{80,120};
+        Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.Original};
+
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.MultiWriteType.Add,
+                            Cube.ORDER_TYPE.Strong);}
     /*
     public void test2() {
         this.textRes.text =　"";
@@ -224,8 +250,6 @@ public class Sample_Test : MonoBehaviour
                                             Cube.ORDER_TYPE.Strong);}
 
 
-    
-    
     public void test3_1() {cube.AccelerationMove(100,2,0,Cube.AccRotationType.Clockwise,Cube.AccMoveType.Forward,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);}
     public void test3_2() {cube.AccelerationMove(50,2,Cube.AccMoveType.Forward,0,Cube.ORDER_TYPE.Strong);}
 */
@@ -236,7 +260,7 @@ public class Sample_Test : MonoBehaviour
         {
             if (cube.isConnected)
             {
-                
+
             }
         }
     }
