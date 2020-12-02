@@ -257,7 +257,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1566689158}
-          m_MethodName: test_21
+          m_MethodName: test_add
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1826,7 +1826,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1566689158}
-          m_MethodName: test_41
+          m_MethodName: test_reset
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5312,7 +5312,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1566689158}
-          m_MethodName: test_31
+          m_MethodName: test_Nosuppot
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
