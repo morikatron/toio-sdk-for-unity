@@ -572,6 +572,37 @@ public override bool shake
 }
 ```
 
+### モーター速度検出
+
+> 2.2.0 の機能です。
+
+[モーターのシミュレーション]()によって計算されたタイヤの速度を変換してモーター速度とします。
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected void SimulateMotorSpeedSensor()
+{
+    int left = Mathf.RoundToInt(speedTireL/CubeSimulator.VMeterOverU);
+    int right = Mathf.RoundToInt(speedTireR/CubeSimulator.VMeterOverU);
+    _SetMotorSpeed(left, right);
+}
+```
+
+値が変更された時に、対応コールバック `motorSpeedCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected void _SetMotorSpeed(int left, int right)
+{
+    left = Mathf.Abs(left);
+    right = Mathf.Abs(right);
+    if (motorSpeedEnabled)
+        if (this.leftMotorSpeed != left || this.rightMotorSpeed != right)
+            this.motorSpeedCallback?.Invoke(left, right);
+    this.leftMotorSpeed = left;
+    this.rightMotorSpeed = right;
+}
+```
 
 ## 4.3. コマンドの実行
 
@@ -721,17 +752,21 @@ for i in range(11):
 
 ```c#
 // CubeSimulator.cs
-private void _PlaySound(int soundId, int volume){
-    // 同じオクターブにある A の番号を計算
-    int octave = (int)(soundId/12);
-    int idx = (int)(soundId%12);
-    // A をロード
-    var audio = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
-    audioSource.clip = audio;
-    // ピッチと音量を入力値に調整
-    audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+private int playingSoundId = -1;
+internal void _PlaySound(int soundId, int volume){
+    if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+    if (soundId != playingSoundId)
+    {
+        playingSoundId = soundId;
+        int octave = (int)(soundId/12);
+        int idx = (int)(soundId%12);
+        var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+        audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+        audioSource.clip = aCubeOnSlot;
+    }
     audioSource.volume = (float)volume/256;
-    audioSource.Play();
+    if (!audioSource.isPlaying)
+        audioSource.Play();
 }
 ```
 
@@ -741,7 +776,7 @@ private void _PlaySound(int soundId, int volume){
 
 ```c#
 // CubeSimulator.cs
-private void _SetLight(int r, int g, int b){
+internal void _SetLight(int r, int g, int b){
     LED.GetComponent<Renderer>().material.color = new Color(r/255f, g/255f, b/255f);
 }
 ```
