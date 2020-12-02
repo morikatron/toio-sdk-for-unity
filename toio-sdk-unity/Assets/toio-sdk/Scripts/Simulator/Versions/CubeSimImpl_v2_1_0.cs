@@ -112,13 +112,14 @@ namespace toio.Simulator
                     currMotorMultiTargetCmd = multiCmdTemp;
                     MultiTargetMoveInit();
                 }
-                else if (hasNextMotorMultiTargetCmd)
+                else if (this.hasNextMotorMultiTargetCmd)
                 {
                     this.multiTargetMoveCallback?.Invoke(multiCmdTemp.configID, Cube.TargetMoveRespondType.AddRefused);
                 }
                 else
                 {
-                    nextMotorMultiTargetCmd = multiCmdTemp;
+                    this.nextMotorMultiTargetCmd = multiCmdTemp;
+                    this.hasNextMotorMultiTargetCmd = true;
                 }
             }
 
@@ -296,7 +297,7 @@ namespace toio.Simulator
             {
                 float relativeDeg;
                 (translate, rotate, relativeDeg) = TargetMove_RotateControl(
-                    cmd.absoluteDeg, cmd.relativeDeg, cmd.lastDeg, cmd.targetRotationType);
+                    cmd.absoluteDeg, cmd.relativeDeg, cmd.lastDeg, cmd.targetRotationType,cmd.maxSpd);
                 if (cmd.targetRotationType==Cube.TargetRotationType.RelativeClockwise
                     || cmd.targetRotationType==Cube.TargetRotationType.RelativeCounterClockwise)
                     this.currMotorTargetCmd.relativeDeg = relativeDeg;
@@ -314,9 +315,9 @@ namespace toio.Simulator
 
         protected (float, float, float) TargetMove_RotateControl(
             float absoluteDeg, float relativeDeg, float lastDeg,
-            Cube.TargetRotationType targetRotationType
+            Cube.TargetRotationType targetRotationType, byte maxSpd
         ){
-            float translate=0, rotate=0;
+            float rotate=0;
 
             var ddeg = Deg(absoluteDeg - this.deg);
             // 回転タイプ
@@ -363,8 +364,9 @@ namespace toio.Simulator
                     break;
                 }
             }
+            rotate = Mathf.Clamp(rotate, this.deadzone, maxSpd);
 
-            return (translate, rotate, relativeDeg);
+            return (0, rotate, relativeDeg);
         }
         protected (float, float) TargetMove_MoveControl(
             ushort x, ushort y,
@@ -528,22 +530,14 @@ namespace toio.Simulator
 
             this.currMotorMultiTargetCmd.initialDeg = this.deg;
 
-            // x/y of value 0xffff means last x/y
-            for (int i=0; i<cmd.xs.Length; i++)
+            // Parameter Error
+            if (cmd.xs[0]==65535 && cmd.ys[0]==65535 && cmd.rotTypes[0]==Cube.TargetRotationType.Original)
             {
-                if (i==0)
-                {
-                    if (cmd.xs[i]==65535) this.currMotorMultiTargetCmd.xs[i] = (ushort)this.x;
-                    if (cmd.ys[i]==65535) this.currMotorMultiTargetCmd.ys[i] = (ushort)this.y;
-                }
-                else
-                {
-                    if (cmd.xs[i]==65535) this.currMotorMultiTargetCmd.xs[i] = this.currMotorMultiTargetCmd.xs[i-1];
-                    if (cmd.ys[i]==65535) this.currMotorMultiTargetCmd.ys[i] = this.currMotorMultiTargetCmd.xs[i-1];
-                }
+                this.multiTargetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
+                motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
             }
-
-            cmd = currMotorMultiTargetCmd;  // update
+            if (cmd.xs[0]==65535) this.currMotorMultiTargetCmd.xs[0] = (ushort)this.x;
+            if (cmd.ys[0]==65535) this.currMotorMultiTargetCmd.ys[0] = (ushort)this.y;
 
             // Unsupported
             if (cmd.maxSpd < 10)
@@ -559,9 +553,20 @@ namespace toio.Simulator
                 motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
             }
 
-            // Parameter Error ??
-
             // Calc. Acceleration
+            for (int i=0; i<cmd.xs.Length; i++)
+            {
+                if (i==0)
+                {
+                    if (cmd.xs[i]==65535) cmd.xs[i] = (ushort)this.x;
+                    if (cmd.ys[i]==65535) cmd.ys[i] = (ushort)this.y;
+                }
+                else
+                {
+                    if (cmd.xs[i]==65535) cmd.xs[i] = cmd.xs[i-1];
+                    if (cmd.ys[i]==65535) cmd.ys[i] = cmd.xs[i-1];
+                }
+            }
             float overallDist = 0;
             for (int i=0; i<cmd.xs.Length; i++)
             {
@@ -597,14 +602,25 @@ namespace toio.Simulator
                 motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
             }
 
-            // toio ID missed Error
+            // ---- toio ID missed Error ----
             if (!this.onMat)
             {
                 this.multiTargetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ToioIDmissed);
                 motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
             }
 
+            // ---- Parameter Error ----
+            if (cmd.xs[cmd.idx]==65535 && cmd.ys[cmd.idx]==65535 && cmd.rotTypes[cmd.idx]==Cube.TargetRotationType.Original)
+            {
+                this.multiTargetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
+                motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
+            }
+
             // ---- Preprocess ----
+            if (cmd.xs[cmd.idx]==65535 && cmd.idx>0)
+                this.currMotorMultiTargetCmd.xs[cmd.idx] = cmd.xs[cmd.idx] = cmd.xs[cmd.idx-1];
+            if (cmd.ys[cmd.idx]==65535 && cmd.idx>0)
+                this.currMotorMultiTargetCmd.ys[cmd.idx] = cmd.ys[cmd.idx] = cmd.ys[cmd.idx-1];
             Vector2 targetPos = new Vector2(cmd.xs[cmd.idx], cmd.ys[cmd.idx]);
             Vector2 pos = new Vector2(this.x, this.y);
             var dpos = targetPos - pos;
@@ -660,7 +676,7 @@ namespace toio.Simulator
             {
                 float relativeDeg;
                 (translate, rotate, relativeDeg) = TargetMove_RotateControl(
-                    cmd.absoluteDeg, cmd.relativeDeg, cmd.lastDeg, cmd.rotTypes[cmd.idx]);
+                    cmd.absoluteDeg, cmd.relativeDeg, cmd.lastDeg, cmd.rotTypes[cmd.idx], cmd.maxSpd);
                 if (cmd.rotTypes[cmd.idx]==Cube.TargetRotationType.RelativeClockwise
                     || cmd.rotTypes[cmd.idx]==Cube.TargetRotationType.RelativeCounterClockwise)
                     this.currMotorMultiTargetCmd.relativeDeg = relativeDeg;
