@@ -382,5 +382,90 @@ namespace toio.Tests
             yield return new MonoBehaviourTest<test>();
         }
 
+        [UnityTest, Order(17)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator MultitargetMove_add() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            int[] xl_1 = new int[]{250,200};
+            int[] yl_1 = new int[]{200,450};
+            int[] al_1 = new int[]{200,300};
+            Cube.TargetRotationType[] tl_1 = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.AbsoluteClockwise};
+
+            cube.MultiTargetMove(xl_1,yl_1,al_1,tl_1,0,20,
+                                Cube.TargetMoveType.RotatingMove,30,
+                                Cube.TargetSpeedType.UniformSpeed,
+                                Cube.MultiWriteType.Write,
+                                Cube.ORDER_TYPE.Strong);
+
+            yield return new WaitForSeconds(1);
+
+            int[] xl_2 = new int[]{300,300};
+            int[] yl_2 = new int[]{350,250};
+            int[] al_2 = new int[]{80,120};
+            Cube.TargetRotationType[] tl_2 = new Cube.TargetRotationType[]{
+                Cube.TargetRotationType.AbsoluteClockwise,
+                Cube.TargetRotationType.AbsoluteClockwise};
+
+            cube.MultiTargetMove(xl_2,yl_2,al_2,tl_2,0,20,
+                                Cube.TargetMoveType.RotatingMove,30,
+                                Cube.TargetSpeedType.UniformSpeed,
+                                Cube.MultiWriteType.Add,
+                                Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(18)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator MultitargetMove_add_write() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
+            int[] xl_1 = new int[]{150,450};
+            int[] yl_1 = new int[]{150,450};
+            int[] al_1 = new int[]{200,300};
+            Cube.TargetRotationType[] tl_1 = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.AbsoluteClockwise};
+
+            int[] xl_2 = new int[]{300,300};
+            int[] yl_2 = new int[]{350,250};
+            int[] al_2 = new int[]{80,120};
+            Cube.TargetRotationType[] tl_2 = new Cube.TargetRotationType[]{
+                Cube.TargetRotationType.AbsoluteClockwise,
+                Cube.TargetRotationType.AbsoluteClockwise};
+
+            cube.MultiTargetMove(xl_1,yl_1,al_1,tl_1,0,20,
+                                Cube.TargetMoveType.RotatingMove,30,
+                                Cube.TargetSpeedType.UniformSpeed,
+                                Cube.MultiWriteType.Add,
+                                Cube.ORDER_TYPE.Strong);
+
+            //yield return new WaitForSeconds(1);
+
+            cube.MultiTargetMove(xl_2,yl_2,al_2,tl_2,0,20,
+                                Cube.TargetMoveType.RotatingMove,30,
+                                Cube.TargetSpeedType.UniformSpeed,
+                                Cube.MultiWriteType.Write,
+                                Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
     }
 }
