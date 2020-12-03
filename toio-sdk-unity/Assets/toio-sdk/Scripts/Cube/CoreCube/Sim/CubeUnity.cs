@@ -369,10 +369,10 @@ namespace toio
             int targetX,
             int targetY,
             int targetAngle,
-            byte configID = 0,
-            byte timeOut = 0,
+            int configID = 0,
+            int timeOut = 0,
             TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
+            int maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong
@@ -390,10 +390,10 @@ namespace toio
             int[] targetYList,
             int[] targetAngleList,
             TargetRotationType[] multiRotationTypeList = null,
-            byte configID = 0,
-            byte timeOut = 0,
+            int configID = 0,
+            int timeOut = 0,
             TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
+            int maxSpd = 80,
             TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
             MultiWriteType multiWriteType = MultiWriteType.Write,
             ORDER_TYPE order = ORDER_TYPE.Strong
@@ -410,19 +410,17 @@ namespace toio
         public override void AccelerationMove(
             int targetSpeed,
             int acceleration,
-            ushort rotationSpeed = 0,
-            AccRotationType accRotationType = AccRotationType.Clockwise,
-            AccMoveType accMoveType = AccMoveType.Forward,
+            int rotationSpeed = 0,
             AccPriorityType accPriorityType = AccPriorityType.Translation,
-            byte controlTime = 0,
+            int controlTime = 0,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime), order);
 #else
             CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this,
-                () => simulator.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime),
-                order, "accelerationMove", targetSpeed, acceleration, rotationSpeed, accRotationType, accMoveType, accPriorityType, controlTime);
+                () => simulator.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime),
+                order, "accelerationMove", targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime);
 #endif
         }
 
