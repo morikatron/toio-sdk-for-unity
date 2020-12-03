@@ -180,7 +180,12 @@ namespace toio.Tests
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
-            var lastTime = Time.time;
+            cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
             cube.TargetMove(400,400,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
@@ -453,10 +458,10 @@ namespace toio.Tests
             cube.MultiTargetMove(xl_1,yl_1,al_1,tl_1,0,20,
                                 Cube.TargetMoveType.RotatingMove,30,
                                 Cube.TargetSpeedType.UniformSpeed,
-                                Cube.MultiWriteType.Add,
+                                Cube.MultiWriteType.Write,
                                 Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(1);
+            //yield return new WaitForSeconds(1);
 
             cube.MultiTargetMove(xl_2,yl_2,al_2,tl_2,0,20,
                                 Cube.TargetMoveType.RotatingMove,30,
