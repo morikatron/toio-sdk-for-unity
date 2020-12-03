@@ -361,7 +361,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(16)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator MultitargetMove_Nosuppot() //
+        public IEnumerator MultitargetMove_parameterError() //
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
