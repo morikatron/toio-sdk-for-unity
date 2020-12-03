@@ -134,7 +134,7 @@ public class Sample_Test : MonoBehaviour
         cube.MultiTargetMove(xl,yl,al,tl,0,20,
                             Cube.TargetMoveType.RotatingMove,30,
                             Cube.TargetSpeedType.UniformSpeed,
-                            Cube.MultiWriteType.Add,
+                            Cube.MultiWriteType.Write,
                             Cube.ORDER_TYPE.Strong);}
     /*
     public void test2() {

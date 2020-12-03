@@ -359,5 +359,28 @@ namespace toio.Tests
             test.update = TestUntil_Seconds(10);
             yield return new MonoBehaviourTest<test>();
         }
+
+        [UnityTest, Order(16)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator MultitargetMove_Nosuppot() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            int[] xl = new int[]{300,-1};
+            int[] yl = new int[]{350,-1};
+            int[] al = new int[]{80,120};
+            Cube.TargetRotationType[] tl = new Cube.TargetRotationType[]{
+            Cube.TargetRotationType.AbsoluteClockwise,
+            Cube.TargetRotationType.Original};
+
+        cube.MultiTargetMove(xl,yl,al,tl,0,20,
+                            Cube.TargetMoveType.RotatingMove,30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.MultiWriteType.Write,
+                            Cube.ORDER_TYPE.Strong);
+
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
+
     }
 }
