@@ -456,7 +456,7 @@ namespace toio.Tests
                                 Cube.MultiWriteType.Add,
                                 Cube.ORDER_TYPE.Strong);
 
-            //yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1);
 
             cube.MultiTargetMove(xl_2,yl_2,al_2,tl_2,0,20,
                                 Cube.TargetMoveType.RotatingMove,30,
