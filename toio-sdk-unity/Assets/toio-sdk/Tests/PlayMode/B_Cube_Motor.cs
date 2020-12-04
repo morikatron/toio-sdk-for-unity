@@ -389,7 +389,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(15)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator AccMove_lift() //
+        public IEnumerator AccMove_left() //
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
@@ -419,7 +419,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(18)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator AccMove_time_0() //
+        public IEnumerator AccMove_time_0()
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
@@ -434,9 +434,9 @@ namespace toio.Tests
             Start();
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
             cube.AccelerationMove(-50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = TestUntil_Seconds(10);
+            test.update = TestUntil_Seconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
