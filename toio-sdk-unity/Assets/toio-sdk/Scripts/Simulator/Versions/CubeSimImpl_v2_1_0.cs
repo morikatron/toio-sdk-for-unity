@@ -129,7 +129,8 @@ namespace toio.Simulator
                 if (oldCmdType == "Acc")    // 前指令がAccの場合
                     currMotorAccCmd.initialSpd = oldAccCmd.currSpd;   // 速度を継続する
                 else    // 前指令がAccじゃない場合
-                    currMotorAccCmd.acc = 0;    // 直ちに目標速度にする
+                    currMotorAccCmd.initialSpd = 0;   // 速度を継続する     ※リアルのテスト結果
+                    // currMotorAccCmd.acc = 0;    // 直ちに目標速度にする      ※仕様書
             }
 
 
