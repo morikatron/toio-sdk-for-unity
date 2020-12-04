@@ -555,32 +555,23 @@ namespace toio.Simulator
             }
 
             // Calc. Acceleration
-            for (int i=0; i<cmd.xs.Length; i++)
-            {
-                if (i==0)
-                {
-                    if (cmd.xs[i]==65535) cmd.xs[i] = (ushort)this.x;
-                    if (cmd.ys[i]==65535) cmd.ys[i] = (ushort)this.y;
-                }
-                else
-                {
-                    if (cmd.xs[i]==65535) cmd.xs[i] = cmd.xs[i-1];
-                    if (cmd.ys[i]==65535) cmd.ys[i] = cmd.xs[i-1];
-                }
-            }
             float overallDist = 0;
+            float xi = cmd.xs[0], yi = cmd.ys[0];
             for (int i=0; i<cmd.xs.Length; i++)
             {
                 float d;
                 if (i==0)
-                    d = Mathf.Sqrt( (cmd.xs[i]-this.x)*(cmd.xs[i]-this.x)+(cmd.ys[i]-this.y)*(cmd.ys[i]-this.y) );
+                    d = Mathf.Sqrt( (xi-this.x)*(xi-this.x)+(yi-this.y)*(yi-this.y) );
                 else
-                    d = Mathf.Sqrt( (cmd.xs[i]-cmd.xs[i-1])*(cmd.xs[i]-cmd.xs[i-1])+(cmd.ys[i]-cmd.ys[i-1])*(cmd.ys[i]-cmd.ys[i-1]) );
-                overallDist += d;
+                {
+                    var xi_1 = cmd.xs[i]==65535? xi:cmd.xs[i];
+                    var yi_1 = cmd.ys[i]==65535? yi:cmd.ys[i];
+                    d = Mathf.Sqrt( (xi_1-xi)*(xi_1-xi)+(yi_1-yi)*(yi_1-yi) );
+                    overallDist += d;
+                }
             }
             this.currMotorMultiTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU
                 /2/overallDist;
-
 
         }
         protected virtual void MultiTargetMove_NextIdx()
@@ -726,10 +717,10 @@ namespace toio.Simulator
                 Debug.LogErrorFormat("[Cube.TargetMove]速度範囲を超えました. maxSpd={0}", maxSpd);
 #endif
             MotorMultiTargetCmd cmd = new MotorMultiTargetCmd();
-            cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)(x==-1?65535:Mathf.Clamp(x, 0, 65535))));
+            cmd.xs = Array.ConvertAll(targetXList, new Converter<int, ushort>(x=>(ushort)(x==-1?65535:Mathf.Clamp(x, 0, 65534))));
             if (cmd.xs.Length==0) return;
             cmd.xs = cmd.xs.Take(29).ToArray();
-            cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)(x==-1?65535:Mathf.Clamp(x, 0, 65535))));
+            cmd.ys = Array.ConvertAll(targetYList, new Converter<int, ushort>(x=>(ushort)(x==-1?65535:Mathf.Clamp(x, 0, 65534))));
             if (cmd.ys.Length==0) return;
             cmd.ys = cmd.ys.Take(29).ToArray();
             cmd.degs = Array.ConvertAll(targetAngleList, new Converter<int, ushort>(x=>(ushort)x));
