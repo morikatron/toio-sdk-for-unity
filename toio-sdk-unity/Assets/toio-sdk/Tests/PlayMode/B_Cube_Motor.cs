@@ -370,6 +370,12 @@ namespace toio.Tests
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
+                cube.targetMoveCallback.AddListener("Test",
+                (c, configID, res) =>
+                {
+                    Debug.Log(res);
+                }
+            );
             int[] xl = new int[]{300,-1};
             int[] yl = new int[]{350,-1};
             int[] al = new int[]{80,120};
