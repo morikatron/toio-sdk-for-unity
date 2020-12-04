@@ -706,6 +706,77 @@ internal void _SetSpeed(float speedL, float speedR)
 - モーターモデルの出力した 「電流」 を換算した 「力」 を物理エンジンに与える
 - ホイールの Collider、 物理マテリアルなどはなるべくリアルに作成する
 
+### 目標指定付きモーター制御・複数目標指定付きモーター制御
+
+実機のファームウェアの実装が公開されていないため、シミュレータの（複数）目標指定付きモーター制御は、仕様書と実機の動きとを参考しながら実装されたものです。その中に推測で作られた部分もあり、実機と差があるかもしれないため、いくつか重要な部分を説明します。
+
+#### 移動タイプ
+
+`回転しながら移動`の場合、目標がキューブの前方にあるか後方にあるかによって、前進か後退かを決めます。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected (float, float) TargetMove_MoveControl(ushort x, ushort y, byte maxSpd, Cube.TargetSpeedType targetSpeedType, float acc, Cube.TargetMoveType targetMoveType)
+{
+    // ...
+    Vector2 targetPos = new Vector2(x, y);
+    Vector2 pos = new Vector2(this.x, this.y);
+    var dpos = targetPos - pos;
+    var dir2tar = Vector2.SignedAngle(Vector2.right, dpos);
+    var deg2tar = Deg(dir2tar - this.deg);                    // use when moving forward
+    var deg2tar_back = (deg2tar+360)%360 -180;                // use when moving backward
+    bool tarOnFront = Mathf.Abs(deg2tar) <= 90;
+    // ...
+    switch (targetMoveType)
+    {
+        case (Cube.TargetMoveType.RotatingMove):        // 回転しながら移動
+        {
+            rotate = tarOnFront? deg2tar : deg2tar_back;
+            translate = tarOnFront? spd : -spd;
+            break;
+        }
+        // ...
+    }
+    // ...
+}
+
+```
+
+#### 速度変化タイプ
+
+加速の場合を例として、指令の実行が始まる際に、パスの長さと最大速度によって加速度が計算されます。指令の実行中は、キューブの位置と関係なく、時間経過と加速度によって加速していきます。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected virtual void TargetMoveInit()
+{
+    // ...
+    this.currMotorTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU/2/dist;
+    // ...
+}
+```
+
+#### ステアリング制御
+
+進行方向と目標への角度に比例して、回転指令値`rotate`が計算されます。
+
+しかし、直接に`rotate`と併進指令値`translate`を合わせると（つまり`rotate`は回転の角速度と比例すると）、併進指令値が大きい場合、回転不足が生じます。逆に、`rotate`と`translate`を掛け算して新しい`rotate`値にすると（つまり`rotate`は回転半径と比例すると）、併進指令値が小さい場合に回転不足が生じます。
+
+なので、`translate`の大きさによって、上記二種類の`rotate`の加重平均を取ることで、回転不足を解消します。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected void ApplyMotorControl(float translate, float rotate)
+{
+    var miu = Mathf.Abs(translate / this.maxMotor);
+    rotate *= miu * Mathf.Abs(translate/50) + (1-miu) * 1;
+    var uL = translate + rotate;
+    var uR = translate - rotate;
+    // ...
+}
+```
+
+
 ### サウンド
 
 Unity の AudioSource コンポーネントを利用して MIDI ノートナンバーに応じた音色を再生しています。
