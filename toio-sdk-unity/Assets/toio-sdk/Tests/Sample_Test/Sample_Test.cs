@@ -136,6 +136,27 @@ public class Sample_Test : MonoBehaviour
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.MultiWriteType.Write,
                             Cube.ORDER_TYPE.Strong);}
+
+
+    public void test_Acc_1() {cube.AccelerationMove(50,2,50,Cube.AccPriorityType.Translation,5,Cube.ORDER_TYPE.Strong);}
+    public void test_Acc_2() {cube.AccelerationMove(-50,2,-50,Cube.AccPriorityType.Translation,5,Cube.ORDER_TYPE.Strong);}
+
+    public void test_Acc_3() {cube.AccelerationMove(50,2,50,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);}
+    public void test_Acc_4() {cube.AccelerationMove(50,2,50,Cube.AccPriorityType.Rotation,0,Cube.ORDER_TYPE.Strong);}
+
+    public void test_Acc_5() {cube.AccelerationMove(0,2,100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);}
+    public void test_Acc_6() {cube.AccelerationMove(0,2,50,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);}
+
+    public void test_Acc_7() {cube.AccelerationMove(0,2,100,Cube.AccPriorityType.Rotation,0,Cube.ORDER_TYPE.Strong);}
+    public void test_Acc_8() {cube.AccelerationMove(0,2,50,Cube.AccPriorityType.Rotation,0,Cube.ORDER_TYPE.Strong);}
+
+    public void test_Acc_9() {cube.AccelerationMove(20,2,100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);}
+    public void test_Acc_10() {cube.AccelerationMove(20,2,50,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);}
+
+    public void test_Acc_11() {cube.AccelerationMove(20,2,100,Cube.AccPriorityType.Rotation,0,Cube.ORDER_TYPE.Strong);}
+    public void test_Acc_12() {cube.AccelerationMove(20,2,50,Cube.AccPriorityType.Rotation,0,Cube.ORDER_TYPE.Strong);}
+
+
     /*
     public void test2() {
         this.textRes.text =　"";
