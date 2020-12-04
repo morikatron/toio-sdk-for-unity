@@ -815,13 +815,13 @@ namespace toio.Simulator
             int controlTime
         ){
 #if !RELEASE
-            if (this.maxMotor < targetSpeed) Debug.LogErrorFormat("[Cube.AccelerationMove]直線速度範囲を超えました. targetSpeed={0}", targetSpeed);
+            if (this.maxMotor < Mathf.Abs(targetSpeed)) Debug.LogErrorFormat("[Cube.AccelerationMove]直線速度範囲を超えました. targetSpeed={0}", targetSpeed);
             if (255 < acceleration) Debug.LogErrorFormat("[Cube.AccelerationMove]加速度範囲を超えました. acceleration={0}", acceleration);
             if (65535 < rotationSpeed) Debug.LogErrorFormat("[Cube.AccelerationMove]回転速度範囲を超えました. rotationSpeed={0}", rotationSpeed);
             if (255 < controlTime) Debug.LogErrorFormat("[Cube.AccelerationMove]制御時間範囲を超えました. controlTime={0}", controlTime);
 #endif
             MotorAccCmd cmd = new MotorAccCmd();
-            cmd.spd = (byte)Mathf.Clamp(targetSpeed, this.deadzone, this.maxMotor);
+            cmd.spd = Mathf.Clamp(targetSpeed, -this.maxMotor, this.maxMotor);
             cmd.acc = (byte)Mathf.Clamp(acceleration, 0, 255);
             cmd.rotationSpeed = Mathf.Clamp(rotationSpeed, -65535, 65535);
             cmd.accPriorityType = accPriorityType;
