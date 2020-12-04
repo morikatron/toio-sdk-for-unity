@@ -472,5 +472,47 @@ namespace toio.Tests
             test.update = TestUntil_Seconds(10);
             yield return new MonoBehaviourTest<test>();
         }
+
+        [UnityTest, Order(19)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator AccMove_forward() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.AccelerationMove(100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(20)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator AccMove_backward() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.AccelerationMove(-100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(21)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator AccMove_lift() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.AccelerationMove(100,2,-100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(21)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator AccMove_right() //
+        {
+            Start();
+            var cube = test.CreateCube(250, 250, 270);
+            cube.AccelerationMove(100,2,100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            test.update = TestUntil_Seconds(10);
+            yield return new MonoBehaviourTest<test>();
+        }
+
     }
+
 }
