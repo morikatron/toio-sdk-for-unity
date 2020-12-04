@@ -739,7 +739,6 @@ protected (float, float) TargetMove_MoveControl(ushort x, ushort y, byte maxSpd,
     }
     // ...
 }
-
 ```
 
 #### 速度変化タイプ
