@@ -370,7 +370,7 @@ namespace toio.Tests
         {
             Start();
             var cube = test.CreateCube(250, 250, 270);
-                cube.targetMoveCallback.AddListener("Test",
+            cube.multiTargetMoveCallback.AddListener("Test",
                 (c, configID, res) =>
                 {
                     Debug.Log(res);
