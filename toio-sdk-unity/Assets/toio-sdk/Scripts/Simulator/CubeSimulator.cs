@@ -304,6 +304,22 @@ namespace toio.Simulator
         }
 
         /// <summary>
+        /// 目標指定付きモーター制御の応答コールバックを設定する
+        /// </summary>
+        public void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            impl.StartNotification_TargetMove(action);
+        }
+
+        /// <summary>
+        /// 複数目標指定付きモーター制御の応答コールバックを設定する
+        /// </summary>
+        public void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            impl.StartNotification_MultiTargetMove(action);
+        }
+
+        /// <summary>
         /// シェイク検出のイベントコールバックを設定する
         /// </summary>
         public void StartNotification_Shake(System.Action<bool> action)
@@ -331,6 +347,7 @@ namespace toio.Simulator
 
         // ============ コマンド ============
 
+        // --------- 2.0.0 --------
         /// <summary>
         /// モーター：時間指定付きモーター制御
         /// </summary>
@@ -383,17 +400,55 @@ namespace toio.Simulator
             impl.StopSound();
         }
 
-
-        // ============ 設定 ============
-
         /// <summary>
         /// 水平検出の閾値を設定する（度）
         /// </summary>
-        public void SetSlopeThreshold(int degree)
+        public void ConfigSlopeThreshold(int degree)
         {
-            impl.SetSlopeThreshold(degree);
+            impl.ConfigSlopeThreshold(degree);
         }
 
+        // --------- 2.1.0 --------
+        public void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){
+            impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
+        }
+
+        public void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){
+            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
+        }
+
+        public void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            int rotationSpeed,
+            Cube.AccPriorityType accPriorityType,
+            int controlTime
+        ){
+            impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime);
+        }
+
+        // --------- 2.2.0 --------
         /// <summary>
         /// モーターの速度情報の取得の設定
         /// </summary>
