@@ -196,7 +196,8 @@ namespace toio.Simulator
             var cmd = currMotorTargetCmd;
 
             // Parameter Error
-            if (cmd.x==65535 && cmd.y==65535 && cmd.targetRotationType==Cube.TargetRotationType.Original)
+            if (cmd.x==65535 && cmd.y==65535
+                && (cmd.targetRotationType==Cube.TargetRotationType.Original || cmd.targetRotationType==Cube.TargetRotationType.NotRotate))
             {
                 this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
                 motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
@@ -222,18 +223,6 @@ namespace toio.Simulator
                 this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ToioIDmissed);
                 motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
             }
-
-            // Parameter Error
-            // if (dist < 8 &&
-            //     cmd.targetRotationType==Cube.TargetRotationType.NotRotate
-            //     || cmd.targetRotationType==Cube.TargetRotationType.Original
-            //     || cmd.targetRotationType==Cube.TargetRotationType.RelativeClockwise && cmd.deg==0
-            //     || cmd.targetRotationType==Cube.TargetRotationType.RelativeCounterClockwise && cmd.deg==0
-            //     || (byte)cmd.targetRotationType<3 && Mathf.Abs(Deg(cmd.deg-this.deg))<5
-            // ){
-            //     this.targetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
-            //     motorCurrentCmdType = ""; motorLeft = 0; motorRight = 0; return;
-            // }
 
             this.currMotorTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU
                 /2/dist;
@@ -532,7 +521,8 @@ namespace toio.Simulator
             this.currMotorMultiTargetCmd.initialDeg = this.deg;
 
             // Parameter Error
-            if (cmd.xs[0]==65535 && cmd.ys[0]==65535 && cmd.rotTypes[0]==Cube.TargetRotationType.Original)
+            if (cmd.xs[0]==65535 && cmd.ys[0]==65535
+                && (cmd.rotTypes[0]==Cube.TargetRotationType.Original || cmd.rotTypes[0]==Cube.TargetRotationType.NotRotate))
             {
                 this.multiTargetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
                 motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
@@ -602,7 +592,8 @@ namespace toio.Simulator
             }
 
             // ---- Parameter Error ----
-            if (cmd.xs[cmd.idx]==65535 && cmd.ys[cmd.idx]==65535 && cmd.rotTypes[cmd.idx]==Cube.TargetRotationType.Original)
+            if (cmd.xs[cmd.idx]==65535 && cmd.ys[cmd.idx]==65535
+                && (cmd.rotTypes[cmd.idx]==Cube.TargetRotationType.Original || cmd.rotTypes[cmd.idx]==Cube.TargetRotationType.NotRotate))
             {
                 this.multiTargetMoveCallback?.Invoke(cmd.configID, Cube.TargetMoveRespondType.ParameterError);
                 motorCurrentCmdType = ""; hasNextMotorMultiTargetCmd = false; motorLeft = 0; motorRight = 0; return;
