@@ -81,6 +81,13 @@ namespace toio.Simulator
             internal set{ NotSupportedWarning(); }}
         public virtual void StartNotification_DoubleTap(System.Action<bool> action)
         { NotSupportedWarning(); }
+        // Target Move
+        public virtual void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+        // Multi Target Move
+        public virtual void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+
         // ---------- 2.2.0 ----------
         // Shake
         public virtual bool shake {
@@ -95,8 +102,6 @@ namespace toio.Simulator
         public virtual int rightMotorSpeed {
             get{ NotSupportedWarning(); return default; }
             protected set{ NotSupportedWarning(); }}
-        public virtual void ConfigMotorRead(bool enabled)
-        { NotSupportedWarning(); }
         public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
         { NotSupportedWarning(); }
         public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
@@ -119,8 +124,8 @@ namespace toio.Simulator
             // target speed
             float targetSpeedL = motorLeft * CubeSimulator.VDotOverU / Mat.DotPerM;
             float targetSpeedR = motorRight * CubeSimulator.VDotOverU / Mat.DotPerM;
-            if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
-            if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
+            // if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
+            // if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
             // 速度更新
             // update tires' speed
@@ -145,6 +150,7 @@ namespace toio.Simulator
 
 
         // ============ Commands ============
+        // ---------- 2.0.0 ----------
         public virtual void Move(int left, int right, int durationMS)
         { NotSupportedWarning(); }
         public virtual void StopLight()
@@ -159,12 +165,55 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
         public virtual void StopSound()
         { NotSupportedWarning(); }
-        public virtual void SetSlopeThreshold(int angle)
+        public virtual void ConfigSlopeThreshold(int angle)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.1.0 ----------
+        public virtual void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){ NotSupportedWarning(); }
+        public virtual void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){ NotSupportedWarning(); }
+        public virtual void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            int rotationSpeed,
+            Cube.AccPriorityType accPriorityType,
+            int controlTime
+        ){ NotSupportedWarning(); }
+
+        // ---------- 2.2.0 ----------
+        public virtual void ConfigMotorRead(bool enabled)
         { NotSupportedWarning(); }
 
         protected virtual void NotSupportedWarning()
         {
             // Debug.LogWarning("Not Supported in this firmware version.");
+        }
+
+
+        // ============ Utils ============
+        protected float Deg(float d)
+        {
+            return (d%360 + 540)%360 -180;
         }
     }
 }

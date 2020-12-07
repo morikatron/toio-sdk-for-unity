@@ -16,7 +16,7 @@ namespace toio.tutorial
 
             // Choose 1 cube not to be of boids
             CubeNavigator navigatorNotBoids = cubeManager.navigators[0];
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
             foreach (var navigator in cubeManager.navigators)
                 if ((navigator.cube as CubeUnity).objName == "Cube Not Boids")
                     navigatorNotBoids = navigator;

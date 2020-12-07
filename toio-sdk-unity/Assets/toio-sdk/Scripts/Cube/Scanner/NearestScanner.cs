@@ -33,7 +33,7 @@ namespace toio
             return await this.impl.Scan();
         }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// Impl for Unity.
         /// </summary>

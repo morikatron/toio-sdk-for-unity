@@ -52,6 +52,7 @@ namespace toio.Simulator
         }
         protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
         {
+            deg = (deg%360+360)%360;
             if (this.x != x || this.y != y || this.deg != deg || !this.onMat)
                 this.IDCallback?.Invoke(x, y, deg, xSensor, ySensor);
             this.x = x; this.y = y; this.deg = deg;
@@ -61,6 +62,7 @@ namespace toio.Simulator
         }
         protected void _SetSandardID(uint stdID, int deg)
         {
+            deg = (deg%360+360)%360;
             if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
                 this.standardIDCallback?.Invoke(stdID, deg);
             this.standardID = stdID;
@@ -329,6 +331,8 @@ namespace toio.Simulator
             MotorTimeCmd cmd = new MotorTimeCmd();
             cmd.left = Mathf.Clamp(left, -maxMotor, maxMotor);
             cmd.right = Mathf.Clamp(right, -maxMotor, maxMotor);
+            if (Mathf.Abs(cmd.left) < this.deadzone) cmd.left = 0;
+            if (Mathf.Abs(cmd.right) < this.deadzone) cmd.right = 0;
             cmd.duration = Mathf.Clamp(durationMS, 0, 2550);
             cmd.tRecv = Time.time;
             motorTimeCmdQ.Enqueue(cmd);
@@ -393,7 +397,7 @@ namespace toio.Simulator
 
         // 水平検出の閾値
         protected int slopeThreshold = 45;
-        public override void SetSlopeThreshold(int degree)
+        public override void ConfigSlopeThreshold(int degree)
         {
             slopeThreshold = degree;
         }

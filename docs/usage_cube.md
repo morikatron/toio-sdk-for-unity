@@ -256,15 +256,17 @@ public int rightSpeed { get; protected set; }
 ## 3.2. コールバック
 
 ```C#
-public class CallbackProvider
+// CallbackProvider<T1>
+// CallbackProvider<T1, T2>
+// CallbackProvider<T1, T2, T3>
+// CallbackProvider<T1, T2, T3, T4>
+// ※疑似コード
+public class CallbackProvider<T...>
 {
-    public virtual Action onAddListener { get; set; }
-    public virtual Action onRemoveListener { get; set; }
-    public virtual Action onClearListener { get; set; }
-    public virtual void AddListener(string key, Action<Cube> listener);
+    public virtual void AddListener(string key, Action<T...> listener);
     public virtual void RemoveListener(string key);
     public virtual void ClearListener();
-    public virtual void Notify(Cube target);
+    public virtual void Notify(T... args);
 }
 
 // ボタンコールバック
@@ -597,6 +599,27 @@ public void TargetMove(
     - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
     - NotRotate : 回転しない
     - Original : 書き込み操作時と同じ 回転量が少ない方向
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+### ConfigMotorRead
+
+```C#
+public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのモーター速度情報の取得の有効化・無効化を設定します<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
+
+- valid
+  - 定義 : 有効無効フラグ
+  - 種類 : true, false
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
