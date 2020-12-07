@@ -14,5 +14,5 @@
 
 キューブの基本操作方法について、[【コチラ】](https://github.com/TakeshiYaeda/unity-toio-simulator/blob/develop_jyo/docs/usage_simulator.md#45-%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95-cubeinteraction)に参照してください。
 
-> Collision(衝突)とDoubleTap(ダブルタップ)のシミュレーションは未実装です。<br>
+> Collision(衝突)、DoubleTap(ダブルタップ)とShake(シェイク)のシミュレーションは未実装です。<br>
 > ビルドする時、プロジェクト設定でDefault OrientationをPortraitに設定してください。

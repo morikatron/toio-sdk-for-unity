@@ -419,7 +419,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
   - 定義：最大速度の指示値
   - 範囲：
     - [Version 2.0.0] 0~100
-    - [Version 2.1.0] 0~115
+    - [Version 2.1.0~2.2.0] 0~115
   - 既定値：70
 - rotateTime
   - 定義：希望回転時間（ms）
@@ -464,7 +464,7 @@ public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int ro
   - 定義：最大速度の指示値
   - 範囲：
     - [Version 2.0.0] 0~100
-    - [Version 2.1.0] 0~115
+    - [Version 2.1.0~2.2.0] 0~115
   - 既定値：70
 - rotateTime
   - 定義：希望回転時間（ms）
