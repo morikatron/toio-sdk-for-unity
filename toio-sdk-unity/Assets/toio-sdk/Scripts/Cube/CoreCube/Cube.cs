@@ -303,18 +303,18 @@ namespace toio
         // 発音ごとの設定構造体
         public struct SoundOperation
         {
-            public ushort durationMs; // ミリ秒
+            public int durationMs;   // ミリ秒
             public byte volume;      // 音量(0~255)
             public byte note_number; // 音符(0~128)
 
-            public SoundOperation(ushort durationMs = 0, byte volume = 0, byte note_number = 0)
+            public SoundOperation(int durationMs = 0, byte volume = 0, byte note_number = 0)
             {
                 this.durationMs = durationMs;
                 this.volume = volume;
                 this.note_number = note_number;
             }
 
-            public SoundOperation(ushort durationMs = 0, byte volume = 0, NOTE_NUMBER note_number = 0)
+            public SoundOperation(int durationMs = 0, byte volume = 0, NOTE_NUMBER note_number = 0)
             {
                 this.durationMs = durationMs;
                 this.volume = volume;
@@ -325,12 +325,12 @@ namespace toio
         // 発光ごとの設定構造体
         public struct LightOperation
         {
-            public ushort durationMs; // ミリ秒
+            public int durationMs;   // ミリ秒
             public byte red;         // 赤色の強さ
             public byte green;       // 緑色の強さ
             public byte blue;        // 青色の強さ
 
-            public LightOperation(ushort durationMs = 0, byte red = 0, byte green = 0, byte blue = 0)
+            public LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte blue = 0)
             {
                 this.durationMs = durationMs;
                 this.red = red;
