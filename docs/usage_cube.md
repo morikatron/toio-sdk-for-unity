@@ -555,15 +555,15 @@ public void TargetMove(
 
 - targetX
   - 定義 : 目標地点の X 座標値
-  - 範囲 : 0~65535
-    - 65535の場合、X 座標は書き込み操作時と同じに設定
+  - 範囲 : -1, 0~65534
+    - -1の場合、X 座標は書き込み操作時と同じに設定
 - targetY
   - 定義 : 目標地点の Y 座標値
-  - 範囲 : 0~65535
-    - 65535の場合、Y 座標は書き込み操作時と同じに設定
+  - 範囲 : -1, 0~65534
+    - -1の場合、Y 座標は書き込み操作時と同じに設定
 - targetAngle
   - 定義 : 目標地点でのキューブの角度Θ
-  - 範囲 : 0~360
+  - 範囲 : 0~8191
 - configID
   - 定義 : 制御識別値、制御の応答を識別するための値。ここで設定した値が対応する応答にも含まれる
   - 範囲 : 0~255
@@ -625,15 +625,15 @@ public void MultiTargetMove(
 
 - targetXList
   - 定義 : 各目標地点の X 座標値の集合
-  - 範囲 : 0~65535
-    - 65535の場合、X 座標は書き込み操作時と同じに設定
+  - 範囲 : -1, 0~65534
+    - -1の場合、X 座標は書き込み操作時と同じに設定
 - targetYList
   - 定義 : 各目標地点の Y 座標値の集合
-  - 範囲 : 0~65535
-    - 65535の場合、Y 座標は書き込み操作時と同じに設定
+  - 範囲 : -1, 0~65534
+    - -1の場合、Y 座標は書き込み操作時と同じに設定
 - targetAngleList
   - 定義 : 目標地点でのキューブの角度Θの集合
-  - 範囲 : 0~360
+  - 範囲 : 0~8191
 - multiRotationTypeList
   - 定義 : 毎回回転タイプの集合
   - 種類 :
@@ -685,8 +685,6 @@ public void AccelerationMove(
             int targetSpeed,
             int acceleration,
             ushort rotationSpeed = 0,
-            AccRotationType accRotationType = AccRotationType.Clockwise,
-            AccMoveType accMoveType = AccMoveType.Forward,
             AccPriorityType accPriorityType = AccPriorityType.Translation,
             byte controlTime = 0,
             ORDER_TYPE order = ORDER_TYPE.Strong);
@@ -696,25 +694,16 @@ public void AccelerationMove(
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
 
 - targetSpeed
-  - 定義 : キューブが進行方向に対して進む速度
+  - 定義 : キューブが進行方向に対して進む速度　マイナスを付けると後退になる
   - 範囲 : 8~115
 - acceleration
   - 定義 : キューブの加速度
   - 範囲 : 0~255
     -  0 の場合「キューブの並進速度」で指定した速度になる
 - rotationSpeed
-  - 定義 : キューブの向きの回転速度[度/秒]
+  - 定義 : キューブの向きの回転速度[度/秒]　マイナスを付けると負方向(反時計回り)になる
   - 範囲 : 0~65535
-- accRotationType
-  - 定義 : キューブの向きの回転方向
-  - 種類 :
-    - Clockwise : 正方向(時計回り)
-    - CounterClockwise : 負方向(反時計回り)
-- accMoveType
-  - 定義 : キューブの進行方向
-  - 種類 :
-    - Forward : 前進
-    - Backward : 後退
+
 - accPriorityType
   - 定義 : 優先指定
   - 種類 :
