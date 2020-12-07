@@ -41,7 +41,7 @@ Cube  +-------------------------------+ キューブルートディレクトリ
 │   ├── Real  +-----------------------+ リアル実装ディレクトリ
 │   │   ├── Versions  +---------------+ リアル実装のバージョンディレクトリ
 │   │   │   ├── CubeReal_ver2_0_0.cs  + 2.0.0リアル実装クラス
-│   │   │   ├── CubeReal_ver2_1_0.cs  + 2.1.0リアル実装クラス	
+│   │   │   ├── CubeReal_ver2_1_0.cs  + 2.1.0リアル実装クラス
 │   │   │   └── CubeReal_ver2_2_0.cs  + 2.2.0リアル実装クラス
 │   │   └── CubeReal.cs  +------------+ リアル実装抽象クラス
 │   ├── Sim    +----------------------+ シミュレータ実装ディレクトリ
@@ -449,6 +449,7 @@ public class CubeConnecter : CubeConnecterInterface
     {/*
         versionTable.add("2.0.0", CubeReal_ver2_0_0)
         versionTable.add("2.1.0", CubeReal_ver2_1_0)
+        versionTable.add("2.2.0", CubeReal_ver2_2_0)
     */}
 
     public async Task<Cube> Connect(BLEPeripheralInterface peripheral)
