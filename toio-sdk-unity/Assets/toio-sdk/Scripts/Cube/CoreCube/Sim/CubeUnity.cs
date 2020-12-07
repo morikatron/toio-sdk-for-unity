@@ -264,6 +264,7 @@ namespace toio
         // -------- ver2.0.0 --------
         public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
+            durationMs = Mathf.Clamp(durationMs/10,1,255)*10;
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.Move(left, right, durationMs), order);
 #else
@@ -275,6 +276,10 @@ namespace toio
         public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
+            for (int i=0; i<operations.Length; i++)
+            {
+                operations[i].durationMs = Mathf.Clamp(operations[i].durationMs/10,1,255)*10;
+            }
 
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.PlaySound(repeatCount, operations), order);
@@ -293,7 +298,7 @@ namespace toio
             for (int i = 0; i < length; i++)
             {
                 data[i] = new SoundOperation();
-                data[i].durationMs = (ushort)(buff[start + i * 3] * 10);
+                data[i].durationMs = buff[start + i * 3] * 10;
                 data[i].note_number = buff[start + i * 3 + 1];
                 data[i].volume = buff[start + i * 3 + 2];
             }
@@ -336,6 +341,7 @@ namespace toio
 
         public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
+            durationMs = Mathf.Clamp(durationMs/10,1,255)*10;
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.SetLight(red, green, blue, duration), order);
 #else
@@ -345,6 +351,11 @@ namespace toio
 
         public override void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
+            repeatCount = Mathf.Clamp(repeatCount, 0, 255);
+            for (int i=0; i<operations.Length; i++)
+            {
+                operations[i].durationMs = Mathf.Clamp(operations[i].durationMs/10,1,255)*10;
+            }
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.SetLights(repeatCount, operations), order);
 #else
@@ -355,6 +366,7 @@ namespace toio
         // Config
         public override void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
+            angle = Mathf.Clamp(angle, 0, 90);
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.SetSlopeThreshold(angle), order);
 #else
