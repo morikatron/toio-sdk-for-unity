@@ -230,7 +230,7 @@ public int deadzone { get; }
 // コールバック機能：doubleTapCallback
 public bool isDoubleTap { get; protected set; }
 
-// キューブの姿態
+// キューブの姿勢
 // キューブの水平面に対する姿勢が変化したときに値が変わります。
 // コールバック機能：poseCallback
 public PoseType pose { get; protected set; }
@@ -286,7 +286,7 @@ public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
 // ver2.1.0
 // ダブルタップコールバック
 public virtual CallbackProvider<Cube> doubleTapCallback { get; }
-// 姿態検出コールバック
+// 姿勢検出コールバック
 public virtual CallbackProvider<Cube> poseCallback { get; }
 // 目標指定付きモーター制御の応答コールバック
 public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
@@ -411,7 +411,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブからあらかじめ用意された効果音を再生します<br>
+キューブ内に用意されている効果音を再生します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
 
 - soundId
@@ -459,8 +459,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 - buff
-  - 定義 : 命令プロコトル
-  - [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+  - 定義 : [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)で定義されたデータブロック
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -589,15 +588,15 @@ public void TargetMove(
     - Deceleration : 目標地点まで徐々に減速
     - VariableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
 - targetRotationType
-  - 定義 : 回転タイプ
+  - 定義 : 目標地点でのキューブの角度Θのタイプ（意味）
   - 種類 :
-    - AbsoluteLeastAngle : 絶対角度 回転量が少ない方向
-    - AbsoluteClockwise : 絶対角度 正方向(時計回り)
-    - AbsoluteCounterClockwise : 絶対角度 負方向(反時計回り)
-    - RelativeClockwise : 相対角度 正方向(時計回り)
-    - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
+    - AbsoluteLeastAngle : 絶対角度・回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度・正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度・負方向(反時計回り)
+    - RelativeClockwise : 相対角度・正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度・負方向(反時計回り)
     - NotRotate : 回転しない
-    - Original : 書き込み操作時と同じ 回転量が少ない方向
+    - Original : 書き込み操作時と同じ・回転量が少ない方向
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -642,30 +641,30 @@ public void MultiTargetMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
-キューブのモーターを複数目標指定付き制御します<br>
+キューブの複数目標指定付きモーター制御を実行します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)
 
 - targetXList
-  - 定義 : 各目標地点の X 座標値の集合
+  - 定義 : 各目標地点の X 座標値の配列
   - 範囲 : -1, 0~65534
     - -1の場合、X 座標は書き込み操作時と同じに設定
 - targetYList
-  - 定義 : 各目標地点の Y 座標値の集合
+  - 定義 : 各目標地点の Y 座標値の配列
   - 範囲 : -1, 0~65534
     - -1の場合、Y 座標は書き込み操作時と同じに設定
 - targetAngleList
-  - 定義 : 目標地点でのキューブの角度Θの集合
+  - 定義 : 目標地点でのキューブの角度Θの配列
   - 範囲 : 0~8191
 - multiRotationTypeList
-  - 定義 : 毎回回転タイプの集合
+  - 定義 : 目標地点でのキューブの角度Θのタイプ（意味）を表す配列
   - 種類 :
-    - AbsoluteLeastAngle : 絶対角度 回転量が少ない方向
-    - AbsoluteClockwise : 絶対角度 正方向(時計回り)
-    - AbsoluteCounterClockwise : 絶対角度 負方向(反時計回り)
-    - RelativeClockwise : 相対角度 正方向(時計回り)
-    - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
-    - NotRotated : 回転しない
-    - Original : 書き込み操作時と同じ 回転量が少ない方向
+    - AbsoluteLeastAngle : 絶対角度・回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度・正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度・負方向(反時計回り)
+    - RelativeClockwise : 相対角度・正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度・負方向(反時計回り)
+    - NotRotate : 回転しない
+    - Original : 書き込み操作時と同じ・回転量が少ない方向
 - configID
   - 定義 : 制御識別値、制御の応答を識別するための値。ここで設定した値が対応する応答にも含まれる
   - 範囲 : 0~255
@@ -712,7 +711,7 @@ public void AccelerationMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
-キューブの加速度指定付きモーターを制御します<br>
+キューブの加速度指定付きモーター制御を実行します<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
 
 - targetSpeed
