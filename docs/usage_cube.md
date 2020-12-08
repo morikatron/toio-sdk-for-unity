@@ -308,7 +308,7 @@ public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
 public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-キューブのモーターを制御します<br>
+キューブのモーターを制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御)
 
 - left
@@ -338,7 +338,7 @@ public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYP
 public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を制御します<br>
+キューブ底面についている LED を制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
 
 - red
@@ -367,7 +367,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 // 発光ごとの設定構造体
 public struct LightOperation
 {
-    public Int16 durationMs; // ミリ秒
+    public int durationMs; // ミリ秒
     public byte red;         // 赤色の強さ
     public byte green;       // 緑色の強さ
     public byte blue;        // 青色の強さ
@@ -375,7 +375,7 @@ public struct LightOperation
 public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を連続的に制御します<br>
+キューブ底面についている LED を連続的に制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
 
 - repeatCount
@@ -396,7 +396,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を消灯させます<br>
+キューブ底面についている LED を消灯させます。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯)
 
 - order
@@ -411,7 +411,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ内に用意されている効果音を再生します<br>
+キューブ内に用意されている効果音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
 
 - soundId
@@ -428,7 +428,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 
 ### PlaySound
 
-キューブから任意の音を再生します<br>
+キューブから任意の音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
 
 ```C#
@@ -436,7 +436,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 // 発音ごとの設定構造体
 public struct SoundOperation
 {
-    public Int16 durationMs; // ミリ秒
+    public int durationMs; // ミリ秒
     public byte volume;      // 音量(0~255)
     public byte note_number; // 音符(0~128)
 }
@@ -472,7 +472,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの音再生を停止します<br>
+キューブの音再生を停止します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#再生の停止)
 
 - order
@@ -487,7 +487,7 @@ public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの水平検出のしきい値を設定します<br>
+キューブの水平検出のしきい値を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#水平検出のしきい値設定)
 
 - angle
@@ -505,7 +505,7 @@ public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの衝突検出のしきい値を設定します<br>
+キューブの衝突検出のしきい値を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#衝突検出のしきい値設定)
 
 - level
@@ -550,7 +550,7 @@ public void TargetMove(
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
-キューブのモーターを目標指定付き制御します<br>
+キューブのモーターを目標指定付き制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
 
 - targetX
@@ -607,7 +607,7 @@ public void TargetMove(
 public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブのモーター速度情報の取得の有効化・無効化を設定します<br>
+キューブのモーター速度情報の取得の有効化・無効化を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
 
 - valid
@@ -641,7 +641,7 @@ public void MultiTargetMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
-キューブの複数目標指定付きモーター制御を実行します<br>
+キューブの複数目標指定付きモーター制御を実行します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)
 
 - targetXList
@@ -711,7 +711,7 @@ public void AccelerationMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
-キューブの加速度指定付きモーター制御を実行します<br>
+キューブの加速度指定付きモーター制御を実行します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
 
 - targetSpeed
