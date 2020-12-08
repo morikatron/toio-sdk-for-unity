@@ -230,7 +230,7 @@ public int deadzone { get; }
 // コールバック機能：doubleTapCallback
 public bool isDoubleTap { get; protected set; }
 
-// キューブの姿態
+// キューブの姿勢
 // キューブの水平面に対する姿勢が変化したときに値が変わります。
 // コールバック機能：poseCallback
 public PoseType pose { get; protected set; }
@@ -286,7 +286,7 @@ public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
 // ver2.1.0
 // ダブルタップコールバック
 public virtual CallbackProvider<Cube> doubleTapCallback { get; }
-// 姿態検出コールバック
+// 姿勢検出コールバック
 public virtual CallbackProvider<Cube> poseCallback { get; }
 // 目標指定付きモーター制御の応答コールバック
 public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
