@@ -425,7 +425,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
   - 定義：希望回転時間（ms）
   - 範囲：100 ~ 2550
   - 既定値：250
-  - 説明：rotateTime で目標に向けるように回転指示値を出す。<br>
+  - 説明：目標へ向けて回転するための時間を指定します。<br>
     小さい値を入れると早く回転し、大きな値を入れるとゆっくりと回転します。正確な回転時間ではなく、だいたいの目安です。<br>
     200 以下になると不安定になる可能性があります。
 - tolerance
@@ -470,7 +470,7 @@ public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int ro
   - 定義：希望回転時間（ms）
   - 範囲：100 ~ 2550
   - 既定値：250
-  - 説明：rotateTime で目標に向けるように回転指示値を出す。<br>
+  - 説明：目標へ向けて回転するための時間を指定します。<br>
     小さい値を入れると早く回転し、大きな値を入れるとゆっくりと回転します。正確な回転時間ではなく、だいたいの目安です。<br>
     200 以下になると不安定になる可能性があります。
 - 戻り値
@@ -563,7 +563,7 @@ public double p_runaway_range = 250;            // スキャン結果をp_runawa
 
 ## 3.3. 取得できる情報
 
-デバッグに使うのが便利です。
+デバッグに便利です。
 
 ```c#
 // 保存した最後の計算結果
@@ -575,7 +575,7 @@ public int waypointIndex = 0;   // 選択したウェイポイントのインデ
 
 Navigator の GetWaypointTo, GetWaypointAway に呼ばれています。
 
-直に使う必要はありません。
+直接呼び出す必要はありません。
 
 ### RunTowards
 
