@@ -264,7 +264,7 @@ namespace toio
         // -------- ver2.0.0 --------
         public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
-            durationMs = Mathf.Clamp(durationMs/10,1,255)*10;
+            durationMs = Mathf.Clamp(durationMs/10, 0, 255)*10;
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.Move(left, right, durationMs), order);
 #else
@@ -278,7 +278,7 @@ namespace toio
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
             for (int i=0; i<operations.Length; i++)
             {
-                operations[i].durationMs = Mathf.Clamp(operations[i].durationMs/10,1,255)*10;
+                operations[i].durationMs = Mathf.Clamp(operations[i].durationMs/10, 0, 255)*10;
             }
 
 #if RELEASE
@@ -341,7 +341,7 @@ namespace toio
 
         public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
         {
-            durationMs = Mathf.Clamp(durationMs/10,1,255)*10;
+            durationMs = Mathf.Clamp(durationMs/10, 0, 255)*10;
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.SetLight(red, green, blue, duration), order);
 #else
@@ -354,7 +354,7 @@ namespace toio
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
             for (int i=0; i<operations.Length; i++)
             {
-                operations[i].durationMs = Mathf.Clamp(operations[i].durationMs/10,1,255)*10;
+                operations[i].durationMs = Mathf.Clamp(operations[i].durationMs/10, 0, 255)*10;
             }
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => simulator.SetLights(repeatCount, operations), order);
