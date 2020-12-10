@@ -63,10 +63,10 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [姿勢検出](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
 | モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
 |                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | o             | o            |
-|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | o             | o            |
+|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
 |                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | o             | o            |
 |                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | o             | o            |
-|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | o             | o            |
+|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
 | 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | o             | x            |
 
 #### ファームウェアバージョン 2.2.0
@@ -290,8 +290,6 @@ public virtual CallbackProvider<Cube> doubleTapCallback { get; }
 public virtual CallbackProvider<Cube> poseCallback { get; }
 // 目標指定付きモーター制御の応答コールバック
 public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
-// 複数目標指定付きモーター制御の応答コールバック
-public virtual CallbackProvider<Cube, int, TargetMoveRespondType>  multiTargetMoveCallback { get; }
 
 // ver2.2.0
 // シェイクコールバック
@@ -618,81 +616,6 @@ public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cu
   - 範囲 : 0.5~
 - callback
   - 定義 : 終了コールバック(設定成功フラグ, キューブ)
-- order
-  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
-  - 種類 : Weak, Strong
-
-<br>
-
-### MultiTargetMove
-
-```C#
-public void MultiTargetMove(
-            int[] targetXList,
-            int[] targetYList,
-            int[] targetAngleList,
-            TargetRotationType[] multiRotationTypeList = null,
-            byte configID = 0,
-            byte timeOut = 0,
-            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
-            byte maxSpd = 80,
-            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
-            MultiWriteType multiWriteType = MultiWriteType.Write,
-            ORDER_TYPE order = ORDER_TYPE.Strong);
-```
-
-キューブの複数目標指定付きモーター制御を実行します。<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)
-
-- targetXList
-  - 定義 : 各目標地点の X 座標値の配列
-  - 範囲 : -1, 0~65534
-    - -1の場合、X 座標は書き込み操作時と同じに設定
-- targetYList
-  - 定義 : 各目標地点の Y 座標値の配列
-  - 範囲 : -1, 0~65534
-    - -1の場合、Y 座標は書き込み操作時と同じに設定
-- targetAngleList
-  - 定義 : 目標地点でのキューブの角度Θの配列
-  - 範囲 : 0~8191
-- multiRotationTypeList
-  - 定義 : 目標地点でのキューブの角度Θのタイプ（意味）を表す配列
-  - 種類 :
-    - AbsoluteLeastAngle : 絶対角度・回転量が少ない方向
-    - AbsoluteClockwise : 絶対角度・正方向(時計回り)
-    - AbsoluteCounterClockwise : 絶対角度・負方向(反時計回り)
-    - RelativeClockwise : 相対角度・正方向(時計回り)
-    - RelativeCounterClockwise : 相対角度・負方向(反時計回り)
-    - NotRotate : 回転しない
-    - Original : 書き込み操作時と同じ・回転量が少ない方向
-- configID
-  - 定義 : 制御識別値、制御の応答を識別するための値。ここで設定した値が対応する応答にも含まれる
-  - 範囲 : 0~255
-- timeOut
-  - 定義 : タイムアウト時間
-  - 範囲 : 0~255
-    -  0 のみ例外的に 10 秒になる
-- targetMoveType
-  - 定義 : 移動タイプ
-  - 種類 :
-    - RotatingMove : 回転しながら移動
-    - RoundForwardMove : 回転しながら移動（後退なし）
-    - RoundBeforeMove : 回転してから移動
-- maxSpd
-  - 定義 : モーターの最大速度指示値
-  - 範囲 : 10~115
-- targetSpeedType
-  - 定義 : モーターの速度変化タイプ
-  - 種類 :
-    - UniformSpeed : 速度一定
-    - Acceleration : 目標地点まで徐々に加速
-    - Deceleration : 目標地点まで徐々に減速
-    - VariableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
-- multiWriteType
-  - 定義 : 書き込み操作の追加設定
-  - 種類 :
-    - Write : 上書き
-    - Add : 追加
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
