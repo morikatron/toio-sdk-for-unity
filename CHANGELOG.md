@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implement shake feature (only changeable on inspector).
   - Implement motor's TargetMove(目標指定付きモーター制御), MultiTargetMove(複数目標指定付きモーター制御), AccelerationMove(加速度指定付きモーター制御) features.
 - [Simulator] Add building support for MAC/Windows.
+- [Sample] Add Sample_Motor which demonstrates Cube.TargetMove and Cube.AccelerationMove.
 
 ### Changed
 
