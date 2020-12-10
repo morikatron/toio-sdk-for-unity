@@ -397,6 +397,7 @@ namespace toio
                 order, "targetMove", targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
 #endif
         }
+        /*
         public override void MultiTargetMove(
             int[] targetXList,
             int[] targetYList,
@@ -419,6 +420,7 @@ namespace toio
                 order, "multiTargetMove", targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
 #endif
         }
+        */
         public override void AccelerationMove(
             int targetSpeed,
             int acceleration,

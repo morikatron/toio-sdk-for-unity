@@ -199,7 +199,7 @@ namespace toio
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ) { NotSupportedWarning(); }
-
+        /*
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
@@ -228,7 +228,7 @@ namespace toio
             MultiWriteType multiWriteType = MultiWriteType.Write,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){ NotSupportedWarning(); }
-
+        */
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御

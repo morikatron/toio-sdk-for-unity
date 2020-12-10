@@ -94,7 +94,7 @@ namespace toio
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove",
                 targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
         }
-
+        /*
         // キューブのモーターを複数目標指定付き制御します
         public override void MultiTargetMove(
             int[] targetXList,
@@ -156,7 +156,7 @@ namespace toio
                 targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut,
                 targetMoveType, maxSpd, targetSpeedType, multiWriteType);
         }
-
+        */
         // キューブの加速度指定付きモーターを制御します
         public override void AccelerationMove(
             int targetSpeed,
