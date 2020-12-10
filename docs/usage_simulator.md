@@ -101,7 +101,7 @@ _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12
 public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default);
 ```
 
-指定タイプのマットの座標範囲を持つ RectInt を取得します
+指定タイプのマットの座標範囲を持つ RectInt を取得します。
 
 - matType
   - 定義：マットのタイプ
@@ -117,7 +117,7 @@ public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMat
 public int UnityDeg2MatDeg(double deg);
 ```
 
-Unity 上の角度を本マット上の角度に変換します
+Unity 上の角度を本マット上の角度に変換します。
 
 - deg
   - 定義：Unity 上の角度（度）
@@ -131,7 +131,7 @@ Unity 上の角度を本マット上の角度に変換します
 public float MatDeg2UnityDeg(double deg);
 ```
 
-本マット上の角度を Unity 上の角度に変換します
+本マット上の角度を Unity 上の角度に変換します。
 
 - deg
   - 定義：本マット上の角度（度）
@@ -145,7 +145,7 @@ public float MatDeg2UnityDeg(double deg);
 public Vector2Int UnityCoord2MatCoord(Vector3 unityCoord);
 ```
 
-Unity の 3D 空間座標から、本マットにおけるマット座標に変換します
+Unity の 3D 空間座標から、本マットにおけるマット座標に変換します。
 
 - unityCoord
   - 定義：Unity 上の座標
@@ -159,7 +159,7 @@ Unity の 3D 空間座標から、本マットにおけるマット座標に変�
 public Vector3 MatCoord2UnityCoord(double x, double y);
 ```
 
-本マットにおけるマット座標から、Unity の 3D 空間座標に変換します
+本マットにおけるマット座標から、Unity の 3D 空間座標に変換します。
 
 - x
   - 定義：本マット上のｘ座標
@@ -201,7 +201,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 public int UnityDeg2MatDeg(double deg);
 ```
 
-Unity 上の角度を本 StandardID 上の角度に変換します
+Unity 上の角度を本 StandardID 上の角度に変換します。
 
 - deg
   - 定義：Unity 上の角度（度）
@@ -215,7 +215,7 @@ Unity 上の角度を本 StandardID 上の角度に変換します
 public float MatDeg2UnityDeg(double deg);
 ```
 
-本 StandardID 上の角度を Unity 上の角度に変換します
+本 StandardID 上の角度を Unity 上の角度に変換します。
 
 - deg
   - 定義：本 StandardID 上の角度（度）
@@ -399,7 +399,7 @@ public string focusName { get; }
 public void SetFocus(Transform transform);
 ```
 
-手動でフォーカス対象を設定します
+手動でフォーカス対象を設定します。
 
 - transform
   - 定義：フォーカスの対象
@@ -410,5 +410,5 @@ public void SetFocus(Transform transform);
 public void SetNoFocus();
 ```
 
-フォーカスをキャンセルします
+フォーカスをキャンセルします。
 

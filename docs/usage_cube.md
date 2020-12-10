@@ -230,7 +230,7 @@ public int deadzone { get; }
 // コールバック機能：doubleTapCallback
 public bool isDoubleTap { get; protected set; }
 
-// キューブの姿態
+// キューブの姿勢
 // キューブの水平面に対する姿勢が変化したときに値が変わります。
 // コールバック機能：poseCallback
 public PoseType pose { get; protected set; }
@@ -286,7 +286,7 @@ public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
 // ver2.1.0
 // ダブルタップコールバック
 public virtual CallbackProvider<Cube> doubleTapCallback { get; }
-// 姿態検出コールバック
+// 姿勢検出コールバック
 public virtual CallbackProvider<Cube> poseCallback { get; }
 // 目標指定付きモーター制御の応答コールバック
 public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
@@ -308,7 +308,7 @@ public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
 public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-キューブのモーターを制御します<br>
+キューブのモーターを制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御)
 
 - left
@@ -338,7 +338,7 @@ public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYP
 public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を制御します<br>
+キューブ底面についている LED を制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
 
 - red
@@ -367,7 +367,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 // 発光ごとの設定構造体
 public struct LightOperation
 {
-    public Int16 durationMs; // ミリ秒
+    public int durationMs; // ミリ秒
     public byte red;         // 赤色の強さ
     public byte green;       // 緑色の強さ
     public byte blue;        // 青色の強さ
@@ -375,7 +375,7 @@ public struct LightOperation
 public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を連続的に制御します<br>
+キューブ底面についている LED を連続的に制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
 
 - repeatCount
@@ -396,7 +396,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を消灯させます<br>
+キューブ底面についている LED を消灯させます。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯)
 
 - order
@@ -411,7 +411,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブからあらかじめ用意された効果音を再生します<br>
+キューブ内に用意されている効果音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
 
 - soundId
@@ -428,7 +428,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 
 ### PlaySound
 
-キューブから任意の音を再生します<br>
+キューブから任意の音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
 
 ```C#
@@ -436,7 +436,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 // 発音ごとの設定構造体
 public struct SoundOperation
 {
-    public Int16 durationMs; // ミリ秒
+    public int durationMs; // ミリ秒
     public byte volume;      // 音量(0~255)
     public byte note_number; // 音符(0~128)
 }
@@ -459,8 +459,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 - buff
-  - 定義 : 命令プロコトル
-  - [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+  - 定義 : [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)で定義されたデータブロック
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -473,7 +472,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの音再生を停止します<br>
+キューブの音再生を停止します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#再生の停止)
 
 - order
@@ -488,7 +487,7 @@ public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの水平検出のしきい値を設定します<br>
+キューブの水平検出のしきい値を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#水平検出のしきい値設定)
 
 - angle
@@ -506,7 +505,7 @@ public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの衝突検出のしきい値を設定します<br>
+キューブの衝突検出のしきい値を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#衝突検出のしきい値設定)
 
 - level
@@ -551,7 +550,7 @@ public void TargetMove(
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
-キューブのモーターを目標指定付き制御します<br>
+キューブのモーターを目標指定付き制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
 
 - targetX
@@ -589,15 +588,15 @@ public void TargetMove(
     - Deceleration : 目標地点まで徐々に減速
     - VariableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
 - targetRotationType
-  - 定義 : 回転タイプ
+  - 定義 : 目標地点でのキューブの角度Θのタイプ（意味）
   - 種類 :
-    - AbsoluteLeastAngle : 絶対角度 回転量が少ない方向
-    - AbsoluteClockwise : 絶対角度 正方向(時計回り)
-    - AbsoluteCounterClockwise : 絶対角度 負方向(反時計回り)
-    - RelativeClockwise : 相対角度 正方向(時計回り)
-    - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
+    - AbsoluteLeastAngle : 絶対角度・回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度・正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度・負方向(反時計回り)
+    - RelativeClockwise : 相対角度・正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度・負方向(反時計回り)
     - NotRotate : 回転しない
-    - Original : 書き込み操作時と同じ 回転量が少ない方向
+    - Original : 書き込み操作時と同じ・回転量が少ない方向
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -608,7 +607,7 @@ public void TargetMove(
 public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブのモーター速度情報の取得の有効化・無効化を設定します<br>
+キューブのモーター速度情報の取得の有効化・無効化を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
 
 - valid
@@ -642,30 +641,30 @@ public void MultiTargetMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
-キューブのモーターを複数目標指定付き制御します<br>
+キューブの複数目標指定付きモーター制御を実行します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)
 
 - targetXList
-  - 定義 : 各目標地点の X 座標値の集合
+  - 定義 : 各目標地点の X 座標値の配列
   - 範囲 : -1, 0~65534
     - -1の場合、X 座標は書き込み操作時と同じに設定
 - targetYList
-  - 定義 : 各目標地点の Y 座標値の集合
+  - 定義 : 各目標地点の Y 座標値の配列
   - 範囲 : -1, 0~65534
     - -1の場合、Y 座標は書き込み操作時と同じに設定
 - targetAngleList
-  - 定義 : 目標地点でのキューブの角度Θの集合
+  - 定義 : 目標地点でのキューブの角度Θの配列
   - 範囲 : 0~8191
 - multiRotationTypeList
-  - 定義 : 毎回回転タイプの集合
+  - 定義 : 目標地点でのキューブの角度Θのタイプ（意味）を表す配列
   - 種類 :
-    - AbsoluteLeastAngle : 絶対角度 回転量が少ない方向
-    - AbsoluteClockwise : 絶対角度 正方向(時計回り)
-    - AbsoluteCounterClockwise : 絶対角度 負方向(反時計回り)
-    - RelativeClockwise : 相対角度 正方向(時計回り)
-    - RelativeCounterClockwise : 相対角度 負方向(反時計回り)
-    - NotRotated : 回転しない
-    - Original : 書き込み操作時と同じ 回転量が少ない方向
+    - AbsoluteLeastAngle : 絶対角度・回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度・正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度・負方向(反時計回り)
+    - RelativeClockwise : 相対角度・正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度・負方向(反時計回り)
+    - NotRotate : 回転しない
+    - Original : 書き込み操作時と同じ・回転量が少ない方向
 - configID
   - 定義 : 制御識別値、制御の応答を識別するための値。ここで設定した値が対応する応答にも含まれる
   - 範囲 : 0~255
@@ -712,7 +711,7 @@ public void AccelerationMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
-キューブの加速度指定付きモーターを制御します<br>
+キューブの加速度指定付きモーター制御を実行します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
 
 - targetSpeed

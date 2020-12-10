@@ -126,7 +126,7 @@ public Vector boidsVector { get; }  // ボイドの結果ベクトル（バッ�
 public void AddWall(Wall wall);
 ```
 
-壁を追加します
+壁を追加します。
 
 - wall
   - 定義：壁
@@ -135,7 +135,7 @@ public void AddWall(Wall wall);
 public void AddWall(List<Wall> walls);
 ```
 
-複数の壁を追加します
+複数の壁を追加します。
 
 - walls
   - 定義：壁リスト
@@ -146,7 +146,7 @@ public void AddWall(List<Wall> walls);
 public void RemoveWall(Wall wall);
 ```
 
-壁を削除します
+壁を削除します。
 
 - wall
   - 定義：壁
@@ -157,7 +157,7 @@ public void RemoveWall(Wall wall);
 public void ClearWall();
 ```
 
-壁をすべて削除します
+壁をすべて削除します。
 
 #### AddBorder
 
@@ -192,7 +192,7 @@ public void AddBorder(int width, RectInt rect);
 
 - rect
   - 定義：ボーダーの位置を表す RectInt<br>
-  ※ [Mat.GetRectForMatType](usage_simulator.md#24-メソッド) でマットのサイズに合わせた RectInt を取得できます
+  ※ [Mat.GetRectForMatType](usage_simulator.md#24-メソッド) でマットのサイズに合わせた RectInt を取得できます。
 
 
 ### 認識できる他者を設定
@@ -203,7 +203,7 @@ public void AddBorder(int width, RectInt rect);
 public void AddOther(Navigator other, Relation relation=Relation.BOIDS);
 ```
 
-他ナビゲーターを認識できるようにします
+他ナビゲーターを認識できるようにします。
 
 - other
   - 定義：他 Navigator
@@ -216,7 +216,7 @@ public void AddOther(List<CubeNavigator> others, Relation relation=Relation.BOID
 public void AddOther(List<Navigator> others, Relation relation=Relation.BOIDS);
 ```
 
-複数の他ナビゲーターを認識できるようにします
+複数の他ナビゲーターを認識できるようにします。
 
 - others
   - 定義：他 Navigator リスト
@@ -227,7 +227,7 @@ public void AddOther(List<Navigator> others, Relation relation=Relation.BOIDS);
 public void RemoveOther(Navigator other);
 ```
 
-他のナビゲーターを認識できなくします
+他のナビゲーターを認識できなくします。
 
 - other
   - 定義：他 Navigator
@@ -238,7 +238,7 @@ public void RemoveOther(Navigator other);
 public void ClearOther();
 ```
 
-すべての認識できる対象を削除します
+すべての認識できる対象を削除します。
 
 #### ClearGNavigators
 
@@ -246,7 +246,7 @@ public void ClearOther();
 public static void ClearGNavigators();
 ```
 
-全ての CubeNavigator を持つ静的リスト`gNavigators`をクリアします
+全ての CubeNavigator を持つ静的リスト`gNavigators`をクリアします。
 
 `gNavigators`は CubeNavigator が新規にインスタンス化された際、
 自動的に認識できる他者を設定する為のリストです。
@@ -264,7 +264,7 @@ CubeNavigator のインスタンスが作り直された場合、
 public void SetRelation(Navigator other, Relation relation);
 ```
 
-他ナビゲーターをボイドとするかしないかを設定します
+他ナビゲーターをボイドとするかしないかを設定します。
 
 - other
   - 定義：他 Navigator
@@ -276,7 +276,7 @@ public void SetRelation(List<CubeNavigator> others, Relation relation);
 public void SetRelation(List<Navigator> others, Relation relation);
 ```
 
-複数の他ナビゲーターをボイドとするかしないかを設定します
+複数の他ナビゲーターをボイドとするかしないかを設定します。
 
 - others
   - 定義：他 Navigator リスト
@@ -287,7 +287,7 @@ public void SetRelation(List<Navigator> others, Relation relation);
 public void Update();
 ```
 
-計算に使うキューブの状態を更新します
+計算に使うキューブの状態を更新します。
 
 ナビゲーションの計算を行うフレームで、計算の前に一回実行してください。
 
@@ -295,7 +295,7 @@ public void Update();
 public void Update(bool usePred);
 ```
 
-状態予測のありなしを指定して計算に使うキューブの状態を更新します
+状態予測のありなしを指定して計算に使うキューブの状態を更新します。
 
 - usePred
   - 定義：状態予測のありなし
@@ -308,7 +308,7 @@ public void Update(bool usePred);
 public NaviResult GetWaypointTo(double x, double y);
 ```
 
-目標座標に移動するウェイポイントを計算します
+目標座標に移動するウェイポイントを計算します。
 
 - x
   - 定義：目標ｘ座標
@@ -325,7 +325,7 @@ public NaviResult GetWaypointTo(Vector2 pos);
 public NaviResult GetWaypointTo(Vector2Int pos);
 ```
 
-目標座標に移動するウェイポイントを計算します
+目標座標に移動するウェイポイントを計算します。
 
 - pos
   - 目標座標
@@ -335,7 +335,7 @@ public NaviResult GetWaypointTo(Entity target);
 public NaviResult GetWaypointTo(Navigator target);
 ```
 
-目標個体に移動するウェイポイントを計算します
+目標個体に移動するウェイポイントを計算します。
 
 - target
   - 目標個体
@@ -346,7 +346,7 @@ public NaviResult GetWaypointTo(Navigator target);
 public NaviResult GetWaypointAway(double x, double y);
 ```
 
-目標座標から離れるウェイポイントを計算します
+目標座標から離れるウェイポイントを計算します。
 
 - x
   - 定義：目標ｘ座標
@@ -363,7 +363,7 @@ public NaviResult GetWaypointAway(Vector2 pos);
 public NaviResult GetWaypointAway(Vector2Int pos);
 ```
 
-目標座標から離れるウェイポイントを計算します
+目標座標から離れるウェイポイントを計算します。
 
 - pos
   - 目標座標
@@ -373,7 +373,7 @@ public NaviResult GetWaypointAway(Entity target);
 public NaviResult GetWaypointAway(Navigator target);
 ```
 
-目標個体から離れるウェイポイントを計算します
+目標個体から離れるウェイポイントを計算します。
 
 - target
   - 目標個体
@@ -399,7 +399,7 @@ mv.Exec();
 
 前述ウェイポイントの計算と計算結果を利用して Movement の計算との過程を統合し、使いやすいメソッドを用意しています。
 
-計算過程をカスタマイズしない場合は直接にこちらのメソッドを使えば良いです。
+計算過程をカスタマイズしない場合は直接にこちらのメソッドをご利用ください。
 
 #### Navi2Target
 
@@ -407,7 +407,7 @@ mv.Exec();
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20);
 ```
 
-目標座標にナビゲーションする Movement を計算します
+目標座標にナビゲーションする Movement を計算します。
 
 - x
   - 定義：目標ｘ座標
@@ -419,19 +419,19 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
   - 定義：最大速度の指示値
   - 範囲：
     - [Version 2.0.0] 0~100
-    - [Version 2.1.0~2.2.0] 0~115
+    - [Version 2.1.0, 2.2.0] 0~115
   - 既定値：70
 - rotateTime
   - 定義：希望回転時間（ms）
   - 範囲：100 ~ 2550
   - 既定値：250
-  - 説明：rotateTime で目標に向けるように回転指示値を出す。<br>
+  - 説明：目標へ向けて回転するための時間を指定します。<br>
     小さい値を入れると早く回転し、大きな値を入れるとゆっくりと回転します。正確な回転時間ではなく、だいたいの目安です。<br>
     200 以下になると不安定になる可能性があります。
 - tolerance
   - 定義：到達判定の閾値（距離）
   - 既定値：20
-  - 説明：目標との距離が tolerance 以下になると、到達だと判断する。
+  - 説明：目標との距離が tolerance 以下になると、到達だと判断します。
 - 戻り値
   - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
 
@@ -441,7 +441,7 @@ public virtual Movement Navi2Target(Vector2 pos, int maxSpd=70, int rotateTime=2
 public virtual Movement Navi2Target(Vector2Int pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
 ```
 
-目標座標にナビゲーションする Movement を計算します
+目標座標にナビゲーションする Movement を計算します。
 
 - pos
   - 定義：目標座標
@@ -452,7 +452,7 @@ public virtual Movement Navi2Target(Vector2Int pos, int maxSpd=70, int rotateTim
 public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int rotateTime=250);
 ```
 
-目標座標から離れるようにナビゲーションする Movement を計算します
+目標座標から離れるようにナビゲーションする Movement を計算します。
 
 - x
   - 定義：目標ｘ座標
@@ -464,13 +464,13 @@ public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int ro
   - 定義：最大速度の指示値
   - 範囲：
     - [Version 2.0.0] 0~100
-    - [Version 2.1.0~2.2.0] 0~115
+    - [Version 2.1.0, 2.2.0] 0~115
   - 既定値：70
 - rotateTime
   - 定義：希望回転時間（ms）
   - 範囲：100 ~ 2550
   - 既定値：250
-  - 説明：rotateTime で目標に向けるように回転指示値を出す。<br>
+  - 説明：目標へ向けて回転するための時間を指定します。<br>
     小さい値を入れると早く回転し、大きな値を入れるとゆっくりと回転します。正確な回転時間ではなく、だいたいの目安です。<br>
     200 以下になると不安定になる可能性があります。
 - 戻り値
@@ -563,7 +563,7 @@ public double p_runaway_range = 250;            // スキャン結果をp_runawa
 
 ## 3.3. 取得できる情報
 
-デバッグに使うのが便利です。
+デバッグに便利です。
 
 ```c#
 // 保存した最後の計算結果
@@ -575,7 +575,7 @@ public int waypointIndex = 0;   // 選択したウェイポイントのインデ
 
 Navigator の GetWaypointTo, GetWaypointAway に呼ばれています。
 
-直に使う必要がないです。
+直接呼び出す必要はありません。
 
 ### RunTowards
 
@@ -649,7 +649,7 @@ public double p_max_all = 100;          // 合ベクトルの上限
 public Vector Run(List<Navigator> others, Vector tarPos);
 ```
 
-目標へのベクトルを含め、合ベクトルを計算します
+目標へのベクトルを含め、合ベクトルを計算します。
 
 - others
   - 定義：他 Navigator リスト
@@ -662,7 +662,7 @@ public Vector Run(List<Navigator> others, Vector tarPos);
 public Vector Run(List<Navigator> others);
 ```
 
-目標へのベクトルを除き、合ベクトルを計算します
+目標へのベクトルを除き、合ベクトルを計算します。
 
 - others
   - 定義：他 Navigator リスト

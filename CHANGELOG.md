@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [Navigator] Add overload for `AddBorder`.
   - Corresponding changes in tutorials, samples, tests and documents.
 - [Simulator] Change motor simulation.
-  - Seperate tires' speed from object's speed.
+  - Seperate tire's speed from object's speed.
   - Deadzone applied on receiving commands instead of internal motor simulation.
 - [Simulator] Refactoring implementation of command queuing.
 - [Cube API] SoundOperation.durationMs Int16->ushort.

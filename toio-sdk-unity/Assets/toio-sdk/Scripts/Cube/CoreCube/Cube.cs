@@ -279,7 +279,7 @@ namespace toio
         // ver2.1.0
         // Double Tap コールバック
         public virtual CallbackProvider<Cube> doubleTapCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
-        // 姿態検出コールバック
+        // 姿勢検出コールバック
         public virtual CallbackProvider<Cube> poseCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 目標指定付きモーター制御の応答コールバック
         public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
@@ -398,7 +398,7 @@ namespace toio
             AddRefused=7        // 書き込み操作の追加ができない時
         };
 
-        // 姿態
+        // 姿勢
         public enum PoseType: byte
         {
             Up=1,
