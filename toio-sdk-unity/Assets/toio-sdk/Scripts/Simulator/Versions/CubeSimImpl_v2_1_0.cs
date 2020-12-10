@@ -354,7 +354,8 @@ namespace toio.Simulator
                     break;
                 }
             }
-            rotate = Mathf.Clamp(rotate, this.deadzone, maxSpd);
+            if (rotate>=0) rotate = Mathf.Clamp(rotate, deadzone, maxSpd);
+            else rotate = Mathf.Clamp(rotate, -maxSpd, -deadzone);
 
             return (0, rotate, relativeDeg);
         }
