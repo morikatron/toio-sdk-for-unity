@@ -63,7 +63,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [姿勢検出](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
 | モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
 |                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | o             | o            |
-|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | o             | o            |
+|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
 |                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | o             | o            |
 |                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | o             | o            |
 |                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | o             | o            |
