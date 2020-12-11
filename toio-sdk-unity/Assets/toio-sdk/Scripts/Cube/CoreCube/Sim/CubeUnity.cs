@@ -151,10 +151,10 @@ namespace toio
         public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._targetMoveCallback;
             else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
-        protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
-        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
-            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
-            else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        // protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
+        // public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
+        //     if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
+        //     else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
 
         // 2.2.0
         protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
