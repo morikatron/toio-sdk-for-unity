@@ -239,7 +239,7 @@ public PoseType pose { get; protected set; }
 // キューブのシェイク状態
 // キューブを振ると振った強さに応じて値が変わります。
 // コールバック機能：shakeCallback
-public bool isShake { get; protected set; }
+public int shakeLevel { get; protected set; }
 
 // キューブのモーター ID 1（左）の速度
 // コールバック機能：motorSpeedCallback
