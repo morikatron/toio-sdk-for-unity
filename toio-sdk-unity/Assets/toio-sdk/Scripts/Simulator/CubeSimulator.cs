@@ -151,7 +151,7 @@ namespace toio.Simulator
         /// <summary>
         /// シェイクが検出されたか
         /// </summary>
-        public int shake{ get {return impl.shakeLevel;} internal set {impl.shakeLevel = value;} }
+        public int shakeLevel{ get {return impl.shakeLevel;} internal set {impl.shakeLevel = value;} }
 
         /// <summary>
         /// コアキューブのモーター ID 1（左）の速度
