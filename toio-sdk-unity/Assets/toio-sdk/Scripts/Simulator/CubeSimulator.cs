@@ -151,7 +151,7 @@ namespace toio.Simulator
         /// <summary>
         /// シェイクが検出されたか
         /// </summary>
-        public bool shake{ get {return impl.shake;} internal set {impl.shake = value;} }
+        public int shake{ get {return impl.shakeLevel;} internal set {impl.shakeLevel = value;} }
 
         /// <summary>
         /// コアキューブのモーター ID 1（左）の速度
@@ -322,7 +322,7 @@ namespace toio.Simulator
         /// <summary>
         /// シェイク検出のイベントコールバックを設定する
         /// </summary>
-        public void StartNotification_Shake(System.Action<bool> action)
+        public void StartNotification_Shake(System.Action<int> action)
         {
             impl.StartNotification_Shake(action);
         }

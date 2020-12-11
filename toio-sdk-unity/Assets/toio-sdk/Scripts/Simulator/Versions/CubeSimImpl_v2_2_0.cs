@@ -14,23 +14,23 @@ namespace toio.Simulator
 
         // ============ Motion Sensor ============
         // ---------- Shake -----------
-        protected bool _shake;
-        public override bool shake
+        protected int _shakeLevel;
+        public override int shakeLevel
         {
-            get {return this._shake;}
+            get {return this._shakeLevel;}
             internal set
             {
-                if (this._shake!=value){
+                if (this._shakeLevel!=value){
                     this.shakeCallback?.Invoke(value);
                 }
-                this._shake = value;
+                this._shakeLevel = value;
             }
         }
-        protected System.Action<bool> shakeCallback = null;
-        public override void StartNotification_Shake(System.Action<bool> action)
+        protected System.Action<int> shakeCallback = null;
+        public override void StartNotification_Shake(System.Action<int> action)
         {
             this.shakeCallback = action;
-            this.shakeCallback.Invoke(_shake);
+            this.shakeCallback.Invoke(_shakeLevel);
         }
         protected virtual void SimulateShake()
         {

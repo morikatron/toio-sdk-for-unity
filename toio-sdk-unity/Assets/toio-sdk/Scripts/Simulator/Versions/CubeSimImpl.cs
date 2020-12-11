@@ -90,10 +90,10 @@ namespace toio.Simulator
 
         // ---------- 2.2.0 ----------
         // Shake
-        public virtual bool shake {
+        public virtual int shakeLevel {
             get{ NotSupportedWarning(); return default; }
             internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_Shake(System.Action<bool> action)
+        public virtual void StartNotification_Shake(System.Action<int> action)
         { NotSupportedWarning(); }
         // Motor Speed
         public virtual int leftMotorSpeed {
