@@ -225,7 +225,7 @@ namespace toio.Tests
             test.update = TestUntil_Seconds(5);
             yield return new MonoBehaviourTest<test>();
         }
-
+        /*
         [UnityTest, Order(9)] // テストの実行の優先度を指定する(昇順)
         public IEnumerator MultitargetMove_parameterError_1() //
         {
@@ -367,6 +367,8 @@ namespace toio.Tests
             test.update = TestUntil_Seconds(10);
             yield return new MonoBehaviourTest<test>();
         }
+        */
+
 
         [UnityTest, Order(13)] // テストの実行の優先度を指定する(昇順)
         public IEnumerator AccMove_forward() //

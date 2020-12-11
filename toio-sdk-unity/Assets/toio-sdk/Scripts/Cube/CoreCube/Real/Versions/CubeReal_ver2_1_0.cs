@@ -32,7 +32,7 @@ namespace toio
         // 目標指定付きモーター制御の応答コールバック
         public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return this._targetMoveCallback; } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
+        // public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
@@ -94,7 +94,7 @@ namespace toio
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove",
                 targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
         }
-
+        /*
         // キューブのモーターを複数目標指定付き制御します
         public override void MultiTargetMove(
             int[] targetXList,
@@ -156,7 +156,7 @@ namespace toio
                 targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut,
                 targetMoveType, maxSpd, targetSpeedType, multiWriteType);
         }
-
+        */
         // キューブの加速度指定付きモーターを制御します
         public override void AccelerationMove(
             int targetSpeed,
@@ -229,7 +229,7 @@ namespace toio
             // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#複数目標指定付きモーター制御の応答
             else if (0x84 == type)
             {
-                this.multiTargetMoveCallback.Notify(this, data[1], (TargetMoveRespondType)data[2]);
+                // this.multiTargetMoveCallback.Notify(this, data[1], (TargetMoveRespondType)data[2]);
             }
         }
 

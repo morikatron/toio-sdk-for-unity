@@ -151,10 +151,10 @@ namespace toio
         public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._targetMoveCallback;
             else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
-        protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
-        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
-            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
-            else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        // protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
+        // public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
+        //     if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
+        //     else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
 
         // 2.2.0
         protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
@@ -236,7 +236,7 @@ namespace toio
         }
         private void Recv_MultiTargetMove(int configID, TargetMoveRespondType response)
         {
-            this.multiTargetMoveCallback.Notify(this, configID, response);
+            // this.multiTargetMoveCallback.Notify(this, configID, response);
         }
 
         private void Recv_Shake(int shakeLevel)
@@ -397,6 +397,7 @@ namespace toio
                 order, "targetMove", targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
 #endif
         }
+        /*
         public override void MultiTargetMove(
             int[] targetXList,
             int[] targetYList,
@@ -419,6 +420,7 @@ namespace toio
                 order, "multiTargetMove", targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
 #endif
         }
+        */
         public override void AccelerationMove(
             int targetSpeed,
             int acceleration,
