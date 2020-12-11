@@ -63,7 +63,7 @@ namespace toio
 
         // ver2.2.0
         // コアキューブのシェイク状態
-        public virtual bool isShake {
+        public virtual int isShake {
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
         // コアキューブのモーター ID 1（左）の速度

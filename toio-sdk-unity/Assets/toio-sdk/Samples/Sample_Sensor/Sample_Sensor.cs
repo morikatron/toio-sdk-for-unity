@@ -177,7 +177,7 @@ public class Sample_Sensor : MonoBehaviour
     {
         if (c.isShake)
         {
-            this.textShake.text = "Shake: True";
+            this.textShake.text = "Shake: " + c.isShake.ToString();
         }
         else
         {
