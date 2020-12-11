@@ -35,7 +35,7 @@ namespace toio
         //      外部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        public override bool isShake { get; protected set; }
+        public override int shakeLevel { get; protected set; }
         public override string version { get { return "2.2.0"; } }
         public override int leftSpeed
         {
@@ -181,11 +181,11 @@ namespace toio
             int type = data[0];
             if (1 == type)
             {
-                var _isShake = data[5] == 1 ? true : false;
+                var _shakeLevel = data[5];
 
-                if (_isShake != this.isShake)
+                if (_shakeLevel != this.shakeLevel)
                 {
-                    this.isShake = _isShake;
+                    this.shakeLevel = _shakeLevel;
                     this.shakeCallback.Notify(this);
                 }
             }

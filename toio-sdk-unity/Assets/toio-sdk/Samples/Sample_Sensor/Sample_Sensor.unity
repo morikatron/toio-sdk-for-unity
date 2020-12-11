@@ -971,7 +971,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Shake: False'
+  m_Text: 'Shake: 0'
 --- !u!222 &524127241
 CanvasRenderer:
   m_ObjectHideFlags: 0

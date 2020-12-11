@@ -554,20 +554,20 @@ public override Cube.PoseType pose {
 > 2.2.0 の機能です。
 シェイク検出のシミュレーションは未実装です。
 
-`shake` がインスペクターで手動で変更された時に、対応コールバック `shakeCallback` を呼び出します。
+`shakeLevel` がインスペクターで手動で変更された時に、対応コールバック `shakeCallback` を呼び出します。
 
 ```c#
 // CubeSimImpl_v2_2_0.cs
-protected bool _shake;
-public override bool shake
+protected int _shakeLevel;
+public override int shakeLevel
 {
-    get {return this._shake;}
+    get {return this._shakeLevel;}
     internal set
     {
-        if (this._shake!=value){
+        if (this._shakeLevel!=value){
             this.shakeCallback?.Invoke(value);
         }
-        this._shake = value;
+        this._shakeLevel = value;
     }
 }
 ```
