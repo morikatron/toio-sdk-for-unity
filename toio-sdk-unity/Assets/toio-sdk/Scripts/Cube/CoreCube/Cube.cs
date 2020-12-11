@@ -284,7 +284,7 @@ namespace toio
         // 目標指定付きモーター制御の応答コールバック
         public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public virtual CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        // public virtual CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
 
         // ver2.2.0
         // シェイクコールバック

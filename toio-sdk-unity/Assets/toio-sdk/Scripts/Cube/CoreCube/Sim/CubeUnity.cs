@@ -236,7 +236,7 @@ namespace toio
         }
         private void Recv_MultiTargetMove(int configID, TargetMoveRespondType response)
         {
-            this.multiTargetMoveCallback.Notify(this, configID, response);
+            // this.multiTargetMoveCallback.Notify(this, configID, response);
         }
 
         private void Recv_Shake(bool shake)
