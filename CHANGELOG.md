@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implement doubleTap detection feature (callback & property) and its internal config method.
   - Implement motor speed reading feature (callback & property) and its config method.
   - Implement shake detection feature (callback & property).
-  - Implement motor's TargetMove(目標指定付きモーター制御), MultiTargetMove(複数目標指定付きモーター制御), AccelerationMove(加速度指定付きモーター制御) methods and enums for options and response callbacks.
+  - Implement motor's TargetMove(目標指定付きモーター制御), AccelerationMove(加速度指定付きモーター制御) methods and enums for options and response callbacks.
 - [Simulator] Implementation of firmware version 2.1.0 & 2.2.0
   - Implementation classes added; Version list on inspector appended.
   - Implement updated motor's deadzone and max value.
@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implement doubleTap detection feature (only changeable on inspector).
   - Implement motor speed reading feature and its config method.
   - Implement shake feature (only changeable on inspector).
-  - Implement motor's TargetMove(目標指定付きモーター制御), MultiTargetMove(複数目標指定付きモーター制御), AccelerationMove(加速度指定付きモーター制御) features.
+  - Implement motor's TargetMove(目標指定付きモーター制御), AccelerationMove(加速度指定付きモーター制御) features.
 - [Simulator] Add building support for MAC/Windows.
 
 ### Changed
