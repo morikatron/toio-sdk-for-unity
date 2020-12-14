@@ -71,14 +71,14 @@ public class BasicScene : MonoBehaviour
     {
         // Cube変数の生成が完了するまで早期リターン
         if (null == cube) { return; }
-		// 経過時間を計測
+        // 経過時間を計測
         elapsedTime += Time.deltaTime;
 
       	// 前回の命令から50ミリ秒以上経過した場合
         if (intervalTime < elapsedTime)
         {
             elapsedTime = 0.0f;
-          	// 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒
+            // 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒
             cube.Move(50, -50, 200);
         }
     }
