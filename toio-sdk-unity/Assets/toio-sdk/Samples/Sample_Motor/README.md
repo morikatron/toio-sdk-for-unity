@@ -1,6 +1,6 @@
 ## Sample_Motor
 
-> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/?)です。
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/motor/)です。
 
 <div align="center">
 <img src="/docs/res/samples/motor.gif">
