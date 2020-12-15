@@ -74,7 +74,7 @@ public enum MatType
     toio_collection_back = 1,
     simple_playmat = 2,
     developer = 3,
-    Custom = 4  // 座標範囲をカスタマイズ
+    custom = 4  // 座標範囲をカスタマイズ
 }
 
 public MatType matType;
@@ -82,41 +82,33 @@ public MatType matType;
 // マットのタイプ、座標範囲の変更を反映
 internal void ApplyMatType()
 {
+    // Resize
+    if (matType != MatType.custom)
+    {
+        var rect = GetRectForMatType(matType);
+        xMin = rect.xMin; xMax = rect.xMax;
+        yMin = rect.yMin; yMax = rect.yMax;
+    }
+    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+
+    // Change material
     switch (matType){
         case MatType.toio_collection_front:
-            xMin = 45; xMax = 455; yMin = 45; yMax = 455;
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
             break;
         case MatType.toio_collection_back:
-            xMin = 545; xMax = 955; yMin = 45; yMax = 455;
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
             break;
         case MatType.simple_playmat:
-            xMin = 98; xMax = 402; yMin = 142; yMax = 358;
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
             break;
         case MatType.developer:
-            switch (developerMatType){
-                case DeveloperMatType._1: xMin = 34; xMax = 339; yMin = 35; yMax = 250; break;
-                case DeveloperMatType._2: xMin = 34; xMax = 339; yMin = 251; yMax = 466; break;
-                case DeveloperMatType._3: xMin = 34; xMax = 339; yMin = 467; yMax = 682; break;
-                case DeveloperMatType._4: xMin = 34; xMax = 339; yMin = 683; yMax = 898; break;
-                case DeveloperMatType._5: xMin = 340; xMax = 644; yMin = 35; yMax = 250; break;
-                case DeveloperMatType._6: xMin = 340; xMax = 644; yMin = 251; yMax = 466; break;
-                case DeveloperMatType._7: xMin = 340; xMax = 644; yMin = 467; yMax = 682; break;
-                case DeveloperMatType._8: xMin = 340; xMax = 644; yMin = 683; yMax = 898; break;
-                case DeveloperMatType._9: xMin = 645; xMax = 949; yMin = 35; yMax = 250; break;
-                case DeveloperMatType._10: xMin = 645; xMax = 949; yMin = 251; yMax = 466; break;
-                case DeveloperMatType._11: xMin = 645; xMax = 949; yMin = 467; yMax = 682; break;
-                case DeveloperMatType._12: xMin = 645; xMax = 949; yMin = 683; yMax = 898; break;
-            }
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
             break;
-        case MatType.Custom:
+        case MatType.custom:
             GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
             break;
     }
-    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 }
 ```
 
@@ -279,6 +271,8 @@ Cube Prefab には３つのスクリプトが実装されています。
 - `CubeSimulator.cs`：実際のキューブのシミュレーションを実装したもの
   - `CubeSimImpl.cs`：CubeSimulator のバージョン毎の実装のベースクラスとなるもの
   - `CubeSimImpl_v2_0_0.cs`：バージョン 2.0.0 を対応する実装
+  - `CubeSimImpl_v2_1_0.cs`：バージョン 2.1.0 を対応する実装
+  - `CubeSimImpl_v2_2_0.cs`：バージョン 2.2.0 を対応する実装
 - `CubeSimulatorEditor.cs`：`CubeSimulator.cs`のインスペクターをカスタマイズしたもの
 - `CubeInteraction.cs`：シミュレータ上で、Cubeオブジェクトを押したりつかんだりする操作を実装したもの
 
@@ -481,6 +475,136 @@ public override bool collisionDetected
 }
 ```
 
+### ダブルタップ
+
+> 2.1.0 の機能です。
+ダブルタップのシミュレーションは未実装です。
+
+`doubleTap` がインスペクターで手動で変更された時に、対応コールバック `doubleTapCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected bool _doubleTap;
+public override bool doubleTap
+{
+    get {return this._doubleTap;}
+    internal set
+    {
+        if (this._doubleTap!=value){
+            this.doubleTapCallback?.Invoke(value);
+        }
+        this._doubleTap = value;
+    }
+}
+```
+
+### 姿勢検出
+
+> 2.1.0 の機能です。
+原理は水平検出と同じで、Cube オブジェクトの角度が対応方向に閾値を超えたら、`pose` を対応方向にします。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected virtual void SimulateMotionSensor()
+{
+    if(Vector3.Angle(Vector3.up, transform.up)<45f)
+    {
+        this.pose = Cube.PoseType.up;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.up)>135f)
+    {
+        this.pose = Cube.PoseType.down;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.forward)<45f)
+    {
+        this.pose = Cube.PoseType.forward;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.forward)>135f)
+    {
+        this.pose = Cube.PoseType.backward;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.right)<45f)
+    {
+        this.pose = Cube.PoseType.right;
+    }
+    else if(Vector3.Angle(Vector3.up, transform.right)>135f)
+    {
+        this.pose = Cube.PoseType.left;
+    }
+}
+```
+
+`pose` が変更された時に、対応コールバック `poseCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected Cube.PoseType _pose = Cube.PoseType.up;
+public override Cube.PoseType pose {
+    get{ return _pose; }
+    internal set{
+        if (this._pose!=value){
+            this.poseCallback?.Invoke(value);
+        }
+        _pose = value;
+    }
+}
+```
+
+### シェイク検出
+
+> 2.2.0 の機能です。
+シェイク検出のシミュレーションは未実装です。
+
+`shakeLevel` がインスペクターで手動で変更された時に、対応コールバック `shakeCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected int _shakeLevel;
+public override int shakeLevel
+{
+    get {return this._shakeLevel;}
+    internal set
+    {
+        if (this._shakeLevel!=value){
+            this.shakeCallback?.Invoke(value);
+        }
+        this._shakeLevel = value;
+    }
+}
+```
+
+### モーター速度検出
+
+> 2.2.0 の機能です。
+
+モーターのシミュレーションによって計算されたタイヤの速度を変換してモーター速度とします。
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected void SimulateMotorSpeedSensor()
+{
+    int left = Mathf.RoundToInt(speedTireL/CubeSimulator.VMeterOverU);
+    int right = Mathf.RoundToInt(speedTireR/CubeSimulator.VMeterOverU);
+    _SetMotorSpeed(left, right);
+}
+```
+
+値が変更された時に、対応コールバック `motorSpeedCallback` を呼び出します。
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected void _SetMotorSpeed(int left, int right)
+{
+    left = Mathf.Abs(left);
+    right = Mathf.Abs(right);
+    if (motorSpeedEnabled)
+        if (this.leftMotorSpeed != left || this.rightMotorSpeed != right)
+            this.motorSpeedCallback?.Invoke(left, right);
+    this.leftMotorSpeed = left;
+    this.rightMotorSpeed = right;
+}
+```
+
 ## 4.3. コマンドの実行
 
 ### 命令処理の流れ
@@ -520,7 +644,7 @@ private void SimulatePhysics()
 ```
 
 現在のモーター制御命令の目標速度を Unity 座標系での速度に変換し、デッドゾーンを加え、
-強制停止・押された状態・タイヤが地面を離れた状態それぞれの場合に対応し、目標速度を計算し、`CubeSimulator._SetSpeed` に渡します。
+強制停止・押された場合によってタイヤ速度を計算してから、着地状態によって Cube 速度を計算し、`CubeSimulator._SetSpeed` に渡します。
 
 ```C#
 // CubeSimImpl.cs
@@ -536,18 +660,21 @@ public virtual void SimulateMotor()
     if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
     // 速度更新
-    // update speed
+    // update tires' speed
     if (cube.forceStop || this.button)   // 強制的に停止
     {
-        speedL = 0; speedR = 0;
+        speedTireL = 0; speedTireR = 0;
     }
     else
     {
-        if (cube.offGroundL) targetSpeedL = 0;
-        if (cube.offGroundR) targetSpeedR = 0;
-        speedL += (targetSpeedL - speedL) / Mathf.Max(cube.motorTau,dt) * dt;
-        speedR += (targetSpeedR - speedR) / Mathf.Max(cube.motorTau,dt) * dt;
+        speedTireL += (targetSpeedL - speedTireL) / Mathf.Max(cube.motorTau,dt) * dt;
+        speedTireR += (targetSpeedR - speedTireR) / Mathf.Max(cube.motorTau,dt) * dt;
     }
+
+    // update object's speed
+    // NOTES: simulation for slipping shall be implemented here
+    speedL = cube.offGroundL? 0: speedTireL;
+    speedR = cube.offGroundR? 0: speedTireR;
 
     cube._SetSpeed(speedL, speedR);
 }
@@ -579,6 +706,76 @@ internal void _SetSpeed(float speedL, float speedR)
 - PID の出力した 「電圧」 をモーターモデルに入力する
 - モーターモデルの出力した 「電流」 を換算した 「力」 を物理エンジンに与える
 - ホイールの Collider、 物理マテリアルなどはなるべくリアルに作成する
+
+### 目標指定付きモーター制御
+
+実機のファームウェアの実装が公開されていないため、シミュレータの目標指定付きモーター制御は、仕様書と実機の動きとを参考に実装されました。その中に推測で作られた部分もあり、実機と差があるかもしれないため、いくつか重要な部分を説明します。
+
+#### 移動タイプが0（回転しながら移動）のケース
+
+`回転しながら移動`の場合、目標がキューブの前方にあるか後方にあるかによって、前進か後退かを決めます。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected (float, float) TargetMove_MoveControl(ushort x, ushort y, byte maxSpd, Cube.TargetSpeedType targetSpeedType, float acc, Cube.TargetMoveType targetMoveType)
+{
+    // ...
+    Vector2 targetPos = new Vector2(x, y);
+    Vector2 pos = new Vector2(this.x, this.y);
+    var dpos = targetPos - pos;
+    var dir2tar = Vector2.SignedAngle(Vector2.right, dpos);
+    var deg2tar = Deg(dir2tar - this.deg);                    // use when moving forward
+    var deg2tar_back = (deg2tar+360)%360 -180;                // use when moving backward
+    bool tarOnFront = Mathf.Abs(deg2tar) <= 90;
+    // ...
+    switch (targetMoveType)
+    {
+        case (Cube.TargetMoveType.RotatingMove):        // 回転しながら移動
+        {
+            rotate = tarOnFront? deg2tar : deg2tar_back;
+            translate = tarOnFront? spd : -spd;
+            break;
+        }
+        // ...
+    }
+    // ...
+}
+```
+
+#### モーターの速度変化タイプで加減速があるケース
+
+加速の場合を例として、指令の実行が始まる際に、パスの長さと最大速度によって加速度が計算されます。指令の実行中は、キューブの位置と関係なく、時間経過と加速度によって加速していきます。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected virtual void TargetMoveInit()
+{
+    // ...
+    this.currMotorTargetCmd.acc = ((float)cmd.maxSpd*cmd.maxSpd-this.deadzone*this.deadzone) * CubeSimulator.VDotOverU/2/dist;
+    // ...
+}
+```
+
+#### ステアリング制御
+
+進行方向と目標への角度に比例して、回転指令値`rotate`が計算されます。
+
+しかし、直接に`rotate`と併進指令値`translate`を合わせると（つまり`rotate`は回転の角速度と比例すると）、併進指令値が大きい場合、回転不足が生じます。逆に、`rotate`と`translate`を掛け算して新しい`rotate`値にすると（つまり`rotate`は回転半径と比例すると）、併進指令値が小さい場合に回転不足が生じます。
+
+なので、`translate`の大きさによって、上記二種類の`rotate`の加重平均を取ることで、回転不足を解消します。
+
+```c#
+// CubeSimImpl_v2_1_0.cs
+protected void ApplyMotorControl(float translate, float rotate)
+{
+    var miu = Mathf.Abs(translate / this.maxMotor);
+    rotate *= miu * Mathf.Abs(translate/50) + (1-miu) * 1;
+    var uL = translate + rotate;
+    var uR = translate - rotate;
+    // ...
+}
+```
+
 
 ### サウンド
 
@@ -626,17 +823,21 @@ for i in range(11):
 
 ```c#
 // CubeSimulator.cs
-private void _PlaySound(int soundId, int volume){
-    // 同じオクターブにある A の番号を計算
-    int octave = (int)(soundId/12);
-    int idx = (int)(soundId%12);
-    // A をロード
-    var audio = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
-    audioSource.clip = audio;
-    // ピッチと音量を入力値に調整
-    audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+private int playingSoundId = -1;
+internal void _PlaySound(int soundId, int volume){
+    if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+    if (soundId != playingSoundId)
+    {
+        playingSoundId = soundId;
+        int octave = (int)(soundId/12);
+        int idx = (int)(soundId%12);
+        var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+        audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+        audioSource.clip = aCubeOnSlot;
+    }
     audioSource.volume = (float)volume/256;
-    audioSource.Play();
+    if (!audioSource.isPlaying)
+        audioSource.Play();
 }
 ```
 
@@ -646,7 +847,7 @@ private void _PlaySound(int soundId, int volume){
 
 ```c#
 // CubeSimulator.cs
-private void _SetLight(int r, int g, int b){
+internal void _SetLight(int r, int g, int b){
     LED.GetComponent<Renderer>().material.color = new Color(r/255f, g/255f, b/255f);
 }
 ```

@@ -22,9 +22,9 @@ Unity システム上で動くキューブ(以下シミュレータ) と 現実�
 
 ### Real/Sim 機能表
 
-現在(2020/03/04)、キューブのファームウェアバージョンは 1 つです。
+現在(2020/12/15)、キューブのファームウェアバージョンは 3 つです。
 
-- 2.0.0 : 公開時の初期バージョン
+`2.0.0`　`2.1.0`　`2.2.0`
 
 toio SDK for Unity では、現実に動作するキューブクラス(Real 対応)、シミュレータで動作するキューブクラス(Sim 対応)の 2 つの内部実装が用意されています。それぞれ内部実装が異なっているため、対応状況に違いがあります。<br>
 以下に実装対応表を示します。
@@ -55,6 +55,32 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 
 > ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-CubeSimulator-のインスペクター)をご確認ください。
 
+#### ファームウェアバージョン 2.1.0
+
+| 機能タイプ         | 機能                                                                                                                                | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| モーションセンサー | [ダブルタップ検出](https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出)                                        | o             | ※            |
+|                    | [姿勢検出](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
+| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
+|                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | o             | o            |
+|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
+|                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | o             | o            |
+|                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | o             | o            |
+|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
+| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | o             | x            |
+
+#### ファームウェアバージョン 2.2.0
+
+| 機能タイプ         | 機能                                                                                                                                       | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
+| モーションセンサー | [シェイク検出](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                       | o             | o            |
+| 磁気センサー       | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
+|                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
+| モーター           | [モーターの速度情報の取得](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得)                                | o             | o            |
+| 設定               | [磁気センサーの設定](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)                                    | x             | x            |
+|                    | [磁気センサーの設定の応答](https://toio.github.io/toio-spec/docs/ble_configuration#[磁気センサーの設定の応答)                       | x             | x            |
+|                    | [モーターの速度情報の取得の設定](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)            | o             | o            |
+|                    | [モーターの速度情報の取得の設定の応答](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定の応答)| o             | o            |
 <br>
 
 # 2. 既存 toio™ ライブラリ(toio.js)との比較
@@ -193,6 +219,35 @@ public bool isGrounded { get; protected set; }
 // キューブの最高速度を表す変数
 // ファームウェアバージョン毎に異なるため用意されています。
 public int maxSpd { get; }
+
+// キューブの最低速度を表す変数
+// ファームウェアバージョン毎に異なるため用意されています。
+public int deadzone { get; }
+
+// ver2.1.0
+// キューブのダブルタップ状態
+// 一度タップされてから一定時間内に再度タップされます。
+// コールバック機能：doubleTapCallback
+public bool isDoubleTap { get; protected set; }
+
+// キューブの姿勢
+// キューブの水平面に対する姿勢が変化したときに値が変わります。
+// コールバック機能：poseCallback
+public PoseType pose { get; protected set; }
+
+// ver2.2.0
+// キューブのシェイク状態
+// キューブを振ると振った強さに応じて値が変わります。
+// コールバック機能：shakeCallback
+public int shakeLevel { get; protected set; }
+
+// キューブのモーター ID 1（左）の速度
+// コールバック機能：motorSpeedCallback
+public int leftSpeed { get; protected set; }
+
+// キューブのモーター ID 2（右）の速度
+// コールバック機能：motorSpeedCallback
+public int rightSpeed { get; protected set; }
 ```
 
 <br>
@@ -200,28 +255,47 @@ public int maxSpd { get; }
 ## 3.2. コールバック
 
 ```C#
-public class CallbackProvider
+// CallbackProvider<T1>
+// CallbackProvider<T1, T2>
+// CallbackProvider<T1, T2, T3>
+// CallbackProvider<T1, T2, T3, T4>
+// ※疑似コード
+public class CallbackProvider<T...>
 {
-    public virtual void AddListener(string key, Action<Cube> listener);
+    public virtual void AddListener(string key, Action<T...> listener);
     public virtual void RemoveListener(string key);
     public virtual void ClearListener();
-    public virtual void Notify(Cube target);
+    public virtual void Notify(T... args);
 }
 
 // ボタンコールバック
-public virtual CallbackProvider buttonCallback { get; }
+public virtual CallbackProvider<Cube> buttonCallback { get; }
 // 傾きコールバック
-public virtual CallbackProvider slopeCallback { get; }
+public virtual CallbackProvider<Cube> slopeCallback { get; }
 // 衝突コールバック
-public virtual CallbackProvider collisionCallback { get; }
+public virtual CallbackProvider<Cube> collisionCallback { get; }
 // 座標角度コールバック
-public virtual CallbackProvider idCallback { get; }
+public virtual CallbackProvider<Cube> idCallback { get; }
 // 座標角度 Missed コールバック
-public virtual CallbackProvider idMissedCallback { get; }
+public virtual CallbackProvider<Cube> idMissedCallback { get; }
 // StandardID コールバック
-public virtual CallbackProvider standardIdCallback { get; }
+public virtual CallbackProvider<Cube> standardIdCallback { get; }
 // StandardID Missed コールバック
-public virtual CallbackProvider standardIdMissedCallback { get; }
+public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
+
+// ver2.1.0
+// ダブルタップコールバック
+public virtual CallbackProvider<Cube> doubleTapCallback { get; }
+// 姿勢検出コールバック
+public virtual CallbackProvider<Cube> poseCallback { get; }
+// 目標指定付きモーター制御の応答コールバック
+public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
+
+// ver2.2.0
+// シェイクコールバック
+public virtual CallbackProvider<Cube> shakeCallback { get; }
+// モータースピードコールバック
+public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
 ```
 
 ## 3.3. メソッド
@@ -232,17 +306,19 @@ public virtual CallbackProvider standardIdMissedCallback { get; }
 public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-キューブのモーターを制御します<br>
+キューブのモーターを制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御)
 
 - left
   - 定義 : 左モーター速度
   - 範囲 :
     - [Version 2.0.0] -100 ~ -10； -9 ~ 9 は 0 に等価； 10 ~ 100
+    - [Version 2.1.0] -115 ~ -8； -7 ~ 7 は 0 に等価； 8 ~ 115
 - right
   - 定義 : 右モーター速度
   - 範囲 :
     - [Version 2.0.0] -100 ~ -10； -9 ~ 9 は 0 に等価； 10 ~ 100
+    - [Version 2.1.0] -115 ~ -8； -7 ~ 7 は 0 に等価； 8 ~ 115
 - durationMs
   - 定義 : 持続時間(ミリ秒)
   - 範囲 :
@@ -260,7 +336,7 @@ public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYP
 public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を制御します<br>
+キューブ底面についている LED を制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
 
 - red
@@ -289,7 +365,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 // 発光ごとの設定構造体
 public struct LightOperation
 {
-    public Int16 durationMs; // ミリ秒
+    public int durationMs; // ミリ秒
     public byte red;         // 赤色の強さ
     public byte green;       // 緑色の強さ
     public byte blue;        // 青色の強さ
@@ -297,7 +373,7 @@ public struct LightOperation
 public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を連続的に制御します<br>
+キューブ底面についている LED を連続的に制御します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
 
 - repeatCount
@@ -305,7 +381,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
   - 範囲 : 0~255
 - operations
   - 定義 : 命令配列
-  - 個数 : 1~59
+  - 個数 : 1~29
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -318,7 +394,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブ底面についている LED を消灯させます<br>
+キューブ底面についている LED を消灯させます。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯)
 
 - order
@@ -333,7 +409,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブからあらかじめ用意された効果音を再生します<br>
+キューブ内に用意されている効果音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
 
 - soundId
@@ -350,7 +426,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 
 ### PlaySound
 
-キューブから任意の音を再生します<br>
+キューブから任意の音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
 
 ```C#
@@ -358,7 +434,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 // 発音ごとの設定構造体
 public struct SoundOperation
 {
-    public Int16 durationMs; // ミリ秒
+    public int durationMs; // ミリ秒
     public byte volume;      // 音量(0~255)
     public byte note_number; // 音符(0~128)
 }
@@ -370,7 +446,7 @@ public void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE o
   - 範囲 : 0~255
 - operations
   - 定義 : 命令配列
-  - 個数 : 1~29
+  - 個数 : 1~59
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -381,8 +457,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 - buff
-  - 定義 : 命令プロコトル
-  - [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+  - 定義 : [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)で定義されたデータブロック
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -395,7 +470,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの音再生を停止します<br>
+キューブの音再生を停止します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#再生の停止)
 
 - order
@@ -410,7 +485,7 @@ public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの水平検出のしきい値を設定します<br>
+キューブの水平検出のしきい値を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#水平検出のしきい値設定)
 
 - angle
@@ -428,7 +503,7 @@ public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-キューブの衝突検出のしきい値を設定します<br>
+キューブの衝突検出のしきい値を設定します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#衝突検出のしきい値設定)
 
 - level
@@ -438,4 +513,151 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
 
+<br>
+
+### ConfigDoubleTapInterval
+
+```C#
+public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのダブルタップ検出の時間間隔を設定します <br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定)
+
+- interval
+  - 定義 : ダブルタップ検出の時間間隔
+  - 範囲 : 1~7
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### TargetMove
+
+```C#
+public void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            byte configID = 0,
+            byte timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            byte maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+キューブのモーターを目標指定付き制御します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
+
+- targetX
+  - 定義 : 目標地点の X 座標値
+  - 範囲 : -1, 0~65534
+    - -1の場合、X 座標は書き込み操作時と同じに設定
+- targetY
+  - 定義 : 目標地点の Y 座標値
+  - 範囲 : -1, 0~65534
+    - -1の場合、Y 座標は書き込み操作時と同じに設定
+- targetAngle
+  - 定義 : 目標地点でのキューブの角度Θ
+  - 範囲 : 0~8191
+- configID
+  - 定義 : 制御識別値、制御の応答を識別するための値。ここで設定した値が対応する応答にも含まれる
+  - 範囲 : 0~255
+- timeOut
+  - 定義 : タイムアウト時間
+  - 範囲 : 0~255
+    -  0 のみ例外的に 10 秒になる
+- targetMoveType
+  - 定義 : 移動タイプ
+  - 種類 :
+    - RotatingMove : 回転しながら移動
+    - RoundForwardMove : 回転しながら移動（後退なし）
+    - RoundBeforeMove : 回転してから移動
+- maxSpd
+  - 定義 : モーターの最大速度指示値
+  - 範囲 : 10~255
+- targetSpeedType
+  - 定義 : モーターの速度変化タイプ
+  - 種類 :
+    - UniformSpeed : 速度一定
+    - Acceleration : 目標地点まで徐々に加速
+    - Deceleration : 目標地点まで徐々に減速
+    - VariableSpeed : 中間地点まで徐々に加速し、そこから目標地点まで減速
+- targetRotationType
+  - 定義 : 目標地点でのキューブの角度Θのタイプ（意味）
+  - 種類 :
+    - AbsoluteLeastAngle : 絶対角度・回転量が少ない方向
+    - AbsoluteClockwise : 絶対角度・正方向(時計回り)
+    - AbsoluteCounterClockwise : 絶対角度・負方向(反時計回り)
+    - RelativeClockwise : 相対角度・正方向(時計回り)
+    - RelativeCounterClockwise : 相対角度・負方向(反時計回り)
+    - NotRotate : 回転しない
+    - Original : 書き込み操作時と同じ・回転量が少ない方向
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+### ConfigMotorRead
+
+```C#
+public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのモーター速度情報の取得の有効化・無効化を設定します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
+
+- valid
+  - 定義 : 有効無効フラグ
+  - 種類 : true, false
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### AccelerationMove
+
+```C#
+public void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            ushort rotationSpeed = 0,
+            AccPriorityType accPriorityType = AccPriorityType.Translation,
+            byte controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブの加速度指定付きモーター制御を実行します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
+
+- targetSpeed
+  - 定義 : キューブが進行方向に対して進む速度　マイナスを付けると後退になる
+  - 範囲 : 8~115
+- acceleration
+  - 定義 : キューブの加速度
+  - 範囲 : 0~255
+    -  0 の場合「キューブの並進速度」で指定した速度になる
+- rotationSpeed
+  - 定義 : キューブの向きの回転速度[度/秒]　マイナスを付けると負方向(反時計回り)になる
+  - 範囲 : 0~65535
+
+- accPriorityType
+  - 定義 : 優先指定
+  - 種類 :
+    - Translation : 並進速度を優先し、回転速度を調整する
+    - Rotation : 回転速度を優先し、並進速度を調整する
+- controlTime
+  - 定義 : 制御時間[10ms]
+  - 範囲 : 0~255
+    -  0 は「時間制限無し」という意味になる
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
 <br>

@@ -79,6 +79,10 @@
 
   キューブの各センサ値を検出し、UIに表示するサンプルです。
 
+- [Sample_Motor](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Motor/)
+
+  Cube.TargetMove、Cube.AccelerationMove を使ってキューブを動かすサンプルです。
+
 ### 応用
 
 - [Sample_MultiMat](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/)

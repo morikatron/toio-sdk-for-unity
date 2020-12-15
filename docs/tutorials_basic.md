@@ -71,14 +71,14 @@ public class BasicScene : MonoBehaviour
     {
         // Cube変数の生成が完了するまで早期リターン
         if (null == cube) { return; }
-		// 経過時間を計測
+        // 経過時間を計測
         elapsedTime += Time.deltaTime;
 
       	// 前回の命令から50ミリ秒以上経過した場合
         if (intervalTime < elapsedTime)
         {
             elapsedTime = 0.0f;
-          	// 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒
+            // 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒
             cube.Move(50, -50, 200);
         }
     }
@@ -214,7 +214,7 @@ cube.PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.St
 // durationMs  | 持続時間 | 範囲(10~2550)
 // volume      | 音量　　 | 範囲(0~255)
 // note_number | 音符　　 | 範囲(0~128)
-new Cube.SoundOperation(Int16 durationMs=0, byte volume=0, byte note_number=0);
+new Cube.SoundOperation(int durationMs=0, byte volume=0, byte note_number=0);
 
 // repeatCount | 繰り返し回数 | 範囲(0~255)
 // operations  | 命令配列　　 | 個数(1~59)
@@ -318,7 +318,7 @@ cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=OR
 // red        | 色の強さ | 範囲(0~255)
 // green      | 色の強さ | 範囲(0~255)
 // blue       | 色の強さ | 範囲(0~255)
-new Cube.LightOperation(Int16 durationMs = 0, byte red = 0, byte green = 0, byte blue = 0);
+new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte blue = 0);
 
 // repeatCount | 繰り返し回数 | 範囲(0~255)
 // operations  | 命令配列　　 | 個数(1~59)

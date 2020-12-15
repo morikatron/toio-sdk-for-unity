@@ -14,7 +14,7 @@ namespace toio.Simulator
             toio_collection_back = 1,
             simple_playmat = 2,
             developer = 3,
-            Custom = 4  // 座標範囲をカスタマイズ
+            custom = 4  // 座標範囲をカスタマイズ
         }
 
         public static readonly string[] MatTypeNames = new string[]
@@ -59,41 +59,65 @@ namespace toio.Simulator
         /// </summary>
         internal void ApplyMatType()
         {
+            // Resize
+            if (matType != MatType.custom)
+            {
+                var rect = GetRectForMatType(matType);
+                xMin = rect.xMin; xMax = rect.xMax;
+                yMin = rect.yMin; yMax = rect.yMax;
+            }
+            this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+
+            // Change material
             switch (matType){
                 case MatType.toio_collection_front:
-                    xMin = 45; xMax = 455; yMin = 45; yMax = 455;
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
                     break;
                 case MatType.toio_collection_back:
-                    xMin = 545; xMax = 955; yMin = 45; yMax = 455;
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
                     break;
                 case MatType.simple_playmat:
-                    xMin = 98; xMax = 402; yMin = 142; yMax = 358;
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
                 case MatType.developer:
-                    switch (developerMatType){
-                        case DeveloperMatType._1: xMin = 34; xMax = 339; yMin = 35; yMax = 250; break;
-                        case DeveloperMatType._2: xMin = 34; xMax = 339; yMin = 251; yMax = 466; break;
-                        case DeveloperMatType._3: xMin = 34; xMax = 339; yMin = 467; yMax = 682; break;
-                        case DeveloperMatType._4: xMin = 34; xMax = 339; yMin = 683; yMax = 898; break;
-                        case DeveloperMatType._5: xMin = 340; xMax = 644; yMin = 35; yMax = 250; break;
-                        case DeveloperMatType._6: xMin = 340; xMax = 644; yMin = 251; yMax = 466; break;
-                        case DeveloperMatType._7: xMin = 340; xMax = 644; yMin = 467; yMax = 682; break;
-                        case DeveloperMatType._8: xMin = 340; xMax = 644; yMin = 683; yMax = 898; break;
-                        case DeveloperMatType._9: xMin = 645; xMax = 949; yMin = 35; yMax = 250; break;
-                        case DeveloperMatType._10: xMin = 645; xMax = 949; yMin = 251; yMax = 466; break;
-                        case DeveloperMatType._11: xMin = 645; xMax = 949; yMin = 467; yMax = 682; break;
-                        case DeveloperMatType._12: xMin = 645; xMax = 949; yMin = 683; yMax = 898; break;
-                    }
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
-                case MatType.Custom:
+                case MatType.custom:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
                     break;
             }
-            this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+        }
+
+        public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default)
+        {
+            switch (matType){
+                case MatType.toio_collection_front:
+                    return new RectInt(45, 45, 410, 410);
+                case MatType.toio_collection_back:
+                    return new RectInt(545, 45, 410, 410);
+                case MatType.simple_playmat:
+                    return new RectInt(98, 142, 304, 216);
+                case MatType.developer:
+                    switch (devMatType){
+                        case DeveloperMatType._1:  return new RectInt( 34,  35, 305, 215);
+                        case DeveloperMatType._2:  return new RectInt( 34, 251, 305, 215);
+                        case DeveloperMatType._3:  return new RectInt( 34, 467, 305, 215);
+                        case DeveloperMatType._4:  return new RectInt( 34, 683, 305, 215);
+                        case DeveloperMatType._5:  return new RectInt(340,  35, 304, 215);
+                        case DeveloperMatType._6:  return new RectInt(340, 251, 304, 215);
+                        case DeveloperMatType._7:  return new RectInt(340, 467, 304, 215);
+                        case DeveloperMatType._8:  return new RectInt(340, 683, 304, 215);
+                        case DeveloperMatType._9:  return new RectInt(645,  35, 304, 215);
+                        case DeveloperMatType._10: return new RectInt(645, 251, 304, 215);
+                        case DeveloperMatType._11: return new RectInt(645, 467, 304, 215);
+                        case DeveloperMatType._12: return new RectInt(645, 683, 304, 215);
+                    }
+                    throw new System.Exception("devMatType out of range.");
+                case MatType.custom:
+                    Debug.LogError("Custom MatType not supported in this method.");
+                    return new RectInt(0, 0, 0, 0);
+            }
+            throw new System.Exception("matType out of range.");
         }
 
 
@@ -104,14 +128,14 @@ namespace toio.Simulator
         /// </summary>
         public int UnityDeg2MatDeg(float deg)
         {
-            return (int)(deg-this.transform.eulerAngles.y-90+0.49999f)%360;
+            return Mathf.RoundToInt((deg-this.transform.eulerAngles.y-90)%360+360)%360;
         }
         /// <summary>
         /// Unity上の角度をマットmat上の角度に変換
         /// </summary>
         public static int UnityDeg2MatDeg(float deg, Mat mat)
         {
-            if (mat == null) return (int)(deg-90)%360;
+            if (mat == null) return (int)((deg-90)%360+360)%360;
             else return mat.UnityDeg2MatDeg(deg);
         }
 
@@ -120,7 +144,7 @@ namespace toio.Simulator
         /// </summary>
         public float MatDeg2UnityDeg(float deg)
         {
-            return (int)(deg+this.transform.eulerAngles.y+90+0.49999f)%360;
+            return Mathf.RoundToInt(deg+this.transform.eulerAngles.y+90)%360;
         }
         /// <summary>
         /// マットmat上の角度をUnity上の角度に変換
@@ -153,15 +177,15 @@ namespace toio.Simulator
 
             // マット単位に変換
             return new Vector2Int(
-                (int)(coord.x*DotPerM + this.xCenter + 0.4999f),
-                (int)(coord.y*DotPerM + this.yCenter + 0.4999f)
+                Mathf.RoundToInt(coord.x*DotPerM + this.xCenter),
+                Mathf.RoundToInt(coord.y*DotPerM + this.yCenter)
             );
         }
 
         /// <summary>
         /// マット mat におけるマット座標から、Unity の3D空間に変換。mat が null の場合、mat.prefab の初期位置に基づく。
         /// </summary>
-        public static Vector3 MatCoord2UnityCoord(float x, float y, Mat mat)
+        public static Vector3 MatCoord2UnityCoord(float x, float y, Mat mat=null)
         {
             if (mat==null)
                 return new Vector3((float)(x-250)/DotPerM, 0, -(float)(y-250)/DotPerM);
@@ -170,7 +194,10 @@ namespace toio.Simulator
                 return mat.MatCoord2UnityCoord(x, y);
             }
         }
-        public static Vector3 MatCoord2UnityCoord(Vector2Int matCoord, Mat mat)
+        /// <summary>
+        /// マット mat におけるマット座標から、Unity の3D空間に変換。mat が null の場合、mat.prefab の初期位置に基づく。
+        /// </summary>
+        public static Vector3 MatCoord2UnityCoord(Vector2Int matCoord, Mat mat=null)
         {
             if (mat==null)
                 return new Vector3((matCoord.x-250)/DotPerM, 0, -(matCoord.y-250)/DotPerM);

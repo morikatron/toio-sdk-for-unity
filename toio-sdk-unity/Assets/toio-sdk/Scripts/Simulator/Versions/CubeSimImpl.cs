@@ -68,11 +68,52 @@ namespace toio.Simulator
             internal set{ NotSupportedWarning(); }}
         public virtual void StartNotification_CollisionDetected(System.Action<bool> action)
         { NotSupportedWarning(); }
+        // ---------- 2.1.0 ----------
+        // Pose
+        public virtual Cube.PoseType pose {
+            get{ NotSupportedWarning(); return default; }
+            internal set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_Pose(System.Action<Cube.PoseType> action)
+        { NotSupportedWarning(); }
+        // Double Tap
+        public virtual bool doubleTap {
+            get{ NotSupportedWarning(); return default; }
+            internal set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_DoubleTap(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        // Target Move
+        public virtual void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+        // Multi Target Move
+        public virtual void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.2.0 ----------
+        // Shake
+        public virtual int shakeLevel {
+            get{ NotSupportedWarning(); return default; }
+            internal set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_Shake(System.Action<int> action)
+        { NotSupportedWarning(); }
+        // Motor Speed
+        public virtual int leftMotorSpeed {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual int rightMotorSpeed {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
+        { NotSupportedWarning(); }
+
 
 
         // ============ Motor ============
         protected float speedL = 0;  // (m/s)
         protected float speedR = 0;
+        protected float speedTireL = 0;
+        protected float speedTireR = 0;
         protected float motorLeft{get; set;} = 0;   // モーター指令値
         protected float motorRight{get; set;} = 0;
         public virtual void SimulateMotor()
@@ -83,22 +124,25 @@ namespace toio.Simulator
             // target speed
             float targetSpeedL = motorLeft * CubeSimulator.VDotOverU / Mat.DotPerM;
             float targetSpeedR = motorRight * CubeSimulator.VDotOverU / Mat.DotPerM;
-            if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
-            if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
+            // if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
+            // if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
             // 速度更新
-            // update speed
+            // update tires' speed
             if (cube.forceStop || this.button)   // 強制的に停止
             {
-                speedL = 0; speedR = 0;
+                speedTireL = 0; speedTireR = 0;
             }
             else
             {
-                if (cube.offGroundL) targetSpeedL = 0;
-                if (cube.offGroundR) targetSpeedR = 0;
-                speedL += (targetSpeedL - speedL) / Mathf.Max(cube.motorTau,dt) * dt;
-                speedR += (targetSpeedR - speedR) / Mathf.Max(cube.motorTau,dt) * dt;
+                speedTireL += (targetSpeedL - speedTireL) / Mathf.Max(cube.motorTau,dt) * dt;
+                speedTireR += (targetSpeedR - speedTireR) / Mathf.Max(cube.motorTau,dt) * dt;
             }
+
+            // update object's speed
+            // NOTES: simulation for slipping shall be implemented here
+            speedL = cube.offGroundL? 0: speedTireL;
+            speedR = cube.offGroundR? 0: speedTireR;
 
             cube._SetSpeed(speedL, speedR);
         }
@@ -106,6 +150,7 @@ namespace toio.Simulator
 
 
         // ============ Commands ============
+        // ---------- 2.0.0 ----------
         public virtual void Move(int left, int right, int durationMS)
         { NotSupportedWarning(); }
         public virtual void StopLight()
@@ -120,10 +165,55 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
         public virtual void StopSound()
         { NotSupportedWarning(); }
-        public virtual void SetSlopeThreshold(int angle)
+        public virtual void ConfigSlopeThreshold(int angle)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.1.0 ----------
+        public virtual void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){ NotSupportedWarning(); }
+        public virtual void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){ NotSupportedWarning(); }
+        public virtual void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            int rotationSpeed,
+            Cube.AccPriorityType accPriorityType,
+            int controlTime
+        ){ NotSupportedWarning(); }
+
+        // ---------- 2.2.0 ----------
+        public virtual void ConfigMotorRead(bool enabled)
         { NotSupportedWarning(); }
 
         protected virtual void NotSupportedWarning()
-        { Debug.LogWarning("Not Supported in this firmware version."); }
+        {
+            // Debug.LogWarning("Not Supported in this firmware version.");
+        }
+
+
+        // ============ Utils ============
+        protected float Deg(float d)
+        {
+            return (d%360 + 540)%360 -180;
+        }
     }
 }

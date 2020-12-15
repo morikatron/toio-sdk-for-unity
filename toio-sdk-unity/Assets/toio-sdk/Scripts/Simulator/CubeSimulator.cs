@@ -18,16 +18,19 @@ namespace toio.Simulator
         public static readonly float WidthM= 0.0318f;
         // ratio of Speed(Dot/s) and order ( 2.04f in real test )
         // theorically, 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
-        public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM; // about 2.06
+        public static readonly float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
+        public static readonly float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
 
 
         // ======== Simulator Settings ========
         public enum Version
         {
             v2_0_0,
+            v2_1_0,
+            v2_2_0
         }
         [SerializeField]
-        public Version version = Version.v2_0_0;
+        public Version version = Version.v2_2_0;
         [SerializeField]
         public float motorTau = 0.04f; // parameter of one-order model for motor, τ
         [SerializeField]
@@ -131,6 +134,35 @@ namespace toio.Simulator
         /// </summary>
         public bool collisionDetected{ get {return impl.collisionDetected;} internal set {impl.collisionDetected = value;} }
 
+        // 2.1.0
+
+        /// <summary>
+        /// ダブルタップが検出されたか
+        /// </summary>
+        public bool doubleTap{ get {return impl.doubleTap;} internal set {impl.doubleTap = value;} }
+
+        /// <summary>
+        /// ポーズ
+        /// </summary>
+        public Cube.PoseType pose{ get {return impl.pose;} internal set {impl.pose = value;} }
+
+        // 2.2.0
+
+        /// <summary>
+        /// シェイクが検出されたか
+        /// </summary>
+        public int shakeLevel{ get {return impl.shakeLevel;} internal set {impl.shakeLevel = value;} }
+
+        /// <summary>
+        /// コアキューブのモーター ID 1（左）の速度
+        /// </summary>
+        public int leftMotorSpeed{ get {return impl.leftMotorSpeed;} }
+
+        /// <summary>
+        /// コアキューブのモーター ID 2（右）の速度
+        /// </summary>
+        public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
+
 
         // ======== Objects ========
         private Rigidbody rb;
@@ -145,7 +177,7 @@ namespace toio.Simulator
 
         private void Start()
         {
-            #if !UNITY_EDITOR   // Editor以外で実行される場合は自身を無効かします
+            #if !(UNITY_EDITOR || UNITY_STANDALONE)   // Editor以外で実行される場合は自身を無効かします
                 this.gameObject.SetActive(false);
             #else
                 this.rb = GetComponent<Rigidbody>();
@@ -159,7 +191,9 @@ namespace toio.Simulator
                 switch (version)
                 {
                     case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
-                    default : this.impl = new CubeSimImpl_v2_0_0(this);break;
+                    case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
+                    case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
+                    default : this.impl = new CubeSimImpl_v2_2_0(this);break;
                 }
                 this._InitPresetSounds();
             #endif
@@ -253,8 +287,67 @@ namespace toio.Simulator
             impl.StartNotification_CollisionDetected(action);
         }
 
+        /// <summary>
+        /// ダブルタップのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_DoubleTap(System.Action<bool> action)
+        {
+            impl.StartNotification_DoubleTap(action);
+        }
+
+        /// <summary>
+        /// ポーズのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_Pose(System.Action<Cube.PoseType> action)
+        {
+            impl.StartNotification_Pose(action);
+        }
+
+        /// <summary>
+        /// 目標指定付きモーター制御の応答コールバックを設定する
+        /// </summary>
+        public void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            impl.StartNotification_TargetMove(action);
+        }
+
+        /// <summary>
+        /// 複数目標指定付きモーター制御の応答コールバックを設定する
+        /// </summary>
+        public void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        {
+            impl.StartNotification_MultiTargetMove(action);
+        }
+
+        /// <summary>
+        /// シェイク検出のイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_Shake(System.Action<int> action)
+        {
+            impl.StartNotification_Shake(action);
+        }
+
+        /// <summary>
+        /// モーター速度読み取りのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_MotorSpeed(System.Action<int, int> action)
+        {
+            impl.StartNotification_MotorSpeed(action);
+        }
+
+        /// <summary>
+        /// 設定の応答の読み出しコールバックを設定する
+        /// 引数：モーター速度設定応答
+        /// </summary>
+        public void StartNotification_ConfigMotorRead(System.Action<bool> action)
+        {
+            impl.StartNotification_ConfigMotorRead(action);
+        }
+
+
         // ============ コマンド ============
 
+        // --------- 2.0.0 --------
         /// <summary>
         /// モーター：時間指定付きモーター制御
         /// </summary>
@@ -310,9 +403,58 @@ namespace toio.Simulator
         /// <summary>
         /// 水平検出の閾値を設定する（度）
         /// </summary>
-        public void SetSlopeThreshold(int degree)
+        public void ConfigSlopeThreshold(int degree)
         {
-            impl.SetSlopeThreshold(degree);
+            impl.ConfigSlopeThreshold(degree);
+        }
+
+        // --------- 2.1.0 --------
+        public void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.TargetRotationType targetRotationType
+        ){
+            impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
+        }
+
+        public void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            Cube.TargetRotationType[] multiRotationTypeList,
+            int configID,
+            int timeOut,
+            Cube.TargetMoveType targetMoveType,
+            int maxSpd,
+            Cube.TargetSpeedType targetSpeedType,
+            Cube.MultiWriteType multiWriteType
+        ){
+            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
+        }
+
+        public void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            int rotationSpeed,
+            Cube.AccPriorityType accPriorityType,
+            int controlTime
+        ){
+            impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime);
+        }
+
+        // --------- 2.2.0 --------
+        /// <summary>
+        /// モーターの速度情報の取得の設定
+        /// </summary>
+        public void ConfigMotorRead(bool enabled)
+        {
+            impl.ConfigMotorRead(enabled);
         }
 
 
@@ -337,14 +479,21 @@ namespace toio.Simulator
             LED.GetComponent<Renderer>().material.color = Color.black;
         }
 
+        private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
-            int octave = (int)(soundId/12);
-            int idx = (int)(soundId%12);
-            var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+            if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+            if (soundId != playingSoundId)
+            {
+                playingSoundId = soundId;
+                int octave = (int)(soundId/12);
+                int idx = (int)(soundId%12);
+                var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+                audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
+                audioSource.clip = aCubeOnSlot;
+            }
             audioSource.volume = (float)volume/256;
-            audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-            audioSource.clip = aCubeOnSlot;
-            audioSource.Play();
+            if (!audioSource.isPlaying)
+                audioSource.Play();
         }
         internal void _StopSound(){
             audioSource.clip = null;

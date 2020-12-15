@@ -254,6 +254,16 @@ namespace toio.Navigation{
             gNavigators.Clear();
         }
 
+        /// <summary>
+        /// Create Default Walls (Borders)
+        /// </summary>
+        public void AddBorder(int width, RectInt rect){
+            walls.Add(new Wall(1, 0, -rect.xMin, width));    // left
+            walls.Add(new Wall(1, 0, -rect.xMax, width));    // right
+            walls.Add(new Wall(0, 1, -rect.yMin, width));    // top
+            walls.Add(new Wall(0, 1, -rect.yMax, width));    // bottom
+        }
+
     }
 
 }
