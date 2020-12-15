@@ -7,19 +7,10 @@ using System.Reflection;
 
 namespace toio.Tests
 {
-    internal class A_BasicTest : CoffeeTestCase
-    {
-        [CoffeeTest]
-        void aeee()
-        {
-
-        }
-    }
-
     internal abstract class CoffeeTestCase
     {
-        public GameObject gameObject;
-        public MonoBehaviour script;
+        public static GameObject gameObject;
+        public static MonoBehaviour script;
     }
 
     internal class BasicTest : MonoBehaviour
