@@ -15,6 +15,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BleDeviceObj extends BluetoothGattCallback {
     private BluetoothDevice bluetoothDevice;
@@ -98,6 +99,15 @@ public class BleDeviceObj extends BluetoothGattCallback {
         this.address = device.getAddress();
         this.characteristicHashMap = new HashMap<String,BluetoothGattCharacteristic>();
         device.connectGatt(cxt,true,this);
+    }
+    public String[] getCharastrics(){
+        String[] characteristics  = new String[ this.characteristicHashMap.size() ];
+        int idx =0;
+        for(Map.Entry entry: this.characteristicHashMap.entrySet()){
+            characteristics[idx] = entry.getKey().toString();
+            ++idx;
+        }
+        return characteristics;
     }
 
 
