@@ -237,7 +237,7 @@ public class MySimUI : MonoBehaviour
 
 #### ボタンのプロパティー設定
 
-Button  | Rest Transform位置 |テキスト  | フォントサイズ |Pointer Down  | Pointer up |
+Button  | Rect Transform位置 |テキスト  | フォントサイズ |Pointer Down  | Pointer up |
 :--------|:--------:|:--------:|:--------:|---------|--------|
 Button0  | X:0　　 Y:550|←| 72 | TurnLeft() | Stop() |
 Button1  | X:150　 Y:400 |↑| 72 | Forward() | Stop() |

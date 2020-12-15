@@ -6,7 +6,8 @@
 - [2. Mat Prefab](usage_simulator.md#2-Mat-Prefab)
   - [2.1. インスペクターでのパラメーター](usage_simulator.md#21-インスペクターでのパラメーター)
   - [2.2. 定数](usage_simulator.md#22-定数)
-  - [2.3. メソッド](usage_simulator.md#23-メソッド)
+  - [2.3. 列挙型](usage_simulator.md#23-列挙型)
+  - [2.4. メソッド](usage_simulator.md#24-メソッド)
 - [3. StandardID Prefab](usage_simulator.md#3-StandardID-Prefab)
   - [ 3.1. インスペクターでのパラメーター](usage_simulator.md#31-インスペクターでのパラメーター)
 - [4. Cube Prefab](usage_simulator.md#4-Cube-Prefab)
@@ -57,7 +58,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 | Unity Editor 上での表記 | 正式名称 |
 | :-- | :-- |
 | トイコレ付属マット（土俵面） | トイオ・コレクション付属のプレイマット(土俵の面) |
-| トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) | 
+| トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) |
 | キューブ（単体）付属簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
 | 開発用マット | toio™開発用プレイマット（仮称） |
 
@@ -70,7 +71,45 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 ```
 
-## 2.3. メソッド
+## 2.3. 列挙型
+
+### MatType
+
+マットのタイプ
+
+```c#
+toio_collection_front = 0,  // トイコレ付属マット（土俵面）
+toio_collection_back = 1,   // トイコレ付属マット（色タイル面）
+simple_playmat = 2,         // キューブ（単体）付属簡易マット
+developer = 3,              // 開発用マット
+custom = 4                  // 座標範囲をカスタマイズ
+```
+
+### DeveloperMatType
+
+開発用マットの番号
+
+```c#
+_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12
+```
+
+## 2.4. メソッド
+
+### GetRectForMatType
+
+```c#
+public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default);
+```
+
+指定タイプのマットの座標範囲を持つ RectInt を取得します。
+
+- matType
+  - 定義：マットのタイプ
+  - 範囲：`MatType.custom` 以外
+- devMatType
+  - 定義：開発用マットの番号（matType が `MatType.developer` の場合のみ有効）
+- 戻り値
+  - 定義：座標範囲を持つ RectInt
 
 ### UnityDeg2MatDeg
 
@@ -78,7 +117,7 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 public int UnityDeg2MatDeg(double deg);
 ```
 
-Unity 上の角度を本マット上の角度に変換します
+Unity 上の角度を本マット上の角度に変換します。
 
 - deg
   - 定義：Unity 上の角度（度）
@@ -92,7 +131,7 @@ Unity 上の角度を本マット上の角度に変換します
 public float MatDeg2UnityDeg(double deg);
 ```
 
-本マット上の角度を Unity 上の角度に変換します
+本マット上の角度を Unity 上の角度に変換します。
 
 - deg
   - 定義：本マット上の角度（度）
@@ -106,7 +145,7 @@ public float MatDeg2UnityDeg(double deg);
 public Vector2Int UnityCoord2MatCoord(Vector3 unityCoord);
 ```
 
-Unity の 3D 空間座標から、本マットにおけるマット座標に変換します
+Unity の 3D 空間座標から、本マットにおけるマット座標に変換します。
 
 - unityCoord
   - 定義：Unity 上の座標
@@ -120,7 +159,7 @@ Unity の 3D 空間座標から、本マットにおけるマット座標に変�
 public Vector3 MatCoord2UnityCoord(double x, double y);
 ```
 
-本マットにおけるマット座標から、Unity の 3D 空間座標に変換します
+本マットにおけるマット座標から、Unity の 3D 空間座標に変換します。
 
 - x
   - 定義：本マット上のｘ座標
@@ -162,7 +201,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 public int UnityDeg2MatDeg(double deg);
 ```
 
-Unity 上の角度を本 StandardID 上の角度に変換します
+Unity 上の角度を本 StandardID 上の角度に変換します。
 
 - deg
   - 定義：Unity 上の角度（度）
@@ -176,7 +215,7 @@ Unity 上の角度を本 StandardID 上の角度に変換します
 public float MatDeg2UnityDeg(double deg);
 ```
 
-本 StandardID 上の角度を Unity 上の角度に変換します
+本 StandardID 上の角度を Unity 上の角度に変換します。
 
 - deg
   - 定義：本 StandardID 上の角度（度）
@@ -222,10 +261,13 @@ Cube Prefab はシーンの中に複数台配置することが出来ます。 �
 シミュレータ上でリアルに再現するのが難しい、或いは操作しにくい場合、インスペクターでキューブの状態を変更し、対応イベントを起こすことが出来ます。
 
 - `button 状態`：チェック入れると、ボタンを押したままの状態になります。押された状態ではキューブは動くことが出来ないので、再びキューブを動かしたい場合にはチェックを外しボタンを放した上にする必要があります。また、マウスの操作でボタン状態を変更した場合、この設定が上書きされます。
-- `【sloped の変更を手動で行う】`：チェックすると、`sloped 状態` が表示され設定を変更できるようになります。  
+- `【sloped の変更を手動で行う】`：チェックすると、`sloped 状態` が表示され設定を変更できるようになります。
 （通常はシミュレータが毎フレームsloped状態をセットしていますが、この設定が有効な場合はシミュレータがsloped状態をセットしないようになります。）
   - `sloped 状態`：キューブが斜面にいるかを示します。
 - `collisionDetected 状態`：衝突を検出したか否かを示します。(現在、シミュレータにはキューブの衝突を検出する機能は実装されていません）
+- `doubleTap 状態`：ダブルタップされたかを示します。（現在、シミュレータにはキューブがダブルタップされたことを検出する機能は実装されていません）
+- `pose 状態`：キューブの姿勢を表示・変更できます。
+- `shake レベル`：シェイクの強さを示します。（現在、シミュレータにはキューブがシェイクされたことを検出する機能は実装されていません）
 
 ## 4.2. CubeSimulator の定数
 
@@ -357,7 +399,7 @@ public string focusName { get; }
 public void SetFocus(Transform transform);
 ```
 
-手動でフォーカス対象を設定します
+手動でフォーカス対象を設定します。
 
 - transform
   - 定義：フォーカスの対象
@@ -368,5 +410,5 @@ public void SetFocus(Transform transform);
 public void SetNoFocus();
 ```
 
-フォーカスをキャンセルします
+フォーカスをキャンセルします。
 

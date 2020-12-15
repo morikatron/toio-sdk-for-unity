@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using toio.Simulator;
 
 namespace toio.tutorial
 {
@@ -52,17 +53,24 @@ namespace toio.tutorial
                 {
                     Debug.Log("---------- Phase 2 - デッドゾン対処 ----------");
                     Debug.Log("MoveRaw と move は入力表現が違う。move の方がもっと直感的になっている。MoveRaw はほぼそのままの入力を Cube.move に渡すが、move は【デッドゾン対処】と【ボーダー制限】を行っている。");
-                    Debug.Log("赤キューブは MoveRaw(-9, 1, 100)、緑キューブは等価に move(-4, -10, 100)、デッドゾンは 10。");
+                    Debug.Log("デッドゾーンより小さい等価的な命令を、赤キューブが MoveRaw で、緑キューブが Move で実行。");
                     Debug.Log("緑キューブだけが動いた。");
 
-                    // MoveRawで前進：　左モーター指令 -9、右モーター指令 1、継続時間 100
-                    cubeManager.handles[0].MoveRaw(-9, 1, 100);
+                    // MoveRawで前進：　左モーター指令 -deadzone+1、右モーター指令 1、継続時間 100
+                    var dz0 = cubeManager.cubes[0].deadzone;
+                    cubeManager.handles[0].MoveRaw(dz0-1, -dz0+1, 100);
 
-                    // moveで前進：　前進指令 -4、回転指令 -10、(希望)継続時間 100
-                    cubeManager.handles[1].Move(-4, -10, 100);
+                    // moveで前進：　等価的に、前進指令 0、回転指令 2*dz1、(希望)継続時間 100
+                    var dz1 = cubeManager.cubes[1].deadzone;
+                    cubeManager.handles[1].Move(0, 2*dz1, 100);
                 }
                 else if (phase == 3)
                 {
+                    Vector3 offset = new Vector3(0, 0.005f, 0);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(65, 65)+offset, Mat.MatCoord2UnityCoord(65, 435)+offset, Color.red, 3.5f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(65, 65)+offset, Mat.MatCoord2UnityCoord(435, 65)+offset, Color.red, 3.5f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(435, 435)+offset, Mat.MatCoord2UnityCoord(65, 435)+offset, Color.red, 3.5f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(435, 435)+offset, Mat.MatCoord2UnityCoord(435, 65)+offset, Color.red, 3.5f);
                     Debug.Log("---------- Phase 3 - ボーダー ----------");
                     Debug.Log("赤キューブは MoveRawで前進、緑キューブは moveで同じ前進を。");
                     Debug.Log("緑キューブはボーダー前に止まった。");
@@ -79,9 +87,29 @@ namespace toio.tutorial
                     Debug.Log("ボーダー制限は、予測モデルによって継続時間を制限することで、後退や回転の場合でも効く。");
 
                     // moveで前進：　前進指令 80、回転指令 30、(希望)継続時間 2000
-                    cubeManager.handles[1].Move(-80, 30, 2000);
+                    cubeManager.handles[1].Move(-80, 40, 2000);
                 }
                 else if (phase == 5)
+                {
+                    Vector3 offset = new Vector3(0, 0.005f, 0);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(105, 105)+offset, Mat.MatCoord2UnityCoord(105, 395)+offset, Color.red, 10f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(105, 105)+offset, Mat.MatCoord2UnityCoord(395, 105)+offset, Color.red, 10f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(395, 395)+offset, Mat.MatCoord2UnityCoord(105, 395)+offset, Color.red, 10f);
+                    Debug.DrawLine(Mat.MatCoord2UnityCoord(395, 395)+offset, Mat.MatCoord2UnityCoord(395, 105)+offset, Color.red, 10f);
+                    Debug.Log("---------- Phase 5 - ボーダー設定 ----------");
+                    Debug.Log("SetBorderRectでボーダーの位置をもっと内側に設定");
+
+                    // ボーダーの位置を変更：　toio_collection_front マットのサイズより、margin=120 単位内側のところに
+                    cubeManager.handles[1].SetBorderRect(
+                        matRect:Mat.GetRectForMatType(Mat.MatType.toio_collection_front),
+                        margin:60
+                    );
+
+                    // moveで前進：　前進指令 100、回転指令 30、(希望)継続時間 2000
+                    // border の有効無効も指定できるが、ここは有効のままに
+                    cubeManager.handles[1].Move(100, 30, 2000, border:true);
+                }
+                else if (phase == 6)
                 {
                     Debug.Log("---------- 【おわり】 ----------");
                     Debug.Log("ありがとうございます。");

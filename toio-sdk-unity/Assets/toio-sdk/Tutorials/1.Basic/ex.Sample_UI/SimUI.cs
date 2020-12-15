@@ -4,7 +4,7 @@ namespace toio.tutorial
 {
     public class SimUI : MonoBehaviour
     {
-        #if UNITY_EDITOR
+        #if UNITY_EDITOR || UNITY_STANDALONE
         private int updateCnt = 0;
 
         void Update()

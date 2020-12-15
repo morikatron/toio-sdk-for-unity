@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace toio
 {
@@ -47,6 +48,32 @@ namespace toio
         public abstract bool isGrounded { get; protected set; }
         // コアキューブの最高速度
         public abstract int maxSpd { get; }
+        // コアキューブのモーター指令のデッドゾーン
+        public abstract int deadzone { get; }
+
+        // ver2.1.0
+        // コアキューブのダブルタップ状態
+        public virtual bool isDoubleTap {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+        // コアキューブの姿勢状態
+        public virtual PoseType pose {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+
+        // ver2.2.0
+        // コアキューブのシェイク状態
+        public virtual int shakeLevel {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+        // コアキューブのモーター ID 1（左）の速度
+        public virtual int leftSpeed {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+        // コアキューブのモーター ID 2（右）の速度
+        public virtual int rightSpeed {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -60,7 +87,7 @@ namespace toio
         /// <param name="right">右モーター速度</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak) { UnsupportedWarning(); }
+        public virtual void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブ底面についている LED を制御します
@@ -71,7 +98,7 @@ namespace toio
         /// <param name="blue">青色の強さ</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブ底面についている LED を連続的に制御します
@@ -80,14 +107,14 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブ底面についている LED を消灯させます
         /// https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public virtual void TurnLedOff(ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void TurnLedOff(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブからあらかじめ用意された効果音を再生します
@@ -96,7 +123,7 @@ namespace toio
         /// <param name="soundId">サウンドID</param>
         /// <param name="volume">音量</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブから任意の音を再生します
@@ -105,21 +132,22 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
         /// <summary>
         /// キューブから任意の音を再生します
         /// https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
         /// </summary>
         /// <param name="buff">命令プロトコル</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの音再生を停止します
         /// https://toio.github.io/toio-spec/docs/ble_sound#再生の停止
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public virtual void StopSound(ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void StopSound(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの水平検出のしきい値を設定します
@@ -127,7 +155,7 @@ namespace toio
         /// </summary>
         /// <param name="angle">傾き検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void ConfigSlopeThreshold(int angle, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
         /// キューブの衝突検出のしきい値を設定します
@@ -135,32 +163,137 @@ namespace toio
         /// </summary>
         /// <param name="level">衝突検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public virtual void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { UnsupportedWarning(); }
+        public virtual void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
+        /// <summary>
+        /// キューブのダブルタップ検出の時間間隔を設定します
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定
+        /// </summary>
+        /// <param name="interval">ダブルタップ検出の時間間隔</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void ConfigDoubleTapInterval(int interval, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
+        /// <summary>
+        /// キューブのモーターを目標指定付き制御します
+        /// https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御
+        /// </summary>
+        /// <param name="targetX">目標地点のX座標値</param>
+        /// <param name="targetY">目標地点のY座標値</param>
+        /// <param name="targetAngle">目標地点でのキューブの角度Θ</param>
+        /// <param name="configID">制御識別値</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="targetMoveType">移動タイプ</param>
+        /// <param name="maxSpd">モーターの最大速度指示値</param>
+        /// <param name="targetSpeedType">モーターの速度変化タイプ</param>
+        /// <param name="targetRotationType">回転タイプ</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void TargetMove(
+            int targetX,
+            int targetY,
+            int targetAngle,
+            int configID = 0,
+            int timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            int maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ) { NotSupportedWarning(); }
+        /*
+        /// <summary>
+        /// キューブのモーターを複数目標指定付き制御します
+        /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
+        /// </summary>
+        /// <param name="targetXList">目標地点のX座標値の集合</param>
+        /// <param name="targetYList">目標地点のY座標値の集合</param>
+        /// <param name="targetAngleList">目標地点でのキューブの角度Θの集合</param>
+        /// <param name="multiRotationTypeList">回転タイプの集合</param>
+        /// <param name="configID">制御識別値</param>
+        /// <param name="timeOut">タイムアウト時間(秒)</param>
+        /// <param name="targetMoveType">移動タイプ</param>
+        /// <param name="maxSpd">モーターの最大速度指示値</param>
+        /// <param name="targetSpeedType">モーターの速度変化タイプ</param>
+        /// <param name="multiWriteType">書き込み操作の追加設定</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void MultiTargetMove(
+            int[] targetXList,
+            int[] targetYList,
+            int[] targetAngleList,
+            TargetRotationType[] multiRotationTypeList = null,
+            int configID = 0,
+            int timeOut = 0,
+            TargetMoveType targetMoveType = TargetMoveType.RotatingMove,
+            int maxSpd = 80,
+            TargetSpeedType targetSpeedType = TargetSpeedType.UniformSpeed,
+            MultiWriteType multiWriteType = MultiWriteType.Write,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ NotSupportedWarning(); }
+        */
+        /// <summary>
+        /// キューブの加速度指定付きモーターを制御します
+        /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御
+        /// </summary>
+        /// <param name="targetSpeed">キューブの並進速度</param>
+        /// <param name="acceleration">キューブの加速度、100msごとの速度の増加分</param>
+        /// <param name="rotationSpeed">キューブの向きの回転速度[度/秒]</param>
+        /// <param name="accPriorityType">回転や並進の優先指定</param>
+        /// <param name="controlTime">制御時間[10ms]</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void AccelerationMove(
+            int targetSpeed,
+            int acceleration,
+            int rotationSpeed = 0,
+            AccPriorityType accPriorityType = AccPriorityType.Translation,
+            int controlTime = 0,
+            ORDER_TYPE order = ORDER_TYPE.Strong
+        ){ NotSupportedWarning(); }
+
+        /// キューブのモーター速度情報の取得の有効化・無効化を設定します
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
+        /// </summary>
+        /// <param name="valid">有効無効フラグ</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        // 非対応コールバック
-        private UnsupportingCallbackProvider unsupportingCallback;
         // ボタンコールバック
-        public virtual CallbackProvider buttonCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> buttonCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 傾きコールバック
-        public virtual CallbackProvider slopeCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> slopeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 衝突コールバック
-        public virtual CallbackProvider collisionCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> collisionCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 座標角度コールバック
-        public virtual CallbackProvider idCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> idCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // StandardID コールバック
-        public virtual CallbackProvider standardIdCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> standardIdCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // ID Missed コールバック
-        public virtual CallbackProvider idMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> idMissedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // StandardID Missed コールバック
-        public virtual CallbackProvider standardIdMissedCallback { get { return this.unsupportingCallback; } }
+        public virtual CallbackProvider<Cube> standardIdMissedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+
+        // ver2.1.0
+        // Double Tap コールバック
+        public virtual CallbackProvider<Cube> doubleTapCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        // 姿勢検出コールバック
+        public virtual CallbackProvider<Cube> poseCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        // 目標指定付きモーター制御の応答コールバック
+        public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        // 複数目標指定付きモーター制御の応答コールバック
+        // public virtual CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+
+        // ver2.2.0
+        // シェイクコールバック
+        public virtual CallbackProvider<Cube> shakeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        // モータースピードコールバック
+        public virtual CallbackProvider<Cube> motorSpeedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
         public Cube()
         {
-            this.unsupportingCallback = new UnsupportingCallbackProvider(this);
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -170,18 +303,18 @@ namespace toio
         // 発音ごとの設定構造体
         public struct SoundOperation
         {
-            public Int16 durationMs; // ミリ秒
+            public int durationMs;   // ミリ秒
             public byte volume;      // 音量(0~255)
             public byte note_number; // 音符(0~128)
 
-            public SoundOperation(Int16 durationMs = 0, byte volume = 0, byte note_number = 0)
+            public SoundOperation(int durationMs = 0, byte volume = 0, byte note_number = 0)
             {
                 this.durationMs = durationMs;
                 this.volume = volume;
                 this.note_number = note_number;
             }
 
-            public SoundOperation(Int16 durationMs = 0, byte volume = 0, NOTE_NUMBER note_number = 0)
+            public SoundOperation(int durationMs = 0, byte volume = 0, NOTE_NUMBER note_number = 0)
             {
                 this.durationMs = durationMs;
                 this.volume = volume;
@@ -192,12 +325,12 @@ namespace toio
         // 発光ごとの設定構造体
         public struct LightOperation
         {
-            public Int16 durationMs; // ミリ秒
+            public int durationMs;   // ミリ秒
             public byte red;         // 赤色の強さ
             public byte green;       // 緑色の強さ
             public byte blue;        // 青色の強さ
 
-            public LightOperation(Int16 durationMs = 0, byte red = 0, byte green = 0, byte blue = 0)
+            public LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte blue = 0)
             {
                 this.durationMs = durationMs;
                 this.red = red;
@@ -206,17 +339,77 @@ namespace toio
             }
         }
 
-
-        public enum PoseType
+        // 目標指定付き制御のパラメータ種類
+        public enum TargetMoveType: byte
         {
-            up=1,
-            down=2,
-            forward=3,
-            backward=4,
-            right=5,
-            left=6
+            // https://toio.github.io/toio-spec/docs/ble_motor#移動タイプ
+            RotatingMove=0,       // 回転しながら移動
+            RoundForwardMove=1,   // 回転しながら移動（後退なし）
+            RoundBeforeMove=2     // 回転してから移動
         };
 
+        public enum TargetSpeedType: byte
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度変化タイプ
+            UniformSpeed=0,   // 速度一定
+            Acceleration=1,   // 目標地点まで徐々に加速
+            Deceleration=2,   // 目標地点まで徐々に減速
+            VariableSpeed=3   // 中間地点まで徐々に加速し、そこから目標地点まで減速
+        };
+
+        public enum TargetRotationType: byte
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#目標地点でのキューブの角度-θ
+            AbsoluteLeastAngle=0,         // 絶対角度 回転量が少ない方向
+            AbsoluteClockwise=1,          // 絶対角度 正方向(時計回り)
+            AbsoluteCounterClockwise=2,   // 絶対角度 負方向(反時計回り)
+            RelativeClockwise=3,          // 相対角度 正方向(時計回り)
+            RelativeCounterClockwise=4,   // 相対角度 負方向(反時計回り)
+            NotRotate=5,                  // 回転しない
+            Original=6                    // 書き込み操作時と同じ 回転量が少ない方向
+        };
+
+        public enum MultiWriteType: byte
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#書き込み操作の追加設定
+            Write=0,        // 上書き
+            Add=1,          // 追加
+        };
+
+        // 加速度指定付き制御のパラメータ種類
+        public enum AccPriorityType: byte
+        {
+            // https://toio.github.io/toio-spec/docs/ble_motor#優先指定
+            Translation=0,      // 並進速度を優先し、回転速度を調整します
+            Rotation=1,         // 回転速度を優先し、並進速度を調整します
+        };
+
+        // 制御の応答
+        public enum TargetMoveRespondType: byte
+        {
+            // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#応答内容-1
+            Normal=0,           // 目標に到達した時
+            Timeout=1,          // 指定したタイムアウト時間を経過した時
+            ToioIDmissed=2,     // toio ID がない場所にキューブが置かれた時
+            ParameterError=3,   // 座標 X, 座標 Y, 角度の全てが現在と同じだった時
+            PowerOffError=4,    // 電源を切られた時
+            OtherWrite=5,       // 複数目標指定付きモーター制御以外のモーター制御が書き込まれた時
+            NonSupport=6,       // 指定したモーターの最大速度指示値が8未満の時
+            AddRefused=7        // 書き込み操作の追加ができない時
+        };
+
+        // 姿勢
+        public enum PoseType: byte
+        {
+            Up=1,
+            Down=2,
+            Front=3,
+            Back=4,
+            Right=5,
+            Left=6
+        };
+
+        // 効果音
         public enum NOTE_NUMBER : byte
         {
             C0 = 0,
@@ -350,18 +543,40 @@ namespace toio
             NO_SOUND = 128
         }
 
+        // 命令
         public enum ORDER_TYPE : int
         {
             Strong,
             Weak
         }
 
-        public class CallbackProvider
+        public class CallbackProvider<T1>
         {
-            protected Dictionary<string, Action<Cube>> listenerTable = new Dictionary<string, Action<Cube>>();
-            protected List<Action<Cube>> listenerList = new List<Action<Cube>>();
+            public class NotSupported : CallbackProvider<T1>
+            {
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1) { NotSupportedWarning(this.version); }
+            }
 
-            public virtual void AddListener(string key, Action<Cube> listener)
+            protected Dictionary<string, Action<T1>> listenerTable = new Dictionary<string, Action<T1>>();
+            protected List<Action<T1>> listenerList = new List<Action<T1>>();
+
+            public virtual void AddListener(string key, Action<T1> listener)
             {
                 this.listenerTable[key] = listener;
                 this.listenerList.Add(listener);
@@ -376,40 +591,174 @@ namespace toio
             }
             public virtual void ClearListener()
             {
-                listenerTable.Clear();
-                listenerList.Clear();
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
             }
-            public virtual void Notify(Cube target)
+            public virtual void Notify(T1 p1)
             {
                 foreach (var listener in this.listenerList)
                 {
-                    listener.Invoke(target);
+                    listener.Invoke(p1);
                 }
             }
         }
 
-        public class UnsupportingCallbackProvider : CallbackProvider
+        public class CallbackProvider<T1, T2>
         {
-            private Cube owner;
-            public UnsupportingCallbackProvider(Cube owner)
+            public class NotSupported : CallbackProvider<T1, T2>
             {
-                this.owner = owner;
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1, T2> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1, T2 p2) { NotSupportedWarning(this.version); }
             }
-            public override void AddListener(string key, Action<Cube> listener)
+
+            protected Dictionary<string, Action<T1, T2>> listenerTable = new Dictionary<string, Action<T1, T2>>();
+            protected List<Action<T1, T2>> listenerList = new List<Action<T1, T2>>();
+
+            public virtual void AddListener(string key, Action<T1, T2> listener)
             {
-                owner.UnsupportedWarning();
+                this.listenerTable[key] = listener;
+                this.listenerList.Add(listener);
             }
-            public override void RemoveListener(string key)
+            public virtual void RemoveListener(string key)
             {
-                owner.UnsupportedWarning();
+                if (this.listenerTable.ContainsKey(key))
+                {
+                    this.listenerList.Remove(this.listenerTable[key]);
+                    this.listenerTable.Remove(key);
+                }
             }
-            public override void ClearListener()
+            public virtual void ClearListener()
             {
-                owner.UnsupportedWarning();
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
             }
-            public override void Notify(Cube target)
+            public virtual void Notify(T1 p1, T2 p2)
             {
-                owner.UnsupportedWarning();
+                foreach (var listener in this.listenerList)
+                {
+                    listener.Invoke(p1, p2);
+                }
+            }
+        }
+
+        public class CallbackProvider<T1, T2, T3>
+        {
+            public class NotSupported : CallbackProvider<T1, T2, T3>
+            {
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1, T2, T3> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1, T2 p2, T3 p3) { NotSupportedWarning(this.version); }
+            }
+
+            protected Dictionary<string, Action<T1, T2, T3>> listenerTable = new Dictionary<string, Action<T1, T2, T3>>();
+            protected List<Action<T1, T2, T3>> listenerList = new List<Action<T1, T2, T3>>();
+
+            public virtual void AddListener(string key, Action<T1, T2, T3> listener)
+            {
+                this.listenerTable[key] = listener;
+                this.listenerList.Add(listener);
+            }
+            public virtual void RemoveListener(string key)
+            {
+                if (this.listenerTable.ContainsKey(key))
+                {
+                    this.listenerList.Remove(this.listenerTable[key]);
+                    this.listenerTable.Remove(key);
+                }
+            }
+            public virtual void ClearListener()
+            {
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
+            }
+            public virtual void Notify(T1 p1, T2 p2, T3 p3)
+            {
+                foreach (var listener in this.listenerList)
+                {
+                    listener.Invoke(p1, p2, p3);
+                }
+            }
+        }
+
+        public class CallbackProvider<T1, T2, T3, T4>
+        {
+            public class NotSupported : CallbackProvider<T1, T2, T3, T4>
+            {
+                public static Dictionary<string, NotSupported> versionTable = new Dictionary<string, NotSupported>();
+                public static NotSupported Get(Cube cube)
+                {
+                    var version = cube.version;
+                    if (!versionTable.ContainsKey(version))
+                    {
+                        version = string.Copy(version);
+                        versionTable.Add(version, new NotSupported(version));
+                    }
+                    return versionTable[version];
+                }
+                private string version;
+                public NotSupported(string version) { this.version = version; }
+                public override void AddListener(string key, Action<T1, T2, T3, T4> listener) { NotSupportedWarning(this.version); }
+                public override void RemoveListener(string key) { NotSupportedWarning(this.version); }
+                public override void ClearListener() { NotSupportedWarning(this.version); }
+                public override void Notify(T1 p1, T2 p2, T3 p3, T4 p4) { NotSupportedWarning(this.version); }
+            }
+
+            protected Dictionary<string, Action<T1, T2, T3, T4>> listenerTable = new Dictionary<string, Action<T1, T2, T3, T4>>();
+            protected List<Action<T1, T2, T3, T4>> listenerList = new List<Action<T1, T2, T3, T4>>();
+
+            public virtual void AddListener(string key, Action<T1, T2, T3, T4> listener)
+            {
+                this.listenerTable[key] = listener;
+                this.listenerList.Add(listener);
+            }
+            public virtual void RemoveListener(string key)
+            {
+                if (this.listenerTable.ContainsKey(key))
+                {
+                    this.listenerList.Remove(this.listenerTable[key]);
+                    this.listenerTable.Remove(key);
+                }
+            }
+            public virtual void ClearListener()
+            {
+                this.listenerTable.Clear();
+                this.listenerList.Clear();
+            }
+            public virtual void Notify(T1 p1, T2 p2, T3 p3, T4 p4)
+            {
+                foreach (var listener in this.listenerList)
+                {
+                    listener.Invoke(p1, p2, p3, p4);
+                }
             }
         }
 
@@ -417,9 +766,19 @@ namespace toio
         //      実装関数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        protected void UnsupportedWarning()
+        protected void NotSupportedWarning()
         {
-            Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", this.version, "https://toio.github.io/toio-spec/versions");
+            NotSupportedWarning(this.version);
+        }
+
+        protected static void NotSupportedWarning(string version)
+        {
+            Debug.LogWarningFormat("非対応関数が呼ばれました, 実行にはファームウェアの更新が必要です.\n現在のバージョン={0}\nバージョン情報URL={1}", version, "https://toio.github.io/toio-spec/versions");
+        }
+
+        protected void NotImplementedWarning()
+        {
+            Debug.LogWarning("実装が存在しない機能が呼ばれました.");
         }
     }
 }

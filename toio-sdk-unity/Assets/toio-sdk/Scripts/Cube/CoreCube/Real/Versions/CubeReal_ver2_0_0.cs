@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace toio
 {
@@ -11,13 +12,13 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         protected Vector2 _pos = Vector2.zero;
         protected Vector2 _sensorPos = Vector2.zero;
-        protected CallbackProvider _buttonCallback = new CallbackProvider();
-        protected CallbackProvider _slopeCallback = new CallbackProvider();
-        protected CallbackProvider _collisionCallback = new CallbackProvider();
-        protected CallbackProvider _idCallback = new CallbackProvider();
-        protected CallbackProvider _standardIdCallback = new CallbackProvider();
-        protected CallbackProvider _idMissedCallback = new CallbackProvider();
-        protected CallbackProvider _standardIdMissedCallback = new CallbackProvider();
+        protected CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _slopeCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _collisionCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _idCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _standardIdCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _idMissedCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _standardIdMissedCallback = new CallbackProvider<Cube>();
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
@@ -38,21 +39,22 @@ namespace toio
         public override bool isCollisionDetected { get; protected set; }
         public override bool isGrounded { get; protected set; }
         public override int maxSpd { get { return 100; } }
+        public override int deadzone { get { return 10; } }
 
         // ボタンコールバック
-        public override CallbackProvider buttonCallback { get { return this._buttonCallback; } }
+        public override CallbackProvider<Cube> buttonCallback { get { return this._buttonCallback; } }
         // 傾きコールバック
-        public override CallbackProvider slopeCallback { get { return this._slopeCallback; } }
+        public override CallbackProvider<Cube> slopeCallback { get { return this._slopeCallback; } }
         // 衝突コールバック
-        public override CallbackProvider collisionCallback { get { return this._collisionCallback; } }
+        public override CallbackProvider<Cube> collisionCallback { get { return this._collisionCallback; } }
         // 座標角度コールバック
-        public override CallbackProvider idCallback { get { return this._idCallback; } }
+        public override CallbackProvider<Cube> idCallback { get { return this._idCallback; } }
         // StandardIDコールバック
-        public override CallbackProvider standardIdCallback { get { return this._standardIdCallback; } }
+        public override CallbackProvider<Cube> standardIdCallback { get { return this._standardIdCallback; } }
         // ID Missedコールバック
-        public override CallbackProvider idMissedCallback { get { return this._idMissedCallback; } }
+        public override CallbackProvider<Cube> idMissedCallback { get { return this._idMissedCallback; } }
         // StandardID Missedコールバック
-        public override CallbackProvider standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
+        public override CallbackProvider<Cube> standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
 
         public CubeReal_ver2_0_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
@@ -75,7 +77,7 @@ namespace toio
         /// <param name="right">右モーター速度</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override void Move(int left, int right, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void Move(int left, int right, int durationMs, ORDER_TYPE order)
         {
 #if !RELEASE
             if (2550 < durationMs)
@@ -115,7 +117,7 @@ namespace toio
         /// <param name="blue">青色の強さ</param>
         /// <param name="durationMs">持続時間(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order)
         {
 #if !RELEASE
             if (2550 < durationMs)
@@ -144,10 +146,10 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void TurnOnLightWithScenario(int repeatCount, LightOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
-            if (59 < operations.Length)
+            if (29 < operations.Length)
             {
                 Debug.LogErrorFormat("[Cube.TurnOnLightWithScenario]最大発光数を超えました. operations.Length={0}", operations.Length);
             }
@@ -155,7 +157,7 @@ namespace toio
             if (!this.isConnected) { return; }
 
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            var operation_length = Mathf.Clamp(operations.Length, 0, 59);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 29);
 
             byte[] buff = new byte[3 + operation_length * 6];
             buff[0] = 4;
@@ -197,7 +199,7 @@ namespace toio
         /// <param name="soundId">サウンドID</param>
         /// <param name="volume">音量</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlayPresetSound(int soundId, int volume = 255, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlayPresetSound(int soundId, int volume, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -216,10 +218,11 @@ namespace toio
         /// <param name="repeatCount">繰り返し回数</param>
         /// <param name="operations">命令配列</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order)
         {
 #if !RELEASE
-            if (29 < operations.Length)
+            // v2.0.0に限り58以下
+            if (58 < operations.Length)
             {
                 Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. operations.Length={0}", operations.Length);
             }
@@ -227,7 +230,7 @@ namespace toio
             if (!this.isConnected) { return; }
 
             repeatCount = Mathf.Clamp(repeatCount, 0, 255);
-            var operation_length = Mathf.Clamp(operations.Length, 0, 29);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 58);
 
             byte[] buff = new byte[3 + operation_length * 3];
             buff[0] = 3;
@@ -250,8 +253,15 @@ namespace toio
         /// </summary>
         /// <param name="buff">命令プロトコル</param>
         /// <param name="order">命令の優先度</param>
-        public override void PlaySound(byte[] buff, ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void PlaySound(byte[] buff, ORDER_TYPE order)
         {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            if (58 < buff[2])
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. Length={0}", buff[2]);
+            }
+#endif
             if (!this.isConnected) { return; }
 
             this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound");
@@ -262,7 +272,7 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_sound#再生の停止
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public override void StopSound(ORDER_TYPE order = ORDER_TYPE.Weak)
+        public override void StopSound(ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -278,7 +288,7 @@ namespace toio
         /// </summary>
         /// <param name="angle">傾き検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public override void ConfigSlopeThreshold(int _angle, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override void ConfigSlopeThreshold(int _angle, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -298,7 +308,7 @@ namespace toio
         /// </summary>
         /// <param name="level">衝突検知の閾値</param>
         /// <param name="order">命令の優先度</param>
-        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override void ConfigCollisionThreshold(int level, ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 
@@ -313,16 +323,45 @@ namespace toio
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API < subscribe >
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// 自動通知機能の購読を開始する
+        /// </summary>
+        public override async UniTask Initialize()
+        {
+            characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#else
+            await UniTask.Delay(1);
+#endif
+            characteristicTable[CHARACTERISTIC_ID].StartNotifications(this.Recv_Id);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+            this.characteristicTable[CHARACTERISTIC_BUTTON].StartNotifications(this.Recv_button);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+            this.characteristicTable[CHARACTERISTIC_SENSOR].StartNotifications(this.Recv_sensor);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
+        }
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < recv >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        protected override void Recv_battery(byte[] data)
+        protected virtual void Recv_battery(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_battery
             this.battery = data[0];
         }
 
-        protected override void Recv_Id(byte[] data)
+        protected virtual void Recv_Id(byte[] data)
         {
             int type = data[0];
 
@@ -364,7 +403,7 @@ namespace toio
             }
         }
 
-        protected override void Recv_button(byte[] data)
+        protected virtual void Recv_button(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_button
             int type = data[0];
@@ -375,7 +414,7 @@ namespace toio
             }
         }
 
-        protected override void Recv_sensor(byte[] data)
+        protected virtual void Recv_sensor(byte[] data)
         {
             // https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor
             int type = data[0];

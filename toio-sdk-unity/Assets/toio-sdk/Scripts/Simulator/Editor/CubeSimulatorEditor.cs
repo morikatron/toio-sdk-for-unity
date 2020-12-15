@@ -9,8 +9,8 @@ namespace toio.Simulator
     public class CubeSimulatorEditor : Editor
     {
 
-        string[] poseNames = new string[6]{"up", "down", "forward", "backward", "right", "left"};
-        string[] versionNames = new string[1]{"2.0.0"};
+        string[] poseNames = new string[6]{"up", "down", "front", "back", "right", "left"};
+        string[] versionNames = new string[3]{"2.0.0", "2.1.0", "2.2.0"};
 
         public override void OnInspectorGUI()
         {
@@ -73,6 +73,50 @@ namespace toio.Simulator
                 var collisionDetected_new = GUILayout.Toggle(cube.collisionDetected, "collisionDetected 状態");
                 if (cube.collisionDetected!=collisionDetected_new){
                     cube.collisionDetected = collisionDetected_new;
+                }
+                EditorGUILayout.Space();
+
+                // v2.1.0
+                if (version.intValue > 0)
+                {
+                    // double tap
+                    var doubleTap_new = GUILayout.Toggle(cube.doubleTap, "doubleTap 状態");
+                    if (cube.doubleTap!=doubleTap_new){
+                        cube.doubleTap = doubleTap_new;
+                    }
+                    EditorGUILayout.Space();
+
+                    // pose
+                    int pose_new = (int)EditorGUILayout.Popup(
+                        "pose 状態",
+                        (int)cube.pose-1,
+                        poseNames
+                    )+1;
+                    if (pose_new!=(int)cube.pose)
+                    {
+                        cube.transform.position += new Vector3(0,0.03f,0); // 上に持ち上がって
+                        switch (pose_new)
+                        {
+                            case 1 : cube.transform.up  = Vector3.up; break;
+                            case 2 : cube.transform.up  = -Vector3.up; break;
+                            case 3 : cube.transform.forward  = Vector3.up; break;
+                            case 4 : cube.transform.forward  = -Vector3.up; break;
+                            case 5 : cube.transform.right  = Vector3.up; break;
+                            case 6 : cube.transform.right  = -Vector3.up; break;
+                        }
+                    }
+                    EditorGUILayout.Space();
+                }
+
+                // v2.2.0
+                if (version.intValue > 1)
+                {
+                    // shake
+                    var shake_new = EditorGUILayout.IntSlider("shake レベル", cube.shakeLevel, 0, 10);
+                    if (cube.shakeLevel!=shake_new){
+                        cube.shakeLevel = shake_new;
+                    }
+                    EditorGUILayout.Space();
                 }
 
                 EditorGUILayout.EndVertical();

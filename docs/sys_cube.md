@@ -40,7 +40,9 @@ Cube  +-------------------------------+ キューブルートディレクトリ
 ├── CoreCube  +-----------------------+ コアキューブディレクトリ
 │   ├── Real  +-----------------------+ リアル実装ディレクトリ
 │   │   ├── Versions  +---------------+ リアル実装のバージョンディレクトリ
-│   │   │   └── CubeReal_ver2_0_0.cs  + 2.0.0リアル実装クラス
+│   │   │   ├── CubeReal_ver2_0_0.cs  + 2.0.0リアル実装クラス
+│   │   │   ├── CubeReal_ver2_1_0.cs  + 2.1.0リアル実装クラス
+│   │   │   └── CubeReal_ver2_2_0.cs  + 2.2.0リアル実装クラス
 │   │   └── CubeReal.cs  +------------+ リアル実装抽象クラス
 │   ├── Sim    +----------------------+ シミュレータ実装ディレクトリ
 │   │   └── CubeUnity.cs  +-----------+ シミュレータ実装クラス
@@ -92,6 +94,16 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 - 実装コード：[CubeReal_ver2_0_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
 - 通信仕様：https://toio.github.io/toio-spec/docs/2.0.0/about
 
+<b>ver2_1_0：</b>
+
+- 実装コード：[CubeReal_ver2_1_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
+- 通信仕様：https://toio.github.io/toio-spec/docs/2.1.0/about
+
+<b>ver2_2_0：</b>
+
+- 実装コード：[CubeReal_ver2_2_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
+- 通信仕様：https://toio.github.io/toio-spec/docs/about
+
 <br>
 
 # 3. 接続の仕組み
@@ -124,14 +136,14 @@ public class BasicScene : MonoBehaviour
     {
         // Cube変数の生成が完了するまで早期リターン
         if (null == cube) { return; }
-		// 経過時間を計測
+        // 経過時間を計測
         elapsedTime += Time.deltaTime;
 
       	// 前回の命令から50ミリ秒以上経過した場合
         if (intervalTime < elapsedTime)
         {
             elapsedTime = 0.0f;
-          	// 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒
+            // 左モーター速度:50, 右モーター速度:-50, 制御時間:200ミリ秒
             cube.Move(50, -50, 200);
         }
     }
@@ -436,6 +448,8 @@ public class CubeConnecter : CubeConnecterInterface
     public CubeConnecter()
     {/*
         versionTable.add("2.0.0", CubeReal_ver2_0_0)
+        versionTable.add("2.1.0", CubeReal_ver2_1_0)
+        versionTable.add("2.2.0", CubeReal_ver2_2_0)
     */}
 
     public async Task<Cube> Connect(BLEPeripheralInterface peripheral)
