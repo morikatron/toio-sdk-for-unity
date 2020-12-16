@@ -3,12 +3,13 @@ using Cysharp.Threading.Tasks;
 
 namespace toio.Tests
 {
-    internal class A_EnvTest : CoffeeTestCase
+    public class A_EnvTest : CoffeeTestCase
     {
         [CoffeeTest]
-        void aeee()
+        public async UniTask aeee()
         {
-
+            Debug.Log("aa");
+            await UniTask.Yield();
         }
     }
 }

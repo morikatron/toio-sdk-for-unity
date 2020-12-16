@@ -3,42 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using System.Reflection;
 
 namespace toio.Tests
 {
-    internal abstract class CoffeeTestCase
+    public abstract class CoffeeTestCase
     {
         public static GameObject gameObject;
         public static MonoBehaviour script;
     }
 
-    internal class BasicTest : MonoBehaviour
+    public partial class BasicTest : MonoBehaviour
     {
-        public List<CoffeeTestInterface> tests;
+        public List<CoffeeTestInterface> tests = new List<CoffeeTestInterface>();
 
         // Start is called before the first frame update
         async void Start()
         {
-            CoffeeTestFramework framework = new CoffeeTestFramework();
             await UniTask.Yield();
+            CoffeeTestFramework framework = new CoffeeTestFramework();
 
             framework.oneTimeSetUp = this.OneTimeSetUp;
             framework.oneTimeTearDown = this.OneTimeTearDown;
             framework.setUp = this.SetUp;
             framework.tearDown = this.TearDown;
 
-            //await framework.Start(tests);
-
-            var memlist = this.GetType().GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance);
-            Debug.Log(memlist.Length);
-            foreach(var mem in memlist)
-            {
-                if (mem.IsDefined(typeof(CoffeeTest)))
-                {
-                    Debug.Log(" " + mem.DeclaringType + " " + mem.Name);
-                }
-            }
+            await framework.Start(tests);
         }
 
         async UniTask OneTimeSetUp()

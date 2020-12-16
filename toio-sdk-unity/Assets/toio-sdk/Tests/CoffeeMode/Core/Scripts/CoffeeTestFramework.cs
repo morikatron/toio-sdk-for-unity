@@ -14,17 +14,17 @@ namespace toio.Tests
         public CoffeeTest(int order) { this.Order = order; }
     }
 
-    internal interface CoffeeTestInterface
+    public interface CoffeeTestInterface
     {
         UniTask Start();
         UniTask Update();
         UniTask End();
     }
 
-    internal class BasicCoffeeTest : CoffeeTestInterface
+    public class BasicCoffeeTest : CoffeeTestInterface
     {
         Func<UniTask> update;
-        internal BasicCoffeeTest(Func<UniTask> _update)
+        public BasicCoffeeTest(Func<UniTask> _update)
         {
             this.update = _update;
         }
@@ -33,7 +33,7 @@ namespace toio.Tests
         public async UniTask End() { await UniTask.Yield(); }
     }
 
-    internal class CoffeeTestFramework
+    public class CoffeeTestFramework
     {
         public Dictionary<string, CoffeeTestInterface> testTable = new Dictionary<string, CoffeeTestInterface>();
         public List<string> testList = new List<string>();
