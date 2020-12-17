@@ -30,12 +30,14 @@ namespace toio.Tests
         private const string KEY_TESTENV = "KEY_TEST_ENV";
         private const string VAL_TESTENV_EDITOR = "VAL_TESTENV_EDITOR";
         private const string VAL_TESTENV_APP = "VAL_TESTENV_APP";
+        //
+        private const string KEY_HOME_SCENE = "KEY_HOME_SCENE";
 
         static TestBuildScript()
         {
-            EditorApplication.playModeStateChanged += (stateChange) =>
+            EditorApplication.playModeStateChanged += async (stateChange) =>
             {
-                if (PlayModeStateChange.ExitingPlayMode == stateChange) { Reset(); }
+                if (PlayModeStateChange.ExitingPlayMode == stateChange) { await Reset(); }
             };
         }
 
@@ -98,7 +100,7 @@ namespace toio.Tests
                     else if (VAL_TESTENV_APP == env)
                     {
                         BuildTestApp(scenePath, env);
-                        Reset();
+                        await Reset();
                     }
                     Debug.Log("VAL_TEST_STATUS_CREATE_SCENE end");
                 }
@@ -113,8 +115,8 @@ namespace toio.Tests
             }
             catch(Exception e)
             {
-                Debug.Log(e.Message);
-                Reset();
+                Debug.LogError(e.Message);
+                await Reset();
             }
         }
 
@@ -160,9 +162,20 @@ namespace toio.Tests
             return GenerateScript(Path.Combine(targetDir, testScriptName + ".cs"), code);
         }
 
-        static void Reset()
+        static async Task Reset()
         {
             Debug.Log("Reset");
+            while(EditorApplication.isPlaying) { await Task.Delay(500); }
+
+            if (EditorPrefs.HasKey(KEY_HOME_SCENE) && 0 < EditorPrefs.GetString(KEY_HOME_SCENE).Length)
+            {
+                EditorSceneManager.OpenScene(EditorPrefs.GetString(KEY_HOME_SCENE));
+            }
+            else
+            {
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
+            }
+
             if (EditorPrefs.HasKey(KEY_GENSCRIPT_PATH)) { AssetDatabase.DeleteAsset(EditorPrefs.GetString(KEY_GENSCRIPT_PATH)); }
             if (EditorPrefs.HasKey(KEY_GENSCENE_PATH)) { AssetDatabase.DeleteAsset(EditorPrefs.GetString(KEY_GENSCENE_PATH)); }
 
@@ -183,6 +196,8 @@ namespace toio.Tests
             if (!CopyScene(OriginalTestScenePath, scenePath)) { Debug.LogError("一時テストシーンの生成に失敗しました"); }
 
             // 2.一時シーンを読み込み
+            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            EditorPrefs.SetString(KEY_HOME_SCENE, EditorSceneManager.GetActiveScene().path);
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
 
             // 3.テスト用オブジェクトをシーンに追加
@@ -221,8 +236,8 @@ namespace toio.Tests
                 {
                     if (mem.IsDefined(attributeType))
                     {
-                        if (!mem.IsPublic) { Debug.LogErrorFormat("public 関数にして下さい. 関数= {0}.{1}", mem.DeclaringType, mem.Name); EditorApplication.Exit(0); }
-                        if (!mem.ReturnType.Equals(typeof(UniTask))) { Debug.LogErrorFormat("戻り値を UniTask にして下さい. 関数= {0}.{1}", mem.DeclaringType, mem.Name); EditorApplication.Exit(0); } 
+                        if (!mem.IsPublic) { throw new Exception(String.Format("public 関数にして下さい. 関数= {0}.{1}", mem.DeclaringType, mem.Name)); }
+                        if (!mem.ReturnType.Equals(typeof(UniTask))) { throw new Exception(String.Format("戻り値を UniTask にして下さい. 関数= {0}.{1}", mem.DeclaringType, mem.Name)); }
                         methods.Add(mem);
                     }
                 }
