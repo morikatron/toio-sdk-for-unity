@@ -165,8 +165,9 @@ namespace toio.Tests
         static async Task Reset()
         {
             Debug.Log("Reset");
-            while(EditorApplication.isPlaying) { await Task.Delay(500); }
 
+            // note シーン実行直後に別のシーンを開こうとするとエラーになるため、とりあえず一定時間待機
+            while(EditorApplication.isPlaying) { await Task.Delay(500); }
             if (EditorPrefs.HasKey(KEY_HOME_SCENE) && 0 < EditorPrefs.GetString(KEY_HOME_SCENE).Length)
             {
                 EditorSceneManager.OpenScene(EditorPrefs.GetString(KEY_HOME_SCENE));
@@ -183,6 +184,7 @@ namespace toio.Tests
             EditorPrefs.DeleteKey(KEY_GENSCRIPT_PATH);
             EditorPrefs.DeleteKey(KEY_GENSCENE_PATH);
             EditorPrefs.DeleteKey(KEY_TESTENV);
+            EditorPrefs.DeleteKey(KEY_HOME_SCENE);
         }
 
         static string CreateTestScene(string testScriptPath, string targetDir)
@@ -210,13 +212,13 @@ namespace toio.Tests
 
         static void BuildTestApp(string scenePath, string env)
         {
-            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            if (BuildTarget.iOS == EditorUserBuildSettings.activeBuildTarget)
             {
-                Build(scenePath, "iOSBuild");
+                Build(scenePath, "iOSBuild", BuildOptions.Development);
             }
-            else if (Application.platform == RuntimePlatform.WebGLPlayer)
+            else if (BuildTarget.WebGL == EditorUserBuildSettings.activeBuildTarget)
             {
-                Build(scenePath, "WebGLBuild");
+                Build(scenePath, "WebGLBuild", BuildOptions.AutoRunPlayer);
             }
             else
             {
@@ -224,6 +226,12 @@ namespace toio.Tests
             }
         }
 
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      便利関数
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        // classType テスト関数を列挙するクラス
+        // attributeType テスト関数用属性
         static List<MethodInfo> GetTestMethods(Type classType, Type attributeType)
         {
             List<MethodInfo> methods = new List<MethodInfo>();
@@ -245,18 +253,14 @@ namespace toio.Tests
             return methods;
         }
 
-        //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        //      便利関数
-        //_/_/_/_/_/_/_/_/_/_/_/_/_/
-
-        static void Build(string scenePath, string appPath)
+        static void Build(string scenePath, string appPath, BuildOptions options)
         {
             var scenes = new[] { scenePath };
 
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.locationPathName = appPath;
             buildPlayerOptions.target = EditorUserBuildSettings.activeBuildTarget;
-            buildPlayerOptions.options = BuildOptions.Development;
+            buildPlayerOptions.options = options;
 
             BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
             BuildSummary summary = report.summary;

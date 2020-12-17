@@ -46,6 +46,9 @@ namespace toio.Tests
 
         public async UniTask Start(List<CoffeeTestInterface> tests)
         {
+            // 実行コンテクストをUpdateに変更
+            UniTask.Yield(PlayerLoopTiming.Update);
+
             await this.oneTimeSetUp();
 
             foreach(var test in tests)
