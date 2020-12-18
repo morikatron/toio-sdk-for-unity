@@ -2,7 +2,8 @@
     "name": "CoffeeMode",
     "references": [
         "toio-sdk-scripts",
-        "UniTask"
+        "UniTask",
+        "UniTask.Linq"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

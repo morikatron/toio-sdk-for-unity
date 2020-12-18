@@ -9,12 +9,15 @@ using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using System.Reflection;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEditor.Callbacks;
 
 namespace toio.Tests
 {
+    // ref1 C#リフレクションTIPS 55連発 ( https://qiita.com/gushwell/items/91436bd1871586f6e663 )
+    // ref2 【Unity】エディタ拡張で使用できるコールバックを40個まとめて紹介 ( https://baba-s.hatenablog.com/entry/2017/12/04/090000 )
     public class TestBuildScript
     {
         //
@@ -167,7 +170,7 @@ namespace toio.Tests
             Debug.Log("Reset");
 
             // note シーン実行直後に別のシーンを開こうとするとエラーになるため、とりあえず一定時間待機
-            while(EditorApplication.isPlaying) { await Task.Delay(500); }
+            while(EditorApplication.isPlaying) { await Task.Delay(1000); }
             if (EditorPrefs.HasKey(KEY_HOME_SCENE) && 0 < EditorPrefs.GetString(KEY_HOME_SCENE).Length)
             {
                 EditorSceneManager.OpenScene(EditorPrefs.GetString(KEY_HOME_SCENE));
@@ -244,8 +247,9 @@ namespace toio.Tests
                 {
                     if (mem.IsDefined(attributeType))
                     {
-                        if (!mem.IsPublic) { throw new Exception(String.Format("public 関数にして下さい. 関数= {0}.{1}", mem.DeclaringType, mem.Name)); }
-                        if (!mem.ReturnType.Equals(typeof(UniTask))) { throw new Exception(String.Format("戻り値を UniTask にして下さい. 関数= {0}.{1}", mem.DeclaringType, mem.Name)); }
+                        if (!mem.IsPublic) { throw new Exception(String.Format("<color=red>public関数</color> にして下さい. 関数= <color=red>{0}.{1}</color>", mem.DeclaringType, mem.Name)); }
+                        if (!mem.ReturnType.Equals(typeof(UniTask))) { throw new Exception(String.Format("戻り値を <color=red>UniTask</color> にして下さい. 関数= <color=red>{0}.{1}</color>", mem.DeclaringType, mem.Name)); }
+                        if (1 != mem.GetParameters().Length || !mem.GetParameters()[0].ParameterType.Equals(typeof(CancellationToken))) { throw new Exception(String.Format("引数を <color=red>CancellationToken</color> にして下さい. 関数= <color=red>{0}.{1}</color>", mem.DeclaringType, mem.Name)); }
                         methods.Add(mem);
                     }
                 }

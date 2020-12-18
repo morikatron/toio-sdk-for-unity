@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
@@ -16,21 +17,21 @@ namespace toio.Tests
 
     public interface CoffeeTestInterface
     {
-        UniTask Start();
-        UniTask Update();
-        UniTask End();
+        UniTask Start(CancellationToken cancelToken);
+        UniTask Update(CancellationToken cancelToken);
+        UniTask End(CancellationToken cancelToken);
     }
 
     public class BasicCoffeeTest : CoffeeTestInterface
     {
-        Func<UniTask> update;
-        public BasicCoffeeTest(Func<UniTask> _update)
+        Func<CancellationToken, UniTask> update;
+        public BasicCoffeeTest(Func<CancellationToken, UniTask> _update)
         {
             this.update = _update;
         }
-        public async UniTask Start() { await UniTask.Yield(); }
-        public async UniTask Update() { await this.update(); }
-        public async UniTask End() { await UniTask.Yield(); }
+        public async UniTask Start(CancellationToken cancelToken) { await UniTask.Yield(PlayerLoopTiming.Update, cancelToken); }
+        public async UniTask Update(CancellationToken cancelToken) { await this.update(cancelToken); }
+        public async UniTask End(CancellationToken cancelToken) { await UniTask.Yield(PlayerLoopTiming.Update, cancelToken); }
     }
 
     public class CoffeeTestFramework
@@ -39,33 +40,33 @@ namespace toio.Tests
         public List<string> testList = new List<string>();
         public Queue<string> testQueue = new Queue<string>();
 
-        public Func<UniTask> oneTimeSetUp = DummyFunc;
-        public Func<UniTask> oneTimeTearDown = DummyFunc;
-        public Func<UniTask> setUp = DummyFunc;
-        public Func<UniTask> tearDown = DummyFunc;
+        public Func<CancellationToken, UniTask> oneTimeSetUp = DummyFunc;
+        public Func<CancellationToken, UniTask> oneTimeTearDown = DummyFunc;
+        public Func<CancellationToken, UniTask> setUp = DummyFunc;
+        public Func<CancellationToken, UniTask> tearDown = DummyFunc;
 
-        public async UniTask Start(List<CoffeeTestInterface> tests)
+        public async UniTask Start(CancellationToken cancelToken, List<CoffeeTestInterface> tests)
         {
             // 実行コンテクストをUpdateに変更
-            UniTask.Yield(PlayerLoopTiming.Update);
+            await UniTask.Yield(PlayerLoopTiming.Update, cancelToken);
 
-            await this.oneTimeSetUp();
+            await this.oneTimeSetUp(cancelToken);
 
             foreach(var test in tests)
             {
-                await this.setUp();
-                await test.Start();
-                await test.Update();
-                await test.End();
-                await this.tearDown();
+                await this.setUp(cancelToken);
+                await test.Start(cancelToken);
+                await test.Update(cancelToken);
+                await test.End(cancelToken);
+                await this.tearDown(cancelToken);
             }
 
-            await this.oneTimeTearDown();
+            await this.oneTimeTearDown(cancelToken);
         }
 
-        private static async UniTask DummyFunc()
+        private static async UniTask DummyFunc(CancellationToken cancelToken)
         {
-            await UniTask.Yield();
+            await UniTask.Yield(PlayerLoopTiming.Update, cancelToken);
         }
     }
 }
