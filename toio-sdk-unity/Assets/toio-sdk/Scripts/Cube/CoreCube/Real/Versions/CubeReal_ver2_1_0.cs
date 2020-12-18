@@ -46,6 +46,65 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < send >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// キューブから任意の音を再生します
+        /// https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
+        /// </summary>
+        /// <param name="repeatCount">繰り返し回数</param>
+        /// <param name="operations">命令配列</param>
+        /// <param name="order">命令の優先度</param>
+        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order)
+        {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            // v2.1.0以降は59以下
+            if (59 < operations.Length)
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. operations.Length={0}", operations.Length);
+            }
+#endif
+            if (!this.isConnected) { return; }
+
+            repeatCount = Mathf.Clamp(repeatCount, 0, 255);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 58);
+
+            byte[] buff = new byte[3 + operation_length * 3];
+            buff[0] = 3;
+            buff[1] = BitConverter.GetBytes(repeatCount)[0];
+            buff[2] = BitConverter.GetBytes(operation_length)[0];
+
+            for (int i = 0; i < operation_length; i++)
+            {
+                buff[3 + 3 * i] = BitConverter.GetBytes(Mathf.Clamp(operations[i].durationMs / 10, 1, 255))[0];
+                buff[4 + 3 * i] = BitConverter.GetBytes(operations[i].note_number)[0];
+                buff[5 + 3 * i] = BitConverter.GetBytes(operations[i].volume)[0];
+            }
+
+            this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound", repeatCount, operations);
+        }
+
+        /// <summary>
+        /// キューブから任意の音を再生します
+        /// https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
+        /// </summary>
+        /// <param name="buff">命令プロトコル</param>
+        /// <param name="order">命令の優先度</param>
+        public override void PlaySound(byte[] buff, ORDER_TYPE order)
+        {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            // v2.1.0以降は59以下
+            if (59 < buff[2])
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. Length={0}", buff[2]);
+            }
+#endif
+            if (!this.isConnected) { return; }
+
+            this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound");
+        }
+
         // キューブのモーターを目標指定付き制御します
         public override void TargetMove(
             int targetX,
