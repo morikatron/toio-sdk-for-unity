@@ -10,6 +10,7 @@ using UnityEngine;
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using toio.Android.Data;
 
 namespace toio.Android
 {
@@ -18,6 +19,8 @@ namespace toio.Android
         private static BleBehaviour behaviour;
         private static BleJavaWrapper javaWrapper;
         private static Action<string, string, int, byte[]> s_discoveredAction;
+        private static Dictionary<string, BleDeviceEvent> s_deviceEvents = new Dictionary<string, BleDeviceEvent>();
+
 
         public static void Initialize(Action initializedAction, Action<string> errorAction = null)
         {
@@ -72,15 +75,25 @@ namespace toio.Android
         {
             if(javaWrapper == null) { return; }
             javaWrapper.ConnectRequest(identifier);
+            var deviceEvent = new BleDeviceEvent()
+            {
+                connectedAct = connectedPeripheralAction,
+                disconnectedAct = disconnectedPeripheralAction,
+                discoveredCharacteristicAct = discoveredCharacteristicAction,
+                discoveredServiceAct = discoveredServiceAction
+            };
+            s_deviceEvents[identifier] = deviceEvent;
         }
 
         public static void DisconnectPeripheral(string identifier, 
             Action<string> disconnectedPeripheralAction = null)
         {
+            if (javaWrapper == null) { return; }
         }
 
         public static void DisconnectAllPeripherals()
         {
+            if (javaWrapper == null) { return; }
         }
 
         public static void ReadCharacteristic(string identifier,
@@ -89,6 +102,8 @@ namespace toio.Android
             Action<string, string, byte[]> didReadChracteristicAction)
         {
             if (javaWrapper == null) { return; }
+            javaWrapper.ReadCharacteristicRequest(identifier, serviceUUID,
+                characteristicUUID);
         }
 
         public static void WriteCharacteristic(string identifier,
@@ -97,6 +112,9 @@ namespace toio.Android
             Action<string, string> didWriteCharacteristicAction)
         {
             if (javaWrapper == null) { return; }
+            javaWrapper.WriteCharacteristic(identifier, serviceUUID,
+                characteristicUUID,
+                data, length, withResponse);
         }
 
         public static void SubscribeCharacteristic(string identifier,
@@ -104,6 +122,9 @@ namespace toio.Android
             Action<string, string, byte[]> notifiedCharacteristicAction)
         {
             if (javaWrapper == null) { return; }
+            javaWrapper.SetNotificateFlag(identifier, serviceUUID,
+                characteristicUUID, true);
+
         }
 
         public static void UnSubscribeCharacteristic(string identifier, 
@@ -111,6 +132,8 @@ namespace toio.Android
             Action<string> action)
         {
             if (javaWrapper == null) { return; }
+            javaWrapper.SetNotificateFlag(identifier,serviceUUID,
+                characteristicUUID, false);
         }
 
         private static void OnUpdate()
@@ -129,6 +152,9 @@ namespace toio.Android
                     s_discoveredAction(device.address, device.name, device.rssi, null);
                 }
             }
+            // read/notify
+            javaWrapper.UpdateConnectedDevices();
+            var readDatas = javaWrapper.GetCharacteristicDatas();
         }
     }
 }

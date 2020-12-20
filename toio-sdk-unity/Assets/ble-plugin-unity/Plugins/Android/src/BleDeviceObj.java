@@ -13,21 +13,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class BleDeviceObj extends BluetoothGattCallback {
-    private BluetoothDevice bluetoothDevice;
 
+    private class CharastricsKey{
+        private String serviceUuid;
+        private String charastericUuid;
+
+        public CharastricsKey(String service,String charasteric){
+            this.serviceUuid = service;
+            this.charastericUuid = charasteric;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CharastricsKey that = (CharastricsKey) o;
+            return Objects.equals(serviceUuid, that.serviceUuid) &&
+                    Objects.equals(charastericUuid, that.charastericUuid);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(serviceUuid, charastericUuid);
+        }
+    }
+    private BluetoothDevice bluetoothDevice;
     private BluetoothGatt bluetoothGatt;
     private HashMap<String,BluetoothGattCharacteristic> characteristicHashMap;
+    private HashMap<CharastricsKey,BluetoothGattCharacteristic> charastricsKeyHashMap;
+
+    private HashMap<CharastricsKey,BluetoothGattCharacteristic> pubCharastricsKeyHashMap;
+
+    private List<CharastricsKey> charastricsKeys;
     private boolean isAvailable = false;
     private String address;
 
     private class ReadData{
+        public String serviceUuid;
         public String characteristic;
         public byte[] data;
         public boolean isNotification;
 
         public ReadData(BluetoothGattCharacteristic characteristic,boolean notify){
+            this.serviceUuid = characteristic.getService().getUuid().toString();
             this.characteristic = characteristic.getUuid().toString();
             byte[] origin = characteristic.getValue();
             // 念のためコピー
@@ -60,6 +91,15 @@ public class BleDeviceObj extends BluetoothGattCallback {
             readDataBuffer.clear();
         }
     }
+    public void blitChara(){
+        pubCharastricsKeyHashMap.clear();
+        synchronized (this) {
+            for (Map.Entry<CharastricsKey, BluetoothGattCharacteristic> data : charastricsKeyHashMap.entrySet()) {
+                this.pubCharastricsKeyHashMap.put(data.getKey(), data.getValue());
+            }
+        }
+    }
+
     public String getAddress(){
         return this.address;
     }
@@ -67,6 +107,13 @@ public class BleDeviceObj extends BluetoothGattCallback {
         return this.pubDataBuffer.size();
     }
 
+    public String getServiceUuidFromReadData(int idx){
+        if( idx < 0 || idx>=this.pubDataBuffer.size() ){
+            return null;
+        }
+        ReadData data = this.pubDataBuffer.get(idx);
+        return data.serviceUuid;
+    }
 
     public String getCharacteristicFromReadData(int idx){
         if( idx < 0 || idx>=this.pubDataBuffer.size() ){
@@ -95,16 +142,9 @@ public class BleDeviceObj extends BluetoothGattCallback {
         this.bluetoothDevice = device;
         this.address = device.getAddress();
         this.characteristicHashMap = new HashMap<String,BluetoothGattCharacteristic>();
+        this.charastricsKeyHashMap = new HashMap<CharastricsKey,BluetoothGattCharacteristic>();
+        this.pubCharastricsKeyHashMap = new HashMap<CharastricsKey,BluetoothGattCharacteristic>();
         device.connectGatt(cxt,true,this);
-    }
-    public String[] getCharastrics(){
-        String[] characteristics  = new String[ this.characteristicHashMap.size() ];
-        int idx =0;
-        for(Map.Entry entry: this.characteristicHashMap.entrySet()){
-            characteristics[idx] = entry.getKey().toString();
-            ++idx;
-        }
-        return characteristics;
     }
 
 
@@ -155,9 +195,15 @@ public class BleDeviceObj extends BluetoothGattCallback {
     // New services discovered
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         for( BluetoothGattService service : gatt.getServices() ) {
+            String serviceUuid = service.getUuid().toString().toLowerCase();
             List<BluetoothGattCharacteristic> characterlistics = service.getCharacteristics();
             for(BluetoothGattCharacteristic ch : characterlistics){
-                this.characteristicHashMap.put( ch.getUuid().toString().toLowerCase(),ch );
+                String charaUuid = ch.getUuid().toString();
+                CharastricsKey key = new CharastricsKey(serviceUuid,charaUuid);
+                synchronized (this) {
+                    this.charastricsKeyHashMap.put(key, ch);
+                }
+                this.characteristicHashMap.put( charaUuid ,ch );
             }
         }
         this.isAvailable = true;

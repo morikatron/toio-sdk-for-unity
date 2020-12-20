@@ -108,8 +108,9 @@ public class TestBehaviour : MonoBehaviour
             data[5] = 0x02;
             data[6] = 0x10;
             //            
+            var service = "10B20100-5B3B-4571-9508-CF3EFCD7BBAE";
             var characteristic = "10b20102-5b3b-4571-9508-cf3efcd7bbae";
-            bleJavaWrapper.WriteCharacteristic(this.addr, characteristic, data,
+            bleJavaWrapper.WriteCharacteristic(this.addr, service, characteristic, data,
                 data.Length, false);
         }
 #endif

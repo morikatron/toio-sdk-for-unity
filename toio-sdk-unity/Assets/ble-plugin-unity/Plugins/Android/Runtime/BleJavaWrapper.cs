@@ -12,7 +12,7 @@ using toio.Android.Data;
 
 namespace toio.Android
 {
-    public class BleJavaWrapper:IDisposable
+    public class BleJavaWrapper : IDisposable
     {
         private IntPtr bleManagerCls;
         private IntPtr bleScannerCls;
@@ -88,7 +88,7 @@ namespace toio.Android
             foreach (var uuid in uuids)
             {
                 this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(uuid));
-                AndroidJNI.CallVoidMethod(scanner, clearScanMethod, this.argBuilder.Build() );
+                AndroidJNI.CallVoidMethod(scanner, clearScanMethod, this.argBuilder.Build());
             }
 
             AndroidJNI.CallVoidMethod(scanner, startScanMethod, null);
@@ -142,7 +142,14 @@ namespace toio.Android
             return this.scannedDevices;
         }
 
-        public void WriteCharacteristic(string addr, string characteristicUUID, byte[] data, int length,
+        public List<BleCharacteristicData> GetCharacteristicDatas()
+        {
+            return this.readDatas;
+        }
+
+        public void WriteCharacteristic(string addr, 
+            string serviceUuid,
+            string characteristicUUID, byte[] data, int length,
             bool withResponse)
         {
             var deviceObj = GetDeviceObj(addr);
@@ -155,7 +162,8 @@ namespace toio.Android
             AndroidJNI.CallVoidMethod(deviceObj, writeMethod, this.argBuilder.Build());
         }
 
-        public void SetNotificateFlag(string addr, string characteristicUUID, bool isEnable)
+        public void SetNotificateFlag(string addr, string serviceUuid,
+            string characteristicUUID, bool isEnable)
         {
             var deviceObj = GetDeviceObj(addr);
             var setNotificationMethod = AndroidJNI.GetMethodID(bleDeviceCls, "setNotification",
@@ -166,7 +174,8 @@ namespace toio.Android
             AndroidJNI.CallVoidMethod(deviceObj, setNotificationMethod, this.argBuilder.Build());
         }
 
-        public void ReadCharacteristicRequest(string addr, string characteristicUUID )
+        public void ReadCharacteristicRequest(string addr, string serviceUuid,
+            string characteristicUUID )
         {
             var deviceObj = GetDeviceObj(addr);
             var readrequestMethod = AndroidJNI.GetMethodID(bleDeviceCls, "readRequest", "(Ljava/lang/String;)V");
@@ -210,6 +219,7 @@ namespace toio.Android
             var getAddrMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getAddress", "");
             var readNumMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getReadNum", "()I");
             var getCharacteristicMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getCharacteristicFromReadData", "(I)Lcom/java/util/String");
+            var getServiceUuidMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getServiceUuidFromReadData", "(I)Lcom/java/util/String");
             var isNotifyMethod = AndroidJNI.GetMethodID(bleDeviceCls, "isNotifyReadData", "(I)Z");
             var getReadDataMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getDataFromReadData", "(I)[B");
 
@@ -219,11 +229,12 @@ namespace toio.Android
             for( int i = 0; i < readNum; ++i)
             {
                 this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(i));
+                string serviceUuid = AndroidJNI.CallStaticStringMethod(device, getServiceUuidMethod, argBuilder.Build());
                 string charastristic = AndroidJNI.CallStringMethod(device,getCharacteristicMethod,argBuilder.Build() );
                 bool isNotify = AndroidJNI.CallBooleanMethod(device, isNotifyMethod, argBuilder.Build());
                 var dataObj = AndroidJNI.CallObjectMethod(device, getReadDataMethod, argBuilder.Build());
                 var sbytes = AndroidJNI.FromSByteArray(dataObj);
-                var characteristicData = new BleCharacteristicData(addr, charastristic, sbytes, isNotify);
+                var characteristicData = new BleCharacteristicData(addr,serviceUuid, charastristic, sbytes, isNotify);
                 this.readDatas.Add(characteristicData);
             }
             AndroidJNI.PopLocalFrame(IntPtr.Zero);
