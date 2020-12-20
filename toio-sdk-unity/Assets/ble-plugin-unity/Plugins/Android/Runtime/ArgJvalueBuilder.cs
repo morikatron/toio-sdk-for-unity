@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿
+#if UNITY_ANDROID && !UNITY_EDITOR
+#define UNITY_ANDROID_RUNTIME
+#endif
+
+
+#if UNITY_ANDROID_RUNTIME
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,5 +89,5 @@ namespace toio.Android
         }
 
     }
-
 }
+#endif

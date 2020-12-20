@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿
+#if UNITY_ANDROID && !UNITY_EDITOR
+#define UNITY_ANDROID_RUNTIME
+#endif
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using toio;
@@ -12,14 +17,16 @@ public class TestBehaviour : MonoBehaviour
     [SerializeField]
     private Text resultInfo;
 
+#if UNITY_ANDROID_RUNTIME
     private StringBuilder sb = new StringBuilder(256);
-
     private BleJavaWrapper bleJavaWrapper;
     private string addr = "";
+#endif
 
     // Start is called before the first frame update
     IEnumerator Start()
     {
+#if UNITY_ANDROID_RUNTIME
         string permission = Permission.FineLocation;
         if (!Permission.HasUserAuthorizedPermission(permission))
         {
@@ -36,11 +43,15 @@ public class TestBehaviour : MonoBehaviour
         {
             Debug.LogError("No Permission");
         }
+#else
+        yield return null;
+#endif
     }
 
     // Update is called once per frame
     void Update()
     {
+#if UNITY_ANDROID_RUNTIME
         sb.Clear();
         if (bleJavaWrapper != null)
         {
@@ -52,18 +63,22 @@ public class TestBehaviour : MonoBehaviour
             }
         }
         this.resultInfo.text = sb.ToString();
+#endif
     }
     public void OnScan()
     {
+#if UNITY_ANDROID_RUNTIME
         if (bleJavaWrapper != null)
         {
             Debug.Log("Start Scan!!!");
             bleJavaWrapper.StartScan("10B20100-5B3B-4571-9508-CF3EFCD7BBAE");
         }
+#endif
     }
 
     public void OnConnect()
     {
+#if UNITY_ANDROID_RUNTIME
         if (bleJavaWrapper != null)
         {
             var devices = bleJavaWrapper.GetScannedDevices();
@@ -74,12 +89,14 @@ public class TestBehaviour : MonoBehaviour
                 bleJavaWrapper.StopScan();
             }
         }
+#endif
     }
 
 
     public void OnExec()
     {
-        if(bleJavaWrapper != null && !string.IsNullOrEmpty( this.addr))
+#if UNITY_ANDROID_RUNTIME
+        if (bleJavaWrapper != null && !string.IsNullOrEmpty( this.addr))
         {
             byte[] data = new byte[7];
             data[0] = 0x01;
@@ -95,5 +112,6 @@ public class TestBehaviour : MonoBehaviour
             bleJavaWrapper.WriteCharacteristic(this.addr, characteristic, data,
                 data.Length, false);
         }
+#endif
     }
 }

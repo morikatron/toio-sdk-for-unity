@@ -1,7 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
+#if UNITY_ANDROID && !UNITY_EDITOR
+#define UNITY_ANDROID_RUNTIME
+#endif
 
+
+#if UNITY_ANDROID_RUNTIME
 namespace toio.Android.Data
 {
     public struct BleCharacteristicData
@@ -26,5 +29,5 @@ namespace toio.Android.Data
             }
         }
     }
-
 }
+#endif

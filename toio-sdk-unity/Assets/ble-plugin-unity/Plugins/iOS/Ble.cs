@@ -406,7 +406,7 @@ namespace toio
         NotifiedCharacteristicAction[identifier][characteristicUUID] = notifiedCharacteristicAction;
         _uiOSMonitorCharacteristicForDevice(identifier, serviceUUID, characteristicUUID, NotifiedCharacteristicActionCallback);
 #elif UNITY_ANDROID_RUNTIME
-            toio.Android.BleAndroid.SubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, data, length, withResponse, didWriteCharacteristicAction);
+            toio.Android.BleAndroid.SubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, notifiedCharacteristicAction);
 #endif
         }
 

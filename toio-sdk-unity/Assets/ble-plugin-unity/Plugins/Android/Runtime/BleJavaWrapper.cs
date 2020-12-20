@@ -1,10 +1,10 @@
-//
-// Copyright (c) 2020-present, Sony Interactive Entertainment Inc.
-//
-// This source code is licensed under the MIT license found in the
-// LICENSE file in the root directory of this source tree.
-//
 
+#if UNITY_ANDROID && !UNITY_EDITOR
+#define UNITY_ANDROID_RUNTIME
+#endif
+
+
+#if UNITY_ANDROID_RUNTIME
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -252,3 +252,4 @@ namespace toio.Android
         }
     }
 }
+#endif
