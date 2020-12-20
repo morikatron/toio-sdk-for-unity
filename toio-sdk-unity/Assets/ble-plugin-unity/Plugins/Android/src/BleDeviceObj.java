@@ -8,9 +8,6 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.os.Parcel;
-import android.util.Base64;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +23,12 @@ public class BleDeviceObj extends BluetoothGattCallback {
     private String address;
 
     private class ReadData{
-        public String uuid;
+        public String characteristic;
         public byte[] data;
         public boolean isNotification;
 
         public ReadData(BluetoothGattCharacteristic characteristic,boolean notify){
-            this.uuid = characteristic.getUuid().toString();
+            this.characteristic = characteristic.getUuid().toString();
             byte[] origin = characteristic.getValue();
             // 念のためコピー
             if( origin != null) {
@@ -47,6 +44,13 @@ public class BleDeviceObj extends BluetoothGattCallback {
     private ArrayList<ReadData> readDataBuffer = new ArrayList<ReadData>(32);
     private ArrayList<ReadData> pubDataBuffer = new ArrayList<ReadData>(32);
 
+    public void disconnect(){
+        if(bluetoothGatt != null){
+            bluetoothGatt.close();;
+            bluetoothGatt = null;
+            this.isAvailable = false;
+        }
+    }
     public void blit(){
         pubDataBuffer.clear();
         synchronized (this){
@@ -63,20 +67,13 @@ public class BleDeviceObj extends BluetoothGattCallback {
         return this.pubDataBuffer.size();
     }
 
-    public void disconnect(){
-        if(bluetoothGatt != null){
-            bluetoothGatt.close();;
-            bluetoothGatt = null;
-            this.isAvailable = false;
-        }
-    }
 
-    public String getUuidFromReadData(int idx){
+    public String getCharacteristicFromReadData(int idx){
         if( idx < 0 || idx>=this.pubDataBuffer.size() ){
             return null;
         }
         ReadData data = this.pubDataBuffer.get(idx);
-        return data.uuid;
+        return data.characteristic;
     }
 
     public boolean isNotifyReadData(int idx){

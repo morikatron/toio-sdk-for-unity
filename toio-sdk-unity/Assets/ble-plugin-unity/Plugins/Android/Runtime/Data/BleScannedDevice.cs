@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace toio.Android
+namespace toio.Android.Data
 {
-    public class BleScannedDevice
+    public struct BleScannedDevice
     {
-        public string address { get; private set; }
-        public string name { get; private set; }
-        public int rssi { get; private set; }
+        public string address;
+        public string name;
+        public int rssi;
 
-        public BleScannedDevice(string addr,string n)
+        public BleScannedDevice(string addr,string n,int r)
         {
             this.address = addr;
             this.name = n;
+            this.rssi = r;
         }
         public void setRssi(int r)
         {

@@ -54,18 +54,17 @@ public class BleManagerObj {
         return this.deviceObjHashMap.get(addr);
     }
 
-    public int getDeviceNum(){
+    public int getConnectedDeviceNum(){
         return this.bluetoothDeviceObjs.size();
     }
-    public String getDeviceAddr(int idx){
+    public String getConnectedDeviceAddr(int idx){
         return this.bluetoothDeviceObjs.get(idx).getAddress();
     }
-    public BleDeviceObj getDevice(int idx){
+    public BleDeviceObj getConnectedDevice(int idx){
         return this.bluetoothDeviceObjs.get(idx);
     }
 
     public void disconnect(String addr){
-
         BleDeviceObj obj = this.deviceObjHashMap.get(addr);
         this.bluetoothDeviceObjs.remove(obj );
         this.deviceObjHashMap.remove(addr);

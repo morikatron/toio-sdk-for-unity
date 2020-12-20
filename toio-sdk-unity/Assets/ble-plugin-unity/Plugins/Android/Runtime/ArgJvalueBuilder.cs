@@ -51,6 +51,16 @@ namespace toio.Android
             arg.l = ptr;
             return arg;
         }
+        public static jvalue GenerateJvalue(byte[] bin,int length)
+        {
+            jvalue arg = new jvalue();
+            var ptr = AndroidJNI.NewSByteArray(length);
+            for (int i = 0; i < length; ++i) {
+                AndroidJNI.SetSByteArrayElement(ptr, i, unchecked((sbyte)bin[i]) );
+            }
+            arg.l = ptr;
+            return arg;
+        }
 
         public static jvalue GenerateJvalue(string str)
         {
@@ -62,6 +72,12 @@ namespace toio.Android
         {
             jvalue arg = new jvalue();
             arg.i = param;
+            return arg;
+        }
+        public static jvalue GenerateJvalue(bool param)
+        {
+            jvalue arg = new jvalue();
+            arg.z = param;
             return arg;
         }
 
