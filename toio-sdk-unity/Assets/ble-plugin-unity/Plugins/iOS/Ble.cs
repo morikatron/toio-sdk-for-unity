@@ -4,6 +4,9 @@
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree.
 //
+#if UNITY_ANDROID && !UNITY_EDITOR
+#define UNITY_ANDROID_RUNTIME
+#endif
 
 using UnityEngine;
 using System;
@@ -283,6 +286,8 @@ namespace toio
         InitializedAction = initializedAction;
         ErrorAction = errorAction;
         _uiOSCreateClient(InitializedActionCallback, ErrorActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.Initialize(initializedAction, errorAction);
 #endif
         }
 
@@ -291,11 +296,16 @@ namespace toio
 #if UNITY_IOS
         FinalizedAction = finalizedAction;
         _uiOSDestroyClient(FinalizedActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.Finalize(finalizedAction);
 #endif
         }
 
         public static void EnableBluetooth(bool enable)
         {
+#if UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.EnableBluetooth(enable);
+#endif
         }
 
         public static void StartScan(string[] serviceUUIDs, Action<string, string, int, byte[]> discoveredAction = null)
@@ -303,6 +313,8 @@ namespace toio
 #if UNITY_IOS
         DiscoveredAction = discoveredAction;
         _uiOSStartDeviceScan(serviceUUIDs, DiscoveredActionCallback, false);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.StartScan(serviceUUIDs, discoveredAction);
 #endif
         }
 
@@ -310,6 +322,8 @@ namespace toio
         {
 #if UNITY_IOS
         _uiOSStopDeviceScan();
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.StopScan();
 #endif
         }
 
@@ -322,6 +336,9 @@ namespace toio
         DiscoveredCharacteristicAction[identifier] = discoveredCharacteristicAction;
         PendingDisconnectedPeripheralAction[identifier] = disconnectedPeripheralAction;
         _uiOSConnectToDevice(identifier, ConnectedPeripheralActionCallback, DiscoveredServiceActionCallback, DiscoveredCharacteristicActionCallback, PendingDisconnectedPeripheralActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.ConnectToPeripheral(identifier,connectedPeripheralAction,
+                discoveredServiceAction,discoveredCharacteristicAction,disconnectedPeripheralAction);
 #endif
         }
 
@@ -331,6 +348,8 @@ namespace toio
         identifier = identifier.ToUpper();
         DisconnectedPeripheralAction[identifier] = disconnectedPeripheralAction;
         _uiOSCancelDeviceConnection(identifier, DisconnectedPeripheralActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.DisconnectPeripheral(identifier, disconnectedPeripheralAction);
 #endif
         }
 
@@ -338,6 +357,8 @@ namespace toio
         {
 #if UNITY_IOS
         _uiOSCancelDeviceConnectionAll();
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.DisconnectAllPeripherals();
 #endif
         }
 
@@ -352,6 +373,8 @@ namespace toio
         }
         DidReadCharacteristicAction[identifier][characteristicUUID] = didReadChracteristicAction;
         _uiOSReadCharacteristicForDevice(identifier, serviceUUID, characteristicUUID, DidReadCharacteristicActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.ReadCharacteristic(identifier, serviceUUID,characteristicUUID,didReadChracteristicAction);
 #endif
         }
 
@@ -366,6 +389,8 @@ namespace toio
         }
         DidWriteCharacteristicAction[identifier][characteristicUUID] = didWriteCharacteristicAction;
         _uiOSWriteCharacteristicForDevice(identifier, serviceUUID, characteristicUUID, Convert.ToBase64String(data), length, withResponse, DidWriteCharacteristicActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.WriteCharacteristic(identifier, serviceUUID, characteristicUUID, data,length,withResponse,didWriteCharacteristicAction);
 #endif
         }
 
@@ -380,6 +405,8 @@ namespace toio
         }
         NotifiedCharacteristicAction[identifier][characteristicUUID] = notifiedCharacteristicAction;
         _uiOSMonitorCharacteristicForDevice(identifier, serviceUUID, characteristicUUID, NotifiedCharacteristicActionCallback);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.SubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, data, length, withResponse, didWriteCharacteristicAction);
 #endif
         }
 
@@ -394,6 +421,8 @@ namespace toio
         }
         NotifiedCharacteristicAction[identifier][characteristicUUID] = null;
         _uiOSUnMonitorCharacteristicForDevice(identifier, serviceUUID, characteristicUUID);
+#elif UNITY_ANDROID_RUNTIME
+            toio.Android.BleAndroid.UnSubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, action);
 #endif
         }
     }

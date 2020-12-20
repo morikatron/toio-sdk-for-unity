@@ -79,9 +79,21 @@ public class TestBehaviour : MonoBehaviour
 
     public void OnExec()
     {
-        if(bleJavaWrapper != null)
+        if(bleJavaWrapper != null && !string.IsNullOrEmpty( this.addr))
         {
-//            bleJavaWrapper.WriteCharacteristic()
+            byte[] data = new byte[7];
+            data[0] = 0x01;
+            data[1] = 0x01;
+            data[2] = 0x01;
+            data[3] = 0x10;
+
+            data[4] = 0x02;
+            data[5] = 0x02;
+            data[6] = 0x10;
+            //            
+            var characteristic = "10b20102-5b3b-4571-9508-cf3efcd7bbae";
+            bleJavaWrapper.WriteCharacteristic(this.addr, characteristic, data,
+                data.Length, false);
         }
     }
 }

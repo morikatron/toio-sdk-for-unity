@@ -27,6 +27,7 @@ public class BleScannerObj extends ScanCallback{
     private HashMap<String,BluetoothDevice> pubBleDevices = new HashMap<String,BluetoothDevice>();
     private HashMap<String,Integer> pubBleRssi = new HashMap<String,Integer>();
     private List<String> pubAddresses = new ArrayList<String>();
+    private List<ScanFilter> scanFilters = new ArrayList<>(8);
     private boolean isScanning = false;
 
     public void blit(){
@@ -73,19 +74,27 @@ public class BleScannerObj extends ScanCallback{
     }
 
     public void startScan(String uuid){
+        this.clearScanFilter();
+        this.addScanFilter(uuid);
+        this.startScan();
+    }
+    public void startScan(){
         if(this.isScanning) {
             return;
         }
-
         ScanSettings.Builder scanBuilder = new ScanSettings.Builder();
         ScanSettings settings = scanBuilder.build();
+        bleScanner.startScan(this.scanFilters,settings, this );
+        this.isScanning = true;
+    }
+    public void addScanFilter(String uuid){
         UUID uuidObj = UUID.fromString(uuid);
         ScanFilter scanFilter =
                 new ScanFilter.Builder().setServiceUuid( new ParcelUuid(uuidObj)).build();
-        List<ScanFilter> filters = new ArrayList<ScanFilter>(1);
-        filters.add(scanFilter);
-        bleScanner.startScan(filters,settings, this );
-        this.isScanning = true;
+        this.scanFilters.add(scanFilter);
+    }
+    public void clearScanFilter(){
+        scanFilters.clear();
     }
 
     public void stopScan(){

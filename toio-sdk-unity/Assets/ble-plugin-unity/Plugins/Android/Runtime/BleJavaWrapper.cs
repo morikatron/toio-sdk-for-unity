@@ -75,6 +75,26 @@ namespace toio.Android
             AndroidJNI.PopLocalFrame(IntPtr.Zero);
         }
 
+        public void StartScan(string[] uuids)
+        {
+            AndroidJNI.PushLocalFrame(32);
+            var scanner = GetScanner();
+            var startScanMethod = AndroidJNI.GetMethodID(this.bleScannerCls, "startScan", "()V");
+            var addScanFilterMethod = AndroidJNI.GetMethodID(this.bleScannerCls, "addScanFilter", "(Ljava/lang/String;)V");
+            var clearScanMethod = AndroidJNI.GetMethodID(this.bleScannerCls, "clearScanFilter", "()V");
+
+            AndroidJNI.CallVoidMethod(scanner, clearScanMethod, null);
+
+            foreach (var uuid in uuids)
+            {
+                this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(uuid));
+                AndroidJNI.CallVoidMethod(scanner, clearScanMethod, this.argBuilder.Build() );
+            }
+
+            AndroidJNI.CallVoidMethod(scanner, startScanMethod, null);
+            AndroidJNI.PopLocalFrame(IntPtr.Zero);
+        }
+
         public void StopScan()
         {
             AndroidJNI.PushLocalFrame(32);
@@ -127,8 +147,11 @@ namespace toio.Android
         {
             var deviceObj = GetDeviceObj(addr);
             var writeMethod = AndroidJNI.GetMethodID(bleDeviceCls, "writeData",
-                "(Ljava/lang/String;[BB)V");
-            this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(data, length));
+                "(Ljava/lang/String;[BZ)V");
+            this.argBuilder.Clear().
+                Append(ArgJvalueBuilder.GenerateJvalue(characteristicUUID)).
+                Append(ArgJvalueBuilder.GenerateJvalue(data, length)).
+                Append(ArgJvalueBuilder.GenerateJvalue(withResponse));
             AndroidJNI.CallVoidMethod(deviceObj, writeMethod, this.argBuilder.Build());
         }
 

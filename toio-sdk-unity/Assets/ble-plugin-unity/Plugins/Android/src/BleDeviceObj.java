@@ -109,14 +109,14 @@ public class BleDeviceObj extends BluetoothGattCallback {
 
 
     public void writeData(String characteristicUuid ,byte[] data,boolean writeBack){
-        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid);
+        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid.toLowerCase());
         if(characteristic != null) {
             characteristic.setValue(data);
             bluetoothGatt.writeCharacteristic(characteristic);
         }
     }
     public void setNotification(String characteristicUuid,boolean flag){
-        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid);
+        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid.toLowerCase());
         if(characteristic != null) {
             this.bluetoothGatt.setCharacteristicNotification(characteristic,flag);
             for(BluetoothGattDescriptor desc : characteristic.getDescriptors()){
@@ -131,7 +131,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
     }
 
     public void readRequest(String characteristicUuid){
-        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid);
+        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid.toLowerCase());
         if(characteristic != null) {
             this.bluetoothGatt.readCharacteristic(characteristic);
         }
@@ -157,7 +157,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
         for( BluetoothGattService service : gatt.getServices() ) {
             List<BluetoothGattCharacteristic> characterlistics = service.getCharacteristics();
             for(BluetoothGattCharacteristic ch : characterlistics){
-                this.characteristicHashMap.put( ch.getUuid().toString(),ch );
+                this.characteristicHashMap.put( ch.getUuid().toString().toLowerCase(),ch );
             }
         }
         this.isAvailable = true;
