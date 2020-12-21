@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace toio.Tests
 {
@@ -41,6 +43,17 @@ namespace toio.Tests
         [TearDown] // クラスの各テストが終了した後に実行される
         public void TearDown()
         {
+        }
+
+        [UnitySetUp] // クラスのテストが開始される前に一度だけ実行される
+        public IEnumerator UnitySetUp()
+        {
+            yield return null;
+        }
+        [UnityTearDown] // クラスの全てのテストが終了した後に実行される
+        public IEnumerator UnityTearDown()
+        {
+            yield return null;
         }
 
         public void Start()

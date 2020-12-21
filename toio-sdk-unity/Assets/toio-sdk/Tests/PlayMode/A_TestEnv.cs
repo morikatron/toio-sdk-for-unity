@@ -7,10 +7,10 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.Assertions;
 using System.IO;
-
+using Cysharp.Threading.Tasks;
 
 // 省略
-using test = toio.Tests.CubeTester;
+using test = toio.Tests.BasicTestMonoBehaviour;
 using assert = UnityEngine.Assertions.Assert;
 
 namespace toio.Tests
@@ -20,26 +20,31 @@ namespace toio.Tests
     /// 【Assertチートシート】
     /// https://qiita.com/su10/items/67a4a90c648b1ef68ab9#assertチートシート
     /// </summary>
-    public class A_TestEnv : CubePlayModeBase
+    public class A_TestEnv : CubeTestCase
     {
-        [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator Update関数()
+        [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _0_HelloTest()
         {
-            Start();
+            Debug.Log("Hello Test!!");
+            yield return null;
+        }
 
+        [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _1_BasicTest_Update関数()
+        {
+            int cnt = 0;
             test.update = (() =>
             {
-                return true;
+                Debug.Log("Update!!");
+                return (1 <= cnt++);
             });
 
             yield return new MonoBehaviourTest<test>();
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator Init関数()
+        public IEnumerator _2_BasicTest_Init関数()
         {
-            Start();
-
             test.init = (() =>
             {
                 Debug.Log("init");
@@ -55,24 +60,45 @@ namespace toio.Tests
             yield return new MonoBehaviourTest<test>();
         }
 
-        [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator Update秒数指定()
+        [UnityTest, Order(3)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _3_BasicTest_Update秒数指定()
         {
-            Start();
-
-            test.update = TestUntil_Seconds(3);
+            test.update = test.UpdateUntil_Seconds(3);
             yield return new MonoBehaviourTest<test>();
         }
 
-        [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator Cube配置()
+        [UnityTest, Order(4)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _4_UniTask_UpdateWhile() => UniTask.ToCoroutine(async () =>
         {
-            Start();
-            test.CreateCube(300, 300);
-            test.CreateCube(100, 100);
+            int cnt = 0;
+            bool flg = true;
+            await UniTaskUtl.UpdateWhile((() => flg), () =>
+            {
+                flg = (cnt++ < 3);
+                Debug.Log("Update() " + Time.frameCount);
+            });
+        });
 
-            test.update = TestUntil_Seconds(5);
-            yield return new MonoBehaviourTest<test>();
-        }
+        [UnityTest, Order(5)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _5_UniTask_UpdateForSeconds() => UniTask.ToCoroutine(async () =>
+        {
+            await UniTaskUtl.UpdateForSeconds(3, () =>
+            {
+                Debug.Log("Update() " + Time.frameCount);
+            });
+        });
+
+        [UnityTest, Order(6)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _6_UniTask_Delay() => UniTask.ToCoroutine(async () =>
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                Debug.LogFormat("i = {0}, Time.frameCount = {1}", i, Time.frameCount);
+                await UniTask.Delay(1000);
+                Debug.LogFormat("i = {0}, Time.frameCount = {1}", i, Time.frameCount);
+                await UniTask.Delay(500);
+                Debug.LogFormat("i = {0}, Time.frameCount = {1}", i, Time.frameCount);
+            }
+        });
     }
 }
