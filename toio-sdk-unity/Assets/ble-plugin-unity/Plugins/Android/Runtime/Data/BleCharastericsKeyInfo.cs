@@ -43,6 +43,20 @@ namespace toio.Android.Data {
         {
             return address.GetHashCode() + serviceUUID.GetHashCode() + characteristicUUID.GetHashCode();
         }
+
+        public static HashSet<string> GetServices(List<BleCharastericsKeyInfo> list)
+        {
+            HashSet<string> services = new HashSet<string>();
+            foreach(var info in list)
+            {
+                string serviceUuid = info.serviceUUID;
+                if (services.Contains(serviceUuid))
+                {
+                    services.Add(serviceUuid);
+                }
+            }
+            return services;
+        }
     }
 
 }

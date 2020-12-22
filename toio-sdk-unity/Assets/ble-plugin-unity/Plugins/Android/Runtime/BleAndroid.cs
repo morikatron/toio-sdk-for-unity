@@ -80,8 +80,9 @@ namespace toio.Android
                 connectedAct = connectedPeripheralAction,
                 disconnectedAct = disconnectedPeripheralAction,
                 discoveredCharacteristicAct = discoveredCharacteristicAction,
-                discoveredServiceAct = discoveredServiceAction
+                discoveredServiceAct = discoveredServiceAction,
             };
+            deviceEvent.InitFlags();
             s_deviceEvents[identifier] = deviceEvent;
         }
 
@@ -152,9 +153,32 @@ namespace toio.Android
                     s_discoveredAction(device.address, device.name, device.rssi, null);
                 }
             }
-            // read/notify
+            // devices
             javaWrapper.UpdateConnectedDevices();
+
+            // charastricInfos
+            var charstricInfoByDevice = javaWrapper.GetCharastricKeyInfos();
+            foreach(var kvs in s_deviceEvents)
+            {
+                string addr = kvs.Key;
+                var deviceEvent = kvs.Value;
+                List<BleCharastericsKeyInfo> charstricInfo = null;
+
+                if( charstricInfoByDevice.TryGetValue(addr,out charstricInfo))
+                {
+                    if (!deviceEvent.callDiscoverEvent)
+                    {
+                        var services = BleCharastericsKeyInfo.GetServices(charstricInfo);
+
+                    }
+                }
+
+            }
+            
+            // read/notify data
             var readDatas = javaWrapper.GetCharacteristicDatas();
+
+
         }
     }
 }

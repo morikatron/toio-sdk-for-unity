@@ -23,7 +23,7 @@ namespace toio.Android
 
         private List<BleScannedDevice> scannedDevices = new List<BleScannedDevice>();
         private List<BleCharacteristicData> readDatas = new List<BleCharacteristicData>();
-        private Dictionary<string,BleCharastericsKeyInfo> charastericsKeyInfos = new Dictionary<string, BleCharastericsKeyInfo>();
+        private Dictionary<string, List<BleCharastericsKeyInfo> > charastericsKeyInfos = new Dictionary<string, List<BleCharastericsKeyInfo> >();
 
         public void Initialize()
         {
@@ -148,6 +148,11 @@ namespace toio.Android
             return this.readDatas;
         }
 
+        public Dictionary<string,List<BleCharastericsKeyInfo>> GetCharastricKeyInfos()
+        {
+            return this.charastericsKeyInfos;
+        }
+
         public void WriteCharacteristic(string addr, 
             string serviceUuid,
             string characteristicUUID, byte[] data, int length,
@@ -228,9 +233,10 @@ namespace toio.Android
             var isNotifyMethod = AndroidJNI.GetMethodID(bleDeviceCls, "isNotifyReadData", "(I)Z");
             var getReadDataMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getDataFromReadData", "(I)[B");
 
+            string addr = AndroidJNI.CallStringMethod(device, getAddrMethod, null);
+            this.UpdateCharastricsKeys(addr, device);
 
             // read Charastrics Data
-            string addr = AndroidJNI.CallStringMethod(device, getAddrMethod,null);
             AndroidJNI.CallVoidMethod(device, blitMethod, null);
             int readNum = AndroidJNI.CallIntMethod(device, readNumMethod,null);
             for( int i = 0; i < readNum; ++i)
@@ -245,6 +251,39 @@ namespace toio.Android
                 this.readDatas.Add(characteristicData);
             }
             AndroidJNI.PopLocalFrame(IntPtr.Zero);
+        }
+
+        private void UpdateCharastricsKeys(string addr, IntPtr device)
+        {
+            List<BleCharastericsKeyInfo> list = null;
+            if( this.charastericsKeyInfos.TryGetValue(addr ,out list))
+            {
+                return;
+            }
+            var blitCharaMethod = AndroidJNI.GetMethodID(this.bleDeviceCls, "blitChara", "()V");
+            var getKeyNumMethod = AndroidJNI.GetMethodID(this.bleDeviceCls, "getKeysNum", "()I");
+            var getServiceUuidFromKeysMethod = AndroidJNI.GetMethodID(this.bleDeviceCls,
+                "getServiceUuidFromKeys", "(I)Ljava/lang/String;");
+            var getCharastricUuidFromKeysMethod = AndroidJNI.GetMethodID(this.bleDeviceCls,
+                "getCharastricUuidFromKeys", "(I)Ljava/lang/String;");
+            // blit chara
+            AndroidJNI.CallBooleanMethod(device, blitCharaMethod, null);
+            int num = AndroidJNI.CallIntMethod(device, getKeyNumMethod,null);
+            if (num <= 0)
+            {
+                return;
+            }
+            list = new List<BleCharastericsKeyInfo>(num);
+            for( int i =0;i < num; ++i)
+            {
+                this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(i));
+                string serviceUuid = AndroidJNI.CallStringMethod(device, getServiceUuidFromKeysMethod, argBuilder.Build());
+                string charastricUuid = AndroidJNI.CallStringMethod(device, getCharastricUuidFromKeysMethod, argBuilder.Build());
+                var keyInfo = new BleCharastericsKeyInfo(addr, serviceUuid, charastricUuid);
+                list.Add(keyInfo);
+            }
+
+            this.charastericsKeyInfos.Add(addr, list);
         }
 
         private System.IntPtr GetScanner()

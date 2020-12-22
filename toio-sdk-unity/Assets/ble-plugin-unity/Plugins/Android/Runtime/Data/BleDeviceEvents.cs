@@ -18,6 +18,13 @@ namespace toio.Android.Data {
         public Action<string, string> discoveredServiceAct;
         public Action<string, string, string> discoveredCharacteristicAct;
         public Action<string> disconnectedAct;
+
+        public bool callDiscoverEvent;
+
+        public void InitFlags()
+        {
+            callDiscoverEvent = false;
+        }
     }
 
 }
