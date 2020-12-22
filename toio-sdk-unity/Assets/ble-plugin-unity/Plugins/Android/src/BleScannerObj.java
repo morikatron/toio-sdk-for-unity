@@ -30,6 +30,13 @@ public class BleScannerObj extends ScanCallback{
     private List<ScanFilter> scanFilters = new ArrayList<>(8);
     private boolean isScanning = false;
 
+
+
+    public BleScannerObj(BluetoothLeScanner scanner,Context cxt){
+        this.context = cxt;
+        this.bleScanner = scanner;
+    }
+
     public void blit(){
         this.pubAddresses.clear();
         this.pubBleDevices.clear();
@@ -42,12 +49,6 @@ public class BleScannerObj extends ScanCallback{
             }
             this.bleDevices.clear();
         }
-    }
-
-
-    public BleScannerObj(BluetoothLeScanner scanner,Context cxt){
-        this.context = cxt;
-        this.bleScanner = scanner;
     }
 
     public int getDeviceNum(){

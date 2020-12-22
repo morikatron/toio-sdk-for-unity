@@ -22,8 +22,8 @@ public class BleDeviceObj extends BluetoothGattCallback {
         private String charastericUuid;
 
         public CharastricsKey(String service,String charasteric){
-            this.serviceUuid = service;
-            this.charastericUuid = charasteric;
+            this.serviceUuid = service.toLowerCase();
+            this.charastericUuid = charasteric.toLowerCase();
         }
 
         @Override
@@ -34,6 +34,12 @@ public class BleDeviceObj extends BluetoothGattCallback {
             return Objects.equals(serviceUuid, that.serviceUuid) &&
                     Objects.equals(charastericUuid, that.charastericUuid);
         }
+        public String getServiceUuid(){
+            return serviceUuid;
+        }
+        public String getCharastericUuid(){
+            return charastericUuid;
+        }
 
         @Override
         public int hashCode() {
@@ -42,9 +48,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
     }
     private BluetoothDevice bluetoothDevice;
     private BluetoothGatt bluetoothGatt;
-    private HashMap<String,BluetoothGattCharacteristic> characteristicHashMap;
     private HashMap<CharastricsKey,BluetoothGattCharacteristic> charastricsKeyHashMap;
-
     private HashMap<CharastricsKey,BluetoothGattCharacteristic> pubCharastricsKeyHashMap;
 
     private List<CharastricsKey> charastricsKeys;
@@ -77,7 +81,8 @@ public class BleDeviceObj extends BluetoothGattCallback {
 
     public void disconnect(){
         if(bluetoothGatt != null){
-            bluetoothGatt.close();;
+            this.charastricsKeyHashMap.clear();
+            bluetoothGatt.close();
             bluetoothGatt = null;
             this.isAvailable = false;
         }
@@ -93,16 +98,28 @@ public class BleDeviceObj extends BluetoothGattCallback {
     }
     public void blitChara(){
         pubCharastricsKeyHashMap.clear();
+        this.charastricsKeys.clear();
         synchronized (this) {
             for (Map.Entry<CharastricsKey, BluetoothGattCharacteristic> data : charastricsKeyHashMap.entrySet()) {
+                this.charastricsKeys.add((data.getKey()));
                 this.pubCharastricsKeyHashMap.put(data.getKey(), data.getValue());
             }
         }
+    }
+    public int getKeysNum(){
+        return this.charastricsKeys.size();
+    }
+    public String getCharastricUuidFromKeys(int idx){
+        return this.charastricsKeys.get(idx).getCharastericUuid();
+    }
+    public String getServiceUuidFromKeys(int idx){
+        return this.charastricsKeys.get(idx).getServiceUuid();
     }
 
     public String getAddress(){
         return this.address;
     }
+
     public int getReadNum(){
         return this.pubDataBuffer.size();
     }
@@ -141,22 +158,25 @@ public class BleDeviceObj extends BluetoothGattCallback {
     public BleDeviceObj(BluetoothDevice device, Context cxt) {
         this.bluetoothDevice = device;
         this.address = device.getAddress();
-        this.characteristicHashMap = new HashMap<String,BluetoothGattCharacteristic>();
         this.charastricsKeyHashMap = new HashMap<CharastricsKey,BluetoothGattCharacteristic>();
         this.pubCharastricsKeyHashMap = new HashMap<CharastricsKey,BluetoothGattCharacteristic>();
+        this.charastricsKeys = new ArrayList<CharastricsKey>(32);
         device.connectGatt(cxt,true,this);
     }
 
 
-    public void writeData(String characteristicUuid ,byte[] data,boolean writeBack){
-        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid.toLowerCase());
+    public void writeData(String serviceUuid,
+            String characteristicUuid ,byte[] data,boolean writeBack){
+        CharastricsKey key = new CharastricsKey(serviceUuid,characteristicUuid);
+        BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
         if(characteristic != null) {
             characteristic.setValue(data);
             bluetoothGatt.writeCharacteristic(characteristic);
         }
     }
-    public void setNotification(String characteristicUuid,boolean flag){
-        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid.toLowerCase());
+    public void setNotification(String serviceUuid,String characteristicUuid,boolean flag){
+        CharastricsKey key = new CharastricsKey(serviceUuid,characteristicUuid);
+        BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
         if(characteristic != null) {
             this.bluetoothGatt.setCharacteristicNotification(characteristic,flag);
             for(BluetoothGattDescriptor desc : characteristic.getDescriptors()){
@@ -170,8 +190,9 @@ public class BleDeviceObj extends BluetoothGattCallback {
         }
     }
 
-    public void readRequest(String characteristicUuid){
-        BluetoothGattCharacteristic characteristic = this.characteristicHashMap.get(characteristicUuid.toLowerCase());
+    public void readRequest(String serviceUuid,String characteristicUuid){
+        CharastricsKey key = new CharastricsKey(serviceUuid,characteristicUuid);
+        BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
         if(characteristic != null) {
             this.bluetoothGatt.readCharacteristic(characteristic);
         }
@@ -195,15 +216,14 @@ public class BleDeviceObj extends BluetoothGattCallback {
     // New services discovered
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
         for( BluetoothGattService service : gatt.getServices() ) {
-            String serviceUuid = service.getUuid().toString().toLowerCase();
-            List<BluetoothGattCharacteristic> characterlistics = service.getCharacteristics();
-            for(BluetoothGattCharacteristic ch : characterlistics){
+            String serviceUuid = service.getUuid().toString();
+            List<BluetoothGattCharacteristic> characteristicList = service.getCharacteristics();
+            for(BluetoothGattCharacteristic ch : characteristicList){
                 String charaUuid = ch.getUuid().toString();
                 CharastricsKey key = new CharastricsKey(serviceUuid,charaUuid);
                 synchronized (this) {
                     this.charastricsKeyHashMap.put(key, ch);
                 }
-                this.characteristicHashMap.put( charaUuid ,ch );
             }
         }
         this.isAvailable = true;

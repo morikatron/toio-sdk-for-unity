@@ -23,6 +23,7 @@ namespace toio.Android
 
         private List<BleScannedDevice> scannedDevices = new List<BleScannedDevice>();
         private List<BleCharacteristicData> readDatas = new List<BleCharacteristicData>();
+        private Dictionary<string,BleCharastericsKeyInfo> charastericsKeyInfos = new Dictionary<string, BleCharastericsKeyInfo>();
 
         public void Initialize()
         {
@@ -154,8 +155,9 @@ namespace toio.Android
         {
             var deviceObj = GetDeviceObj(addr);
             var writeMethod = AndroidJNI.GetMethodID(bleDeviceCls, "writeData",
-                "(Ljava/lang/String;[BZ)V");
+                "(Ljava/lang/String;Ljava/lang/String;[BZ)V");
             this.argBuilder.Clear().
+                Append(ArgJvalueBuilder.GenerateJvalue(serviceUuid)).
                 Append(ArgJvalueBuilder.GenerateJvalue(characteristicUUID)).
                 Append(ArgJvalueBuilder.GenerateJvalue(data, length)).
                 Append(ArgJvalueBuilder.GenerateJvalue(withResponse));
@@ -167,8 +169,9 @@ namespace toio.Android
         {
             var deviceObj = GetDeviceObj(addr);
             var setNotificationMethod = AndroidJNI.GetMethodID(bleDeviceCls, "setNotification",
-                "(Ljava/lang/String;Z)V");
+                "(Ljava/lang/String;Ljava/lang/String;Z)V");
             this.argBuilder.Clear().
+                Append(ArgJvalueBuilder.GenerateJvalue(serviceUuid)).
                 Append(ArgJvalueBuilder.GenerateJvalue(characteristicUUID)).
                 Append(ArgJvalueBuilder.GenerateJvalue(isEnable));
             AndroidJNI.CallVoidMethod(deviceObj, setNotificationMethod, this.argBuilder.Build());
@@ -178,8 +181,10 @@ namespace toio.Android
             string characteristicUUID )
         {
             var deviceObj = GetDeviceObj(addr);
-            var readrequestMethod = AndroidJNI.GetMethodID(bleDeviceCls, "readRequest", "(Ljava/lang/String;)V");
+            var readrequestMethod = AndroidJNI.GetMethodID(bleDeviceCls, "readRequest",
+                "(Ljava/lang/String;Ljava/lang/String;)V");
             this.argBuilder.Clear().
+                Append(ArgJvalueBuilder.GenerateJvalue(serviceUuid)).
                 Append(ArgJvalueBuilder.GenerateJvalue(characteristicUUID));
             AndroidJNI.CallVoidMethod(deviceObj, readrequestMethod, this.argBuilder.Build());
         }
@@ -223,6 +228,8 @@ namespace toio.Android
             var isNotifyMethod = AndroidJNI.GetMethodID(bleDeviceCls, "isNotifyReadData", "(I)Z");
             var getReadDataMethod = AndroidJNI.GetMethodID(bleDeviceCls, "getDataFromReadData", "(I)[B");
 
+
+            // read Charastrics Data
             string addr = AndroidJNI.CallStringMethod(device, getAddrMethod,null);
             AndroidJNI.CallVoidMethod(device, blitMethod, null);
             int readNum = AndroidJNI.CallIntMethod(device, readNumMethod,null);
@@ -239,6 +246,7 @@ namespace toio.Android
             }
             AndroidJNI.PopLocalFrame(IntPtr.Zero);
         }
+
         private System.IntPtr GetScanner()
         {
             var getScanner = AndroidJNI.GetMethodID(bleManagerCls, "getScanner", "()Lcom/utj/ble/BleScannerObj;");
