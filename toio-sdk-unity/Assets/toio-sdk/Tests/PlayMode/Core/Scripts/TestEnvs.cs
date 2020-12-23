@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using NUnit.Framework.Api;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -17,6 +19,9 @@ namespace toio.Tests
     public class SimulatorImpl : CubeTestCase.TestCaseInterface
     {
         private static bool firstTime = true;
+        private static ITest testRoot;
+        public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
+        public void RunFinished(ITestResult testResults) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
         public IEnumerator UnitySetUp() => UniTask.ToCoroutine(async () =>
@@ -35,6 +40,13 @@ namespace toio.Tests
                 }
                 // キューブオブジェクトに接続
                 await CubeTestCase.cubeManager.MultiConnect(8);
+
+                // UIオブジェクトを生成
+                var selectView = await EnvUtl.CreateTestUI(testRoot);
+
+                // 選択モードの場合は、終了するまでテストを待機
+                // 実行モードの場合は、ボタンから選択モードを終了
+                await UniTask.WaitUntil(() => selectView.IsFinished);
             }
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
@@ -45,6 +57,8 @@ namespace toio.Tests
     public class MobileRealImpl : CubeTestCase.TestCaseInterface
     {
         private static bool firstTime = true;
+        public void RunStarted(ITest test) { }
+        public void RunFinished(ITestResult testResults) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
         public IEnumerator UnitySetUp() => UniTask.ToCoroutine(async () =>
@@ -64,6 +78,8 @@ namespace toio.Tests
     public class WebGLRealImpl : CubeTestCase.TestCaseInterface
     {
         private static bool firstTime = true;
+        public void RunStarted(ITest test) { }
+        public void RunFinished(ITestResult testResults) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
         public IEnumerator UnitySetUp() => UniTask.ToCoroutine(async () =>
@@ -98,6 +114,7 @@ namespace toio.Tests
         private static GameObject res_stage = null;
         private static GameObject res_cube = null;
         private static GameObject res_buttonCanvas = null;
+        private static GameObject res_testUI = null;
 
         public static async UniTask<GameObject> CreateSimStageObject()
         {
@@ -212,6 +229,35 @@ namespace toio.Tests
             var obj = GameObject.Instantiate<GameObject>(res_buttonCanvas);
             var button = obj.transform.GetChild(0).GetComponent<UnityEngine.UI.Button>();
             return button;
+        }
+
+        public static async UniTask<toio.Tests.TestSelectView> CreateTestUI(ITest testRoot, GameObject parent=null)
+        {
+            // テスト配列を取得
+            List<ITest> testList = new List<ITest>();
+            CollectTestsRecusively(testList, testRoot);
+
+            // テスト選択UIを生成
+            if (null == res_testUI)
+            {
+                res_testUI = await Resources.LoadAsync<GameObject>("TestUI") as GameObject;
+            }
+
+            var obj = GameObject.Instantiate<GameObject>(res_testUI);
+            var view = obj.GetComponentInChildren<toio.Tests.TestSelectView>(true);
+            view.testRoot = testRoot;
+            view.tests = testList;
+            if (null != parent)
+            {
+                obj.transform.SetParent(parent.transform);
+            }
+            return view;
+        }
+
+        public static void CollectTestsRecusively(List<ITest> list, ITest test)
+        {
+            if (!test.HasChildren) { list.Add(test); }
+            foreach(var t in test.Tests) { CollectTestsRecusively(list, t); }
         }
     }
 }

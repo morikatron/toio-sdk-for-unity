@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using NUnit.Framework.Api;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.TestRunner;
@@ -18,10 +19,12 @@ public class MyTestRunCallback : ITestRunCallback
     {
         //Debug.Log("RunStarted");
         toio.Tests.CubeTestCase.impl = new toio.Tests.SimulatorImpl();
+        toio.Tests.CubeTestCase.impl.RunStarted(testsToRun);
     }
 
     public void RunFinished(ITestResult testResults)
     {
+        toio.Tests.CubeTestCase.impl.RunFinished(testResults);
         //Debug.Log("RunFinished");
     }
 
@@ -52,6 +55,8 @@ namespace toio.Tests
     {
         public interface TestCaseInterface
         {
+            void RunStarted(ITest test);
+            void RunFinished(ITestResult testResults);
             void OneTimeSetUp();
             void OneTimeTearDown();
             IEnumerator UnitySetUp();
