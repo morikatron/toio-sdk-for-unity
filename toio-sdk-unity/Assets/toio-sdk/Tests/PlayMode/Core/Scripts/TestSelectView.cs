@@ -53,7 +53,7 @@ namespace toio.Tests
                     buttonObj.GetComponent<RectTransform>().localScale = Vector3.one;
                     var button = buttonObj.GetComponent<UnityEngine.UI.Button>();
                     var txt = button.GetComponentInChildren<Text>();
-                    txt.text = t.Name;
+                    txt.text = t.Parent.Name + "/" + t.Name;
                     button.onClick.AddListener(async () =>
                     {
                         var testcase = (t.Parent.Fixture as CubeTestCase);
