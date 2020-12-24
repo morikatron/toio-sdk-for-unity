@@ -56,10 +56,11 @@ namespace toio.Tests
                     txt.text = t.Parent.Name + "/" + t.Name;
                     button.onClick.AddListener(async () =>
                     {
-                        var testcase = (t.Parent.Fixture as CubeTestCase);
-                        await (IEnumerator)testcase.UnitySetUp();
+                        CubeTestCase.impl.TestStarted(t);
+                        await (IEnumerator)CubeTestCase.impl.UnitySetUp();
                         await (IEnumerator)t.Method.Invoke(t.Parent.Fixture, null);
-                        await (IEnumerator)testcase.UnityTearDown();
+                        await (IEnumerator)CubeTestCase.impl.UnityTearDown();
+                        CubeTestCase.impl.TestFinished(null);
                     });
                 }
             }

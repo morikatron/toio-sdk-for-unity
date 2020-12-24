@@ -24,6 +24,15 @@ namespace toio.Tests
         public void RunFinished(ITestResult testResults) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
+        public IEnumerator UnityTearDown() { yield return null; }
+        public void TestStarted(ITest test)
+        {
+            if (!firstTime && !test.HasChildren) { Debug.LogFormat("<color=green>テスト開始 {0}/{1}</color>", test.Parent.Name, test.Name); }
+        }
+        public void TestFinished(ITestResult result)
+        {
+            Debug.Log("<color=red>テスト終了</color>");
+        }
         public IEnumerator UnitySetUp() => UniTask.ToCoroutine(async () =>
         {
             if (firstTime)
@@ -51,14 +60,16 @@ namespace toio.Tests
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
-        public IEnumerator UnityTearDown() { yield return null; }
     }
 
     public class MobileRealImpl : CubeTestCase.TestCaseInterface
     {
         private static bool firstTime = true;
-        public void RunStarted(ITest test) { }
+        private static ITest testRoot;
+        public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
+        public void TestStarted(ITest test) { }
+        public void TestFinished(ITestResult result) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
         public IEnumerator UnitySetUp() => UniTask.ToCoroutine(async () =>
@@ -67,7 +78,18 @@ namespace toio.Tests
             {
                 firstTime = false;
 
+                // ステージオブジェクトを配置
+                await EnvUtl.CreateSimStageObject();
+
+                // キューブに接続
                 await CubeTestCase.cubeManager.MultiConnect(8);
+
+                // UIオブジェクトを生成
+                var selectView = await EnvUtl.CreateTestUI(testRoot);
+
+                // 選択モードの場合は、終了するまでテストを待機
+                // 実行モードの場合は、ボタンから選択モードを終了
+                await UniTask.WaitUntil(() => selectView.IsFinished);
             }
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
@@ -78,8 +100,11 @@ namespace toio.Tests
     public class WebGLRealImpl : CubeTestCase.TestCaseInterface
     {
         private static bool firstTime = true;
-        public void RunStarted(ITest test) { }
+        private static ITest testRoot;
+        public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
+        public void TestStarted(ITest test) { }
+        public void TestFinished(ITestResult result) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
         public IEnumerator UnitySetUp() => UniTask.ToCoroutine(async () =>
@@ -88,20 +113,37 @@ namespace toio.Tests
             {
                 firstTime = false;
 
+                // ステージオブジェクトを配置
+                await EnvUtl.CreateSimStageObject();
+
                 // ボタンを配置して押下待機
-                var button = await EnvUtl.CreateButton(new Vector3(50, 50, 0), new Vector2(200, 200));
+                var connectButton = await EnvUtl.CreateButton("connect", new Vector3(0, 80, 0), new Vector2(160, 100), 24);
+                var startButton = await EnvUtl.CreateButton("start", new Vector3(0, -80, 0), new Vector2(160, 100), 24);
+                var startFlg = false;
+                startButton.onClick.AddListener(() => { startFlg = true; });
                 try
                 {
+                    Cube cube = null;
                     for(int i = 0; i < 8; i++)
                     {
-                        await CubeTestCase.cubeManager.SingleConnect();
-                        bool down = false;
-                        button.onClick.AddListener(() => {down = true; });
-                        await UniTask.WaitUntil(() => true == down );
+                        connectButton.onClick.AddListener(async () => { cube = await CubeTestCase.cubeManager.SingleConnect(); });
+                        await UniTask.WaitUntil(() => (null != cube || startFlg) );
+                        if (startFlg) { break; }
+                        cube = null;
                     }
                 }
-                catch {}
-                GameObject.DestroyImmediate(button.gameObject);
+                catch (Exception e)
+                {
+                    Debug.Log(e.Message);
+                }
+                GameObject.DestroyImmediate(connectButton.gameObject);
+
+                // UIオブジェクトを生成
+                var selectView = await EnvUtl.CreateTestUI(testRoot);
+
+                // 選択モードの場合は、終了するまでテストを待機
+                // 実行モードの場合は、ボタンから選択モードを終了
+                await UniTask.WaitUntil(() => selectView.IsFinished);
             }
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
@@ -184,6 +226,7 @@ namespace toio.Tests
                 var homePos = new Vector2(posAngle.x, posAngle.y);
                 Cube minCube = null;
                 float minDistance = float.MaxValue;
+                if (0 == cubes.Count) { break; }
                 foreach(var cube in cubes)
                 {
                     var distance = Vector2.Distance(homePos, cube.pos);
@@ -219,7 +262,7 @@ namespace toio.Tests
             return poslist;
         }
 
-        public static async UniTask<UnityEngine.UI.Button> CreateButton(Vector3 pos, Vector2 size)
+        public static async UniTask<UnityEngine.UI.Button> CreateButton(string text, Vector3 pos, Vector2 size, int fontsize=16)
         {
             if (null == res_buttonCanvas)
             {
@@ -228,6 +271,12 @@ namespace toio.Tests
 
             var obj = GameObject.Instantiate<GameObject>(res_buttonCanvas);
             var button = obj.transform.GetChild(0).GetComponent<UnityEngine.UI.Button>();
+            var txt = button.GetComponentInChildren<Text>();
+            txt.text = text;
+            txt.fontSize = fontsize;
+            var rect = button.GetComponent<RectTransform>();
+            rect.localPosition = pos;
+            rect.sizeDelta = new Vector2(size.x, size.y);
             return button;
         }
 

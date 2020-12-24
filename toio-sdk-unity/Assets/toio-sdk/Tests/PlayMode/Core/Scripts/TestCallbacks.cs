@@ -12,40 +12,37 @@ using UnityEditor;
 using Cysharp.Threading.Tasks;
 using toio;
 
+
 [assembly:TestRunCallback(typeof(MyTestRunCallback))]
 public class MyTestRunCallback : ITestRunCallback
 {
     public void RunStarted(ITest testsToRun)
     {
-        //Debug.Log("RunStarted");
+
+#if UNITY_EDITOR
         toio.Tests.CubeTestCase.impl = new toio.Tests.SimulatorImpl();
+#elif !UNITY_EDITOR && UNITY_IOS
+        toio.Tests.CubeTestCase.impl = new toio.Tests.MobileRealImpl();
+#elif !UNITY_EDITOR && UNITY_WEBGL
+        toio.Tests.CubeTestCase.impl = new toio.Tests.WebGLRealImpl();
+#endif
+
         toio.Tests.CubeTestCase.impl.RunStarted(testsToRun);
     }
 
     public void RunFinished(ITestResult testResults)
     {
         toio.Tests.CubeTestCase.impl.RunFinished(testResults);
-        //Debug.Log("RunFinished");
     }
 
     public void TestStarted(ITest test)
     {
-        //Debug.Log("TestStarted");
-    }
+        toio.Tests.CubeTestCase.impl.TestStarted(test);
+     }
 
     public void TestFinished(ITestResult result)
     {
-        //Debug.Log("TestFinished");
-
-        if (result.Test.IsSuite)
-        {
-            //Debug.Log("is suieeet");
-        }
-
-        if (!result.Test.IsSuite)
-        {
-            //Debug.Log($"Result of {result.Name}: {result.ResultState.Status}");
-        }
+        toio.Tests.CubeTestCase.impl.TestFinished(result);
     }
 }
 
@@ -55,8 +52,12 @@ namespace toio.Tests
     {
         public interface TestCaseInterface
         {
+            // ITestRunCallback
             void RunStarted(ITest test);
             void RunFinished(ITestResult testResults);
+            void TestStarted(ITest test);
+            void TestFinished(ITestResult result);
+            // callback attributes
             void OneTimeSetUp();
             void OneTimeTearDown();
             IEnumerator UnitySetUp();

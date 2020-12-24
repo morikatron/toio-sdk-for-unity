@@ -29,6 +29,7 @@ namespace toio.Tests
             yield return null;
         }
 
+        /*
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
         public IEnumerator _1_BasicTest_Update関数()
         {
@@ -100,5 +101,30 @@ namespace toio.Tests
                 Debug.LogFormat("i = {0}, Time.frameCount = {1}", i, Time.frameCount);
             }
         });
+        */
+
+        [UnityTest, Order(7)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _7_CubeMove()
+        {
+            cubeManager.cubes[0].Move(50, -50, 1500);
+            yield return new WaitForSeconds(2);
+
+            cubeManager.cubes[0].Move(-50, 50, 1500);
+            yield return new WaitForSeconds(2);
+
+            yield return null;
+        }
+
+        [UnityTest, Order(8)] // テストの実行の優先度を指定する(昇順)
+        public IEnumerator _8_CubeMove()
+        {
+            cubeManager.cubes[0].Move(10, 10, 1000);
+            yield return new WaitForSeconds(2);
+
+            cubeManager.cubes[0].Move(-10, -10, 1000);
+            yield return new WaitForSeconds(2);
+
+            yield return null;
+        }
     }
 }
