@@ -79,7 +79,7 @@ namespace toio
 
         public virtual async UniTask<Cube[]> MultiConnect(int cubeNum)
         {
-#if UNITY_WEBGL
+#if !UNITY_EDITOR && UNITY_WEBGL
             Debug.Log("[CubeManager.MultiConnect]MultiConnect doesn't run on the web");
 #endif
             if (null == this.nearScanner)
