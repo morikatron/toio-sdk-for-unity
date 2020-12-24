@@ -54,7 +54,7 @@ namespace toio
                 return UniTask.FromResult<BLEPeripheralInterface>(null);
             }
         }
-#elif (UNITY_ANDROID || UNITY_IPHONE)
+#elif (UNITY_ANDROID || UNITY_IOS)
         /// <summary>
         /// Impl for Mobile(iOS, Android).
         /// </summary>
