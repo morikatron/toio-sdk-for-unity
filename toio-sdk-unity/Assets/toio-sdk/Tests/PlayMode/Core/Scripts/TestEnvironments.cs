@@ -139,7 +139,7 @@ namespace toio.Tests
                 await CubeTestCase.cubeManager.MultiConnect(8);
 
                 // UIオブジェクトを生成
-                var selectView = await EnvUtl.CreateTestUI(testRoot);
+                var (uiObj, selectView) = await EnvUtl.CreateTestUI(testRoot);
 
                 // 選択モードの場合は、終了するまでテストを待機
                 // 実行モードの場合は、ボタンから選択モードを終了
@@ -159,6 +159,7 @@ namespace toio.Tests
     {
         private static bool firstTime = true;
         private static ITest testRoot;
+        private static GameObject UIObject;
         public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
         public void TestStarted(ITest test) { }
@@ -178,12 +179,14 @@ namespace toio.Tests
                 await CubeTestCase.cubeManager.MultiConnect(8);
 
                 // UIオブジェクトを生成
-                var selectView = await EnvUtl.CreateTestUI(testRoot);
+                var (uiObj, selectView) = await EnvUtl.CreateTestUI(testRoot);
+                UIObject = uiObj;
 
                 // 選択モードの場合は、終了するまでテストを待機
                 // 実行モードの場合は、ボタンから選択モードを終了
                 await UniTask.WaitUntil(() => selectView.IsFinished);
             }
+            UIObject.SetActive(false);
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
@@ -191,6 +194,7 @@ namespace toio.Tests
         {
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
+            UIObject.SetActive(true);
         });
     }
 
@@ -198,6 +202,7 @@ namespace toio.Tests
     {
         private static bool firstTime = true;
         private static ITest testRoot;
+        private static GameObject UIObject;
         public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
         public void TestStarted(ITest test) { }
@@ -237,7 +242,7 @@ namespace toio.Tests
                 GameObject.DestroyImmediate(startButton.gameObject);
 
                 // UIオブジェクトを生成
-                var selectView = await EnvUtl.CreateTestUI(testRoot);
+                var (uiObj, selectView) = await EnvUtl.CreateTestUI(testRoot);
 
                 // 選択モードの場合は、終了するまでテストを待機
                 // 実行モードの場合は、ボタンから選択モードを終了
@@ -442,7 +447,7 @@ namespace toio.Tests
             return button;
         }
 
-        public static async UniTask<toio.Tests.TestSelectView> CreateTestUI(ITest testRoot, GameObject parent=null)
+        public static async UniTask<(GameObject, toio.Tests.TestSelectView)> CreateTestUI(ITest testRoot, GameObject parent=null)
         {
             // テスト配列を取得
             List<ITest> testList = new List<ITest>();
@@ -462,7 +467,7 @@ namespace toio.Tests
             {
                 obj.transform.SetParent(parent.transform);
             }
-            return view;
+            return (obj, view);
         }
 
         public static void CollectTestsRecusively(List<ITest> list, ITest test)
