@@ -321,32 +321,92 @@ namespace toio.Tests
 
         public static async UniTask Move2Home(CubeManager cubeManager)
         {
-            var list = Get_HomePosXY_and_AngleY_List();
+            var homes = Get_HomePosXY_and_AngleY_List();
             var cubes = new List<Cube>(cubeManager.cubes);
-            foreach(var posAngle in list)
+            int reach_cnt = 0;
+
+            // 目標が直近にあるなら直接指定する
+            // foreach (var home in homes)
+            // {
+            //     if (0 == cubes.Count) break;
+
+            //     var homePos = new Vector2(home.x, home.y);
+            //     foreach (var cube in cubes)
+            //     {
+            //         if (Vector2.Distance(homePos, cube.pos) < 12)
+            //         {
+            //             // 移動
+            //             cube.targetMoveCallback.AddListener("__tmp", ((_cube, _id, _result) => { reach_cnt++; }));
+            //             cube.TargetMove((int)homePos.x, (int)homePos.y, (int)home.z, 0, 0, Cube.TargetMoveType.RoundBeforeMove);
+            //             homes.Remove(home);
+            //             cubes.Remove(cube);
+            //             break;
+            //         }
+            //     }
+            // }
+
+            // 残りキューブとホームのマッティングを計算する
+            List<Vector2> poss = cubes.ConvertAll(new Converter<Cube, Vector2>((Cube c) => c.pos));
+            List<Vector2> tars = homes.ConvertAll(new Converter<Vector3, Vector2>((Vector3 posa) => new Vector2(posa.x, posa.y)));;
+            float d; List<int> idxs;
+            (d, idxs) = Move2Home_Solver(poss, tars);
+
+            for (int i=0; i<cubes.Count; i++)
             {
-                var homePos = new Vector2(posAngle.x, posAngle.y);
-                Cube minCube = null;
-                float minDistance = float.MaxValue;
-                if (0 == cubes.Count) { break; }
-                foreach(var cube in cubes)
-                {
-                    var distance = Vector2.Distance(homePos, cube.pos);
-                    if (minDistance > distance)
-                    {
-                        minDistance = distance;
-                        minCube = cube;
-                    }
-                }
-                cubes.Remove(minCube);
-                // 移動
-                bool reach = false;
-                minCube.targetMoveCallback.AddListener("__tmp", ((cube, id, result) => { reach = true; }));
-                minCube.TargetMove((int)homePos.x, (int)homePos.y, (int)posAngle.z, 0, 0, Cube.TargetMoveType.RoundBeforeMove);
-                await UniTask.WaitUntil(() => reach == true);
-                minCube.targetMoveCallback.RemoveListener("__tmp");
+                var cube = cubes[i];
+                var tar = homes[idxs[i]];
+                cube.targetMoveCallback.AddListener("__tmp", ((_cube, _id, _result) => { reach_cnt++; }));
+                cube.TargetMove((int)tar.x, (int)tar.y, (int)tar.z, 0, 0, Cube.TargetMoveType.RoundBeforeMove);
             }
+
+            // 実行終了待ち
+            await UniTask.WaitUntil(() => reach_cnt == cubeManager.cubes.Count);
+            foreach (var cube in cubeManager.cubes)
+            {
+                cube.targetMoveCallback.RemoveListener("__tmp");
+            }
+
             await UniTask.Yield();
+        }
+        private static (float, List<int>) Move2Home_Solver(List<Vector2> poss, List<Vector2> tars)
+        {
+            var idxs = new List<int>();
+            if (poss.Count == 1)
+            {
+                idxs.Add(0);
+                return (Vector2.Distance(poss[0], tars[0]), idxs);
+            }
+
+            int i_min = 0;
+            float d_min = float.MaxValue;
+            List<int> idxs_sub_min = null;
+            var poss_sub = new List<Vector2>(poss);
+            poss_sub.RemoveAt(0);
+            for (var i=0; i<poss.Count; ++i)
+            {
+                var d0 = Vector2.Distance(poss[0], tars[i]);
+                var tars_sub = new List<Vector2>(tars);
+                tars_sub.RemoveAt(i);
+                float d_sub;
+                List<int> idxs_sub;
+                (d_sub, idxs_sub) = Move2Home_Solver(poss_sub, tars_sub);
+                var d = d0 + d_sub;
+                if (d < d_min)
+                {
+                    d_min = d;
+                    i_min = i;
+                    idxs_sub_min = idxs_sub;
+                }
+            }
+
+            idxs.Add(i_min);
+            foreach (var i in idxs_sub_min)
+            {
+                if (i < i_min) idxs.Add(i);
+                else idxs.Add(i+1);
+            }
+
+            return (d_min, idxs);
         }
 
         // Vec3(posX, posY, angleY)
