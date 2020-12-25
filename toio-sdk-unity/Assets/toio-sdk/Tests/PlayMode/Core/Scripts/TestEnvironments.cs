@@ -113,7 +113,6 @@ namespace toio.Tests
         public void RunFinished(ITestResult testResults) { }
         public void OneTimeSetUp() { }
         public void OneTimeTearDown() { }
-        public IEnumerator UnityTearDown() { yield return null; }
         public void TestStarted(ITest test)
         {
             if (!firstTime && !test.HasChildren) { Debug.LogFormat("<color=green>テスト開始 {0}/{1}</color>", test.Parent.Name, test.Name); }
@@ -146,6 +145,11 @@ namespace toio.Tests
                 // 実行モードの場合は、ボタンから選択モードを終了
                 await UniTask.WaitUntil(() => selectView.IsFinished);
             }
+            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
+        });
+        public IEnumerator UnityTearDown() => UniTask.ToCoroutine(async () =>
+        {
             await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
