@@ -4,7 +4,7 @@ namespace toio.tutorial
 {
     public class TestUI : MonoBehaviour
     {
-        #if UNITY_EDITOR || UNITY_STANDALONE
+        #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
         private int updateCnt = 0;
 
         void Update()
