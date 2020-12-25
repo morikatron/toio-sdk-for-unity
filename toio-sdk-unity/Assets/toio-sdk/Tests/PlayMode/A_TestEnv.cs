@@ -82,9 +82,14 @@ namespace toio.Tests
         [UnityTest, Order(5)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _5_UniTask_UpdateForSeconds() => UniTask.ToCoroutine(async () =>
         {
-            await UniTaskUtl.UpdateForSeconds(3, () =>
+            await UniTaskUtl.UpdateForSeconds(0.5f, () =>
             {
-                Debug.Log("Update() " + Time.frameCount);
+                Debug.Log("Update1() " + Time.frameCount);
+            });
+            await UniTask.Delay(1000);
+            await UniTaskUtl.UpdateForSeconds(1, () =>
+            {
+                Debug.Log("Update2() " + Time.frameCount);
             });
         });
 
@@ -109,8 +114,6 @@ namespace toio.Tests
 
             cubeManager.cubes[0].Move(-50, 50, 1500);
             yield return new WaitForSeconds(2);
-
-            yield return null;
         }
 
         [UnityTest, Order(8)] // テストの実行の優先度を指定する(昇順)
@@ -121,8 +124,6 @@ namespace toio.Tests
 
             cubeManager.cubes[0].Move(-10, -10, 1000);
             yield return new WaitForSeconds(2);
-
-            yield return null;
         }
     }
 }
