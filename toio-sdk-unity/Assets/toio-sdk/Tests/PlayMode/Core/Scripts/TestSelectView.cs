@@ -58,7 +58,9 @@ namespace toio.Tests
                     {
                         CubeTestCase.impl.TestStarted(t);
                         await (IEnumerator)CubeTestCase.impl.UnitySetUp();
-                        await (IEnumerator)t.Method.Invoke(t.Parent.Fixture, null);
+                        // note
+                        // インスタンスが取得出来ない場合があるため、staticになっているテスト関数しか実行出来ないようにしました
+                        await (IEnumerator)t.Method.Invoke(null, null);
                         await (IEnumerator)CubeTestCase.impl.UnityTearDown();
                         CubeTestCase.impl.TestFinished(null);
                     });

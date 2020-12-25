@@ -23,15 +23,14 @@ namespace toio.Tests
     public class A_TestEnv : CubeTestCase
     {
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _0_HelloTest()
+        public static IEnumerator _0_HelloTest()
         {
             Debug.Log("Hello Test!!");
             yield return null;
         }
 
-        /*
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _1_BasicTest_Update関数()
+        public static  IEnumerator _1_BasicTest_Update関数()
         {
             int cnt = 0;
             test.update = (() =>
@@ -44,7 +43,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _2_BasicTest_Init関数()
+        public static IEnumerator _2_BasicTest_Init関数()
         {
             test.init = (() =>
             {
@@ -62,14 +61,14 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(3)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _3_BasicTest_Update秒数指定()
+        public static IEnumerator _3_BasicTest_Update秒数指定()
         {
             test.update = test.UpdateUntil_Seconds(3);
             yield return new MonoBehaviourTest<test>();
         }
 
         [UnityTest, Order(4)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _4_UniTask_UpdateWhile() => UniTask.ToCoroutine(async () =>
+        public static IEnumerator _4_UniTask_UpdateWhile() => UniTask.ToCoroutine(async () =>
         {
             int cnt = 0;
             bool flg = true;
@@ -81,7 +80,7 @@ namespace toio.Tests
         });
 
         [UnityTest, Order(5)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _5_UniTask_UpdateForSeconds() => UniTask.ToCoroutine(async () =>
+        public static IEnumerator _5_UniTask_UpdateForSeconds() => UniTask.ToCoroutine(async () =>
         {
             await UniTaskUtl.UpdateForSeconds(3, () =>
             {
@@ -90,7 +89,7 @@ namespace toio.Tests
         });
 
         [UnityTest, Order(6)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _6_UniTask_Delay() => UniTask.ToCoroutine(async () =>
+        public static IEnumerator _6_UniTask_Delay() => UniTask.ToCoroutine(async () =>
         {
             for(int i = 0; i < 3; i++)
             {
@@ -101,10 +100,9 @@ namespace toio.Tests
                 Debug.LogFormat("i = {0}, Time.frameCount = {1}", i, Time.frameCount);
             }
         });
-        */
 
         [UnityTest, Order(7)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _7_CubeMove()
+        public static IEnumerator _7_CubeMove()
         {
             cubeManager.cubes[0].Move(50, -50, 1500);
             yield return new WaitForSeconds(2);
@@ -116,7 +114,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(8)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator _8_CubeMove()
+        public static IEnumerator _8_CubeMove()
         {
             cubeManager.cubes[0].Move(10, 10, 1000);
             yield return new WaitForSeconds(2);
