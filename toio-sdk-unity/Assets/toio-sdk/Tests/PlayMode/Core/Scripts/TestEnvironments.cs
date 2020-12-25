@@ -234,6 +234,7 @@ namespace toio.Tests
                     Debug.Log(e.Message);
                 }
                 GameObject.DestroyImmediate(connectButton.gameObject);
+                GameObject.DestroyImmediate(startButton.gameObject);
 
                 // UIオブジェクトを生成
                 var selectView = await EnvUtl.CreateTestUI(testRoot);
