@@ -31,7 +31,7 @@ namespace toio.Tests
             var handle = new CubeHandle(test.CreateCube(250, 250));
             handle.MoveRaw(100, 100);
 
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -46,7 +46,7 @@ namespace toio.Tests
                 handle.Move(80, 25, 2000);
             });
 
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
 
             yield return new MonoBehaviourTest<test>();
         }
@@ -63,7 +63,7 @@ namespace toio.Tests
                 handle.Move(80, 30, 2000);
             });
 
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
 
             yield return new MonoBehaviourTest<test>();
         }
@@ -79,7 +79,7 @@ namespace toio.Tests
                 handle.Move(80, 30, 2000);
             });
 
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
 
             yield return new MonoBehaviourTest<test>();
         }

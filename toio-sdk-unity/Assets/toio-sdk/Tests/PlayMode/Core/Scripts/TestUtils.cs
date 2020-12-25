@@ -59,7 +59,7 @@ namespace toio.Tests
         ////////////////////////////////
         //  便利関数
         ////////////////////////////////
-        public static Func<bool> UpdateUntil_Seconds(float seconds)
+        public static Func<bool> UpdateForSeconds(float seconds)
         {
             var start_time = Time.time;
             return (() =>

@@ -41,7 +41,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -61,7 +61,7 @@ namespace toio.Tests
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -81,7 +81,7 @@ namespace toio.Tests
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(20);
+            test.update = test.UpdateForSeconds(20);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -102,7 +102,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -123,7 +123,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -144,7 +144,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.NotRotate,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -165,7 +165,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.Original,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -186,7 +186,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.NotRotate,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -214,7 +214,7 @@ namespace toio.Tests
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
         /*
@@ -241,7 +241,7 @@ namespace toio.Tests
                                 Cube.MultiWriteType.Write,
                                 Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -268,7 +268,7 @@ namespace toio.Tests
                                 Cube.MultiWriteType.Write,
                                 Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -310,7 +310,7 @@ namespace toio.Tests
                                 Cube.MultiWriteType.Add,
                                 Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -352,7 +352,7 @@ namespace toio.Tests
                                 Cube.MultiWriteType.Write,
                                 Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
         */
@@ -363,7 +363,7 @@ namespace toio.Tests
         {
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -372,7 +372,7 @@ namespace toio.Tests
         {
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(-100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -381,7 +381,7 @@ namespace toio.Tests
         {
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(100,2,-100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -390,7 +390,7 @@ namespace toio.Tests
         {
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(-100,2,-65535,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -399,7 +399,7 @@ namespace toio.Tests
         {
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,200,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -408,7 +408,7 @@ namespace toio.Tests
         {
             var cube = test.CreateCube(250, 250, 270);
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(10);
+            test.update = test.UpdateForSeconds(10);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -419,7 +419,7 @@ namespace toio.Tests
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(2);
             cube.AccelerationMove(-50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
