@@ -25,7 +25,7 @@ namespace toio.Tests
     public class D_Navigator : CubeTestCase
     {
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator a_ToTarget1()
+        public static IEnumerator a_ToTarget1()
         {
             var handle = new CubeHandle(test.CreateCube(150, 300, 90));
             var navigator = new CubeNavigator(handle, mode:Navigator.Mode.AVOID);
@@ -59,7 +59,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator b_BorderSingleIn()
+        public static IEnumerator b_BorderSingleIn()
         {
             var handle = new CubeHandle(test.CreateCube(150, 380, 90));
             var navigator = new CubeNavigator(handle, mode:Navigator.Mode.AVOID);
@@ -95,7 +95,7 @@ namespace toio.Tests
 
 
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator b_BorderSingleOut()
+        public static IEnumerator b_BorderSingleOut()
         {
             var handle = new CubeHandle(test.CreateCube(150, 420, 135));
             var navigator = new CubeNavigator(handle, mode:Navigator.Mode.AVOID);
@@ -130,7 +130,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator c_Intersect1v1Lateral()
+        public static IEnumerator c_Intersect1v1Lateral()
         {
             var handle0 = new CubeHandle(test.CreateCube(100, 100, 45));
             var handle1 = new CubeHandle(test.CreateCube(400, 100, 130));
@@ -166,7 +166,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator c_Intersect1v1Longitudinal()
+        public static IEnumerator c_Intersect1v1Longitudinal()
         {
             var handle0 = new CubeHandle(test.CreateCube(100, 100, 45));
             var handle1 = new CubeHandle(test.CreateCube(400, 400, -135));
@@ -202,7 +202,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator d_ToTarget4()
+        public static IEnumerator d_ToTarget4()
         {
             List<CubeHandle> handles = new List<CubeHandle>();
             List<CubeNavigator> navigators = new List<CubeNavigator>();
@@ -248,7 +248,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator e_Intersect4v4Longitudinal()
+        public static IEnumerator e_Intersect4v4Longitudinal()
         {
             List<CubeHandle> handles0 = new List<CubeHandle>();
             List<CubeNavigator> navigators0 = new List<CubeNavigator>();
@@ -305,7 +305,7 @@ namespace toio.Tests
 
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator e_Intersect4v4Lateral()
+        public static IEnumerator e_Intersect4v4Lateral()
         {
             List<CubeHandle> handles0 = new List<CubeHandle>();
             List<CubeNavigator> navigators0 = new List<CubeNavigator>();
@@ -363,7 +363,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator f_Rearend()
+        public static IEnumerator f_Rearend()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 250, 30));
             var handle1 = new CubeHandle(test.CreateCube(180, 250, 0));
@@ -402,7 +402,7 @@ namespace toio.Tests
 
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator f_SideCollision()
+        public static IEnumerator f_SideCollision()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 235, 10));
             var handle1 = new CubeHandle(test.CreateCube(150, 265, -10));
@@ -440,7 +440,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator g_AwayTarget()
+        public static IEnumerator g_AwayTarget()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 150, 0));
             var handle1 = new CubeHandle(test.CreateCube(250, 350, 0));

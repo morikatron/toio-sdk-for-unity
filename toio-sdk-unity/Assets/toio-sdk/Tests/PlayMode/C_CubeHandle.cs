@@ -26,7 +26,7 @@ namespace toio.Tests
     public class C_CubeHandle : CubeTestCase
     {
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator a_moveRaw()
+        public static IEnumerator a_moveRaw()
         {
             var handle = new CubeHandle(test.CreateCube(250, 250));
             handle.MoveRaw(100, 100);
@@ -36,7 +36,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator b_Move()
+        public static IEnumerator b_Move()
         {
             var handle = new CubeHandle(test.CreateCube(100, 350));
 
@@ -52,7 +52,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator b_Move_Outside_In()
+        public static IEnumerator b_Move_Outside_In()
         {
             var handle = new CubeHandle(test.CreateCube(65, 300));
             handle.borderRect = new RectInt(100, 100, 300, 300);
@@ -68,7 +68,7 @@ namespace toio.Tests
             yield return new MonoBehaviourTest<test>();
         }
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator b_Move_Outside_Out()
+        public static IEnumerator b_Move_Outside_Out()
         {
             var handle = new CubeHandle(test.CreateCube(65, 300, angle:180));
             handle.borderRect = new RectInt(100, 100, 300, 300);
@@ -85,7 +85,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator c_Move2Target_Front()
+        public static IEnumerator c_Move2Target_Front()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 200, 90));
             var handle1 = new CubeHandle(test.CreateCube(250, 200, 90));
@@ -120,7 +120,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator c_Move2Target_Back()
+        public static IEnumerator c_Move2Target_Back()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 330, -90));
             var handle1 = new CubeHandle(test.CreateCube(250, 310, -90));
@@ -155,7 +155,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator c_Move2Target_Side()
+        public static IEnumerator c_Move2Target_Side()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 180, 0));
             var handle1 = new CubeHandle(test.CreateCube(150, 250, 0));
@@ -190,7 +190,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator d_Rotate2Rad()
+        public static IEnumerator d_Rotate2Rad()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 300, -90));
             var handle1 = new CubeHandle(test.CreateCube(250, 300, -90));
@@ -227,7 +227,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator e_TranslateByDist()
+        public static IEnumerator e_TranslateByDist()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 200, 90));
             var handle1 = new CubeHandle(test.CreateCube(250, 200, 90));
@@ -257,7 +257,7 @@ namespace toio.Tests
             yield return new MonoBehaviourTest<test>();
         }
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
-        public IEnumerator f_RotateByRad()
+        public static IEnumerator f_RotateByRad()
         {
             var handle0 = new CubeHandle(test.CreateCube(150, 300, 90));
             var handle1 = new CubeHandle(test.CreateCube(250, 300, 90));
