@@ -109,8 +109,6 @@ namespace toio.Tests
 
             cubeManager.cubes[0].Move(-50, 50, 1500);
             yield return new WaitForSeconds(2);
-
-            yield return null;
         }
 
         [UnityTest, Order(8)] // テストの実行の優先度を指定する(昇順)
@@ -121,8 +119,6 @@ namespace toio.Tests
 
             cubeManager.cubes[0].Move(-10, -10, 1000);
             yield return new WaitForSeconds(2);
-
-            yield return null;
         }
     }
 }
