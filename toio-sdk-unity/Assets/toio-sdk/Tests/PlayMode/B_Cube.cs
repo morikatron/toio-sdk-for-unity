@@ -25,7 +25,7 @@ namespace toio.Tests
         public static IEnumerator move()
         {
             cubeManager.cubes[0].Move(10, 10, 1000);
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -69,7 +69,7 @@ namespace toio.Tests
             score.Add(new Cube.SoundOperation(150, 15, Cube.NOTE_NUMBER.D6));
             cubeManager.cubes[0].PlaySound(1, score.ToArray(), Cube.ORDER_TYPE.Strong);
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -77,7 +77,7 @@ namespace toio.Tests
         public static IEnumerator playPresetSound()
         {
             cubeManager.cubes[0].PlayPresetSound(0);
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -145,7 +145,7 @@ namespace toio.Tests
         public static IEnumerator turnLedOn()
         {
             cubeManager.cubes[0].TurnLedOn(255, 0, 0, 1000);
-            test.update = test.UpdateUntil_Seconds(2);
+            test.update = test.UpdateForSeconds(2);
             yield return new MonoBehaviourTest<test>();
         }
 
@@ -182,7 +182,7 @@ namespace toio.Tests
             score.Add(new Cube.LightOperation(500, 0, 0, 255));
             cubeManager.cubes[0].TurnOnLightWithScenario(3, score.ToArray());
 
-            test.update = test.UpdateUntil_Seconds(5);
+            test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
     }

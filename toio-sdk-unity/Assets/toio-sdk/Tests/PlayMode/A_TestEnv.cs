@@ -63,7 +63,7 @@ namespace toio.Tests
         [UnityTest, Order(3)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _3_BasicTest_Update秒数指定()
         {
-            test.update = test.UpdateUntil_Seconds(3);
+            test.update = test.UpdateForSeconds(3);
             yield return new MonoBehaviourTest<test>();
         }
 
