@@ -12,7 +12,7 @@ using System;
 
 #if UNITY_ANDROID_RUNTIME
 namespace toio.Android.Data {
-    public struct BleDeviceEvent 
+    public struct BleDiscoverEvents 
     {
         public Action<string> connectedAct;
         public Action<string, string> discoveredServiceAct;
@@ -25,6 +25,7 @@ namespace toio.Android.Data {
         {
             callDiscoverEvent = false;
         }
+        
     }
 
 }

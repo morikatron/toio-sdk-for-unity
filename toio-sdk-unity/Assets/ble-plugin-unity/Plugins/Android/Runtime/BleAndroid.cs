@@ -19,8 +19,8 @@ namespace toio.Android
         private static BleBehaviour behaviour;
         private static BleJavaWrapper javaWrapper;
         private static Action<string, string, int, byte[]> s_discoveredAction;
-        private static Dictionary<string, BleDeviceEvent> s_deviceEvents = new Dictionary<string, BleDeviceEvent>();
-
+        private static Dictionary<string, BleDiscoverEvents> s_deviceDiscoverEvents = new Dictionary<string, BleDiscoverEvents>();
+        private static Dictionary<BleCharastericsKeyInfo, BleDeviceDataEvents> s_deviceDataEvents = new Dictionary<BleCharastericsKeyInfo, BleDeviceDataEvents>();
 
         public static void Initialize(Action initializedAction, Action<string> errorAction = null)
         {
@@ -65,6 +65,7 @@ namespace toio.Android
         {
             if (javaWrapper == null){ return; }
             javaWrapper.StopScan();
+            s_discoveredAction = null;
         }
 
         public static void ConnectToPeripheral(string identifier, 
@@ -75,7 +76,7 @@ namespace toio.Android
         {
             if(javaWrapper == null) { return; }
             javaWrapper.ConnectRequest(identifier);
-            var deviceEvent = new BleDeviceEvent()
+            var deviceEvent = new BleDiscoverEvents()
             {
                 connectedAct = connectedPeripheralAction,
                 disconnectedAct = disconnectedPeripheralAction,
@@ -83,13 +84,14 @@ namespace toio.Android
                 discoveredServiceAct = discoveredServiceAction,
             };
             deviceEvent.InitFlags();
-            s_deviceEvents[identifier] = deviceEvent;
+            s_deviceDiscoverEvents[identifier] = deviceEvent;
         }
 
         public static void DisconnectPeripheral(string identifier, 
             Action<string> disconnectedPeripheralAction = null)
         {
             if (javaWrapper == null) { return; }
+            s_deviceDiscoverEvents.Remove(identifier);
         }
 
         public static void DisconnectAllPeripherals()
@@ -105,6 +107,8 @@ namespace toio.Android
             if (javaWrapper == null) { return; }
             javaWrapper.ReadCharacteristicRequest(identifier, serviceUUID,
                 characteristicUUID);
+            var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
+            dataEvt.SetReadAct(didReadChracteristicAction);
         }
 
         public static void WriteCharacteristic(string identifier,
@@ -116,6 +120,8 @@ namespace toio.Android
             javaWrapper.WriteCharacteristic(identifier, serviceUUID,
                 characteristicUUID,
                 data, length, withResponse);
+            var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
+            dataEvt.SetWriteAct(didWriteCharacteristicAction);
         }
 
         public static void SubscribeCharacteristic(string identifier,
@@ -126,6 +132,8 @@ namespace toio.Android
             javaWrapper.SetNotificateFlag(identifier, serviceUUID,
                 characteristicUUID, true);
 
+            var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
+            dataEvt.SetNotifyAct(notifiedCharacteristicAction);
         }
 
         public static void UnSubscribeCharacteristic(string identifier, 
@@ -135,6 +143,22 @@ namespace toio.Android
             if (javaWrapper == null) { return; }
             javaWrapper.SetNotificateFlag(identifier,serviceUUID,
                 characteristicUUID, false);
+            var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
+        }
+
+        private static BleDeviceDataEvents GetDataEvent(string identifier,
+            string serviceUUID, string characteristicUUID)
+        {
+            BleCharastericsKeyInfo key = new BleCharastericsKeyInfo(identifier, serviceUUID, characteristicUUID);
+            BleDeviceDataEvents data = null;
+            if(s_deviceDataEvents.TryGetValue(key , out data))
+            {
+                return data;
+            }
+            data = new BleDeviceDataEvents();
+            s_deviceDataEvents.Add(key, data);
+            return data;
+
         }
 
         private static void OnUpdate()
@@ -143,6 +167,13 @@ namespace toio.Android
             {
                 return;
             }
+            UpdateScanResult();
+            UpdateDeviceFoundEvents();
+            UpdateDeviceData();
+        }
+
+        private static void UpdateScanResult()
+        {
             javaWrapper.UpdateScannerResult();
             // scan callback
             if (s_discoveredAction != null)
@@ -153,28 +184,49 @@ namespace toio.Android
                     s_discoveredAction(device.address, device.name, device.rssi, null);
                 }
             }
+        }
+        private static void UpdateDeviceFoundEvents()
+        {
             // devices
             javaWrapper.UpdateConnectedDevices();
 
-            // charastricInfos
+            // charastric / service found Infos
+            var services = new HashSet<string>();
+
             var charstricInfoByDevice = javaWrapper.GetCharastricKeyInfos();
-            foreach(var kvs in s_deviceEvents)
+            foreach (var kvs in s_deviceDiscoverEvents)
             {
                 string addr = kvs.Key;
                 var deviceEvent = kvs.Value;
-                List<BleCharastericsKeyInfo> charstricInfo = null;
+                List<BleCharastericsKeyInfo> charstricInfos = null;
 
-                if( charstricInfoByDevice.TryGetValue(addr,out charstricInfo))
+                if (charstricInfoByDevice.TryGetValue(addr, out charstricInfos))
                 {
                     if (!deviceEvent.callDiscoverEvent)
                     {
-                        var services = BleCharastericsKeyInfo.GetServices(charstricInfo);
+                        // connected
+                        deviceEvent.connectedAct(addr);
 
+                        // callback discover service
+                        BleCharastericsKeyInfo.GetServices(services, charstricInfos);
+                        foreach (var service in services)
+                        {
+                            deviceEvent.discoveredServiceAct(addr, service);
+                        }
+                        // callback discover service
+                        foreach (var chInfo in charstricInfos)
+                        {
+                            deviceEvent.discoveredCharacteristicAct(chInfo.address, chInfo.serviceUUID, chInfo.characteristicUUID);
+                        }
+                        deviceEvent.callDiscoverEvent = true;
                     }
                 }
 
             }
-            
+
+        }
+
+        private static void UpdateDeviceData() {
             // read/notify data
             var readDatas = javaWrapper.GetCharacteristicDatas();
 
