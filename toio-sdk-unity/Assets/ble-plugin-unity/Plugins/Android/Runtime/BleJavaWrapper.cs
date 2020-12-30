@@ -23,6 +23,7 @@ namespace toio.Android
 
         private List<BleScannedDevice> scannedDevices = new List<BleScannedDevice>();
         private List<BleCharacteristicData> readDatas = new List<BleCharacteristicData>();
+        private List<string> disconnectedDevices = new List<string>();
         private Dictionary<string, List<BleCharastericsKeyInfo> > charastericsKeyInfos = new Dictionary<string, List<BleCharastericsKeyInfo> >();
 
         public void Initialize()
@@ -291,6 +292,39 @@ namespace toio.Android
 
             this.charastericsKeyInfos.Add(addr, list);
         }
+        public void Disconnect(string addr)
+        {
+            var disconnectMethod = AndroidJNI.GetMethodID(this.bleManagerCls,
+                "disconnect", "(Ljava/lang/String;)");
+            this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(addr));
+            AndroidJNI.CallVoidMethod(this.javaBleManagerObj, 
+                disconnectMethod, this.argBuilder.Build());
+        }
+
+        public void UpdateDisconnectedDevices()
+        {
+            var updateDisconnectedMethod = AndroidJNI.GetMethodID(this.bleManagerCls,
+                "updateDisconnected", "()V");
+            var getDisconnectedNumMethod = AndroidJNI.GetMethodID(this.bleManagerCls,
+                "getDisconnectedDeviceNum", "()I");
+            var getDisconnectedDeviceAddr = AndroidJNI.GetMethodID(this.bleManagerCls,
+                "updateDisconnected", "(I)Ljava/lang/String;");
+            AndroidJNI.CallVoidMethod(this.javaBleManagerObj, updateDisconnectedMethod, null);
+            disconnectedDevices.Clear();
+
+            int num = AndroidJNI.CallIntMethod(this.javaBleManagerObj, getDisconnectedNumMethod, null);
+            for(int i = 0; i < num; ++i)
+            {
+                this.argBuilder.Clear().Append( ArgJvalueBuilder.GenerateJvalue(i) );
+                string addr = AndroidJNI.CallStringMethod(this.javaBleManagerObj,
+                    getDisconnectedDeviceAddr,this.argBuilder.Build());
+                this.disconnectedDevices.Add(addr);
+            }
+        }
+        public List<string> GetDisconnectedDevices()
+        {
+            return this.disconnectedDevices;
+        }
 
         private System.IntPtr GetScanner()
         {
@@ -314,6 +348,7 @@ namespace toio.Android
                 ptr = IntPtr.Zero;
             }
         }
+
     }
 }
 #endif

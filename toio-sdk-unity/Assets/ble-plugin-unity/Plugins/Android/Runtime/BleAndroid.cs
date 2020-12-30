@@ -93,7 +93,24 @@ namespace toio.Android
             Action<string> disconnectedPeripheralAction = null)
         {
             if (javaWrapper == null) { return; }
+            RemoveDeviceDataInStaticVars(identifier);
+        }
+        private static void RemoveDeviceDataInStaticVars(string identifier)
+        {
             s_deviceDiscoverEvents.Remove(identifier);
+            List<BleCharastericsKeyInfo> removeKeys = new List<BleCharastericsKeyInfo>(s_deviceDataEvents.Count);
+
+            foreach( var key in s_deviceDataEvents.Keys)
+            {
+                if(key.IsSameAddress(identifier))
+                {
+                    removeKeys.Add(key);
+                }
+            }
+            foreach( var key in removeKeys)
+            {
+                s_deviceDataEvents.Remove(key);
+            }
         }
 
         public static void DisconnectAllPeripherals()
@@ -146,6 +163,7 @@ namespace toio.Android
             javaWrapper.SetNotificateFlag(identifier,serviceUUID,
                 characteristicUUID, false);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
+            dataEvt.RemoveNotifyAct();
         }
 
         private static BleDeviceDataEvents GetDataEvent(string identifier,
@@ -175,6 +193,7 @@ namespace toio.Android
             UpdateScanResult();
             UpdateDeviceFoundEvents();
             UpdateDeviceData();
+            UpdateDisconnectedDevices();
         }
 
         private static void UpdateScanResult()
@@ -228,7 +247,6 @@ namespace toio.Android
             }
 
         }
-
         private static void UpdateDeviceData() {
             // read/notify data
             var readDatas = javaWrapper.GetCharacteristicDatas();
@@ -249,6 +267,20 @@ namespace toio.Android
                 else
                 {
                     dataEvt.CallRead(readData.serviceUuid, readData.characteristic, readData.data);
+                }
+            }
+        }
+        private static void UpdateDisconnectedDevices()
+        {
+            javaWrapper.UpdateDisconnectedDevices();
+            BleDiscoverEvents evt;
+            var disconnectedDevices = javaWrapper.GetDisconnectedDevices();
+            foreach( var device in disconnectedDevices)
+            {
+                if( s_deviceDiscoverEvents.TryGetValue(device,out evt))
+                {
+                    evt.disconnectedAct(device);
+                    RemoveDeviceDataInStaticVars(device);
                 }
             }
         }

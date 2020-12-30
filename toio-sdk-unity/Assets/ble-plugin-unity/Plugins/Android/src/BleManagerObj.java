@@ -17,6 +17,7 @@ public class BleManagerObj {
     private BleScannerObj scanObj;
     private HashMap<String, BleDeviceObj> deviceObjHashMap;
     private ArrayList<BleDeviceObj> bluetoothDeviceObjs;
+    private ArrayList<String> disconnectedDevices;
 
     private static BleManagerObj instance;
 
@@ -36,6 +37,7 @@ public class BleManagerObj {
         scanObj = new BleScannerObj(scanner,ctx);
         this.deviceObjHashMap = new HashMap<String, BleDeviceObj>(32);
         this.bluetoothDeviceObjs = new ArrayList<BleDeviceObj>(32);
+        this.disconnectedDevices = new ArrayList<String>(8);
     }
 
     public BleScannerObj getScanner(){
@@ -69,8 +71,31 @@ public class BleManagerObj {
 
     public void disconnect(String addr){
         BleDeviceObj obj = this.deviceObjHashMap.get(addr);
-        this.bluetoothDeviceObjs.remove(obj );
-        this.deviceObjHashMap.remove(addr);
+        if( obj != null) {
+            obj.disconnect();
+        }
+    }
+
+    public void updateDisconnected(){
+        this.disconnectedDevices.clear();
+        for(int i = 0;i<this.bluetoothDeviceObjs.size();++i){
+            BleDeviceObj deviceObj = this.bluetoothDeviceObjs.get(i);
+            if(deviceObj.isDisconnected() ){
+                this.disconnectedDevices.add( deviceObj.getAddress());
+                this.deviceObjHashMap.remove(deviceObj.getAddress());
+                this.bluetoothDeviceObjs.remove(i);
+                --i;
+            }
+        }
+    }
+    public int getDisconnectedDeviceNum(){
+        return this.disconnectedDevices.size();
+    }
+    public String getDisconnectedDeviceAddr(int idx){
+        if( idx < 0 || idx >= this.disconnectedDevices.size()){
+            return null;
+        }
+        return this.disconnectedDevices.get(idx);
     }
 
 }

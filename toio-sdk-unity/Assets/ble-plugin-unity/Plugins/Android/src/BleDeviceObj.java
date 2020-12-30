@@ -54,6 +54,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
 
     private List<CharastricsKey> charastricsKeys;
     private boolean isAvailable = false;
+    private boolean disconnected = false;
     private String address;
 
     private class ReadData{
@@ -82,12 +83,18 @@ public class BleDeviceObj extends BluetoothGattCallback {
 
     public void disconnect(){
         if(bluetoothGatt != null){
-            this.charastricsKeyHashMap.clear();
-            bluetoothGatt.close();
             bluetoothGatt = null;
-            this.isAvailable = false;
         }
+        charastricsKeys.clear();
+        bluetoothGatt.close();
+        this.charastricsKeyHashMap.clear();
+        this.isAvailable = false;
+        this.disconnected = true;
     }
+    public boolean isDisconnected(){
+        return this.disconnected;
+    }
+
     public void blit(){
         pubDataBuffer.clear();
         synchronized (this){
@@ -212,7 +219,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
             gatt.discoverServices();
         }
         if(newState == BluetoothProfile.STATE_DISCONNECTED){
-            this.isAvailable = false;
+            this.disconnect();
         }
     }
 
@@ -239,7 +246,6 @@ public class BleDeviceObj extends BluetoothGattCallback {
     public void onCharacteristicRead(BluetoothGatt gatt,
                                      BluetoothGattCharacteristic characteristic,
                                      int status) {
-        Log.d("Ble","onCharacteristicRead:"+characteristic.getUuid().toString());
         ReadData data = new ReadData(characteristic,false);
         synchronized (this) {
             this.readDataBuffer.add(data);

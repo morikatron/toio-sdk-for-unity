@@ -22,6 +22,11 @@ namespace toio.Android.Data {
             this.characteristicUUID = ch.ToLower();
             this.serviceUUID = service.ToLower();
         }
+
+        public bool IsSameAddress(string addr)
+        {
+            return (this.address == addr.ToLower());
+        }
         
 
         public int Compare(BleCharastericsKeyInfo x, BleCharastericsKeyInfo y)

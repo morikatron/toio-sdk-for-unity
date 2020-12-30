@@ -49,6 +49,10 @@ namespace toio.Android.Data {
         {
             this.readChracteristicAct = act;
         }
+        public void RemoveNotifyAct()
+        {
+            this.readChracteristicAct = null;
+        }
 
         public void CallNotify(string service,string characteristic,byte [] data)
         {
