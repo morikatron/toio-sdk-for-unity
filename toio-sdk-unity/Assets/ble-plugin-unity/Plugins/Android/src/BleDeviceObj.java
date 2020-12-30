@@ -83,10 +83,10 @@ public class BleDeviceObj extends BluetoothGattCallback {
 
     public void disconnect(){
         if(bluetoothGatt != null){
+            bluetoothGatt.close();
             bluetoothGatt = null;
         }
         charastricsKeys.clear();
-        bluetoothGatt.close();
         this.charastricsKeyHashMap.clear();
         this.isAvailable = false;
         this.disconnected = true;
@@ -175,9 +175,12 @@ public class BleDeviceObj extends BluetoothGattCallback {
 
     public void writeData(String serviceUuid,
             String characteristicUuid ,byte[] data,boolean writeBack){
+        if(this.bluetoothGatt == null){
+            return;
+        }
         CharastricsKey key = new CharastricsKey(serviceUuid,characteristicUuid);
         BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
-        if(characteristic != null) {
+        if(characteristic != null ) {
             characteristic.setValue(data);
             bluetoothGatt.writeCharacteristic(characteristic);
         }else{
@@ -185,9 +188,12 @@ public class BleDeviceObj extends BluetoothGattCallback {
         }
     }
     public void setNotification(String serviceUuid,String characteristicUuid,boolean flag){
+        if(this.bluetoothGatt == null){
+            return;
+        }
         CharastricsKey key = new CharastricsKey(serviceUuid,characteristicUuid);
         BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
-        if(characteristic != null) {
+        if(characteristic != null ) {
             this.bluetoothGatt.setCharacteristicNotification(characteristic,flag);
             for(BluetoothGattDescriptor desc : characteristic.getDescriptors()){
                 if(flag) {
@@ -201,9 +207,12 @@ public class BleDeviceObj extends BluetoothGattCallback {
     }
 
     public void readRequest(String serviceUuid,String characteristicUuid){
+        if(this.bluetoothGatt == null){
+            return;
+        }
         CharastricsKey key = new CharastricsKey(serviceUuid,characteristicUuid);
         BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
-        if(characteristic != null) {
+        if(characteristic != null ) {
             this.bluetoothGatt.readCharacteristic(characteristic);
         }else{
             Log.e("BlePlugin","NotFound readRequest "+ serviceUuid +"::" + characteristicUuid);

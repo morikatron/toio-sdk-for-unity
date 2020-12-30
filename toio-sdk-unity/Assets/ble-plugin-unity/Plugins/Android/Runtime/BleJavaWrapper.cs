@@ -308,7 +308,7 @@ namespace toio.Android
             var getDisconnectedNumMethod = AndroidJNI.GetMethodID(this.bleManagerCls,
                 "getDisconnectedDeviceNum", "()I");
             var getDisconnectedDeviceAddr = AndroidJNI.GetMethodID(this.bleManagerCls,
-                "updateDisconnected", "(I)Ljava/lang/String;");
+                "getDisconnectedDeviceAddr", "(I)Ljava/lang/String;");
             AndroidJNI.CallVoidMethod(this.javaBleManagerObj, updateDisconnectedMethod, null);
             disconnectedDevices.Clear();
 

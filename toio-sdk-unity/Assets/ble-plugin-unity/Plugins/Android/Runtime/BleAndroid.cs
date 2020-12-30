@@ -140,7 +140,11 @@ namespace toio.Android
                 characteristicUUID,
                 data, length, withResponse);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            dataEvt.SetWriteAct(didWriteCharacteristicAction);            
+            // todo callbacké¿ëï
+            if (withResponse)
+            {
+                dataEvt.SetWriteAct(didWriteCharacteristicAction);
+            }
         }
 
         public static void SubscribeCharacteristic(string identifier,
@@ -163,6 +167,7 @@ namespace toio.Android
             javaWrapper.SetNotificateFlag(identifier,serviceUUID,
                 characteristicUUID, false);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
+            // todo à¯êîÇ™ó«Ç≠ÇÌÇ©ÇÁÇ»Ç¢Åc
             dataEvt.RemoveNotifyAct();
         }
 
