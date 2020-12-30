@@ -24,7 +24,6 @@ namespace toio.Android
 
         public static void Initialize(Action initializedAction, Action<string> errorAction = null)
         {
-            UnityEngine.Debug.Log("BleAndroid.Initialize");
             behaviour = BleBehaviour.Create();
             var req = new BlePermissionRequest(
                 ()=>
@@ -124,7 +123,7 @@ namespace toio.Android
                 characteristicUUID,
                 data, length, withResponse);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            dataEvt.SetWriteAct(didWriteCharacteristicAction);
+            dataEvt.SetWriteAct(didWriteCharacteristicAction);            
         }
 
         public static void SubscribeCharacteristic(string identifier,
@@ -170,6 +169,9 @@ namespace toio.Android
             {
                 return;
             }
+            // devices
+            javaWrapper.UpdateConnectedDevices();
+
             UpdateScanResult();
             UpdateDeviceFoundEvents();
             UpdateDeviceData();
@@ -184,15 +186,12 @@ namespace toio.Android
                 var scanDevices = javaWrapper.GetScannedDevices();
                 foreach (var device in scanDevices)
                 {
-                    UnityEngine.Debug.Log("Found " + device.address);
                     s_discoveredAction(device.address, device.name, device.rssi, null);
                 }
             }
         }
         private static void UpdateDeviceFoundEvents()
         {
-            // devices
-            javaWrapper.UpdateConnectedDevices();
 
             // charastric / service found Infos
             var services = new HashSet<string>();
@@ -233,12 +232,14 @@ namespace toio.Android
         private static void UpdateDeviceData() {
             // read/notify data
             var readDatas = javaWrapper.GetCharacteristicDatas();
+
             foreach( var readData in readDatas)
             {
                 var key = new BleCharastericsKeyInfo(readData.deviceAddr, readData.serviceUuid, readData.characteristic);
                 BleDeviceDataEvents dataEvt = null;
-                if( !s_deviceDataEvents.TryGetValue(key,out dataEvt) || dataEvt == null)
+                if( !s_deviceDataEvents.TryGetValue(key,out dataEvt))
                 {
+                    Debug.LogError("Not Found key");
                     continue;
                 }
                 if(readData.isNotify)

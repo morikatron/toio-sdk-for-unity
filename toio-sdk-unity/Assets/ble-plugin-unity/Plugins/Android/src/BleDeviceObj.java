@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,6 +173,8 @@ public class BleDeviceObj extends BluetoothGattCallback {
         if(characteristic != null) {
             characteristic.setValue(data);
             bluetoothGatt.writeCharacteristic(characteristic);
+        }else{
+            Log.e("BlePlugin","NotFound writeCharacteristic "+ serviceUuid +"::" + characteristicUuid);
         }
     }
     public void setNotification(String serviceUuid,String characteristicUuid,boolean flag){
@@ -195,6 +198,8 @@ public class BleDeviceObj extends BluetoothGattCallback {
         BluetoothGattCharacteristic characteristic = this.charastricsKeyHashMap.get(key);
         if(characteristic != null) {
             this.bluetoothGatt.readCharacteristic(characteristic);
+        }else{
+            Log.e("BlePlugin","NotFound readRequest "+ serviceUuid +"::" + characteristicUuid);
         }
     }
 
@@ -234,6 +239,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
     public void onCharacteristicRead(BluetoothGatt gatt,
                                      BluetoothGattCharacteristic characteristic,
                                      int status) {
+        Log.d("Ble","onCharacteristicRead:"+characteristic.getUuid().toString());
         ReadData data = new ReadData(characteristic,false);
         synchronized (this) {
             this.readDataBuffer.add(data);

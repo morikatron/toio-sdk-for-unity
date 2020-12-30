@@ -18,9 +18,9 @@ namespace toio.Android.Data {
 
         public BleCharastericsKeyInfo(string addr,string service, string ch)
         {
-            this.address = addr;
-            this.characteristicUUID = ch;
-            this.serviceUUID = service;
+            this.address = addr.ToLower();
+            this.characteristicUUID = ch.ToLower();
+            this.serviceUUID = service.ToLower();
         }
         
 

@@ -206,7 +206,7 @@ namespace toio.Android
             var getConnectedDeviceMethod = AndroidJNI.GetMethodID(bleManagerCls,
                 "getConnectedDevice", "(I)Lcom/utj/ble/BleDeviceObj;");
             int num = AndroidJNI.CallIntMethod(javaBleManagerObj, getConnectedDeviceNumMethod, null);
-
+            
             for (int i = 0; i < num; ++i)
             {
                 AndroidJNI.PushLocalFrame(32);
@@ -244,6 +244,7 @@ namespace toio.Android
             // read Charastrics Data
             AndroidJNI.CallVoidMethod(device, blitMethod, null);
             int readNum = AndroidJNI.CallIntMethod(device, readNumMethod,null);
+            
             for ( int i = 0; i < readNum; ++i)
             {
                 this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(i));
