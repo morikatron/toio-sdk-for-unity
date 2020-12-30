@@ -43,7 +43,10 @@ public class BleManagerObj {
     }
 
     public BleDeviceObj connect(String addr){
-        BluetoothDevice device = scanObj.getDeviceByAddr(addr);
+        BluetoothDevice device = scanObj.getFoundDeviceByAddr(addr);
+        if(device == null){
+            return null;
+        }
         BleDeviceObj deviceObj = new BleDeviceObj(device,this.context);
         this.deviceObjHashMap.put(addr,deviceObj);
         this.bluetoothDeviceObjs.add(deviceObj);

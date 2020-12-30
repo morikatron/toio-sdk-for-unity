@@ -26,6 +26,8 @@ public class BleScannerObj extends ScanCallback{
 
     private HashMap<String,BluetoothDevice> pubBleDevices = new HashMap<String,BluetoothDevice>();
     private HashMap<String,Integer> pubBleRssi = new HashMap<String,Integer>();
+    private HashMap<String,BluetoothDevice> foundDevicesInScan = new HashMap<String,BluetoothDevice>();
+
     private List<String> pubAddresses = new ArrayList<String>();
     private List<ScanFilter> scanFilters = new ArrayList<>(8);
     private boolean isScanning = false;
@@ -46,6 +48,7 @@ public class BleScannerObj extends ScanCallback{
                 this.pubAddresses.add(addr);
                 this.pubBleDevices.put(addr, entry.getValue());
                 this.pubBleRssi.put(addr, bleRssi.get(addr));
+                this.foundDevicesInScan.put(addr,entry.getValue());
             }
             this.bleDevices.clear();
         }
@@ -61,7 +64,6 @@ public class BleScannerObj extends ScanCallback{
         return pubAddresses.get(idx);
     }
     public String getDeviceNameByAddr(String addr){
-
         BluetoothDevice d = pubBleDevices.get(addr);
         if(d == null){return null;}
         return d.getName();
@@ -70,6 +72,11 @@ public class BleScannerObj extends ScanCallback{
     public BluetoothDevice getDeviceByAddr(String addr){
         return pubBleDevices.get(addr);
     }
+
+    public BluetoothDevice getFoundDeviceByAddr(String addr){
+        return this.foundDevicesInScan.get(addr);
+    }
+
     public int getRssiByAddr(String addr){
         return bleRssi.get(addr);
     }
@@ -83,6 +90,8 @@ public class BleScannerObj extends ScanCallback{
         if(this.isScanning) {
             return;
         }
+        this.foundDevicesInScan.clear();
+
         ScanSettings.Builder scanBuilder = new ScanSettings.Builder();
         ScanSettings settings = scanBuilder.build();
         bleScanner.startScan(this.scanFilters,settings, this );

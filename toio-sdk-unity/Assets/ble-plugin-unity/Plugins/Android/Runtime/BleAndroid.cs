@@ -24,11 +24,13 @@ namespace toio.Android
 
         public static void Initialize(Action initializedAction, Action<string> errorAction = null)
         {
+            UnityEngine.Debug.Log("BleAndroid.Initialize");
             behaviour = BleBehaviour.Create();
             var req = new BlePermissionRequest(
                 ()=>
                 {
                     javaWrapper = new BleJavaWrapper();
+                    javaWrapper.Initialize();
                     behaviour.AddUpdateAction(OnUpdate);
                     initializedAction();
                 }, 
@@ -56,6 +58,7 @@ namespace toio.Android
         public static void StartScan(string[] serviceUUIDs, 
             Action<string, string, int, byte[]> discoveredAction = null)
         {
+
             if (javaWrapper == null) { return; }
             javaWrapper.StartScan(serviceUUIDs);
             s_discoveredAction = discoveredAction;
@@ -181,6 +184,7 @@ namespace toio.Android
                 var scanDevices = javaWrapper.GetScannedDevices();
                 foreach (var device in scanDevices)
                 {
+                    UnityEngine.Debug.Log("Found " + device.address);
                     s_discoveredAction(device.address, device.name, device.rssi, null);
                 }
             }
@@ -229,8 +233,23 @@ namespace toio.Android
         private static void UpdateDeviceData() {
             // read/notify data
             var readDatas = javaWrapper.GetCharacteristicDatas();
-
-
+            foreach( var readData in readDatas)
+            {
+                var key = new BleCharastericsKeyInfo(readData.deviceAddr, readData.serviceUuid, readData.characteristic);
+                BleDeviceDataEvents dataEvt = null;
+                if( !s_deviceDataEvents.TryGetValue(key,out dataEvt) || dataEvt == null)
+                {
+                    continue;
+                }
+                if(readData.isNotify)
+                {
+                    dataEvt.CallNotify(readData.serviceUuid, readData.characteristic, readData.data);
+                }
+                else
+                {
+                    dataEvt.CallRead(readData.serviceUuid, readData.characteristic, readData.data);
+                }
+            }
         }
     }
 }

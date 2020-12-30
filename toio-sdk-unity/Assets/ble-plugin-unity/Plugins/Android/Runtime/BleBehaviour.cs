@@ -25,6 +25,7 @@ namespace toio.Android
         public static BleBehaviour Create()
         {
             var gmo = new GameObject();
+            gmo.name = "BleBehaviour";
             GameObject.DontDestroyOnLoad(gmo);
             var obj = gmo.AddComponent<BleBehaviour>();
             return obj;
@@ -67,6 +68,11 @@ namespace toio.Android
                     this.executeInfos.RemoveAt(i);
                     --i;
                 }
+            }
+            // update actions 
+            foreach( var act in this.updateActions)
+            {
+                act();
             }
         }
     }
