@@ -31,11 +31,11 @@ namespace toio.Android
             this.argBuilder = new ArgJvalueBuilder();
             AndroidJNI.PushLocalFrame(32);
             var contxt = GetContext();
-            this.bleManagerCls = GetGlobalRefClass("com/toio/ble/BleManagerObj");
-            this.bleScannerCls = GetGlobalRefClass("com/toio/ble/BleScannerObj");
-            this.bleDeviceCls = GetGlobalRefClass("com/toio/ble/BleDeviceObj");
+            this.bleManagerCls = GetGlobalRefClass("com/utj/ble/BleManagerObj");
+            this.bleScannerCls = GetGlobalRefClass("com/utj/ble/BleScannerObj");
+            this.bleDeviceCls = GetGlobalRefClass("com/utj/ble/BleDeviceObj");
             var getInstanceMethod = AndroidJNI.GetStaticMethodID(bleManagerCls, "getInstance",
-                "()Lcom/toio/ble/BleManagerObj;");
+                "()Lcom/utj/ble/BleManagerObj;");
 
             var obj = AndroidJNI.CallStaticObjectMethod(bleManagerCls, getInstanceMethod, null);
             javaBleManagerObj = AndroidJNI.NewGlobalRef(obj);
@@ -137,7 +137,7 @@ namespace toio.Android
 
         public void ConnectRequest(string addr)
         {
-            var connectMethod = AndroidJNI.GetMethodID(this.bleManagerCls, "connect", "(Ljava/lang/String;)Lcom/toio/ble/BleDeviceObj;");
+            var connectMethod = AndroidJNI.GetMethodID(this.bleManagerCls, "connect", "(Ljava/lang/String;)Lcom/utj/ble/BleDeviceObj;");
             this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(addr));
             AndroidJNI.CallObjectMethod(this.javaBleManagerObj, connectMethod, this.argBuilder.Build());
         }
@@ -205,7 +205,7 @@ namespace toio.Android
             var getConnectedDeviceNumMethod = AndroidJNI.GetMethodID(bleManagerCls, 
                 "getConnectedDeviceNum", "()I");
             var getConnectedDeviceMethod = AndroidJNI.GetMethodID(bleManagerCls,
-                "getConnectedDevice", "(I)Lcom/toio/ble/BleDeviceObj;");
+                "getConnectedDevice", "(I)Lcom/utj/ble/BleDeviceObj;");
             int num = AndroidJNI.CallIntMethod(javaBleManagerObj, getConnectedDeviceNumMethod, null);
             
             for (int i = 0; i < num; ++i)
@@ -328,13 +328,13 @@ namespace toio.Android
 
         private System.IntPtr GetScanner()
         {
-            var getScanner = AndroidJNI.GetMethodID(bleManagerCls, "getScanner", "()Lcom/toio/ble/BleScannerObj;");
+            var getScanner = AndroidJNI.GetMethodID(bleManagerCls, "getScanner", "()Lcom/utj/ble/BleScannerObj;");
             var scanner = AndroidJNI.CallObjectMethod(this.javaBleManagerObj, getScanner, null);
             return scanner;
         }
         private System.IntPtr GetDeviceObj(string addr)
         {
-            var getDeviceMethod = AndroidJNI.GetMethodID(bleManagerCls, "getDeviceByAddr", "(Ljava/lang/String;)Lcom/toio/ble/BleDeviceObj;");
+            var getDeviceMethod = AndroidJNI.GetMethodID(bleManagerCls, "getDeviceByAddr", "(Ljava/lang/String;)Lcom/utj/ble/BleDeviceObj;");
             this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(addr));
             var deviceObj = AndroidJNI.CallObjectMethod(this.javaBleManagerObj, getDeviceMethod, this.argBuilder.Build());
             return deviceObj;
