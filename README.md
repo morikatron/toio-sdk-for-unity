@@ -82,6 +82,7 @@ public class Hello_Toio : MonoBehaviour
 - Mac（macOS ver.10.14以上）
     ※WindowsやLinux上ではSDKのシミュレータ機能のみ利用可能です。
 - iOS端末（iOS ver.12以上）
+- Android端末(Android OS 7.0以上 ※Experimentalで対応中。)
 - Unity（2019.4 LTS）
 
 
