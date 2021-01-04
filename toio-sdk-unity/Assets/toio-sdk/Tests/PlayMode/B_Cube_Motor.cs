@@ -213,7 +213,7 @@ namespace toio.Tests
             yield return new WaitForSeconds(10);
             yield return null;
         }
-
+        /*
         [UnityTest, Order(9)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _09_AccMove_forward() //
         {
@@ -253,6 +253,8 @@ namespace toio.Tests
             yield return new WaitForSeconds(10);
             yield return null;
         }
+        */
+
 
         [UnityTest, Order(13)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _13_AccMove_time() //

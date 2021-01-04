@@ -32,7 +32,7 @@ namespace toio
         // 目標指定付きモーター制御の応答コールバック
         public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return this._targetMoveCallback; } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
+        // public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
 
         public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         : base(peripheral, characteristicTable)
@@ -46,6 +46,65 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < send >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        /// <summary>
+        /// キューブから任意の音を再生します
+        /// https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
+        /// </summary>
+        /// <param name="repeatCount">繰り返し回数</param>
+        /// <param name="operations">命令配列</param>
+        /// <param name="order">命令の優先度</param>
+        public override void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order)
+        {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            // v2.1.0以降は59以下
+            if (59 < operations.Length)
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. operations.Length={0}", operations.Length);
+            }
+#endif
+            if (!this.isConnected) { return; }
+
+            repeatCount = Mathf.Clamp(repeatCount, 0, 255);
+            var operation_length = Mathf.Clamp(operations.Length, 0, 58);
+
+            byte[] buff = new byte[3 + operation_length * 3];
+            buff[0] = 3;
+            buff[1] = BitConverter.GetBytes(repeatCount)[0];
+            buff[2] = BitConverter.GetBytes(operation_length)[0];
+
+            for (int i = 0; i < operation_length; i++)
+            {
+                buff[3 + 3 * i] = BitConverter.GetBytes(Mathf.Clamp(operations[i].durationMs / 10, 1, 255))[0];
+                buff[4 + 3 * i] = BitConverter.GetBytes(operations[i].note_number)[0];
+                buff[5 + 3 * i] = BitConverter.GetBytes(operations[i].volume)[0];
+            }
+
+            this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound", repeatCount, operations);
+        }
+
+        /// <summary>
+        /// キューブから任意の音を再生します
+        /// https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
+        /// </summary>
+        /// <param name="buff">命令プロトコル</param>
+        /// <param name="order">命令の優先度</param>
+        public override void PlaySound(byte[] buff, ORDER_TYPE order)
+        {
+#if !RELEASE
+            // v2.0.0に限り58以下
+            // v2.1.0以降は59以下
+            if (59 < buff[2])
+            {
+                Debug.LogErrorFormat("[Cube.playSound]最大メロディ数を超えました. Length={0}", buff[2]);
+            }
+#endif
+            if (!this.isConnected) { return; }
+
+            this.Request(CHARACTERISTIC_SOUND, buff, true, order, "playSound");
+        }
+
         // キューブのモーターを目標指定付き制御します
         public override void TargetMove(
             int targetX,
@@ -94,7 +153,7 @@ namespace toio
             this.Request(CHARACTERISTIC_MOTOR, buff, false, order, "TargetMove",
                 targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
         }
-
+        /*
         // キューブのモーターを複数目標指定付き制御します
         public override void MultiTargetMove(
             int[] targetXList,
@@ -156,7 +215,7 @@ namespace toio
                 targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut,
                 targetMoveType, maxSpd, targetSpeedType, multiWriteType);
         }
-
+        */
         // キューブの加速度指定付きモーターを制御します
         public override void AccelerationMove(
             int targetSpeed,
@@ -229,7 +288,7 @@ namespace toio
             // https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#複数目標指定付きモーター制御の応答
             else if (0x84 == type)
             {
-                this.multiTargetMoveCallback.Notify(this, data[1], (TargetMoveRespondType)data[2]);
+                // this.multiTargetMoveCallback.Notify(this, data[1], (TargetMoveRespondType)data[2]);
             }
         }
 

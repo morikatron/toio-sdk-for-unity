@@ -175,13 +175,6 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnShake(Cube c)
     {
-        if (c.isShake)
-        {
-            this.textShake.text = "Shake: True";
-        }
-        else
-        {
-            this.textShake.text = "Shake: False";
-        }
+        this.textShake.text = "Shake: " + c.shakeLevel.ToString();
     }
 }

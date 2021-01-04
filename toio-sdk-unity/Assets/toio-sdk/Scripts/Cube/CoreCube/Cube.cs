@@ -63,7 +63,7 @@ namespace toio
 
         // ver2.2.0
         // コアキューブのシェイク状態
-        public virtual bool isShake {
+        public virtual int shakeLevel {
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
         // コアキューブのモーター ID 1（左）の速度
@@ -199,7 +199,7 @@ namespace toio
             TargetRotationType targetRotationType = TargetRotationType.AbsoluteLeastAngle,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ) { NotSupportedWarning(); }
-
+        /*
         /// <summary>
         /// キューブのモーターを複数目標指定付き制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御
@@ -228,7 +228,7 @@ namespace toio
             MultiWriteType multiWriteType = MultiWriteType.Write,
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){ NotSupportedWarning(); }
-
+        */
         /// <summary>
         /// キューブの加速度指定付きモーターを制御します
         /// https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御
@@ -284,7 +284,7 @@ namespace toio
         // 目標指定付きモーター制御の応答コールバック
         public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
         // 複数目標指定付きモーター制御の応答コールバック
-        public virtual CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        // public virtual CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
 
         // ver2.2.0
         // シェイクコールバック

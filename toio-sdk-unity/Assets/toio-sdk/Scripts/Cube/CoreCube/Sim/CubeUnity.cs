@@ -89,13 +89,13 @@ namespace toio
             }
             protected set { _pose = value; } }
         // ver2.2.0
-        protected bool _isShake = false;
-        public override bool isShake {
+        protected int _shakeLevel = 0;
+        public override int shakeLevel {
             get {
-                if (this.simulator.version>=CubeSimulator.Version.v2_2_0) return _isShake;
+                if (this.simulator.version>=CubeSimulator.Version.v2_2_0) return _shakeLevel;
                 NotSupportedWarning(); return default;
             }
-            protected set { _isShake = value; } }
+            protected set { _shakeLevel = value; } }
         protected bool isEnabledMotorSpeed = false;
         protected bool isCalled_ConfigMotorRead = false;
 
@@ -151,10 +151,10 @@ namespace toio
         public override CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get {
             if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._targetMoveCallback;
             else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
-        protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
-        public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
-            if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
-            else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
+        // protected CallbackProvider<Cube, int, TargetMoveRespondType> _multiTargetMoveCallback = new CallbackProvider<Cube, int, TargetMoveRespondType>();
+        // public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get {
+        //     if (simulator.version>=CubeSimulator.Version.v2_1_0) return this._multiTargetMoveCallback;
+        //     else return CallbackProvider<Cube, int, TargetMoveRespondType>.NotSupported.Get(this); } }
 
         // 2.2.0
         protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
@@ -236,12 +236,12 @@ namespace toio
         }
         private void Recv_MultiTargetMove(int configID, TargetMoveRespondType response)
         {
-            this.multiTargetMoveCallback.Notify(this, configID, response);
+            // this.multiTargetMoveCallback.Notify(this, configID, response);
         }
 
-        private void Recv_Shake(bool shake)
+        private void Recv_Shake(int shakeLevel)
         {
-            this.isShake = shake;
+            this.shakeLevel = shakeLevel;
             this.shakeCallback.Notify(this);
         }
 
@@ -397,6 +397,7 @@ namespace toio
                 order, "targetMove", targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
 #endif
         }
+        /*
         public override void MultiTargetMove(
             int[] targetXList,
             int[] targetYList,
@@ -419,6 +420,7 @@ namespace toio
                 order, "multiTargetMove", targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
 #endif
         }
+        */
         public override void AccelerationMove(
             int targetSpeed,
             int acceleration,
