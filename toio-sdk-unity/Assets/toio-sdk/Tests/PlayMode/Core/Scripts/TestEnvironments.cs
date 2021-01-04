@@ -58,6 +58,7 @@ namespace toio.Tests
     {
         public interface TestCaseInterface
         {
+            List<int> homeIdxs { get; set; }
             // ITestRunCallback
             void RunStarted(ITest test);
             void RunFinished(ITestResult testResults);
@@ -71,6 +72,16 @@ namespace toio.Tests
         }
         public static TestCaseInterface impl = null;
         public static CubeManager cubeManager = new CubeManager();
+        public static int GetCubeIdxFromHomeIdx(int homeIdx)
+        {
+            if (impl != null && impl.homeIdxs != null)
+                return impl.homeIdxs.IndexOf(homeIdx);
+            return homeIdx;
+        }
+        public static Cube GetCubeFromHomeIdxs(int homeIdx)
+        {
+            return cubeManager.cubes[GetCubeIdxFromHomeIdx(homeIdx)];
+        }
 
         [OneTimeSetUp] // クラスのテストが開始される前に一度だけ実行される
         public void OneTimeSetUp()
@@ -109,6 +120,7 @@ namespace toio.Tests
     {
         private static bool firstTime = true;
         private static ITest testRoot;
+        public List<int> homeIdxs { get; set; }
         public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
         public void OneTimeSetUp() { }
@@ -145,12 +157,12 @@ namespace toio.Tests
                 // 実行モードの場合は、ボタンから選択モードを終了
                 await UniTask.WaitUntil(() => selectView.IsFinished);
             }
-            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            this.homeIdxs = await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
         public IEnumerator UnityTearDown() => UniTask.ToCoroutine(async () =>
         {
-            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            this.homeIdxs = await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
     }
@@ -160,6 +172,7 @@ namespace toio.Tests
         private static bool firstTime = true;
         private static ITest testRoot;
         private static GameObject UIObject;
+        public List<int> homeIdxs { get; set; }
         public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
         public void TestStarted(ITest test) { }
@@ -187,12 +200,12 @@ namespace toio.Tests
                 await UniTask.WaitUntil(() => selectView.IsFinished);
             }
             UIObject.SetActive(false);
-            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            this.homeIdxs = await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
         public IEnumerator UnityTearDown() => UniTask.ToCoroutine(async () =>
         {
-            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            this.homeIdxs = await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
             UIObject.SetActive(true);
         });
@@ -203,6 +216,7 @@ namespace toio.Tests
         private static bool firstTime = true;
         private static ITest testRoot;
         private static GameObject UIObject;
+        public List<int> homeIdxs { get; set; }
         public void RunStarted(ITest _testRoot) { testRoot = _testRoot; }
         public void RunFinished(ITestResult testResults) { }
         public void TestStarted(ITest test) { }
@@ -248,12 +262,12 @@ namespace toio.Tests
                 // 実行モードの場合は、ボタンから選択モードを終了
                 await UniTask.WaitUntil(() => selectView.IsFinished);
             }
-            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            this.homeIdxs = await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
         public IEnumerator UnityTearDown() => UniTask.ToCoroutine(async () =>
         {
-            await EnvUtl.Move2Home(CubeTestCase.cubeManager);
+            this.homeIdxs = await EnvUtl.Move2Home(CubeTestCase.cubeManager);
             EnvUtl.ResetCubeManager(CubeTestCase.cubeManager);
         });
     }
@@ -324,7 +338,7 @@ namespace toio.Tests
             }
         }
 
-        public static async UniTask Move2Home(CubeManager cubeManager)
+        public static async UniTask<List<int>> Move2Home(CubeManager cubeManager)
         {
             var homes = Get_HomePosXY_and_AngleY_List();
             var cubes = new List<Cube>(cubeManager.cubes);
@@ -372,6 +386,7 @@ namespace toio.Tests
             }
 
             await UniTask.Yield();
+            return idxs;
         }
         private static (float, List<int>) Move2Home_Solver(List<Vector2> poss, List<Vector2> tars)
         {
