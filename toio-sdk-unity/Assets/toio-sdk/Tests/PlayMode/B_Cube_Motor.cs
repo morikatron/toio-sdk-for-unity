@@ -59,7 +59,7 @@ namespace toio.Tests
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
 
@@ -196,14 +196,14 @@ namespace toio.Tests
                     Debug.Log(res);
                 }
             );
-            cube.TargetMove(400,400,90,0,255,
+            cube.TargetMove(100,400,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(1);
-            cube.TargetMove(100,100,90,0,255,
+            cube.TargetMove(250,250,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
                             Cube.TargetSpeedType.UniformSpeed,
@@ -213,14 +213,23 @@ namespace toio.Tests
             yield return new WaitForSeconds(10);
             yield return null;
         }
-        /*
+
         [UnityTest, Order(9)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _09_AccMove_forward() //
         {
             var cube = cubeManager.cubes[0];
+            cube.TargetMove(100,400,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
             cube.AccelerationMove(100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(3);
+            cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(5);
 
-            yield return new WaitForSeconds(10);
+
             yield return null;
         }
 
@@ -228,9 +237,17 @@ namespace toio.Tests
         public static IEnumerator _10_AccMove_backward() //
         {
             var cube = cubeManager.cubes[0];
+            cube.TargetMove(-1,-1,270,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(1);
             cube.AccelerationMove(-100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
+            cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
 
@@ -238,9 +255,16 @@ namespace toio.Tests
         public static IEnumerator _11_AccMove_left() //
         {
             var cube = cubeManager.cubes[0];
+            cube.TargetMove(250,250,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(5);
             cube.AccelerationMove(100,2,-100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
 
@@ -248,13 +272,18 @@ namespace toio.Tests
         public static IEnumerator _12_AccMove_right() //
         {
             var cube = cubeManager.cubes[0];
+            cube.TargetMove(250,250,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            30,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(5);
             cube.AccelerationMove(-100,2,-65535,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
-        */
-
 
         [UnityTest, Order(13)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _13_AccMove_time() //
@@ -262,7 +291,7 @@ namespace toio.Tests
             var cube = cubeManager.cubes[0];
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,200,Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
 
@@ -271,20 +300,22 @@ namespace toio.Tests
         {
             var cube = cubeManager.cubes[0];
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
+            cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
 
         [UnityTest, Order(15)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _15_AccMove_AccToAcc() //
         {
-            var cube = cubeManager.cubes[0];
+            var cube = cubeManager.cubes[3];
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(3);
             cube.AccelerationMove(-50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(2);
+            cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(5);
             yield return null;
         }
 
