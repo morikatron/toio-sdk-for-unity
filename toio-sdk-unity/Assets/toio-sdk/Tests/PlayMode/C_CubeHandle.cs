@@ -126,9 +126,9 @@ namespace toio.Tests
             var handle1 = cubeManager.handles[GetCubeIdxFromHomeIdx(1)];
             var handle2 = cubeManager.handles[GetCubeIdxFromHomeIdx(2)];
 
-            cube0.TargetMove(100, 130, 270);
-            cube1.TargetMove(200, 110, 270);
-            cube2.TargetMove(300, 90, 270);
+            cube0.TargetMove(100, 120, 90);
+            cube1.TargetMove(200, 140, 90);
+            cube2.TargetMove(300, 160, 90);
 
             yield return new WaitForSeconds(1f);
 
@@ -142,15 +142,15 @@ namespace toio.Tests
 
                 if (now - last_time > 0.05)
                 {
-                    handle0.Move(handle0.Move2Target(100, 150, maxSpd:100));
-                    handle1.Move(handle1.Move2Target(200, 150, maxSpd:100));
-                    handle2.Move(handle2.Move2Target(300, 150, maxSpd:100));
+                    handle0.Move(handle0.Move2Target(100, 100, maxSpd:100));
+                    handle1.Move(handle1.Move2Target(200, 100, maxSpd:100));
+                    handle2.Move(handle2.Move2Target(300, 100, maxSpd:100));
                     last_time = now;
                 }
                 if (2 < Time.time - start_time){
-                    Debug.LogFormat("handle0.pos-target.pos = {0}", handle0.pos-new Vector(100,150));
-                    Debug.LogFormat("handle1.pos-target.pos = {0}", handle1.pos-new Vector(200,150));
-                    Debug.LogFormat("handle2.pos-target.pos = {0}", handle2.pos-new Vector(300,150));
+                    Debug.LogFormat("handle0.pos-target.pos = {0}", handle0.pos-new Vector(100,100));
+                    Debug.LogFormat("handle1.pos-target.pos = {0}", handle1.pos-new Vector(200,100));
+                    Debug.LogFormat("handle2.pos-target.pos = {0}", handle2.pos-new Vector(300,100));
                     return true;
                 }
                 return false;
