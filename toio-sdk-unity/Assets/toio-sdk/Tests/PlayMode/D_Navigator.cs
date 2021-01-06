@@ -1,5 +1,4 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,21 +26,17 @@ namespace toio.Tests
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator a_ToTarget1()
         {
-            var handle = new CubeHandle(test.CreateCube(150, 300, 90));
-            var navigator = new CubeNavigator(handle, mode:Navigator.Mode.AVOID);
+            var navigator = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
+            navigator.mode = Navigator.Mode.AVOID;
 
             var start_time = Time.time;
             var last_time = start_time;
-
-            test.init = (() =>
-            {
-            });
 
             test.update =  (() =>
             {
                 var now = Time.time;
 
-                if (now - last_time > 0.05)
+                if (now - last_time > 0.05f)
                 {
                     navigator.Update();
                     navigator.Navi2Target(250, 250, maxSpd:80).Exec();
@@ -49,7 +44,7 @@ namespace toio.Tests
                 }
 
                 if (2.5 < Time.time - start_time){
-                    Debug.LogFormat("handle.pos-target.pos = {0}", handle.pos-new Vector(250, 250));
+                    Debug.LogFormat("handle.pos-target.pos = {0}", navigator.handle.pos-new Vector(250, 250));
                     return true;
                 }
                 return false;
@@ -61,30 +56,31 @@ namespace toio.Tests
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator b_BorderSingleIn()
         {
-            var handle = new CubeHandle(test.CreateCube(150, 380, 90));
-            var navigator = new CubeNavigator(handle, mode:Navigator.Mode.AVOID);
+            var cube = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
+            var navigator = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
+            navigator.mode = Navigator.Mode.AVOID;
+
+            cube.TargetMove(120, 150, 180);
+
+            yield return new WaitForSeconds(1f);
 
             var start_time = Time.time;
             var last_time = start_time;
-
-            test.init = (() =>
-            {
-            });
 
             test.update =  (() =>
             {
                 var now = Time.time;
 
-                if (now - last_time > 0.05)
+                if (now - last_time > 0.05f)
                 {
                     navigator.Update();
 
-                    var res = navigator.Navi2Target(400, 500, 80).Exec();
+                    var res = navigator.Navi2Target(0, 400, 80).Exec();
                     last_time = now;
                 }
 
                 if (3 < Time.time - start_time){
-                    Debug.LogFormat("handle.pos-target.pos = {0}", handle.pos-new Vector(400, 500));
+                    Debug.LogFormat("handle.pos-target.pos = {0}", navigator.handle.pos-new Vector(0, 400));
                     return true;
                 }
                 return false;
@@ -97,8 +93,13 @@ namespace toio.Tests
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator b_BorderSingleOut()
         {
-            var handle = new CubeHandle(test.CreateCube(150, 420, 135));
-            var navigator = new CubeNavigator(handle, mode:Navigator.Mode.AVOID);
+            var cube = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
+            var navigator = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
+            navigator.mode = Navigator.Mode.AVOID;
+
+            cube.TargetMove(80, 150, 225);
+
+            yield return new WaitForSeconds(1f);
 
             var start_time = Time.time;
             var last_time = start_time;
@@ -111,16 +112,16 @@ namespace toio.Tests
             {
                 var now = Time.time;
 
-                if (now - last_time > 0.05)
+                if (now - last_time > 0.05f)
                 {
                     navigator.Update();
 
-                    var res = navigator.Navi2Target(400, 500, 80).Exec();
+                    var res = navigator.Navi2Target(0, 400, 80).Exec();
                     last_time = now;
                 }
 
                 if (3 < Time.time - start_time){
-                    Debug.LogFormat("handle.pos-target.pos = {0}", handle.pos-new Vector(400, 500));
+                    Debug.LogFormat("handle.pos-target.pos = {0}", navigator.handle.pos-new Vector(0, 400));
                     return true;
                 }
                 return false;
@@ -132,31 +133,34 @@ namespace toio.Tests
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator c_Intersect1v1Lateral()
         {
-            var handle0 = new CubeHandle(test.CreateCube(100, 100, 45));
-            var handle1 = new CubeHandle(test.CreateCube(400, 100, 130));
-            var navigator0 = new CubeNavigator(handle0, mode:Navigator.Mode.AVOID);
-            var navigator1 = new CubeNavigator(handle1, mode:Navigator.Mode.AVOID);
+            var cube0 = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
+            var navigator0 = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
+            navigator0.mode = Navigator.Mode.AVOID;
+            var cube1 = cubeManager.cubes[GetCubeIdxFromHomeIdx(3)];
+            var navigator1 = cubeManager.navigators[GetCubeIdxFromHomeIdx(3)];
+            navigator1.mode = Navigator.Mode.AVOID;
+
+            cube0.TargetMove(65535, 65535, 45);
+            cube1.TargetMove(65535, 65535, 130);
+
+            yield return new WaitForSeconds(0.5f);
 
             var start_time = Time.time;
             var last_time = start_time;
-
-            test.init = (() =>
-            {
-            });
 
             test.update =  (() =>
             {
                 var now = Time.time;
 
-                if (now - last_time > 0.05)
+                if (now - last_time > 0.05f)
                 {
                     navigator0.Update();navigator1.Update();
-                    navigator0.Navi2Target(400, 400, maxSpd:80).Exec();
-                    navigator1.Navi2Target(100, 400, maxSpd:80).Exec();
+                    navigator0.Navi2Target(380, 380, maxSpd:80).Exec();
+                    navigator1.Navi2Target(120, 380, maxSpd:80).Exec();
                     last_time = now;
                 }
 
-                if (4.5 < Time.time - start_time){
+                if (4f < Time.time - start_time){
                     return true;
                 }
                 return false;
@@ -168,23 +172,26 @@ namespace toio.Tests
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator c_Intersect1v1Longitudinal()
         {
-            var handle0 = new CubeHandle(test.CreateCube(100, 100, 45));
-            var handle1 = new CubeHandle(test.CreateCube(400, 400, -135));
-            var navigator0 = new CubeNavigator(handle0, mode:Navigator.Mode.AVOID);
-            var navigator1 = new CubeNavigator(handle1, mode:Navigator.Mode.AVOID);
+            var cube0 = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
+            var navigator0 = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
+            navigator0.mode = Navigator.Mode.AVOID;
+            var cube1 = cubeManager.cubes[GetCubeIdxFromHomeIdx(7)];
+            var navigator1 = cubeManager.navigators[GetCubeIdxFromHomeIdx(7)];
+            navigator1.mode = Navigator.Mode.AVOID;
+
+            cube0.TargetMove(65535, 65535, 45);
+            cube1.TargetMove(65535, 65535, 360-135);
+
+            yield return new WaitForSeconds(0.5f);
 
             var start_time = Time.time;
             var last_time = start_time;
-
-            test.init = (() =>
-            {
-            });
 
             test.update =  (() =>
             {
                 var now = Time.time;
 
-                if (now - last_time > 0.05)
+                if (now - last_time > 0.05f)
                 {
                     navigator0.Update();navigator1.Update();
                     navigator0.Navi2Target(400, 400, maxSpd:80).Exec();
@@ -192,7 +199,7 @@ namespace toio.Tests
                     last_time = now;
                 }
 
-                if (4 < Time.time - start_time){
+                if (4f < Time.time - start_time){
                     return true;
                 }
                 return false;
@@ -204,41 +211,50 @@ namespace toio.Tests
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator d_ToTarget4()
         {
-            List<CubeHandle> handles = new List<CubeHandle>();
-            List<CubeNavigator> navigators = new List<CubeNavigator>();
-            handles.Add(new CubeHandle(test.CreateCube(100, 100, 0)));
-            handles.Add(new CubeHandle(test.CreateCube(100, 140, 45)));
-            handles.Add(new CubeHandle(test.CreateCube(140, 100, 0)));
-            handles.Add(new CubeHandle(test.CreateCube(150, 150, -90)));
-            foreach (var handle in handles)
-                navigators.Add(new CubeNavigator(handle, mode:Navigator.Mode.AVOID));
-            foreach (var navi in navigators){
-            }
+            var cube0 = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
+            var navigator0 = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
+            navigator0.mode = Navigator.Mode.AVOID;
+            var cube1 = cubeManager.cubes[GetCubeIdxFromHomeIdx(1)];
+            var navigator1 = cubeManager.navigators[GetCubeIdxFromHomeIdx(1)];
+            navigator1.mode = Navigator.Mode.AVOID;
+            var cube2 = cubeManager.cubes[GetCubeIdxFromHomeIdx(5)];
+            var navigator2 = cubeManager.navigators[GetCubeIdxFromHomeIdx(5)];
+            navigator2.mode = Navigator.Mode.AVOID;
+            var cube3 = cubeManager.cubes[GetCubeIdxFromHomeIdx(6)];
+            var navigator3 = cubeManager.navigators[GetCubeIdxFromHomeIdx(6)];
+            navigator3.mode = Navigator.Mode.AVOID;
+
+            cube0.TargetMove(100, 100, 0);
+            cube1.TargetMove(140, 100, 45);
+            cube2.TargetMove(100, 140, 0);
+            cube3.TargetMove(150, 150, 270);
+
+            yield return new WaitForSeconds(2f);
+
 
             var start_time = Time.time;
             var last_time = start_time;
-
-            test.init = (() =>
-            {
-            });
 
             test.update =  (() =>
             {
                 var now = Time.time;
 
-                if (now - last_time > 0.05)
+                if (now - last_time > 0.05f)
                 {
-                    foreach (var navi in navigators)
-                        navi.Update(usePred:true);
+                    navigator0.Update(usePred:true);
+                    navigator1.Update(usePred:true);
+                    navigator2.Update(usePred:true);
+                    navigator3.Update(usePred:true);
 
-                    foreach (var navi in navigators){
-                        navi.Navi2Target(400, 400, maxSpd:80).Exec();
-                    }
+                    navigator0.Navi2Target(380, 380, maxSpd:80).Exec();
+                    navigator1.Navi2Target(380, 380, maxSpd:80).Exec();
+                    navigator2.Navi2Target(380, 380, maxSpd:80).Exec();
+                    navigator3.Navi2Target(380, 380, maxSpd:80).Exec();
 
                     last_time = now;
                 }
 
-                if (4 < Time.time - start_time){
+                if (4f < Time.time - start_time){
                     return true;
                 }
                 return false;
@@ -246,7 +262,7 @@ namespace toio.Tests
 
             yield return new MonoBehaviourTest<test>();
         }
-
+/*
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator e_Intersect4v4Longitudinal()
         {
@@ -477,7 +493,7 @@ namespace toio.Tests
 
             yield return new MonoBehaviourTest<test>();
         }
+*/
 
     }
 }
-*/
