@@ -59,7 +59,7 @@ public class Hello_Toio : MonoBehaviour
 - BLE通信モジュール
   - iOS アプリでキューブと通信する
   - ウェブアプリでキューブと通信する
-  - androidアプリでキューブと通信する
+  - Androidアプリでキューブと通信する
   - （開発中：MacのUnity EditorでPlay時にキューブと通信する）
 - Cube
   - 一つのソースコードで、シミュレータとリアルの両方のキューブを同じく動かせる
