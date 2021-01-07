@@ -23,6 +23,8 @@
 
 Unity をインストールする時に Android Build Support モジュールを追加しなかった場合は、 Unity Hub を開いて［インストール］タブで、相応のバージョンの右上のメニューの［モジュールを加える］から Android Build Support を加えてください。
 
+<img width=500 src="res/build_android/1.png">
+
 <br>
 
 ## ビルドのプラットフォームをアンドロイドに切り替え
