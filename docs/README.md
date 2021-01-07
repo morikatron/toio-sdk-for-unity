@@ -18,7 +18,7 @@
 
 ### 【 3 】ビルド
 
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「 iOS ビルド」](build_ios.md) |[「 WebGL ビルド」](build_web.md)　★B
+1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「 iOS ビルド」](build_ios.md) |[「 android ビルド」](build_android.md) |[「 WebGL ビルド」](build_web.md)　★B
 2. ★`A` ★`B` を繰り返してプログラムを仕上げていく
 
 <br>
@@ -100,7 +100,7 @@
 - [Sample_Scenes](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/)
 
   リアルのキューブとの接続・シミュレータ上のキューブと相関インスタンスを維持したままに、シーン遷移を扱うサンプルです。
-
+build_android
 <br>
 
 ## 技術ドキュメント
