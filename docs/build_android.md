@@ -105,8 +105,6 @@ Unity をインストール際に選択した Android Build Support にすでに
 
 ### ビルド
 
-<img width=500 src="res/build_android/11.png">
-
 【Build Settings】を開き、右下の【ビルドして実行】を押せば、<br>
 Unity が ビルドし、アプリを端末にインストールし実行するはずです。
 
@@ -180,7 +178,7 @@ SDKのパスをメモしておいてください。<br>
 【Build Settings】を開き、右下の【ビルドして実行】を押せば、<br>
 Unity が ビルドし、アプリを端末にインストールし実行するはずです。
 
-アプリが正しくビルドされていれば、iPhone の画面はこのようになります。
+アプリが正しくビルドされていれば、スマホの画面はこのようになります。
 
 <img width=92 src="res/build_ios/7.png">
 
