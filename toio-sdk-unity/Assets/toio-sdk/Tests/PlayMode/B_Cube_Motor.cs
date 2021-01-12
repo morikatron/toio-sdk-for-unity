@@ -257,12 +257,12 @@ namespace toio.Tests
             var cube = cubeManager.cubes[0];
             cube.TargetMove(250,250,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            80,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(5);
-            cube.AccelerationMove(100,2,-100,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(3);
+            cube.AccelerationMove(20,2,-20,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
 
             yield return new WaitForSeconds(5);
             yield return null;
@@ -274,12 +274,12 @@ namespace toio.Tests
             var cube = cubeManager.cubes[0];
             cube.TargetMove(250,250,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            80,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(5);
-            cube.AccelerationMove(-100,2,-65535,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(3);
+            cube.AccelerationMove(-20,2,-20,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
 
             yield return new WaitForSeconds(5);
             yield return null;
@@ -309,18 +309,22 @@ namespace toio.Tests
         [UnityTest, Order(15)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _15_AccMove_AccToAcc() //
         {
-            var cube = cubeManager.cubes[3];
-            cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            var cube = cubeManager.cubes[0];
+            cube.TargetMove(250,100,90,0,255,
+                            Cube.TargetMoveType.RotatingMove,
+                            80,
+                            Cube.TargetSpeedType.UniformSpeed,
+                            Cube.TargetRotationType.AbsoluteLeastAngle,
+                            Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(3);
+            cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(2);
             cube.AccelerationMove(-50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(2);
             cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(5);
             yield return null;
         }
-
-
-
     }
 
 }

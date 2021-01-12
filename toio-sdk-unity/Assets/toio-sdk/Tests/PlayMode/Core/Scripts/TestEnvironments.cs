@@ -29,6 +29,8 @@ public class MyTestRunCallback : ITestRunCallback
         toio.Tests.CubeTestCase.impl = new toio.Tests.SimulatorImpl();
 #elif !UNITY_EDITOR && UNITY_IOS
         toio.Tests.CubeTestCase.impl = new toio.Tests.MobileRealImpl();
+#elif !UNITY_EDITOR && UNITY_ANDROID
+        toio.Tests.CubeTestCase.impl = new toio.Tests.MobileRealImpl();
 #elif !UNITY_EDITOR && UNITY_WEBGL
         toio.Tests.CubeTestCase.impl = new toio.Tests.WebGLRealImpl();
 #endif
