@@ -502,11 +502,69 @@ namespace toio.Simulator
 
         // Sound Preset を設定
         internal void _InitPresetSounds(){
-            Cube.SoundOperation[] sounds = new Cube.SoundOperation[3];
-            sounds[0] = new Cube.SoundOperation(200, 255, 48);
-            sounds[1] = new Cube.SoundOperation(200, 255, 50);
-            sounds[2] = new Cube.SoundOperation(200, 255, 52);
-            impl.presetSounds.Add(sounds);
+            impl.presetSounds.Add( new Cube.SoundOperation[2]
+            {
+                new Cube.SoundOperation(60, 255, 71),
+                new Cube.SoundOperation(60, 255, 67),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[2]
+            {
+                new Cube.SoundOperation(40, 255, 78),
+                new Cube.SoundOperation(200, 255, 81),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[3]
+            {
+                new Cube.SoundOperation(70, 255, 69),
+                new Cube.SoundOperation(60, 255, 67),
+                new Cube.SoundOperation(60, 255, 66),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[1]
+            {
+                new Cube.SoundOperation(70, 255, 69),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[4]
+            {
+                new Cube.SoundOperation(120, 255, 62),
+                new Cube.SoundOperation(120, 255, 67),
+                new Cube.SoundOperation(150, 255, 71),
+                new Cube.SoundOperation(240, 255, 67),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[4]
+            {
+                new Cube.SoundOperation(120, 255, 69),
+                new Cube.SoundOperation(150, 255, 71),
+                new Cube.SoundOperation(150, 255, 67),
+                new Cube.SoundOperation(240, 255, 62),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[4]
+            {
+                new Cube.SoundOperation(60, 255, 66),
+                new Cube.SoundOperation(80, 255, 69),
+                new Cube.SoundOperation(40, 255, 74),
+                new Cube.SoundOperation(60, 255, 76),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[5]
+            {
+                new Cube.SoundOperation(80, 255, 74),
+                new Cube.SoundOperation(30, 255, 128),
+                new Cube.SoundOperation(80, 255, 74),
+                new Cube.SoundOperation(30, 255, 128),
+                new Cube.SoundOperation(140, 255, 81),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[3]
+            {
+                new Cube.SoundOperation(60, 255, 71),
+                new Cube.SoundOperation(60, 255, 67),
+                new Cube.SoundOperation(120, 255, 74),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[1]
+            {
+                new Cube.SoundOperation(70, 255, 74),
+            });
+            impl.presetSounds.Add( new Cube.SoundOperation[1]
+            {
+                new Cube.SoundOperation(70, 255, 66),
+            });
         }
 
         internal void _SetPressed(bool pressed)
