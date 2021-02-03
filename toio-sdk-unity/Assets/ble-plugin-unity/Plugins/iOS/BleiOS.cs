@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace toio
 {
-    public class Ble
+    public class BleiOS
     {
 
         // #if UNITY_EDITOR_OSX
