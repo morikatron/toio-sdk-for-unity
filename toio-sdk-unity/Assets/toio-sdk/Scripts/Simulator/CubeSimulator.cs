@@ -386,7 +386,7 @@ namespace toio.Simulator
             impl.PlaySound(repeatCount, operations);
         }
         /// <summary>
-        /// サウンド：効果音の再生 （未実装）
+        /// サウンド：効果音の再生
         /// </summary>
         public void PlayPresetSound(int soundId, int volume)
         {

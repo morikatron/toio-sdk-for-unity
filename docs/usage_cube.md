@@ -45,7 +45,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [連続的な点灯・消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#連続的な点灯-消灯)                                  | o             | o            |
 |                    | [全てのランプを消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#全てのランプを消灯)                                 | x             | x            |
 |                    | [特定のランプを消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#特定のランプを消灯)                                 | x             | x            |
-| サウンド           | [効果音の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#効果音の再生)                                             | o             | Δ            |
+| サウンド           | [効果音の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#効果音の再生)                                             | o             | o            |
 |                    | [MIDI note number の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#midi-note-number-の再生)                       | o             | o            |
 |                    | [再生の停止](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#再生の停止)                                                 | o             | o            |
 | 設定               | [BLE プロトコルバージョンの要求](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの要求) | o             | x            |
