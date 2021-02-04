@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.2.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.0) - 2021-02-09
+
 ### Added
 
 - [Simulator] Implement sound presets.
+- [BLE] Add Android BLE plugin. (Thanks to contribution of [Yusuke Kurokawa](https://github.com/wotakuro))
 
 ## [1.1.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.1.0) - 2020-12-15
 
