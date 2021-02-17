@@ -85,7 +85,7 @@ Mono より効率のいい IL2CPP をおすすめします。
 
 【スクリプティングバックエンド】の【IL2CPP】を選択してください。
 
-<img width=500 src="res/build_android/9.png">
+<img width=400 src="res/build_android/9.png">
 
 <br>
 
@@ -102,7 +102,7 @@ Unity をインストール際に選択した Android Build Support にすでに
 [IL2CPPの設定](build_android.md#IL2CPP-を設定)と同じ、<br>
 【Project Settings】-【Player】-【Androidのアイコンのタブ】-【その他の設定】の中で、パッケージ名を変更してください。
 
-<img width=500 src="res/build_android/10.png">
+<img width=400 src="res/build_android/10.png">
 
 
 ### ビルド
@@ -150,7 +150,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2019.1 又は 2019.2 だと、NDK 16 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2019.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 2019.4 だと、NDK 19 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2019.3/Manual/android-sdksetup.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 
