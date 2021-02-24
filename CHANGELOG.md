@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Cube API] Implement method [`Cube.RequestSensor`](https://toio.github.io/toio-spec/docs/ble_sensor#書き込み操作). (THANKS to contribution from [**zurachu**](https://github.com/zurachu))
 
+### Changed
+
+- [Simulator] Checkbuttons on inspector for simulating collison and double tap are changed to buttons.
+
 ### Fixed
 
 - [Simulator] Make motion sensors' behaviour of Simulator same with real cube.
