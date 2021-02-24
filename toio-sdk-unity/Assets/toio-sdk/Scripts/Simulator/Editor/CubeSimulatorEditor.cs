@@ -70,9 +70,9 @@ namespace toio.Simulator
                 }
                 EditorGUILayout.Space();
 
-                var collisionDetected_new = GUILayout.Toggle(cube.collisionDetected, "collisionDetected 状態");
-                if (cube.collisionDetected!=collisionDetected_new){
-                    cube.collisionDetected = collisionDetected_new;
+                if (GUILayout.Button("'衝突'を触発"))
+                {
+                    cube._TriggerCollision();
                 }
                 EditorGUILayout.Space();
 
@@ -80,9 +80,9 @@ namespace toio.Simulator
                 if (version.intValue > 0)
                 {
                     // double tap
-                    var doubleTap_new = GUILayout.Toggle(cube.doubleTap, "doubleTap 状態");
-                    if (cube.doubleTap!=doubleTap_new){
-                        cube.doubleTap = doubleTap_new;
+                    if (GUILayout.Button("'ダブルタップ'を触発"))
+                    {
+                        cube._TriggerDoubleTap();
                     }
                     EditorGUILayout.Space();
 

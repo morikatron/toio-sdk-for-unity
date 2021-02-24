@@ -13,6 +13,19 @@ namespace toio.Simulator
 
 
         // ============ Motion Sensor ============
+        protected override void InvokeMotionSensorCallback()
+        {
+            if (this.motionSensorCallback == null) return;
+            object[] sensors = new object[6];
+            sensors[0] = null;
+            sensors[1] = (object)this._sloped;
+            sensors[2] = (object)this._collisonDetected; this._collisonDetected = false;
+            sensors[3] = (object)this._doubleTapped; this._doubleTapped = false;
+            sensors[4] = (object)this._pose;
+            sensors[5] = (object)this._shakeLevel;
+            this.motionSensorCallback.Invoke(sensors);
+        }
+
         // ---------- Shake -----------
         protected int _shakeLevel;
         public override int shakeLevel
@@ -21,22 +34,33 @@ namespace toio.Simulator
             internal set
             {
                 if (this._shakeLevel!=value){
-                    this.shakeCallback?.Invoke(value);
+                    this.InvokeMotionSensorCallback();
                 }
                 this._shakeLevel = value;
             }
-        }
-        protected System.Action<int> shakeCallback = null;
-        public override void StartNotification_Shake(System.Action<int> action)
-        {
-            this.shakeCallback = action;
-            this.shakeCallback.Invoke(_shakeLevel);
         }
         protected virtual void SimulateShake()
         {
             // Not Implemented
         }
 
+        // ----------- Simulate -----------
+        protected override void SimulateMotionSensor()
+        {
+            base.SimulateMotionSensor();
+
+            SimulateShake();
+        }
+
+        // ---------- Request Sensor -----------
+        public override void RequestSensor()
+        {
+            this.InvokeMotionSensorCallback();
+        }
+
+
+
+        // ============ Motor ============
 
         // ---------- Motor Speed -----------
         protected bool motorSpeedEnabled = false;
@@ -60,6 +84,8 @@ namespace toio.Simulator
             this.leftMotorSpeed = left;
             this.rightMotorSpeed = right;
         }
+
+        // ----------- Simulate -----------
         protected void SimulateMotorSpeedSensor()
         {
             int left = Mathf.RoundToInt(speedTireL/CubeSimulator.VMeterOverU);
@@ -78,15 +104,6 @@ namespace toio.Simulator
             this.motorSpeedEnabled = enabled;
             this.configMotorReadCallback?.Invoke(enabled);  // TODO probably not same as REAL
             // this.motorReadCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
-        }
-
-
-        // ----------- Simulate -----------
-        protected override void SimulateMotionSensor()
-        {
-            base.SimulateMotionSensor();
-
-            SimulateShake();
         }
 
 
