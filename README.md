@@ -59,7 +59,7 @@ public class Hello_Toio : MonoBehaviour
 - BLE通信モジュール
   - iOS アプリでキューブと通信する
   - ウェブアプリでキューブと通信する
-  - （開発中：androidアプリでキューブと通信する）
+  - Android アプリでキューブと通信する
   - （開発中：MacのUnity EditorでPlay時にキューブと通信する）
 - Cube
   - 一つのソースコードで、シミュレータとリアルの両方のキューブを同じく動かせる
@@ -80,8 +80,9 @@ public class Hello_Toio : MonoBehaviour
 - toio™コア キューブ
 - toio™専用マット（トイオ・コレクション付属のプレイマット／toio™コア キューブ（単体）付属の簡易プレイマット／toio 開発用プレイマット）
 - Mac（macOS ver.10.14以上）
-    ※WindowsやLinux上ではSDKのシミュレータ機能のみ利用可能です。
+- Windows 10（64 ビット版のみ）
 - iOS端末（iOS ver.12以上）
+- Android端末(Android OS 9.0以上 ※Experimentalで対応中。)
 - Unity（2019.4 LTS）
 
 

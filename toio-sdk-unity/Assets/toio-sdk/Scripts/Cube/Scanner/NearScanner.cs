@@ -36,7 +36,7 @@ namespace toio
         // --- public methods ---
         public NearScanner(int satisfiedNum, NearScannerInterface impl = null)
         {
-#if UNITY_WEBGL
+#if !UNITY_EDITOR && UNITY_WEBGL
             Debug.Log("[NearScanner]NearScanner doesn't run on the web");
 #endif
             if (null != impl)
