@@ -33,10 +33,10 @@ namespace toio.Simulator
             get {return this._shakeLevel;}
             internal set
             {
-                if (this._shakeLevel!=value){
+                if (this._shakeLevel != value){
+                    this._shakeLevel = value;
                     this.InvokeMotionSensorCallback();
                 }
-                this._shakeLevel = value;
             }
         }
         protected virtual void SimulateShake()
