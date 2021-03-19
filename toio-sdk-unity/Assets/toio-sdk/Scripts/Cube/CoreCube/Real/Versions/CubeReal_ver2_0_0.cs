@@ -432,7 +432,8 @@ namespace toio
                 if (_isCollisionDetected != this.isCollisionDetected)
                 {
                     this.isCollisionDetected = _isCollisionDetected;
-                    this.collisionCallback.Notify(this);
+                    if (_isCollisionDetected)
+                        this.collisionCallback.Notify(this);
                 }
             }
         }

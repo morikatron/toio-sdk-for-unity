@@ -234,7 +234,8 @@ namespace toio
             if (this.isCollisionDetected != collisionDetected)
             {
                 this.isCollisionDetected = collisionDetected;
-                this.collisionCallback.Notify(this);
+                if (collisionDetected)
+                    this.collisionCallback.Notify(this);
             }
         }
         private void Recv_DoubleTap(bool doubleTap)
@@ -242,7 +243,8 @@ namespace toio
             if (this.isDoubleTap != doubleTap)
             {
                 this.isDoubleTap = doubleTap;
-                this.doubleTapCallback.Notify(this);
+                if (doubleTap)
+                    this.doubleTapCallback.Notify(this);
             }
         }
         private void Recv_Pose(PoseType posed)
