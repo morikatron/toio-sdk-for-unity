@@ -165,6 +165,7 @@ namespace toio.Simulator
         {
             this._collisonDetected = true;
             this.InvokeMotionSensorCallback();
+            this._collisonDetected = false;
         }
 
         // ----------- Simulate -----------

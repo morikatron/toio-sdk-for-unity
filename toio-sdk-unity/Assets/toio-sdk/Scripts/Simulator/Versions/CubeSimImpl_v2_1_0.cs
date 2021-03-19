@@ -876,6 +876,7 @@ namespace toio.Simulator
         {
             this._doubleTapped = true;
             this.InvokeMotionSensorCallback();
+            this._doubleTapped = false;
         }
         protected virtual void SimulateDoubleTap()
         {
