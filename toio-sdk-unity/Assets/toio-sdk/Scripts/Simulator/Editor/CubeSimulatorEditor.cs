@@ -70,7 +70,7 @@ namespace toio.Simulator
                 }
                 EditorGUILayout.Space();
 
-                if (GUILayout.Button("'衝突'を触発"))
+                if (GUILayout.Button("'衝突'を発生"))
                 {
                     cube._TriggerCollision();
                 }
@@ -80,7 +80,7 @@ namespace toio.Simulator
                 if (version.intValue > 0)
                 {
                     // double tap
-                    if (GUILayout.Button("'ダブルタップ'を触発"))
+                    if (GUILayout.Button("'ダブルタップ'を発生"))
                     {
                         cube._TriggerDoubleTap();
                     }

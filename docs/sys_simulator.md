@@ -457,7 +457,7 @@ public override bool sloped
 
 > 衝突検出のシミュレーションは未実装です。
 
-インスペクターで衝突が手動で触発された時に、`TriggerCollision` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
+衝突がインスペクターで手動で発生された時に、`TriggerCollision` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_0_0.cs
@@ -474,7 +474,7 @@ internal override void TriggerCollision()
 > 2.1.0 の機能です。
 ダブルタップのシミュレーションは未実装です。
 
-インスペクターでダブルタップが手動で触発された時に、`TriggerDoubleTap` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
+ダブルタップがインスペクターで手動で押された時に、`TriggerDoubleTap` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_1_0.cs
