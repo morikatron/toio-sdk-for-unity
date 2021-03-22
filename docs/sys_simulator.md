@@ -435,7 +435,7 @@ protected virtual void SimulateMotionSensor()
 }
 ```
 
-`sloped` が変更された時に、対応コールバック `slopeCallback` を呼び出します。
+`sloped` が変更された時に、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_0_0.cs
@@ -446,32 +446,26 @@ public override bool sloped
     internal set
     {
         if (this._sloped!=value){
-            this.slopeCallback?.Invoke(value);
+            this._sloped = value;
+            this.InvokeMotionSensorCallback();
         }
-        this._sloped = value;
     }
 }
 ```
 
 ### 衝突検出
 
-衝突検出のシミュレーションは未実装です。
+> 衝突検出のシミュレーションは未実装です。
 
-`collisionDetected` がインスペクターで手動で変更された時に、対応コールバック `collisionDetectedCallback` を呼び出します。
+衝突がインスペクターで手動で発生された時に、`TriggerCollision` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_0_0.cs
-protected bool _collisionDetected;
-public override bool collisionDetected
+protected bool _collisonDetected = false;
+internal override void TriggerCollision()
 {
-    get {return this._collisionDetected;}
-    internal set
-    {
-        if (this._collisionDetected!=value){
-            this.collisionDetectedCallback?.Invoke(value);
-        }
-        this._collisionDetected = value;
-    }
+    this._collisonDetected = true;
+    this.InvokeMotionSensorCallback();
 }
 ```
 
@@ -480,21 +474,15 @@ public override bool collisionDetected
 > 2.1.0 の機能です。
 ダブルタップのシミュレーションは未実装です。
 
-`doubleTap` がインスペクターで手動で変更された時に、対応コールバック `doubleTapCallback` を呼び出します。
+ダブルタップがインスペクターで手動で押された時に、`TriggerDoubleTap` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_1_0.cs
-protected bool _doubleTap;
-public override bool doubleTap
+protected bool _doubleTapped = false;
+internal override void TriggerDoubleTap()
 {
-    get {return this._doubleTap;}
-    internal set
-    {
-        if (this._doubleTap!=value){
-            this.doubleTapCallback?.Invoke(value);
-        }
-        this._doubleTap = value;
-    }
+    this._doubleTapped = true;
+    this.InvokeMotionSensorCallback();
 }
 ```
 
@@ -534,7 +522,7 @@ protected virtual void SimulateMotionSensor()
 }
 ```
 
-`pose` が変更された時に、対応コールバック `poseCallback` を呼び出します。
+`pose` が変更された時に、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_1_0.cs
@@ -542,10 +530,10 @@ protected Cube.PoseType _pose = Cube.PoseType.up;
 public override Cube.PoseType pose {
     get{ return _pose; }
     internal set{
-        if (this._pose!=value){
-            this.poseCallback?.Invoke(value);
+        if (this._pose != value){
+            this._pose = value;
+            this.InvokeMotionSensorCallback();
         }
-        _pose = value;
     }
 }
 ```
@@ -555,7 +543,7 @@ public override Cube.PoseType pose {
 > 2.2.0 の機能です。
 シェイク検出のシミュレーションは未実装です。
 
-`shakeLevel` がインスペクターで手動で変更された時に、対応コールバック `shakeCallback` を呼び出します。
+`shakeLevel` がインスペクターで手動で変更された時に、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
 ```c#
 // CubeSimImpl_v2_2_0.cs
@@ -565,10 +553,10 @@ public override int shakeLevel
     get {return this._shakeLevel;}
     internal set
     {
-        if (this._shakeLevel!=value){
-            this.shakeCallback?.Invoke(value);
+        if (this._shakeLevel != value){
+            this._shakeLevel = value;
+            this.InvokeMotionSensorCallback();
         }
-        this._shakeLevel = value;
     }
 }
 ```

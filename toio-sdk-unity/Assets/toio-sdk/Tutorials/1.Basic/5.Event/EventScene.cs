@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 namespace toio.tutorial
 {
@@ -24,6 +25,13 @@ namespace toio.tutorial
         void OnCollision(Cube c)
         {
             cube.PlayPresetSound(2);
+            StartCoroutine(DelayedRequestSensor(cube));
+        }
+
+        private IEnumerator DelayedRequestSensor(Cube cube)
+        {
+            yield return new WaitForSecondsRealtime(0.05f);
+            cube.RequestSensor();
         }
 
         void OnSlope(Cube c)

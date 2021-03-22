@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+### Added
+
+- [Cube API] Implement method [`Cube.RequestSensor`](https://toio.github.io/toio-spec/docs/ble_sensor#書き込み操作). (THANKS to contribution from [**zurachu**](https://github.com/zurachu))
+
+### Changed
+
+- [Simulator] Checkbuttons on inspector for simulating collison and double tap are changed to buttons.
+
+### Fixed
+
+- [Simulator] Make motion sensors' behaviour of Simulator same with real cube.
+  - Specifically, change of each sensor will invoke a callback that updates all motion sensors' state in Cube class.
+  - Also, `Cube.isCollisionDetected` or `Cube.isDoubleTap` cannot transit from `true` to `false` **UNTIL** **ANOTHER** sensor invokes an update. **This feature may block callbacks**, therefore calling `Cube.RequestSensor` is suggested to manually force an update.
+
 ## [1.2.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.0) - 2021-02-24
 
 ### Added
