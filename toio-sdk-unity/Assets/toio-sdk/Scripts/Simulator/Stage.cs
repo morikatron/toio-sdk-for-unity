@@ -45,7 +45,7 @@ namespace toio.Simulator
                     CubeInteraction.current = this;
                 }
             }
-            else if (Input.GetMouseButtonUp(1) && CubeInteraction.GetSCA(false,true,false))
+            else if (Input.GetMouseButtonUp(1))
             {
                 if (CubeInteraction.current = this)
                 {
