@@ -68,11 +68,16 @@ namespace toio.Navigation
         /// <summary>
         /// Create Default Walls (Borders)
         /// </summary>
-        public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500){
-            walls.Add(new Wall(1, 0, -x1, width));    // left
-            walls.Add(new Wall(1, 0, -x2, width));    // right
-            walls.Add(new Wall(0, 1, -y1, width));    // top
-            walls.Add(new Wall(0, 1, -y2, width));    // bottom
+        public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500)
+        {
+            Vector lt = new Vector(x1, y1);
+            Vector rt = new Vector(x2, y1);
+            Vector lb = new Vector(x1, y2);
+            Vector rb = new Vector(x2, y2);
+            walls.Add(new Wall(lt, lb, width));    // left
+            walls.Add(new Wall(rt, rb, width));    // right
+            walls.Add(new Wall(lt, rt, width));    // top
+            walls.Add(new Wall(lb, rb, width));    // bottom
         }
 
         /// <summary>

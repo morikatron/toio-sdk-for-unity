@@ -199,52 +199,46 @@ namespace toio.Navigation
         private ScanResult _ScanWall(Wall wall, double[] rads){
 
             ScanResult res = ScanResult.init(rads, range+1);
-            var lineDist = wall.DistToPoint(ego.pos);
+            var egopos = ego.pos;
+
+            var castTry = new CircleCast(egopos, 0, margin);
+            var hitTry = castTry.CastTo(wall);
 
             // currently in collision
-            if (lineDist <= margin + wall.margin){
+            if (hitTry.isOriginHit)
+            {
                 res.isCollision = true;
 
-                // on which side of wall ego is
-                // Vector norm = Sign(wall.norm*ego.pos+wall.c) * wall.norm;
-                var normSign = Sign(wall.a*ego.x + wall.b*ego.y + wall.c);
-                // Vector norm = normSign * wall.norm;
-                var colSeverity = Max(0, margin+wall.margin - lineDist)/margin;
+                var dist2wall = wall.DistToPoint_TruncatedByEnds(egopos);
+                var colSeverity = Max(0, margin + wall.margin - dist2wall) / margin;
 
                 for (int i=0; i<rads.Length; ++i){
                     var rad = rads[i];
-                    // var vUnit = Vector.fromRadMag(rad, 1);
+                    var repulsionDir = wall.RepulsionDirToPoint(egopos);
 
                     if (useSafety){
-                        res.safety[i] = Cos(AbsRad(rads[i] - Atan2(wall.b*normSign, wall.a*normSign))) * (1 + colSeverity);
+                        res.safety[i] = Cos(AbsRad(rads[i] - repulsionDir.rad)) * (1 + colSeverity);
                     }
                     else{
-                        // var dist = Max(0.1, vUnit * norm * 100);
-                        var dist = Max(0.1, (Cos(rad)*wall.a + Sin(rad)*wall.b)*normSign * 100);
+                        var dist = Max(0.1, Vector.fromRadMag(rad,1) * repulsionDir * 100);
                         res.dists[i] = dist;
                     }
                 }
             }
             // not in collision
             else{
-                var border = wall.GetBorder(ego.pos, margin);
                 for (int i=0; i<rads.Length; ++i){
                     var rad = rads[i];
-                    // var vUnit = Vector.fromRadMag(rad, 1);
-                    // Line ray = new Line(ego.pos, ego.pos + vUnit);
-                    var vx = Cos(rad); var vy = Sin(rad);
-                    Line ray = new Line(vy, -vx, -vy*ego.x+vx*ego.y);
-                    var intersect = border.Intersect(ray);
+                    var cast = new CircleCast(egopos, rad, margin);
+                    var hit = cast.CastTo(wall);
 
-                    if (intersect.isNull) continue;
-                    var dx = intersect.x-ego.x;
-                    var dy = intersect.y-ego.y;
-                    if (AbsRad(Atan2(dy, dx) - rad) < 0.01){
-                        var dist = Math.Sqrt(dx*dx+dy*dy);
+                    // No hit
+                    if (!hit.isHit) continue;
 
-                        if (dist < res.dists[i]){
-                            res.dists[i] = dist;
-                        }
+                    // Hit
+                    var dist = hit.dist;
+                    if (dist < res.dists[i]){
+                        res.dists[i] = dist;
                     }
                 }
             }

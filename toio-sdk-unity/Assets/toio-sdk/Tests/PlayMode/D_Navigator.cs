@@ -54,7 +54,7 @@ namespace toio.Tests
         }
 
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public static IEnumerator b_BorderSingleIn()
+        public static IEnumerator b_BorderGoOut()
         {
             var cube = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
             var navigator = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];
@@ -91,7 +91,7 @@ namespace toio.Tests
 
 
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
-        public static IEnumerator b_BorderSingleOut()
+        public static IEnumerator b_BorderGoIn()
         {
             var cube = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
             var navigator = cubeManager.navigators[GetCubeIdxFromHomeIdx(0)];

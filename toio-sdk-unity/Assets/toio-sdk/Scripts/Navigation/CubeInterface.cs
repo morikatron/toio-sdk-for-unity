@@ -117,6 +117,8 @@ namespace toio.Navigation{
             (ego as CubeEntity).Update(this.usePred);
         }
 
+        // public void Draw
+
 
         /// <summary>
         /// Navigate to target position with x, y
@@ -258,10 +260,14 @@ namespace toio.Navigation{
         /// Create Default Walls (Borders)
         /// </summary>
         public void AddBorder(int width, RectInt rect){
-            walls.Add(new Wall(1, 0, -rect.xMin, width));    // left
-            walls.Add(new Wall(1, 0, -rect.xMax, width));    // right
-            walls.Add(new Wall(0, 1, -rect.yMin, width));    // top
-            walls.Add(new Wall(0, 1, -rect.yMax, width));    // bottom
+            Vector lt = new Vector(rect.xMin, rect.yMin);
+            Vector rt = new Vector(rect.xMax, rect.yMin);
+            Vector lb = new Vector(rect.xMin, rect.yMax);
+            Vector rb = new Vector(rect.xMax, rect.yMax);
+            walls.Add(new Wall(lt, lb, width));    // left
+            walls.Add(new Wall(rt, rb, width));    // right
+            walls.Add(new Wall(lt, rt, width));    // top
+            walls.Add(new Wall(lb, rb, width));    // bottom
         }
 
     }
