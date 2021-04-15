@@ -1,7 +1,7 @@
 using System;
 using static toio.MathUtils.Utils;
 using Vector = toio.MathUtils.Vector;
-
+using UnityEngine;
 
 namespace toio.Navigation
 {
@@ -81,7 +81,7 @@ namespace toio.Navigation
         public Vector origin;
         public double rad;
         public double r;
-        public Vector dir { get { return new Vector(Math.Cos(r), Math.Sin(r));} }
+        public Vector dir { get { return new Vector(Math.Cos(rad), Math.Sin(rad));} }
 
         public CircleCast(Vector origin, double rad, double r)
         {
@@ -280,16 +280,20 @@ namespace toio.Navigation
     {
         public Line(Vector point1, Vector point2) : base(point1, point2) {}
 
-        public CircleCastHit CircleCastHandle_ExceptEnds(CircleCast cast)
+        protected CircleCastHit CircleCastHandle_ExceptEnds(CircleCast cast)
         {
-            // Already collided at origin position
             if (this.DistToPoint(cast.origin) < cast.r)
             {
-                return new CircleCastHit
-                (
-                    isHit:true, isOriginHit:true, originCirclePos:cast.origin,
-                    hitCirclePos:cast.origin, contactPos:FootPoint(cast.origin)
-                );
+                // Already collided at origin position
+                if (this.FootOnThis(cast.origin))
+                    return new CircleCastHit
+                    (
+                        isHit:true, isOriginHit:true, originCirclePos:cast.origin,
+                        hitCirclePos:cast.origin, contactPos:FootPoint(cast.origin)
+                    );
+                // Except Collide Inside out
+                else
+                    return CircleCastHit.NotHit(cast.origin);
             }
 
             // Detect collision between ends
@@ -307,7 +311,7 @@ namespace toio.Navigation
             // No Collision
             return CircleCastHit.NotHit(cast.origin);
         }
-        public CircleCastHit CircleCastHandle_Ends(CircleCast cast)
+        protected CircleCastHit CircleCastHandle_Ends(CircleCast cast)
         {
             Point p1 = new Point(point1);
             Point p2 = new Point(point2);
@@ -355,6 +359,10 @@ namespace toio.Navigation
         public double margin {get; set;}
 
         public Wall(Vector point1, Vector point2, double margin=0) : base(point1, point2){
+            this.margin = margin;
+        }
+        public Wall(double x1, double y1, double x2, double y2, double margin=0) :
+            base(new Vector(x1, y1), new Vector(x2, y2)){
             this.margin = margin;
         }
         // public Wall(double a, double b, double c, double margin=0) : base(a, b, c){
