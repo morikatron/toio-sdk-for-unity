@@ -68,7 +68,7 @@ namespace toio.Navigation
         /// <summary>
         /// Create Default Walls (Borders)
         /// </summary>
-        public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500)
+        public void AddBorder(int width=20, int x1=40, int x2=460, int y1=40, int y2=460)
         {
             Vector lt = new Vector(x1, y1);
             Vector rt = new Vector(x2, y1);
@@ -128,6 +128,14 @@ namespace toio.Navigation
         public void SetRelation(List<Navigator> others, Relation relation){
             foreach (var o in others)
                 SetRelation(o, relation);
+        }
+
+        /// <summary>
+        /// IEnumerable for walls
+        /// </summary>
+        public System.Collections.Generic.IEnumerable<Wall> Walls()
+        {
+            foreach (var wall in walls) yield return wall;
         }
 
         /// <summary>

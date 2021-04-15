@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vector = toio.MathUtils.Vector;
 using static System.Math;
+using toio.Simulator;
 
 
 namespace toio.Navigation{
@@ -70,7 +71,7 @@ namespace toio.Navigation{
             this.boids = new Boids(ego); this.avoid = new HLAvoid(ego);
 
             // Add borders
-            AddBorder(70);
+            AddBorder(20);
 
             // Auto appending of others' _other
             foreach (var o in gNavigators)
@@ -86,7 +87,7 @@ namespace toio.Navigation{
             this.boids = new Boids(ego); this.avoid = new HLAvoid(ego);
 
             // Add borders
-            AddBorder(70);
+            AddBorder(20);
 
             // Auto appending of others' _other
             foreach (var o in gNavigators)
@@ -116,8 +117,6 @@ namespace toio.Navigation{
             this.handle.Update();
             (ego as CubeEntity).Update(this.usePred);
         }
-
-        // public void Draw
 
 
         /// <summary>
