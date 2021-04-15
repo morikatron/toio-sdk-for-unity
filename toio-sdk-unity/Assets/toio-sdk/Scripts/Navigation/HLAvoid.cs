@@ -525,6 +525,8 @@ namespace toio.Navigation
 
             // ==== make result ====
             res.rads = rads;
+            res.isCollision = resCol.isCollision;
+            if (resCol.isCollision && useSafety) Array.Copy(resCol.safety, res.safety, res.safety.Length);
             scanResult = res;
             return (waypoint, resCol.isCollision, speedLimit);
         }
@@ -623,6 +625,8 @@ namespace toio.Navigation
 
             // ==== make result ====
             res.rads = rads;
+            res.isCollision = resCol.isCollision;
+            if (resCol.isCollision && useSafety) Array.Copy(resCol.safety, res.safety, res.safety.Length);
             scanResult = res;
             return (waypoint, resCol.isCollision, speedLimit);
         }
