@@ -18,7 +18,13 @@ public class Sample_VisualizeNavigator : MonoBehaviour
         await cubeManager.SingleConnect();
 
         var navi = cubeManager.navigators[0];
-        navi.AddWall(new Wall(200, 300, 300, 250, 10));
+        navi.ClearWall();
+        // Set new borders
+        navi.AddBorder(10, 60, 440, 60, 440);
+        // Set triangle shaped walls
+        navi.AddWall(new Wall(250, 200, 200, 300, 10));
+        navi.AddWall(new Wall(250, 200, 300, 300, 10));
+        navi.AddWall(new Wall(200, 300, 300, 300, 10));
 
         // Get stage
         stage = GameObject.FindObjectOfType<Stage>();
@@ -97,6 +103,6 @@ public class Sample_VisualizeNavigator : MonoBehaviour
     {
         var upos1 = stage.mat.MatCoord2UnityCoord((float)x1, (int)y1);
         var upos2 = stage.mat.MatCoord2UnityCoord((float)x2, (int)y2);
-        Debug.DrawLine(upos1, upos2, color, 0.033f);
+        Debug.DrawLine(upos1, upos2, color, 0.05f);
     }
 }
