@@ -199,7 +199,7 @@ namespace toio.Tests
             await UniTask.Delay(4000);
             assert.AreEqual(false, cube.isConnected);
 
-            await cubeManager.SingleConnect();
+            cube = await cubeManager.SingleConnect();
             assert.AreEqual(true, cube.isConnected);
 #endif
         });
