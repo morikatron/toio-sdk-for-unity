@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.Assertions;
 using System.IO;
+using Cysharp.Threading.Tasks;
 
 // 省略
 using test = toio.Tests.BasicTestMonoBehaviour;
@@ -187,5 +188,21 @@ namespace toio.Tests
             test.update = test.UpdateForSeconds(5);
             yield return new MonoBehaviourTest<test>();
         }
+
+        [UnityTest, Order(7)] // テストの実行の優先度を指定する(昇順)
+        public static IEnumerator Disconnect() => UniTask.ToCoroutine(async () =>
+        {
+#if !UNITY_EDITOR
+            var cube = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
+
+            cubeManager.Disconnect(cube);
+            await UniTask.Delay(4000);
+            assert.AreEqual(false, cube.isConnected);
+
+            await cubeManager.SingleConnect();
+            assert.AreEqual(true, cube.isConnected);
+#endif
+        });
+
     }
 }
