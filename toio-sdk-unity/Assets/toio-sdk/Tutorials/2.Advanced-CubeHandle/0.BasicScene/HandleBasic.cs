@@ -5,7 +5,6 @@ namespace toio.tutorial
 {
     public class HandleBasic : MonoBehaviour
     {
-        public bool useCubeManager = false;
 
         // Without CubeManager
         float intervalTime = 0.05f;
@@ -27,6 +26,7 @@ namespace toio.tutorial
             Debug.Log(126666666666663);
             var cube = cubeManager.cubes[0];
             cubeManager.Disconnect(cube);
+            
         }
         public async void bu2()
         {

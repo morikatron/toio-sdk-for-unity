@@ -43,7 +43,11 @@ namespace toio
         /// </summary>
         public void Disconnect()
         {
+            Debug.Log("11111111111");
+            Debug.Log(this.device_address);
             Ble.DisconnectPeripheral(this.device_address);
+            Debug.Log(this.device_address);
+            Debug.Log("222222222");
         }
 
         /// <summary>
