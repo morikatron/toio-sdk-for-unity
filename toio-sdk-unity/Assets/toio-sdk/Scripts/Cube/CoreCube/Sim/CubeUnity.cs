@@ -28,15 +28,11 @@ namespace toio
                 simulator.StartNotification_StandardIDMissed(this.Recv_StandardIdMissed);
                 simulator.StartNotification_PositionIDMissed(this.Recv_PositionIdMissed);
 
-                simulator.StartNotification_Sloped(this.Recv_Sloped);
-                simulator.StartNotification_CollisionDetected(this.Recv_CollisionDetected);
+                simulator.StartNotification_MotionSensor(this.Recv_MotionSensor);
 
-                simulator.StartNotification_DoubleTap(this.Recv_DoubleTap);
-                simulator.StartNotification_Pose(this.Recv_Pose);
                 simulator.StartNotification_TargetMove(this.Recv_TargetMove);
                 simulator.StartNotification_MultiTargetMove(this.Recv_MultiTargetMove);
 
-                simulator.StartNotification_Shake(this.Recv_Shake);
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
                 simulator.StartNotification_ConfigMotorRead(this.Recv_ConfigMotorRead);
 
@@ -206,29 +202,70 @@ namespace toio
             this.standardIdMissedCallback.Notify(this);
         }
 
+        // ---------- Motion Sensor Receiver ----------
+        private void Recv_MotionSensor(object[] sensors)
+        {
+            // To align with Specification, sensors[0] is set null.
+            // https://toio.github.io/toio-spec/docs/ble_sensor#モーションセンサー情報の取得
+            for (int i=1; i<sensors.Length; i++)
+            {
+                if (i==1)       // slopped
+                    this.Recv_Sloped( (bool)sensors[i] );
+                else if (i==2)  // collision
+                    this.Recv_CollisionDetected( (bool)sensors[i] );
+                else if (i==3)  // double tap
+                    this.Recv_DoubleTap( (bool)sensors[i] );
+                else if (i==4)  // pose
+                    this.Recv_Pose( (Cube.PoseType)sensors[i] );
+                else if (i==5)  // shake
+                    this.Recv_Shake( (int)sensors[i] );
+            }
+        }
         private void Recv_Sloped(bool sloped)
         {
-            this.isSloped = sloped;
-            this.slopeCallback.Notify(this);
+            if (this.isSloped != sloped)
+            {
+                this.isSloped = sloped;
+                this.slopeCallback.Notify(this);
+            }
         }
-
         private void Recv_CollisionDetected(bool collisionDetected)
         {
-            this.isCollisionDetected = collisionDetected;
-            this.collisionCallback.Notify(this);
+            if (this.isCollisionDetected != collisionDetected)
+            {
+                this.isCollisionDetected = collisionDetected;
+                if (collisionDetected)
+                    this.collisionCallback.Notify(this);
+            }
         }
-
         private void Recv_DoubleTap(bool doubleTap)
         {
-            this.isDoubleTap = doubleTap;
-            this.doubleTapCallback.Notify(this);
+            if (this.isDoubleTap != doubleTap)
+            {
+                this.isDoubleTap = doubleTap;
+                if (doubleTap)
+                    this.doubleTapCallback.Notify(this);
+            }
         }
-
         private void Recv_Pose(PoseType posed)
         {
-            this.pose = posed;
-            this.poseCallback.Notify(this);
+            if (this.pose != posed)
+            {
+                this.pose = posed;
+                this.poseCallback.Notify(this);
+            }
         }
+        private void Recv_Shake(int shakeLevel)
+        {
+            if (this.shakeLevel != shakeLevel)
+            {
+                this.shakeLevel = shakeLevel;
+                this.shakeCallback.Notify(this);
+            }
+        }
+
+
+        // ---------- Motor Response Receiver ----------
 
         private void Recv_TargetMove(int configID, TargetMoveRespondType response)
         {
@@ -239,11 +276,6 @@ namespace toio
             // this.multiTargetMoveCallback.Notify(this, configID, response);
         }
 
-        private void Recv_Shake(int shakeLevel)
-        {
-            this.shakeLevel = shakeLevel;
-            this.shakeCallback.Notify(this);
-        }
 
         private void Recv_MotorSpeed(int left, int right)
         {
@@ -447,5 +479,9 @@ namespace toio
             callback?.Invoke(true, this);
         }
 
+        public override void RequestSensor(ORDER_TYPE order)
+        {
+            this.simulator.RequestSensor();
+        }
     }
 }

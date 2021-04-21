@@ -54,32 +54,25 @@ namespace toio.Simulator
 
 
         // ============ Motion Sensor ============
+        public virtual void StartNotification_MotionSensor(System.Action<object[]> action)
+        { NotSupportedWarning(); }
+
         // ---------- 2.0.0 ----------
         // Sloped
         public virtual bool sloped {
             get{ NotSupportedWarning(); return default; }
             internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_Sloped(System.Action<bool> action)
-        { NotSupportedWarning(); }
 
         // Collision Detected
-        public virtual bool collisionDetected {
-            get{ NotSupportedWarning(); return default; }
-            internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_CollisionDetected(System.Action<bool> action)
+        internal virtual void TriggerCollision()
         { NotSupportedWarning(); }
         // ---------- 2.1.0 ----------
         // Pose
         public virtual Cube.PoseType pose {
             get{ NotSupportedWarning(); return default; }
             internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_Pose(System.Action<Cube.PoseType> action)
-        { NotSupportedWarning(); }
         // Double Tap
-        public virtual bool doubleTap {
-            get{ NotSupportedWarning(); return default; }
-            internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_DoubleTap(System.Action<bool> action)
+        internal virtual void TriggerDoubleTap()
         { NotSupportedWarning(); }
         // Target Move
         public virtual void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
@@ -93,8 +86,6 @@ namespace toio.Simulator
         public virtual int shakeLevel {
             get{ NotSupportedWarning(); return default; }
             internal set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_Shake(System.Action<int> action)
-        { NotSupportedWarning(); }
         // Motor Speed
         public virtual int leftMotorSpeed {
             get{ NotSupportedWarning(); return default; }
@@ -202,6 +193,9 @@ namespace toio.Simulator
 
         // ---------- 2.2.0 ----------
         public virtual void ConfigMotorRead(bool enabled)
+        { NotSupportedWarning(); }
+
+        public virtual void RequestSensor()
         { NotSupportedWarning(); }
 
         protected virtual void NotSupportedWarning()
