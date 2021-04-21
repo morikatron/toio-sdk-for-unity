@@ -18,76 +18,20 @@ namespace toio.tutorial
 
         async void Start()
         {
-            if (!useCubeManager) // Without CubeManager
-            {
-
-                var peripheral = await new NearScanner(2).Scan();
-                var cubes = await new CubeConnecter().Connect(peripheral);
-                this.handles = new List<CubeHandle>();
-                foreach (var cube in cubes)
-                    this.handles.Add(new CubeHandle(cube));
-
-                this.started = true;
-
-            }
-            else // With CubeManager
-            {
-
-                cubeManager = new CubeManager();
-                await cubeManager.MultiConnect(2);
-
-            }
+            cubeManager = new CubeManager();
+            await cubeManager.MultiConnect(1);
         }
 
-        void Update()
+        public void bu1()
         {
-
-            if (!useCubeManager) // Without CubeManager
-            {
-
-                if (!started) return;
-
-                elapsedTime += Time.deltaTime;
-
-                if (intervalTime < elapsedTime) // intervalTime=0.05秒 ごとに実行
-                {
-                    foreach (var handle in this.handles)
-                        handle.Update();
-
-                    foreach (var handle in this.handles)
-                        handle.MoveRaw(-50, 50, 1000);
-
-                    elapsedTime = 0.0f;
-                }
-
-            }
-            else // With CubeManager
-            {
-
-                // ------ Async ------
-                foreach (var handle in cubeManager.handles)
-                {
-                    if (cubeManager.IsControllable(handle))
-                    {
-                        handle.Update();
-                        handle.MoveRaw(-50, 50, 1000);
-                    }
-                }
-
-                // ------ Sync ------
-                // if (cubeManager.synced)
-                // {
-                //     cubeManager.handles[0].MoveRaw(-50, 50, 1000);
-                // }
-
-                // ------ Sync ------
-                // foreach (var handle in cubeManager.syncHandles)
-                // {
-                //     handle.MoveRaw(-50, 50, 1000);
-                // }
-
-            }
+            Debug.Log(126666666666663);
+            var cube = cubeManager.cubes[0];
+            cubeManager.Disconnect(cube);
         }
+        public async void bu2()
+        {
+            var cube = await cubeManager.SingleConnect();
+        }         
     }
 
 }

@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/0.BasicScene.unity
     guid: e6ea298340acd41fd8971c8ed14186c5
+  - enabled: 0
+    path: Assets/toio-sdk/Samples/Debug_Disconnect/Debug_Disconnect.unity
+    guid: c340f1fdc27a44a659cdefc3549b0433
+  - enabled: 1
+    path: Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/0.BasicScene/0.BasicScene.unity
+    guid: 0bc4b6843e7678691b6867ea90854349
   m_configObjects: {}

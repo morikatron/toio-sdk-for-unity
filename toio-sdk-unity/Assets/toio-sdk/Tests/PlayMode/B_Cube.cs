@@ -194,13 +194,14 @@ namespace toio.Tests
         {
 #if !UNITY_EDITOR
             var cube = cubeManager.cubes[GetCubeIdxFromHomeIdx(0)];
-
+            Debug.Log("1");
             cubeManager.Disconnect(cube);
             await UniTask.Delay(4000);
             assert.AreEqual(false, cube.isConnected);
-
+            Debug.Log("２");
             cube = await cubeManager.SingleConnect();
             assert.AreEqual(true, cube.isConnected);
+            Debug.Log("３");
 #endif
         });
 
