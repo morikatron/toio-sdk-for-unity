@@ -45,7 +45,7 @@ namespace toio
         {
             Debug.Log("11111111111");
             Debug.Log(this.device_address);
-            Ble.DisconnectPeripheral(this.device_address);
+            Ble.DisconnectPeripheral(this.device_address, this.OnDisconnected2);
             Debug.Log(this.device_address);
             Debug.Log("222222222");
         }
@@ -89,9 +89,17 @@ namespace toio
         /// </summary>
         private void OnDisconnected(string device_address)
         {
+            Debug.Log("OnDisconnected");
             device_address = device_address.ToUpper();
             this.isConnected = false;
             this.ConnectionNotify(this);
+        }
+
+        private void OnDisconnected2(string device_address)
+        {
+            Debug.Log("OnDisconnected2");
+            device_address = device_address.ToUpper();
+            this.isConnected = false;
         }
     }
 }
