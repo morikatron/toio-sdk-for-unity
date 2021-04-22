@@ -290,16 +290,15 @@ namespace toio
                 if (!peripheral.isConnected)
                 {
                     Debug.Log("OnConnectionEvent 1");
-                    /*
+                    if (!this.peripheralTable.ContainsKey(peripheral.device_address)) { return; }
+
                     var instance = this.peripheralTable[peripheral.device_address];
                     this.peripheralTable.Remove(instance.device_address);
                     this.peripheralList.Remove(instance);
-
                     if (!this.isScanning && this.autoRunning)
                     {
                         this.ScanAsync(this.coroutineObject, this.callback, this.autoRunning);
                     }
-                    */
                 }
             }
         }
