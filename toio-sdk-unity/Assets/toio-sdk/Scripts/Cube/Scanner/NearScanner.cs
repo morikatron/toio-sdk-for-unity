@@ -286,8 +286,11 @@ namespace toio
 
             private void OnConnectionEvent(BLEPeripheralInterface peripheral)
             {
+                Debug.Log("OnConnectionEvent");
                 if (!peripheral.isConnected)
                 {
+                    Debug.Log("OnConnectionEvent 1");
+                    /*
                     var instance = this.peripheralTable[peripheral.device_address];
                     this.peripheralTable.Remove(instance.device_address);
                     this.peripheralList.Remove(instance);
@@ -296,6 +299,7 @@ namespace toio
                     {
                         this.ScanAsync(this.coroutineObject, this.callback, this.autoRunning);
                     }
+                    */
                 }
             }
         }
