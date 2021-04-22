@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vector = toio.MathUtils.Vector;
 using static System.Math;
-using toio.Simulator;
 
 
 namespace toio.Navigation{
