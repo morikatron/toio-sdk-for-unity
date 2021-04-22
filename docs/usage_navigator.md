@@ -118,7 +118,17 @@ public Vector boidsVector { get; }  // ボイドの結果ベクトル（バッ�
 
 ## 2.5. メソッド
 
-### 壁を設定
+### 壁を取得・設定
+
+> サンプル [Sample_VisualizeNavigator](/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/) と [Sample_MultiMat](/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/) を参考にしてください。
+
+#### Walls
+
+```c#
+public System.Collections.Generic.IEnumerable<Wall> Walls();
+```
+
+壁の反復子を取得します。
 
 #### AddWall
 
@@ -566,7 +576,7 @@ public double p_runaway_range = 250;            // スキャン結果をp_runawa
 デバッグに便利です。
 
 ```c#
-// 保存した最後の計算結果
+// 保存した最新の計算結果
 public ScanResult scanResult;   // スキャン結果
 public int waypointIndex = 0;   // 選択したウェイポイントのインデックス
 ```

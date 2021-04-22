@@ -25,7 +25,7 @@ public class Sample_MultiMat : MonoBehaviour
 
             handle.borderRect = new RectInt(95, 95, 720, 720);
             navi.ClearWall();
-            navi.AddBorder(70, x1:0, x2:910, y1:0, y2:910);
+            navi.AddBorder(30, x1:0, x2:910, y1:0, y2:910);
         }
     }
 
