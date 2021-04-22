@@ -47,7 +47,7 @@ namespace toio.Simulator
             }
             else if (Input.GetMouseButtonUp(1))
             {
-                if (CubeInteraction.current = this)
+                if (CubeInteraction.current==this)
                 {
                     OnRightUp();
                     CubeInteraction.current = null;
