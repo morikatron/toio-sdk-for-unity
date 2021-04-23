@@ -49,6 +49,7 @@ public class Debug_Disconnect : MonoBehaviour
                 _timeout = 0f;
                 if (state == State.Scan)
                 {
+                    Debug.Log("[State.Scan] Start");
                     Ble.Initialize(() => {
                         string[] uuids = { SERVICE_UUID };
                         // 端末のBLE機能変数を取得
@@ -60,12 +61,15 @@ public class Debug_Disconnect : MonoBehaviour
                             Debug.LogFormat("[StartScan-Received] device_address: {0}, device_name: {1}, rssi: {2}, bytes: {3}", device_address, device_name, rssi, bytes);
                             Ble.StopScan();
                             SetState(State.Connect, 1f);
+                            Debug.Log("[State.Scan] SetState(State.Connect)");
                         });
                     });
+                    Debug.Log("[State.Scan] End");
                 }
                 if (state == State.Connect)
                 {
-                    Debug.Log("[ConnectToPeripheral-Start]");
+                    Debug.Log("[State.Connect] Start");
+                    Debug.LogFormat("[ConnectToPeripheral-Start]");
                     // peripheral(デバイス)に接続して全てのcharacteristic(機能)を取得
                     Ble.ConnectToPeripheral(this.device_address, (device_address) =>
                     {
@@ -73,31 +77,38 @@ public class Debug_Disconnect : MonoBehaviour
                     },
                     null, (address, serviceUUID, characteristicUUID) =>
                     {
-                        Debug.LogFormat("[ConnectToPeripheral-Received]connectedCharacteristic. address: {0}, serviceUUID: {1}, characteristicUUID: {2}", address, serviceUUID, characteristicUUID);
+                        Debug.LogFormat("[ConnectToPeripheral-Received]connectedCharacteristic. address: {0}, serviceUUID: {1}, characteristicUUID: {2}, charaIds_Cnt: {3}", address, serviceUUID, characteristicUUID, characteristicIDs.Count);
                         this.serviceUUID = serviceUUID;
                         characteristicIDs.Add(characteristicUUID);
                         // 全てのcharacteristicへの接続を確認
                         if (characteristicIDs.Count == 8)
                         {
                             SetState(State.Subscribe, 1f);
+                            Debug.Log("[State.Connect] SetState(State.Subscribe)");
                         }
                     }, (device_address) =>
                     {
                         Debug.LogFormat("[ConnectToPeripheral-Received]disconnectedPeripheral. device_address: {0}", device_address);
                     });
+                    Debug.Log("[State.Connect] End");
                 }
                 if (state == State.Subscribe)
                 {
+                    Debug.Log("[State.Subscribe] Start");
                     // 座標や角度を定期受信出来るように購読開始
                     Ble.SubscribeCharacteristic(this.device_address, this.serviceUUID, CHARACTERISTIC_ID, Recv_Id);
                     SetState(State.Control, 1f);
+                    Debug.Log("[State.Subscribe] SetState(State.Control)");
+                    Debug.Log("[State.Subscribe] End");
                 }
                 if (state == State.Control)
                 {
+                    Debug.Log("[State.Control] Start");
                     this.controlCnt++;
                     if (15 < this.controlCnt)
                     {
                         SetState(State.Disconnect, 0.5f);
+                        Debug.Log("[State.Control] SetState(State.Disconnect)");
                     }
                     else
                     {
@@ -109,16 +120,21 @@ public class Debug_Disconnect : MonoBehaviour
                         Ble.WriteCharacteristic(this.device_address, this.serviceUUID, CHARACTERISTIC_MOTOR, buff, buff.Length, false, null);
                         // 送信処理を200ミリ秒間隔で実行
                         SetState(State.Control, 0.2f);
+                        Debug.Log("[State.Control] SetState(State.Control)");
                     }
+                    Debug.Log("[State.Control] End");
                 }
                 if (state == State.Disconnect)
                 {
+                    Debug.Log("[State.Disconnect] Start");
                     Debug.Log("[DisconnectPeripheral-Start]");
                     Ble.DisconnectPeripheral(this.device_address, (device_address)=> {
                         Debug.LogFormat("[DisconnectPeripheral-Received]device_address: {0}", device_address);
                         Debug.Log("切断が完了したため、再びスキャンを行います");
                         SetState(State.Scan);
+                        Debug.Log("[State.Disconnect] SetState(State.Scan)");
                     });
+                    Debug.Log("[State.Disconnect] End");
                 }
             }
         }
