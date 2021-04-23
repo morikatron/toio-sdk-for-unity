@@ -203,6 +203,7 @@ namespace toio.Tests
             cube = await cubeManager.SingleConnect();
             assert.AreEqual(true, cube.isConnected);
 #endif
+            await UniTask.Delay(1);
         });
     }
 }
