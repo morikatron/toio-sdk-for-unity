@@ -188,7 +188,7 @@ namespace toio
 
             private void OnConnectionEvent(BLEPeripheralInterface peripheral)
             {
-                if (!peripheral.isConnected)
+                if (!peripheral.isConnected && this.peripheralTable.ContainsKey(peripheral.device_address))
                 {
                     var instance = this.peripheralTable[peripheral.device_address];
                     this.peripheralTable.Remove(instance.device_address);

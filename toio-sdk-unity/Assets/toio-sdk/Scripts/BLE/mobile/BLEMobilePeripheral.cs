@@ -89,19 +89,11 @@ namespace toio
         /// </summary>
         private void OnDisconnected(string device_address)
         {
-            Debug.Log("OnDisconnected");
             if (this.isConnected)
             {
                 this.isConnected = false;
                 this.ConnectionNotify(this);
             }
-        }
-
-        private void OnDisconnected2(string device_address)
-        {
-            Debug.Log("OnDisconnected2");
-            device_address = device_address.ToUpper();
-            this.isConnected = false;
         }
     }
 }
