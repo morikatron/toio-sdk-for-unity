@@ -50,7 +50,6 @@ public class Debug_Disconnect : MonoBehaviour
                 if (state == State.Scan)
                 {
                     Debug.Log("[State.Scan] Start");
-                    /*
                     Ble.Initialize(() => {
                         string[] uuids = { SERVICE_UUID };
                         // 端末のBLE機能変数を取得
@@ -65,7 +64,6 @@ public class Debug_Disconnect : MonoBehaviour
                             Debug.Log("[State.Scan] SetState(State.Connect)");
                         });
                     });
-                    */
                     Debug.Log("[State.Scan] End");
                 }
                 else if (state == State.Connect)
