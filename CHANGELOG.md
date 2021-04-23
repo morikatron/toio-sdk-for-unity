@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Also, `Cube.isCollisionDetected` or `Cube.isDoubleTap` cannot transit from `true` to `false` **UNTIL** **ANOTHER** sensor invokes an update. **This feature may block callbacks**, therefore calling `Cube.RequestSensor` is suggested to manually force an update.
 - [Simulator.Mat] Fix developerMat number unable to switch from inspector issue.
 - [Simulator.Stage] Fix targetPole operation issue.
-- [BLE] Fix error where peripheral.disconnect when using iOS plugin.
+- [BLE] Fix error of peripheral.disconnect when using iOS plugin.
 
 ## [1.2.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.0) - 2021-02-24
 
