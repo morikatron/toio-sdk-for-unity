@@ -50,6 +50,7 @@ public class Debug_Disconnect : MonoBehaviour
                 if (state == State.Scan)
                 {
                     Debug.Log("[State.Scan] Start");
+                    /*
                     Ble.Initialize(() => {
                         string[] uuids = { SERVICE_UUID };
                         // 端末のBLE機能変数を取得
@@ -64,9 +65,10 @@ public class Debug_Disconnect : MonoBehaviour
                             Debug.Log("[State.Scan] SetState(State.Connect)");
                         });
                     });
+                    */
                     Debug.Log("[State.Scan] End");
                 }
-                if (state == State.Connect)
+                else if (state == State.Connect)
                 {
                     Debug.Log("[State.Connect] Start");
                     Debug.LogFormat("[ConnectToPeripheral-Start]");
@@ -92,7 +94,7 @@ public class Debug_Disconnect : MonoBehaviour
                     });
                     Debug.Log("[State.Connect] End");
                 }
-                if (state == State.Subscribe)
+                else if (state == State.Subscribe)
                 {
                     Debug.Log("[State.Subscribe] Start");
                     // 座標や角度を定期受信出来るように購読開始
@@ -101,7 +103,7 @@ public class Debug_Disconnect : MonoBehaviour
                     Debug.Log("[State.Subscribe] SetState(State.Control)");
                     Debug.Log("[State.Subscribe] End");
                 }
-                if (state == State.Control)
+                else if (state == State.Control)
                 {
                     Debug.Log("[State.Control] Start");
                     this.controlCnt++;
@@ -124,7 +126,7 @@ public class Debug_Disconnect : MonoBehaviour
                     }
                     Debug.Log("[State.Control] End");
                 }
-                if (state == State.Disconnect)
+                else if (state == State.Disconnect)
                 {
                     Debug.Log("[State.Disconnect] Start");
                     Debug.Log("[DisconnectPeripheral-Start]");
