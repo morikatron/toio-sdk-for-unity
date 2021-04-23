@@ -75,11 +75,9 @@ namespace toio
         /// </summary>
         private void OnConnected(string device_address)
         {
-            if (!this.isConnected)
-            {
-                this.isConnected = true;
-                this.ConnectionNotify(this);
-            }
+            device_address = device_address.ToUpper();
+            this.isConnected = true;
+            this.ConnectionNotify(this);
         }
 
         /// <summary>
@@ -87,11 +85,9 @@ namespace toio
         /// </summary>
         private void OnDisconnected(string device_address)
         {
-            if (this.isConnected)
-            {
-                this.isConnected = false;
-                this.ConnectionNotify(this);
-            }
+            device_address = device_address.ToUpper();
+            this.isConnected = false;
+            this.ConnectionNotify(this);
         }
     }
 }
