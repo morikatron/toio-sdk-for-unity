@@ -7,6 +7,14 @@ namespace toio
 {
     public class BLEMobileService : BLEServiceInterface
     {
+#if UNITY_EDITOR
+        ~BLEMobileService()
+        {
+            Ble.DisconnectAllPeripherals();
+            Ble.Finalize();
+        }
+#endif
+
         public void RequestDevice(Action<BLEDeviceInterface> action)
         {
             Ble.Initialize(() =>

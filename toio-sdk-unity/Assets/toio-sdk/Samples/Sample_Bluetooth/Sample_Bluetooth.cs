@@ -124,4 +124,12 @@ public class Sample_Bluetooth : MonoBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
+    void OnApplicationQuit()
+    {
+        Ble.DisconnectAllPeripherals();
+        Ble.Finalize();
+    }
+#endif
 }
