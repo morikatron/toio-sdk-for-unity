@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Simulator] Make motion sensors' behaviour of Simulator same with real cube.
   - Specifically, change of each sensor will invoke a callback that updates all motion sensors' state in Cube class.
   - Also, `Cube.isCollisionDetected` or `Cube.isDoubleTap` cannot transit from `true` to `false` **UNTIL** **ANOTHER** sensor invokes an update. **This feature may block callbacks**, therefore calling `Cube.RequestSensor` is suggested to manually force an update.
+- [Cube API] `collisionCallback` and `doubleTapCallback` will only be invoked when corresponding states transitting from `false` to `true` (i.e. collision or doubleTap just happened). The reason is similar to above that state transition from `true` to `false` does not mean anything but motion sensors' states updated.
 - [Simulator.Mat] Fix developerMat number unable to switch from inspector issue.
 - [Simulator.Stage] Fix targetPole operation issue.
 - [BLE] Fix error of peripheral.disconnect when using iOS plugin.
