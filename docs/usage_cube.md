@@ -73,7 +73,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 
 | 機能タイプ         | 機能                                                                                                                                       | Real 対応状況 | Sim 対応状況 |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| モーションセンサー  | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                       | o             | o            |
+| モーションセンサー  | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)                                       | o             | o            |
 |                   | [シェイク検出](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                      | o             | o            |
 | 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
 |                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
@@ -675,7 +675,7 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 キューブにモーションセンサー情報の通知を一回要求します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sensor#モーションセンサー情報の要求)
 
-> ※ 衝突検出とダブルタップ検出は、発生時のに通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
+> ※ 衝突検出とダブルタップ検出は、発生時のみ通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
 
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
