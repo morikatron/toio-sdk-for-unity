@@ -73,7 +73,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 
 | 機能タイプ         | 機能                                                                                                                                       | Real 対応状況 | Sim 対応状況 |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| モーションセンサー  | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                       | o             | o            |
+| モーションセンサー  | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)                                       | o             | o            |
 |                   | [シェイク検出](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                      | o             | o            |
 | 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
 |                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
