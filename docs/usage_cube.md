@@ -675,7 +675,7 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 キューブにモーションセンサー情報の通知を一回要求します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sensor#モーションセンサー情報の要求)
 
-> ※ 衝突検出とダブルタップ検出は、発生時のに通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
+> ※ 衝突検出とダブルタップ検出は、発生時のみ通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
 
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
