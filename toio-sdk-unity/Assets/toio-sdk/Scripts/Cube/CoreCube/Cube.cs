@@ -258,7 +258,7 @@ namespace toio
         public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// モーションセンサー情報を要求します
-        /// https://toio.github.io/toio-spec/docs/ble_sensor#書き込み操作
+        /// https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求
         /// </summary>
         /// <param name="order">命令の優先度</param>
         public virtual void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
