@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.2.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.1) - 2021-04-27
+
+### Added
+
+- [Cube API] Implement method [`Cube.RequestSensor`](https://toio.github.io/toio-spec/docs/ble_sensor#書き込み操作). (THANKS to contribution from [**zurachu**](https://github.com/zurachu))
+
+### Changed
+
+- [Simulator] Checkbuttons on inspector for simulating collison and double tap are changed to buttons.
+- [Navigator] `Wall` will be created as a line segement rather than a infinite line.
+
+### Fixed
+
+- [Simulator] Make motion sensors' behaviour of Simulator same with real cube.
+  - Specifically, change of each sensor will invoke a callback that updates all motion sensors' state in Cube class.
+  - Also, `Cube.isCollisionDetected` or `Cube.isDoubleTap` cannot transit from `true` to `false` **UNTIL** **ANOTHER** sensor invokes an update. **This feature may block callbacks**, therefore calling `Cube.RequestSensor` is suggested to manually force an update.
+- [Cube API] `collisionCallback` and `doubleTapCallback` will only be invoked when corresponding states transitting from `false` to `true` (i.e. collision or doubleTap just happened). The reason is similar to above that state transition from `true` to `false` does not mean anything but motion sensors' states updated.
+- [Simulator.Mat] Fix developerMat number unable to switch from inspector issue.
+- [Simulator.Stage] Fix targetPole operation issue.
+- [BLE] Fix error of peripheral.disconnect when using iOS plugin.
+
 ## [1.2.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.0) - 2021-02-24
 
 ### Added

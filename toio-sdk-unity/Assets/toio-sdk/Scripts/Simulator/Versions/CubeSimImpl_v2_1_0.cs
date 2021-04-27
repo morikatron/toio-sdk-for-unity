@@ -817,24 +817,31 @@ namespace toio.Simulator
 
 
         // ============ Motion Sensor ============
+        protected override void InvokeMotionSensorCallback()
+        {
+            if (this.motionSensorCallback == null) return;
+            object[] sensors = new object[5];
+            sensors[0] = null;
+            sensors[1] = (object)this._sloped;
+            sensors[2] = (object)this._collisonDetected; this._collisonDetected = false;
+            sensors[3] = (object)this._doubleTapped; this._doubleTapped = false;
+            sensors[4] = (object)this._pose;
+            this.motionSensorCallback.Invoke(sensors);
+        }
+
         // ---------- Pose -----------
         protected Cube.PoseType _pose = Cube.PoseType.Up;
         public override Cube.PoseType pose {
             get{ return _pose; }
             internal set{
-                if (this._pose!=value){
-                    this.poseCallback?.Invoke(value);
+                if (this._pose != value){
+                    this._pose = value;
+                    this.InvokeMotionSensorCallback();
                 }
-                _pose = value;
             }
         }
 
         protected System.Action<Cube.PoseType> poseCallback = null;
-        public override void StartNotification_Pose(System.Action<Cube.PoseType> action)
-        {
-            this.poseCallback = action;
-            this.poseCallback.Invoke(_pose);
-        }
         protected virtual void SimulatePose()
         {
             if(Vector3.Angle(Vector3.up, cube.transform.up)<slopeThreshold)
@@ -864,23 +871,12 @@ namespace toio.Simulator
         }
 
         // ---------- Double Tap -----------
-        protected bool _doubleTap;
-        public override bool doubleTap
+        protected bool _doubleTapped = false;
+        internal override void TriggerDoubleTap()
         {
-            get {return this._doubleTap;}
-            internal set
-            {
-                if (this._doubleTap!=value){
-                    this.doubleTapCallback?.Invoke(value);
-                }
-                this._doubleTap = value;
-            }
-        }
-        protected System.Action<bool> doubleTapCallback = null;
-        public override void StartNotification_DoubleTap(System.Action<bool> action)
-        {
-            this.doubleTapCallback = action;
-            this.doubleTapCallback.Invoke(_doubleTap);
+            this._doubleTapped = true;
+            this.InvokeMotionSensorCallback();
+            this._doubleTapped = false;
         }
         protected virtual void SimulateDoubleTap()
         {

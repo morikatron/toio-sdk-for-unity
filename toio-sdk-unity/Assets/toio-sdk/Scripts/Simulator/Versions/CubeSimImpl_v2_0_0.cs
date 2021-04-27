@@ -131,6 +131,21 @@ namespace toio.Simulator
         }
 
         // ============ Motion Sensor ============
+        protected System.Action<object[]> motionSensorCallback = null;
+        public override void StartNotification_MotionSensor(System.Action<object[]> action)
+        {
+            this.motionSensorCallback = action;
+        }
+        protected virtual void InvokeMotionSensorCallback()
+        {
+            if (this.motionSensorCallback == null) return;
+            object[] sensors = new object[3];
+            sensors[0] = null;
+            sensors[1] = (object)this._sloped;
+            sensors[2] = (object)this._collisonDetected; this._collisonDetected = false;
+            this.motionSensorCallback.Invoke(sensors);
+        }
+
         // ----------- Sloped -----------
         protected bool _sloped;
         public override bool sloped
@@ -139,35 +154,18 @@ namespace toio.Simulator
             internal set
             {
                 if (this._sloped!=value){
-                    this.slopeCallback?.Invoke(value);
+                    this._sloped = value;
+                    this.InvokeMotionSensorCallback();
                 }
-                this._sloped = value;
             }
-        }
-        protected System.Action<bool> slopeCallback = null;
-        public override void StartNotification_Sloped(System.Action<bool> action)
-        {
-            this.slopeCallback = action;
-            this.slopeCallback.Invoke(_sloped);
         }
         // ----------- Collision Detected -----------
-        protected bool _collisionDetected;
-        public override bool collisionDetected
+        protected bool _collisonDetected = false;
+        internal override void TriggerCollision()
         {
-            get {return this._collisionDetected;}
-            internal set
-            {
-                if (this._collisionDetected!=value){
-                    this.collisionDetectedCallback?.Invoke(value);
-                }
-                this._collisionDetected = value;
-            }
-        }
-        protected System.Action<bool> collisionDetectedCallback = null;
-        public override void StartNotification_CollisionDetected(System.Action<bool> action)
-        {
-            this.collisionDetectedCallback = action;
-            this.collisionDetectedCallback.Invoke(_collisionDetected);
+            this._collisonDetected = true;
+            this.InvokeMotionSensorCallback();
+            this._collisonDetected = false;
         }
 
         // ----------- Simulate -----------

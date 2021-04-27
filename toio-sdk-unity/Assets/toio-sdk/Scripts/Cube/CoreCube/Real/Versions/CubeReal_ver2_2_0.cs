@@ -154,6 +154,21 @@ namespace toio
             callback?.Invoke(this.motorReadRequest.isConfigResponseSucceeded, this);
         }
 
+        /// <summary>
+        /// モーションセンサー情報を要求します
+        /// https://toio.github.io/toio-spec/docs/ble_sensor#書き込み操作
+        /// </summary>
+        /// <param name="order">命令の優先度</param>
+        public override void RequestSensor(ORDER_TYPE order)
+        {
+            if (!this.isConnected) { return; }
+
+            byte[] buff = new byte[1];
+            buff[0] = 0x81;
+
+            this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "requestSensor");
+        }
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < subscribe >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/

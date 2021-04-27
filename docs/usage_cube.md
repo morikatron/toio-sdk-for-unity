@@ -73,8 +73,9 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 
 | 機能タイプ         | 機能                                                                                                                                       | Real 対応状況 | Sim 対応状況 |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| モーションセンサー | [シェイク検出](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                       | o             | o            |
-| 磁気センサー       | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
+| モーションセンサー  | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)                                       | o             | o            |
+|                   | [シェイク検出](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                      | o             | o            |
+| 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
 |                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
 | モーター           | [モーターの速度情報の取得](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得)                                | o             | o            |
 | 設定               | [磁気センサーの設定](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)                                    | x             | x            |
@@ -599,27 +600,6 @@ public void TargetMove(
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
 
-### ConfigMotorRead
-
-```C#
-public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
-```
-
-キューブのモーター速度情報の取得の有効化・無効化を設定します。<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
-
-- valid
-  - 定義 : 有効無効フラグ
-  - 種類 : true, false
-- timeOutSec
-  - 定義 : タイムアウト(秒)
-  - 範囲 : 0.5~
-- callback
-  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
-- order
-  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
-  - 種類 : Weak, Strong
-
 <br>
 
 ### AccelerationMove
@@ -660,4 +640,43 @@ public void AccelerationMove(
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
+
 <br>
+
+### ConfigMotorRead
+
+```C#
+public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
+```
+
+キューブのモーター速度情報の取得の有効化・無効化を設定します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
+
+- valid
+  - 定義 : 有効無効フラグ
+  - 種類 : true, false
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### RequestSensor
+
+```C#
+public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブにモーションセンサー情報の通知を一回要求します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sensor#モーションセンサー情報の要求)
+
+> ※ 衝突検出とダブルタップ検出は、発生時のみ通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
+
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong

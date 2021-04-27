@@ -306,7 +306,8 @@ namespace toio
                 if (_isDoubleTap != this.isDoubleTap)
                 {
                     this.isDoubleTap = _isDoubleTap;
-                    this.doubleTapCallback.Notify(this);
+                    if (_isDoubleTap)
+                        this.doubleTapCallback.Notify(this);
                 }
 
                 if (_pose != this.pose)

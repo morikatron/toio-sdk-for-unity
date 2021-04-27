@@ -62,7 +62,7 @@ namespace toio.Simulator
             // Resize
             if (matType != MatType.custom)
             {
-                var rect = GetRectForMatType(matType);
+                var rect = GetRectForMatType(matType, developerMatType);
                 xMin = rect.xMin; xMax = rect.xMax;
                 yMin = rect.yMin; yMax = rect.yMax;
             }

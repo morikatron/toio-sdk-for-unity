@@ -129,17 +129,7 @@ namespace toio.Simulator
         /// </summary>
         public bool sloped{ get {return impl.sloped;} internal set {impl.sloped = value;} }
 
-        /// <summary>
-        /// 衝突が検出されたか
-        /// </summary>
-        public bool collisionDetected{ get {return impl.collisionDetected;} internal set {impl.collisionDetected = value;} }
-
         // 2.1.0
-
-        /// <summary>
-        /// ダブルタップが検出されたか
-        /// </summary>
-        public bool doubleTap{ get {return impl.doubleTap;} internal set {impl.doubleTap = value;} }
 
         /// <summary>
         /// ポーズ
@@ -274,34 +264,11 @@ namespace toio.Simulator
         /// <summary>
         /// 水平検出のイベントコールバックを設定する
         /// </summary>
-        public void StartNotification_Sloped(System.Action<bool> action)
+        public void StartNotification_MotionSensor(System.Action<object[]> action)
         {
-            impl.StartNotification_Sloped(action);
+            impl.StartNotification_MotionSensor(action);
         }
 
-        /// <summary>
-        /// 衝突検出のイベントコールバックを設定する
-        /// </summary>
-        public void StartNotification_CollisionDetected(System.Action<bool> action)
-        {
-            impl.StartNotification_CollisionDetected(action);
-        }
-
-        /// <summary>
-        /// ダブルタップのイベントコールバックを設定する
-        /// </summary>
-        public void StartNotification_DoubleTap(System.Action<bool> action)
-        {
-            impl.StartNotification_DoubleTap(action);
-        }
-
-        /// <summary>
-        /// ポーズのイベントコールバックを設定する
-        /// </summary>
-        public void StartNotification_Pose(System.Action<Cube.PoseType> action)
-        {
-            impl.StartNotification_Pose(action);
-        }
 
         /// <summary>
         /// 目標指定付きモーター制御の応答コールバックを設定する
@@ -317,14 +284,6 @@ namespace toio.Simulator
         public void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
         {
             impl.StartNotification_MultiTargetMove(action);
-        }
-
-        /// <summary>
-        /// シェイク検出のイベントコールバックを設定する
-        /// </summary>
-        public void StartNotification_Shake(System.Action<int> action)
-        {
-            impl.StartNotification_Shake(action);
         }
 
         /// <summary>
@@ -457,8 +416,25 @@ namespace toio.Simulator
             impl.ConfigMotorRead(enabled);
         }
 
+        public void RequestSensor()
+        {
+            impl.RequestSensor();
+        }
+
 
         // ====== 内部関数 ======
+
+        // Sensor Triggers
+
+        internal void _TriggerCollision()
+        {
+            this.impl.TriggerCollision();
+        }
+
+        internal void _TriggerDoubleTap()
+        {
+            this.impl.TriggerDoubleTap();
+        }
 
         // 速度変化によって力を与え、位置と角度を更新
         internal void _SetSpeed(float speedL, float speedR)

@@ -248,6 +248,7 @@ namespace toio
             ORDER_TYPE order = ORDER_TYPE.Strong
         ){ NotSupportedWarning(); }
 
+        /// <summary>
         /// キューブのモーター速度情報の取得の有効化・無効化を設定します
         /// https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定
         /// </summary>
@@ -256,6 +257,13 @@ namespace toio
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
         public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+
+        /// <summary>
+        /// モーションセンサー情報を要求します
+        /// https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求
+        /// </summary>
+        /// <param name="order">命令の優先度</param>
+        public virtual void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック

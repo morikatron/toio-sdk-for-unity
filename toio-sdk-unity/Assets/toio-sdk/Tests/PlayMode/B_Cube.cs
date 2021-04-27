@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.Assertions;
 using System.IO;
+using Cysharp.Threading.Tasks;
 
 // 省略
 using test = toio.Tests.BasicTestMonoBehaviour;
