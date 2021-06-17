@@ -8,6 +8,10 @@
 #define UNITY_ANDROID_RUNTIME
 #endif
 
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+#define UNITY_OSX
+#endif
+
 using UnityEngine;
 using System;
 using System.Runtime.InteropServices;
@@ -25,6 +29,8 @@ namespace toio
             toio.BleiOS.Initialize(initializedAction, errorAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.Initialize(initializedAction, errorAction);
+#elif UNITY_OSX
+            toio.BlemacOS.Initialize(initializedAction, errorAction);
 #endif
         }
 
@@ -34,6 +40,8 @@ namespace toio
             toio.BleiOS.Finalize(finalizedAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.Finalize(finalizedAction);
+#elif UNITY_OSX
+            toio.BlemacOS.Finalize(finalizedAction);
 #endif
         }
 
@@ -43,6 +51,8 @@ namespace toio
             toio.BleiOS.EnableBluetooth(enable);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.EnableBluetooth(enable);
+#elif UNITY_OSX
+            toio.BlemacOS.EnableBluetooth(enable);
 #endif
         }
 
@@ -52,6 +62,8 @@ namespace toio
             toio.BleiOS.StartScan(serviceUUIDs, discoveredAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.StartScan(serviceUUIDs, discoveredAction);
+#elif UNITY_OSX
+            toio.BlemacOS.StartScan(serviceUUIDs, discoveredAction);
 #endif
         }
 
@@ -61,6 +73,8 @@ namespace toio
             toio.BleiOS.StopScan();
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.StopScan();
+#elif UNITY_OSX
+            toio.BlemacOS.StopScan();
 #endif
         }
 
@@ -72,6 +86,9 @@ namespace toio
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.ConnectToPeripheral(identifier,connectedPeripheralAction,
                 discoveredServiceAction,discoveredCharacteristicAction,disconnectedPeripheralAction);
+#elif UNITY_OSX
+            toio.BlemacOS.ConnectToPeripheral(identifier, connectedPeripheralAction, discoveredServiceAction,
+                discoveredCharacteristicAction, disconnectedPeripheralAction);
 #endif
         }
 
@@ -81,6 +98,8 @@ namespace toio
             toio.BleiOS.DisconnectPeripheral(identifier, disconnectedPeripheralAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.DisconnectPeripheral(identifier, disconnectedPeripheralAction);
+#elif UNITY_OSX
+            toio.BlemacOS.DisconnectPeripheral(identifier, disconnectedPeripheralAction);
 #endif
         }
 
@@ -90,6 +109,8 @@ namespace toio
             toio.BleiOS.DisconnectAllPeripherals();
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.DisconnectAllPeripherals();
+#elif UNITY_OSX
+            toio.BlemacOS.DisconnectAllPeripherals();
 #endif
         }
 
@@ -100,6 +121,9 @@ namespace toio
                 characteristicUUID, didReadChracteristicAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.ReadCharacteristic(identifier, serviceUUID,characteristicUUID,didReadChracteristicAction);
+#elif UNITY_OSX
+            toio.BlemacOS.ReadCharacteristic(identifier, serviceUUID,
+                characteristicUUID, didReadChracteristicAction);
 #endif
         }
 
@@ -110,6 +134,9 @@ namespace toio
                 data, length, withResponse, didWriteCharacteristicAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.WriteCharacteristic(identifier, serviceUUID, characteristicUUID, data,length,withResponse,didWriteCharacteristicAction);
+#elif UNITY_OSX
+            toio.BlemacOS.WriteCharacteristic(identifier, serviceUUID, characteristicUUID,
+                data, length, withResponse, didWriteCharacteristicAction);
 #endif
         }
 
@@ -120,6 +147,9 @@ namespace toio
                 characteristicUUID, notifiedCharacteristicAction);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.SubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, notifiedCharacteristicAction);
+#elif UNITY_OSX
+            toio.BlemacOS.SubscribeCharacteristic(identifier, serviceUUID,
+                characteristicUUID, notifiedCharacteristicAction);
 #endif
         }
 
@@ -129,6 +159,8 @@ namespace toio
             toio.BleiOS.UnSubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, action);
 #elif UNITY_ANDROID_RUNTIME
             toio.Android.BleAndroid.UnSubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, action);
+#elif UNITY_OSX
+            toio.BlemacOS.UnSubscribeCharacteristic(identifier, serviceUUID, characteristicUUID, action);
 #endif
         }
     }

@@ -43,7 +43,7 @@ namespace toio
 	[DllImport (DLL_NAME)]
     private static extern void _uiOSCancelDeviceConnectionAll();
 
-	[DllImport (DLL_NAME)]
+	[ort (DLL_NAME)]
     private static extern void _uiOSReadCharacteristicForDevice(string identifier, string serviceUUID, string characteristicUUID, DidReadCharacteristicActionDelegate didReadChracteristicAction);
 
 	[DllImport (DLL_NAME)]

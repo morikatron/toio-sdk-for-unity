@@ -33,7 +33,7 @@ public class Sample_Bluetooth : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("モバイル端末のみで動作します");
+        Debug.Log("モバイル端末もしくはMacのみで動作します");
 
         // モバイル実装を注入
         BLEService.Instance.SetImplement(new BLEMobileService());
@@ -124,4 +124,12 @@ public class Sample_Bluetooth : MonoBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
+    void OnApplicationQuit()
+    {
+        Ble.DisconnectAllPeripherals();
+        Ble.Finalize();
+    }
+#endif
 }
