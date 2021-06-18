@@ -53,7 +53,7 @@ namespace toio
         }
 
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if (UNITY_EDITOR || UNITY_STANDALONE) && !BLE_REAL
         public class Impl : CubeConnecterInterface
         {
             public async UniTask<Cube> Connect(BLEPeripheralInterface peripheral)
@@ -86,7 +86,7 @@ namespace toio
                 return default;
             }
         }
-#elif (UNITY_IOS || UNITY_ANDROID)
+#elif (UNITY_IOS || UNITY_ANDROID || BLE_REAL)
         public class Impl : CubeConnecterInterface
         {
             private bool isConnecting = false;

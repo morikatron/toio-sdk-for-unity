@@ -33,7 +33,7 @@ namespace toio
             return await this.impl.Scan();
         }
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if (UNITY_EDITOR || UNITY_STANDALONE) && !BLE_REAL
         /// <summary>
         /// Impl for Unity.
         /// </summary>
@@ -54,7 +54,7 @@ namespace toio
                 return UniTask.FromResult<BLEPeripheralInterface>(null);
             }
         }
-#elif (UNITY_ANDROID || UNITY_IOS)
+#elif (UNITY_IOS || UNITY_ANDROID || BLE_REAL)
         /// <summary>
         /// Impl for Mobile(iOS, Android).
         /// </summary>

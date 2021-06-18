@@ -61,7 +61,7 @@ namespace toio
             this.impl.ScanAsync(coroutineObject, callback, autoRunning);
         }
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if (UNITY_EDITOR || UNITY_STANDALONE) && !BLE_REAL
         /// <summary>
         /// Impl for Unity.
         /// </summary>
@@ -122,7 +122,7 @@ namespace toio
                 this.peripheralList.Add(peri);
             }
         }
-#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
+#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL || BLE_REAL)
         /// <summary>
         /// Impl for Mobile(iOS, Android) and WebGL
         /// </summary>
@@ -151,7 +151,7 @@ namespace toio
                 this.isScanning = false;
                 this.autoRunning = false;
 
-#if (UNITY_IOS || UNITY_ANDROID)
+#if (UNITY_IOS || UNITY_ANDROID || BLE_REAL)
                 if(!BLEService.Instance.hasImplement)
                 {
                     BLEService.Instance.SetImplement(new BLEMobileService());
