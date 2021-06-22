@@ -14,8 +14,11 @@ namespace toio
         public List<CubeHandle> handles;
         public List<CubeNavigator> navigators;
         // 接続機能
+        [Obsolete("Deprecated. Please use scanner instead.", false)]
         protected NearestScannerInterface nearestScanner;
+        [Obsolete("Deprecated. Please use scanner instead.", false)]
         protected NearScannerInterface nearScanner;
+        protected CubeScannerInterface scanner;
         protected CubeConnecterInterface connecter;
         protected Action<Cube, CONNECTION_STATUS> connectedAction;
 
@@ -52,8 +55,20 @@ namespace toio
 
 
         // --- public methods ---
-        public CubeManager()
+        public CubeManager(CubeScannerInterface scanner, CubeConnecterInterface connecter)
         {
+            this.scanner = scanner;
+            this.connecter = connecter;
+            this.cubes = new List<Cube>();
+            this.handles = new List<CubeHandle>();
+            this.navigators = new List<CubeNavigator>();
+            this.cubeTable = new Dictionary<string, Cube>();
+        }
+
+        public CubeManager(ConnectType type = ConnectType.Real)
+        {
+            this.scanner = new CubeScanner(type);
+            this.connecter = new CubeConnecter(type);
             this.cubes = new List<Cube>();
             this.handles = new List<CubeHandle>();
             this.navigators = new List<CubeNavigator>();
@@ -62,15 +77,7 @@ namespace toio
 
         public virtual async UniTask<Cube> SingleConnect()
         {
-            if (null == this.nearestScanner)
-            {
-                this.nearestScanner = new NearestScanner();
-            }
-            if (null == this.connecter)
-            {
-                this.connecter = new CubeConnecter();
-            }
-            var peripheral = await this.nearestScanner.Scan();
+            var peripheral = await this.scanner.NearestScan();
             if (null == peripheral) { return null; }
             var cube = await this.connecter.Connect(peripheral);
             this.AddCube(cube);
@@ -82,16 +89,8 @@ namespace toio
 #if !UNITY_EDITOR && UNITY_WEBGL
             Debug.Log("[CubeManager.MultiConnect]MultiConnect doesn't run on the web");
 #endif
-            if (null == this.nearScanner)
-            {
-                this.nearScanner = new NearScanner(cubeNum);
-            }
-            if (null == this.connecter)
-            {
-                this.connecter = new CubeConnecter();
-            }
-            var peripheral = await this.nearScanner.Scan();
-            var cubes = await this.connecter.Connect(peripheral);
+            var peripherals = await this.scanner.NearScan(cubeNum);
+            var cubes = await this.connecter.Connect(peripherals);
             this.AddCube(cubes);
 
             return cubes;
@@ -99,12 +98,8 @@ namespace toio
 
         public virtual void MultiConnectAsync(int cubeNum, MonoBehaviour coroutineObject, Action<Cube, CONNECTION_STATUS> connectedAction =null, bool autoRunning=true)
         {
-            if (null == this.nearScanner)
-            {
-                this.nearScanner = new NearScanner(cubeNum);
-            }
             this.connectedAction = connectedAction;
-            this.nearScanner.ScanAsync(coroutineObject, this.OnPeripheralScanned, autoRunning);
+            this.scanner.NearScanAsync(cubeNum, coroutineObject, this.OnPeripheralScanned, autoRunning);
         }
 
         public virtual void Disconnect(Cube cube)
@@ -128,14 +123,21 @@ namespace toio
             return IsControllable(navigator.cube);
         }
 
+        [Obsolete("Deprecated. Please use scanner instead.", false)]
         public void SetNearScanner(NearScannerInterface scanner)
         {
             this.nearScanner = scanner;
         }
 
+        [Obsolete("Deprecated. Please use scanner instead.", false)]
         public void SetNearestScanner(NearestScannerInterface scanner)
         {
             this.nearestScanner = scanner;
+        }
+
+        public void SetCubeScanner(CubeScannerInterface scanner)
+        {
+            this.scanner = scanner;
         }
 
         public void SetCubeConnecter(CubeConnecterInterface _connecter)
