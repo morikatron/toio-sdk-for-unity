@@ -1,2 +1,9 @@
-# for macos
+# mac os
 *.DS_Store
+
+# vscode
+**/.vscode
+*.code-workspace
+
+# python
+**/__pycache__
