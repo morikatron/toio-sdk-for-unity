@@ -7,13 +7,20 @@ namespace toio
 {
     public class BLEMobileService : BLEServiceInterface
     {
-#if UNITY_EDITOR
-        ~BLEMobileService()
+        private static bool isFirst = true;
+        public BLEMobileService()
+        {
+            if (isFirst)
+            {
+                isFirst = false;
+                Application.quitting += this.OnApplicationQuit;
+            }
+        }
+        void OnApplicationQuit()
         {
             Ble.DisconnectAllPeripherals();
             Ble.Finalize();
         }
-#endif
 
         public void RequestDevice(Action<BLEDeviceInterface> action)
         {
