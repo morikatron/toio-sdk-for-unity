@@ -214,17 +214,141 @@ async void Start()
 </div>
 <br>
 
-toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。
+toio SDK for Unity には Bluetooth デバイスの検索モジュールが 1 つあります。
 
-- NearestScanner クラス：
-  - Scan 関数：最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。
-- NearScanner クラス：
-  - Scan 関数：信号強度の高い順に指定された<b>複数</b>のデバイスを戻り値として<b>同期的</b>に返します。
-  - ScanAsync 関数：信号強度の高い順に指定された<b>複数</b>のデバイスを<b>非同期的</b>にコールバックします。
+CubeScanner クラス：
+- NearestScan 関数：最も信号強度の高いデバイスを戻り値として同期的に返します。
+- NearScan 関数：信号強度の高い順に指定された複数のデバイスを戻り値として同期的に返します。
+- NearScanAsync 関数：信号強度の高い順に指定された複数のデバイスを非同期的にコールバックします。
 
-2 章の始めに示したサンプルコードでは、このうち NearestScanner.Scan を使用して同期的にスキャンをしています。
+> <u>v1.2.0 以前</u>
+>
+> toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。
+>- NearestScanner クラス：
+>  - Scan 関数：最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。
+>- NearScanner クラス：
+>  - Scan 関数：信号強度の高い順に指定された<b>複数</b>のデバイスを戻り値として<b>同期的</b>に返します。
+>  - ScanAsync 関数：信号強度の高い順に指定された<b>複数</b>のデバイスを<b>非同期的</b>にコールバックします。
+>
+> 2 章の始めに示したサンプルコードでは、このうち NearestScanner.Scan を使用して同期的にスキャンをしています。
 
 <br>
+
+
+### <u>CubeScanner</u>
+
+- <b>NearestScan 関数</b>を呼ぶ事で、最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。<br>async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。
+
+- <b>NearScan 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<b>同期的</b>に返します。async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。
+
+- <b>NearScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。
+
+内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。[CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
+
+シミュレータ実装：
+
+- GameObject を生成
+
+リアル実装：
+
+- Bluetooth デバイスを検索
+
+<details>
+<summary>概要コード：（クリック展開）</summary>
+
+```C#
+public interface CubeScannerInterface
+{
+    bool isScanning { get; }
+    UniTask<BLEPeripheralInterface> NearestScan();
+    UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3.0f);
+    void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning = true);
+}
+
+public class CubeScanner : CubeScannerInterface
+{
+    private CubeScannerInterface impl;
+    public CubeScanner(ConnectType type = ConnectType.Auto)
+    {
+        if (ConnectType.Auto == type)
+        {
+#if (UNITY_EDITOR || UNITY_STANDALONE)
+            this.impl = new SimImpl();
+#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
+            this.impl = new RealImpl();
+#endif
+        }
+        else if (ConnectType.Simulator == type)
+        {
+            this.impl = new SimImpl();
+        }
+        else if (ConnectType.Real == type)
+        {
+            this.impl = new RealImpl();
+        }
+    }
+    public bool isScanning { get { return this.impl.isScanning; } }
+    public async UniTask<BLEPeripheralInterface> NearestScan()
+    {
+        return await this.impl.NearestScan();
+    }
+    public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
+    {
+        return await this.impl.NearScan(satisfiedNum, waitSeconds);
+    }
+    public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
+    {
+        this.impl.NearScanAsync(satisfiedNum, coroutineObject, callback, autoRunning);
+    }
+}
+
+public class SimImpl : CubeScannerInterface
+{
+    public bool isScanning { get { /* 省略 */ } }
+    public async UniTask<BLEPeripheralInterface> NearestScan()
+    {
+        /* return await UnityPeripheral */
+    }
+    public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
+    {
+        /* return await UnityPeripherals */
+    }
+    public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
+    {
+        /* callback(UnityPeripheral) */
+    }
+}
+
+public class RealImpl : CubeScannerInterface
+{
+    public RealImpl()
+    {
+#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID)
+        BLEService.Instance.SetImplement(new BLEMobileService());
+#elif UNITY_WEBGL
+        BLEService.Instance.SetImplement(new BLEWebService());
+#endif
+    }
+    public bool isScanning { get { /* 省略 */ } }
+    public async UniTask<BLEPeripheralInterface> NearestScan()
+    {
+        /* return await BLEMobilePeripheral or BLEWebPeripheral */
+    }
+    public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
+    {
+        /* return await BLEMobilePeripherals or BLEWebPeripherals */
+    }
+    public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
+    {
+        /* callback(BLEMobilePeripheral or BLEWebPeripheral) */
+    }
+}
+
+```
+
+</details>
+
+
 
 ### <u>NearestScanner</u>
 
