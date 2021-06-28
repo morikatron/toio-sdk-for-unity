@@ -33,7 +33,7 @@ namespace toio
         // --- private fields ---
         private NearScannerInterface impl;
 
-        public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Real)
+        public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto)
         {
             // プリセットで用意したマルチプラットフォーム内部実装(UnityEditor/Mobile/WebGL)
             this.impl = new AdapterImpl(type, satisfiedNum);

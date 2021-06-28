@@ -14,7 +14,7 @@ namespace toio
     {
         private NearestScannerInterface impl;
 
-        public NearestScanner(ConnectType type = ConnectType.Real)
+        public NearestScanner(ConnectType type = ConnectType.Auto)
         {
             // プリセットで用意したマルチプラットフォーム内部実装(UnityEditor/Mobile/WebGL)
             this.impl = new AdapterImpl(type);

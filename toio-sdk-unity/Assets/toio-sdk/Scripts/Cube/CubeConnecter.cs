@@ -21,7 +21,7 @@ namespace toio
     {
         private CubeConnecterInterface impl;
 
-        public CubeConnecter(ConnectType type = ConnectType.Real)
+        public CubeConnecter(ConnectType type = ConnectType.Auto)
         {
             if (ConnectType.Auto == type)
             {
