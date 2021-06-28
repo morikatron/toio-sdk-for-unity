@@ -353,158 +353,29 @@ public class RealImpl : CubeScannerInterface
 
 ### <u>NearestScanner</u>
 
-<b>Scan 関数</b>を呼ぶ事で、最も信号強度の高いデバイスを戻り値として同期的に返します。<br>async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。<br>
-[CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
+> このクラスは v1.2.1 以前に使われていたクラスです。v1.3.0以降は[CubeScanner]()の利用を推奨します。
 
-シミュレータ実装：
-
-- GameObject を生成
-
-リアル実装：
-
-- Bluetooth デバイスを検索
-
-<br>
-
-<details>
-<summary>概要コード：（クリック展開）</summary>
-
-```C#
-public interface NearestScannerInterface
-{
-    Task<BLEPeripheralInterface> Scan();
-}
-
-public class NearestScanner : NearestScannerInterface
-{
-#if UNITY_EDITOR
-    public async Task<BLEPeripheralInterface> Scan()
-    {
-        /* return await UnityPeripheral */
-    }
-#else
-    public async Task<BLEPeripheralInterface> Scan()
-    {
-        /* return await BLEMobilePeripheral */
-    }
-#endif
-}
-```
-
-</details>
-<br>
+<b>Scan 関数</b>を呼ぶ事で、最も信号強度の高いデバイスを戻り値として同期的に返します。
+内部実装については[CubeScanner NearestScan 関数]()をご参照ください。
 
 実装コード：
 
 - [NearestScanner.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs)
 
-サンプルコード：
-
-- [CubeManagerScene_RawSingle.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_RawSingle.cs)
-
-- [CubeManagerScene_Single.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_Single.cs)
-
 <br>
 
 ### <u>NearScanner</u>
 
+> このクラスは v1.2.1 以前に使われていたクラスです。v1.3.0以降は[CubeScanner]()の利用を推奨します。
+
 同期スキャンを行う Scan 関数、非同期スキャンを行う ScanAsync 関数があります。
 
-<b>Scan 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<b>同期的</b>に返します。async/await キーワードでスキャン終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
-<b>ScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。
-
-NearesetScanner 同様に、内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。<br>
-[CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
-
-シミュレータ実装：
-
-- UnityPeripheral(GameObject)を生成
-
-リアル実装：
-
-- Peripheral(Bluetooth デバイス)を検索
-
-<br>
-
-<details>
-<summary>概要コード：（クリック展開）</summary>
-
-```C#
-public interface NearScannerInterface
-{
-    Task<BLEPeripheralInterface[]> Scan(float waitSeconds = 3.0f);
-    void ScanAsync(MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning = true);
-}
-
-public class NearScanner : NearScannerInterface
-{
-    private Impl impl;
-    public NearScanner(int satisfiedNum)
-    {
-        // cross-platform implementation.
-        this.impl = new Impl(satisfiedNum);
-    }
-
-    public async Task<BLEPeripheralInterface[]> Scan(float waitSeconds = 3.0f)
-    {
-        return await this.impl.Scan(waitSeconds);
-    }
-
-    public void ScanAsync(MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
-    {
-        this.impl.ScanAsync(coroutineObject, callback, autoRunning);
-    }
-
-#if UNITY_EDITOR
-    /// <summary>
-    /// Impl for Unity.
-    /// </summary>
-    public class Impl
-    {
-        public virtual async Task<BLEPeripheralInterface[]> Scan(float waitSeconds)
-        {
-            /* return await UnityPeripheral */
-        }
-
-        public virtual void ScanAsync(MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
-        {
-            /* callback(UnityPeripheral) */
-        }
-    }
-#else
-    /// <summary>
-    /// Impl for Mobile(iOS, Android).
-    /// </summary>
-    public class Impl
-    {
-        public virtual async Task<BLEPeripheralInterface[]> Scan(float waitSeconds)
-        {
-            /* return await BLEMobilePeripheral */
-        }
-
-        public virtual void ScanAsync(MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning = true)
-        {
-            /* callback(BLEMobilePeripheral) */
-        }
-    }
-#endif
-}
-```
-
-</details>
-<br>
+<b>Scan 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<b>同期的</b>に返します。内部実装については[CubeScanner NeareScan 関数]()をご参照ください。<br>
+<b>ScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。内部実装については[CubeScanner NearScanAsync 関数]()をご参照ください。
 
 実装コード：
 
 - [NearScanner.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs)
-
-サンプルコード：
-
-- [CubeManagerScene_RawMulti.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_RawMulti.cs)
-
-- [CubeManagerScene_Multi.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_Multi.cs)
-
-- [CubeManagerScene_MultiAsync.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_MultiAsync.cs)
 
 <br>
 
