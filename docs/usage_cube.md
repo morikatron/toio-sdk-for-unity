@@ -680,3 +680,49 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
+
+<br>
+
+# 4. Cubeの接続設定
+
+```C#
+Cube[] cubes;
+async void Start()
+{
+    // 引数を指定しない場合、ConnectType.Auto がデフォルト値
+    // ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
+    var peripherals = await new CubeScanner(ConnectType.Auto).NearScan(2);
+    cube = await new CubeConnecter(ConnectType.Auto).Connect(peripherals);
+}
+```
+
+```C#
+CubeManager cubeManager;
+async void Start()
+{
+    // 引数を指定しない場合、ConnectType.Auto がデフォルト値
+    // ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
+    cubeManager = new CubeManager(ConnectType.Auto);
+    await cubeManager.MultiConnect(2);
+}
+```
+
+```C#
+Cube[] cubes;
+async void Start()
+{
+    // どのプラットフォームでもシミュレータキューブに接続する
+    var peripherals = await new CubeScanner(ConnectType.Simulator).NearScan(2);
+    cube = await new CubeConnecter(ConnectType.Simulator).Connect(peripherals);
+}
+```
+
+```C#
+CubeManager cubeManager;
+async void Start()
+{
+    // どのプラットフォームでもリアルキューブに接続する
+    cubeManager = new CubeManager(ConnectType.Real);
+    await cubeManager.MultiConnect(2);
+}
+```
