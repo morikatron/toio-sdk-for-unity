@@ -18,10 +18,41 @@
 
 ## 導入方法
 
+事前作業として、画面の左上にあるAppleメニューから「この Mac について」をクリックし、OSバージョンを確認してください。
 
+[ビルド済みのbundleファイル]() に確認したOSバージョンが存在する場合は、[ビルド済みのbundleファイルをダウンロードする方法]()を参考に作業を進めてください。
+確認したOSバージョンが存在しない場合は、[自分のPCでbundleファイルをビルドする方法]()を参考に作業を進めてください。
+
+
+### ビルド済みのbundleファイルをダウンロードする方法
+
+<br>
+
+### 自分のPCでbundleファイルをビルドする方法
+
+#### 1. Xcodeプロジェクト のダウンロード
+
+#### 2. bundleファイル のビルド
+
+ダウンロードしたXcodeプロジェクトを開いたら、【Build Settings】タブをクリックし、<b>Deployment</b> 設定を開きます。
+Deployment 設定内にある <b>macOS Deployment Target</b> の右列にある【macOS (バージョン値)】をクリックして、事前作業で確認したOSバージョンを選択してください。
+
+<div  align="center">
+<img width=500 src="res/usage_macble/xcode_buildtarget.png"></img>
+</div>
+
+上記作業が完了したら、Xcodeの左上にある再生ボタン(:arrow_forward:)をクリックしてビルドを開始し、ビルドが完了するまで待ちます。
+
+#### 3. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
+
+Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` までフォルダを移動します。
+ビルドで生成されたbundleファイルをXcodeウィンドウからUnityウィンドウへ直接ドラッグ&ドロップします。
+
+<div  align="center">
+<img src="res/usage_macble/add_bundle.png"></img>
+</div>
+
+<br>
 
 ## 使い方
-
-・切り替え方法
-・サンプル紹介
 
