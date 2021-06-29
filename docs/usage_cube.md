@@ -686,13 +686,34 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 # 4. Cubeの接続設定
 
 ```C#
+public enum ConnectType
+{
+    Auto, // ビルド対象に応じて内部実装が自動的に変わる
+    Simulator, // ビルド対象に関わらずシミュレータのキューブで動作する
+    Real // ビルド対象に関わらずリアル(現実)のキューブで動作する
+}
+```
+
+```C#
+public NearestScanner(ConnectType type = ConnectType.Auto);
+
+public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto);
+
+public CubeScanner(ConnectType type = ConnectType.Auto);
+
+public CubeConnecter(ConnectType type = ConnectType.Auto);
+
+public CubeManager(ConnectType type = ConnectType.Auto);
+```
+
+```C#
 Cube[] cubes;
 async void Start()
 {
     // 引数を指定しない場合、ConnectType.Auto がデフォルト値
     // ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
-    var peripherals = await new CubeScanner(ConnectType.Auto).NearScan(2);
-    cube = await new CubeConnecter(ConnectType.Auto).Connect(peripherals);
+    var peripherals = await new CubeScanner().NearScan(2);
+    cube = await new CubeConnecter().Connect(peripherals);
 }
 ```
 
@@ -702,7 +723,7 @@ async void Start()
 {
     // 引数を指定しない場合、ConnectType.Auto がデフォルト値
     // ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
-    cubeManager = new CubeManager(ConnectType.Auto);
+    cubeManager = new CubeManager();
     await cubeManager.MultiConnect(2);
 }
 ```
