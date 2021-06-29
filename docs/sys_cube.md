@@ -368,8 +368,6 @@ public class RealImpl : CubeScannerInterface
 
 > このクラスは v1.2.1 以前に使われていたクラスです。v1.3.0以降は[CubeScanner]()の利用を推奨します。
 
-同期スキャンを行う Scan 関数、非同期スキャンを行う ScanAsync 関数があります。
-
 <b>Scan 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<b>同期的</b>に返します。内部実装については[CubeScanner NeareScan 関数]()をご参照ください。<br>
 <b>ScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。内部実装については[CubeScanner NearScanAsync 関数]()をご参照ください。
 
