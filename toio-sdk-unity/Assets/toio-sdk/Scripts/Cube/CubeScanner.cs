@@ -8,9 +8,9 @@ namespace toio
 {
     public enum ConnectType
     {
-        Auto,
-        Simulator,
-        Real
+        Auto, // ビルド対象に応じて内部実装が自動的に変わる
+        Simulator, // ビルド対象に関わらずシミュレータのキューブで動作する
+        Real // ビルド対象に関わらずリアル(現実)のキューブで動作する
     }
 
     public interface CubeScannerInterface
