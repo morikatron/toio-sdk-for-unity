@@ -349,7 +349,7 @@ public class RealImpl : CubeScannerInterface
 
 </details>
 
-
+<br>
 
 ### <u>NearestScanner</u>
 
