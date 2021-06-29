@@ -65,7 +65,7 @@ namespace toio
             this.cubeTable = new Dictionary<string, Cube>();
         }
 
-        public CubeManager(ConnectType type = ConnectType.Real)
+        public CubeManager(ConnectType type = ConnectType.Auto)
         {
             this.scanner = new CubeScanner(type);
             this.connecter = new CubeConnecter(type);
