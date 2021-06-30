@@ -685,6 +685,14 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 
 # 4. Cubeの接続設定
 
+通信接続の内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、通信関連クラスのコンストラクタ引数に`ConnectType`を指定する事で接続方法を変更可能です。
+
+- 基本設定(`ConnectType.Auto`)の場合はビルド対象に応じて内部実装が自動的に変わります。<br>
+- シミュレータ設定(`ConnectType.Simulator`)の場合はビルド対象に関わらずシミュレータのキューブが動作します。<br>
+- リアル設定(`ConnectType.Real`)の場合はビルド対象に関わらずリアルのキューブが動作します。
+
+### 定義
+
 ```C#
 public enum ConnectType
 {
@@ -705,6 +713,8 @@ public CubeConnecter(ConnectType type = ConnectType.Auto);
 
 public CubeManager(ConnectType type = ConnectType.Auto);
 ```
+
+### サンプルコード
 
 ```C#
 Cube[] cubes;
@@ -747,3 +757,7 @@ async void Start()
     await cubeManager.MultiConnect(2);
 }
 ```
+
+### サンプルプロジェクト
+
+[Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/) をご参照ください。
