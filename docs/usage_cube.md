@@ -8,6 +8,7 @@
   - [3.1. 変数](usage_cube.md#31-変数)
   - [3.2. コールバック](usage_cube.md#32-コールバック)
   - [3.3. メソッド](usage_cube.md#33-メソッド)
+- [4. Cubeの接続設定](usage_cube.md#4-cubeの接続設定)
   <br>
 
 # 1. 概説
