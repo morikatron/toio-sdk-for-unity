@@ -115,7 +115,7 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 using UnityEngine;
 using toio;
 
-public class BasicScene : MonoBehaviour
+public class SimpleScene : MonoBehaviour
 {
     float intervalTime = 0.05f;
     float elapsedTime = 0;
@@ -243,12 +243,12 @@ CubeScanner クラス：
 
 <b>NearScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。
 
-内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、コンストラクタのパラメータによって接続方法を指定可能です。基本設定の場合はビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。接続方法を明示的に指定したい場合は、[Cubeクラスの使い方](https://www.google.com)をご参照ください。<br>
+内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、コンストラクタのパラメータによって接続方法を指定可能です。基本設定の場合はビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。接続方法を明示的に指定したい場合は、[Cubeの接続設定](usage_cube.md#4-cubeの接続設定)をご参照ください。<br>
 [CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
 
 シミュレータ実装：
 
-- GameObject を生成
+- シミュレータのCubeプレハブから作成された GameObject を検索
 
 リアル実装：
 
