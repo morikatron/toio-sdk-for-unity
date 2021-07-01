@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using toio.Simulator;
 
 namespace toio
 {
@@ -23,6 +24,17 @@ namespace toio
 
     public class CubeScanner : CubeScannerInterface
     {
+        /// <summary>
+        /// Actual type (real or sim) CubeScanner(ConnectType.Auto) will be, depending on current environment.
+        /// </summary>
+        public static ConnectType actualTypeOfAuto { get {
+#if (UNITY_EDITOR || UNITY_STANDALONE)
+            return ConnectType.Simulator;
+#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
+            return ConnectType.Real;
+#endif
+        }}
+
         private CubeScannerInterface impl;
         public CubeScanner(ConnectType type = ConnectType.Auto)
         {
@@ -74,7 +86,7 @@ namespace toio
             {
                 if (satisfiedNum <= this.peripheralList.Count) { return default; }
 
-                var objs = GameObject.FindGameObjectsWithTag("Cube");
+                var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                 foreach (var obj in objs)
                 {
                     if (!this.IDHash.Contains(obj.GetInstanceID()) && this.peripheralList.Count < satisfiedNum)
@@ -90,7 +102,7 @@ namespace toio
             {
                 if (satisfiedNum <= this.peripheralList.Count) { return; }
 
-                var objs = GameObject.FindGameObjectsWithTag("Cube");
+                var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                 foreach (var obj in objs)
                 {
                     if (!this.IDHash.Contains(obj.GetInstanceID()) && this.peripheralList.Count < satisfiedNum)

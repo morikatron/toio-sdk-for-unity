@@ -16,6 +16,7 @@ namespace toio
             this.gameObject = gameObject;
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
+            simulator.isUpdating = true;
 
         }
         public bool Init()
@@ -39,6 +40,10 @@ namespace toio
                 return true;
             }
             return false;
+        }
+        ~CubeUnity ()
+        {
+            simulator.isUpdating = false;
         }
 
         /////////////// PROPERTY ///////////////
