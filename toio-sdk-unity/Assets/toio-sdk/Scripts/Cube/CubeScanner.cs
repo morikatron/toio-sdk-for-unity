@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using toio.Simulator;
 
 namespace toio
 {
@@ -74,7 +75,7 @@ namespace toio
             {
                 if (satisfiedNum <= this.peripheralList.Count) { return default; }
 
-                var objs = GameObject.FindGameObjectsWithTag("Cube");
+                var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                 foreach (var obj in objs)
                 {
                     if (!this.IDHash.Contains(obj.GetInstanceID()) && this.peripheralList.Count < satisfiedNum)
@@ -90,7 +91,7 @@ namespace toio
             {
                 if (satisfiedNum <= this.peripheralList.Count) { return; }
 
-                var objs = GameObject.FindGameObjectsWithTag("Cube");
+                var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                 foreach (var obj in objs)
                 {
                     if (!this.IDHash.Contains(obj.GetInstanceID()) && this.peripheralList.Count < satisfiedNum)
