@@ -32,12 +32,12 @@ public class Sample_Cross : MonoBehaviour
         {
             var navi = cm.navigators[i];
             int M = 350; int m = 150;
-#if UNITY_EDITOR || UNITY_STANDALONE
-            if ((navi.cube as CubeUnity).objName[5] == '1')
-#else
-            if (i < cm.cubes.Count/2)
-#endif
-            {
+
+
+            if (
+                CubeScanner.actualTypeOfAuto == ConnectType.Simulator && (navi.cube as CubeUnity).objName[5] == '1' ||
+                CubeScanner.actualTypeOfAuto == ConnectType.Real      && i < cm.cubes.Count/2
+            ){
                 if (phases[i] == 0){
                     var mv = navi.Navi2Target(M, M, maxSpd:50, tolerance:50).Exec();
                     if (mv.reached) phases[i]++;
