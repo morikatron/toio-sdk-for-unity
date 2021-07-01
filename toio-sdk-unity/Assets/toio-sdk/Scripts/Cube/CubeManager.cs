@@ -153,7 +153,7 @@ namespace toio
             if (this.cubeTable.ContainsKey(peripheral.device_address))
             {
                 var cube = this.cubeTable[peripheral.device_address];
-                await this.connecter.ReConnect(cube, peripheral);
+                await this.connecter.ReConnect(cube);
                 this.connectedAction(cube, new CONNECTION_STATUS(CONNECTION_STATUS.RE_CONNECTED));
             }
             else
