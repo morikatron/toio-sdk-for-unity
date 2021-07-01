@@ -295,7 +295,7 @@ namespace toio.Android
         public void Disconnect(string addr)
         {
             var disconnectMethod = AndroidJNI.GetMethodID(this.bleManagerCls,
-                "disconnect", "(Ljava/lang/String;)");
+                "disconnect", "(Ljava/lang/String;)V");
             this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(addr));
             AndroidJNI.CallVoidMethod(this.javaBleManagerObj, 
                 disconnectMethod, this.argBuilder.Build());
