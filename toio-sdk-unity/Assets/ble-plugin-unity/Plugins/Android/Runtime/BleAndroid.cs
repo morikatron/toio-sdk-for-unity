@@ -93,7 +93,6 @@ namespace toio.Android
             Action<string> disconnectedPeripheralAction = null)
         {
             if (javaWrapper == null) { return; }
-            RemoveDeviceDataInStaticVars(identifier);
             javaWrapper.Disconnect(identifier);
         }
         private static void RemoveDeviceDataInStaticVars(string identifier)
