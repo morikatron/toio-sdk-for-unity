@@ -224,7 +224,8 @@ CubeScanner クラス：
 
 > <u>v1.2.1 まで</u>
 >
-> toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。
+> toio SDK for Unity には Bluetooth デバイスの検索モジュールが 2 つあります。<br>
+> 使用は非推奨ですが、互換性維持のため実装は残してあります。
 >- NearestScanner クラス：
 >  - Scan 関数：最も信号強度の高いデバイスを戻り値として<b>同期的</b>に返します。
 >- NearScanner クラス：
@@ -353,7 +354,7 @@ public class RealImpl : CubeScannerInterface
 
 ### <u>NearestScanner</u>
 
-> このクラスは v1.2.1 以前に使われていたクラスです。v1.3.0以降は[CubeScanner](sys_cube.md#cubescanner)の利用を推奨します。
+> このクラスは v1.2.1 以前に使われていたクラスです。互換性維持のため実装は残してありますが、v1.3.0以降は[CubeScanner](sys_cube.md#cubescanner)の利用を推奨します。
 
 <b>Scan 関数</b>を呼ぶ事で、最も信号強度の高いデバイスを戻り値として同期的に返します。
 内部実装については[CubeScanner NearestScan 関数](sys_cube.md#cubescanner)をご参照ください。
@@ -366,7 +367,7 @@ public class RealImpl : CubeScannerInterface
 
 ### <u>NearScanner</u>
 
-> このクラスは v1.2.1 以前に使われていたクラスです。v1.3.0以降は[CubeScanner](sys_cube.md#cubescanner)の利用を推奨します。
+> このクラスは v1.2.1 以前に使われていたクラスです。互換性維持のため実装は残してありますが、v1.3.0以降は[CubeScanner](sys_cube.md#cubescanner)の利用を推奨します。
 
 <b>Scan 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを戻り値として<b>同期的</b>に返します。内部実装については[CubeScanner NeareScan 関数](sys_cube.md#cubescanner)をご参照ください。<br>
 <b>ScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。内部実装については[CubeScanner NearScanAsync 関数](sys_cube.md#cubescanner)をご参照ください。
