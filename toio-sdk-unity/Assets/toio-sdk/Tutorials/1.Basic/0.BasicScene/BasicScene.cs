@@ -35,11 +35,16 @@ namespace toio.tutorial
             // 5秒間隔で、切断と再接続を繰り返す （リアルキューブのみに有効）
             if (Time.time > connectTime + 5f)
             {
-                Debug.LogWarning("!! DisConnect !!");
                 // 接続済みの場合は、切断
-                if (cube.isConnected) connecter.Disconnect(cube);
+                if (cube.isConnected)
+                {
+                    connecter.Disconnect(cube);
+                }
                 // 切断された場合は、再接続
-                // else connecter.ReConnect(cube);
+                else
+                {
+                    connecter.ReConnect(cube);
+                }
                 connectTime = Time.time;
             }
 
