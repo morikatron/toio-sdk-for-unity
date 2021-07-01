@@ -60,7 +60,7 @@ public class Hello_Toio : MonoBehaviour
   - iOS アプリでキューブと通信する
   - ウェブアプリでキューブと通信する
   - Android アプリでキューブと通信する
-  - （開発中：MacのUnity EditorでPlay時にキューブと通信する）
+  - MacのUnity EditorでPlay時にキューブと通信する
 - Cube
   - 一つのソースコードで、シミュレータとリアルの両方のキューブを同じく動かせる
   - キューブをスキャン、接続、再接続できる
