@@ -333,7 +333,7 @@ namespace toio
 
             public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
             {
-                await Reconnect(cube);
+                await ReConnect(cube);
             }
 
             public async UniTask ReConnect(Cube cube)
