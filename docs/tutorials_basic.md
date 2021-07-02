@@ -768,6 +768,104 @@ public class CubeManagerScene_Multi : MonoBehaviour
 }
 ```
 
+### 切断と再接続を繰り返し
+
+#### 簡略前
+
+```C#
+public class CubeManagerScene_RawReconnect : MonoBehaviour
+{
+    float intervalTime = 0.05f;
+    float elapsedTime = 0;
+    Cube cube;
+    CubeConnecter connecter;
+
+    async void Start()
+    {
+        // モジュールを直接利用した場合:
+        var peripheral = await new NearestScanner().Scan();
+        connecter = new CubeConnecter();
+        cube = await connecter.Connect(peripheral);
+
+        // 切断・再接続のループを開始
+        if (cube != null) StartCoroutine(LoopConnection());
+    }
+
+    IEnumerator LoopConnection()
+    {
+        yield return new WaitForSeconds(3);
+
+        // 切断 （モジュールを直接利用した場合）
+        connecter.Disconnect(cube);
+        yield return new WaitUntil(() => !cube.isConnected);
+        yield return new WaitForSeconds(3);
+
+        // 再接続 （モジュールを直接利用した場合）
+        connecter.ReConnect(cube);
+        yield return new WaitUntil(() => cube.isConnected);
+
+        StartCoroutine(LoopConnection());
+    }
+
+    void Update()
+    {
+        // 回転（モジュールを直接利用した場合）
+        if (null == cube) { return; }
+        elapsedTime += Time.deltaTime;
+        if (intervalTime < elapsedTime)
+        {
+            elapsedTime = 0.0f;
+            cube.Move(50, -50, 200);
+        }
+    }
+}
+```
+
+#### 簡略後
+
+```C#
+public class CubeManagerScene_Reconnect : MonoBehaviour
+{
+    CubeManager cubeManager;
+    Cube cube;
+
+    async void Start()
+    {
+        // CubeManagerからモジュールを間接利用した場合:
+        cubeManager = new CubeManager();
+        cube = await cubeManager.SingleConnect();
+
+        // 切断・再接続のループを開始
+        if (cube != null) StartCoroutine(LoopConnection());
+    }
+
+    IEnumerator LoopConnection()
+    {
+        yield return new WaitForSeconds(3);
+
+        // 切断 （CubeManager 利用した場合）
+        cubeManager.DisconnectAll();    // ALT: cubeManager.Disconnect(cube);
+        yield return new WaitUntil(() => !cube.isConnected);
+        yield return new WaitForSeconds(3);
+
+        // 再接続 （CubeManager 利用した場合）
+        cubeManager.ReConnectAll();     // ALT: cubeManager.ReConnect(cube);
+        yield return new WaitUntil(() => cube.isConnected);
+
+        StartCoroutine(LoopConnection());
+    }
+
+    void Update()
+    {
+        // CubeManagerからモジュールを間接利用した場合:
+        if (cubeManager.IsControllable(cube))
+        {
+            cube.Move(50, -50, 200);
+        }
+    }
+}
+```
+
 <br>
 
 # 10. 途中接続 / 途中切断
