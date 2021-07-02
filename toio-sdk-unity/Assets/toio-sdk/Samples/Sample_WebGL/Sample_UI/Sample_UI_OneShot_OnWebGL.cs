@@ -19,6 +19,20 @@ public class Sample_UI_OneShot_OnWebGL : MonoBehaviour
             cube = await cubeManager.SingleConnect();
         }
     }
+    public void Disconnect()
+    {
+        if (null != cube && cube.isConnected)
+        {
+            cubeManager.DisconnectAll();
+        }
+    }
+    public async void ReConnect()
+    {
+        if (null != cube && !cube.isConnected)
+        {
+            await cubeManager.ReConnectAll();
+        }
+    }
 
     // 持続時間(durationMs):0にする事で時間無制限となり、一度呼び出すだけで動作し続ける事が出来る。
     // 命令の優先度(order):Cube.ORDER_TYPE.Strongにすることで、一度きりの命令を安全に送信。
