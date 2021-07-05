@@ -140,7 +140,7 @@ namespace toio.Android
                 characteristicUUID,
                 data, length, withResponse);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            // todo callback����
+            // todo callback実装
             if (withResponse)
             {
                 dataEvt.SetWriteAct(didWriteCharacteristicAction);
@@ -167,7 +167,7 @@ namespace toio.Android
             javaWrapper.SetNotificateFlag(identifier,serviceUUID,
                 characteristicUUID, false);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            // todo �������ǂ��킩��Ȃ��c
+            // todo 引数が良くわからない…
             dataEvt.RemoveNotifyAct();
         }
 
