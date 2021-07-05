@@ -78,14 +78,12 @@ namespace toio.Android
         {
             if(javaWrapper == null) { return; }
             javaWrapper.ConnectRequest(identifier);
-            var deviceEvent = new BleDiscoverEvents()
-            {
-                connectedAct = connectedPeripheralAction,
-                disconnectedAct = disconnectedPeripheralAction,
-                discoveredCharacteristicAct = discoveredCharacteristicAction,
-                discoveredServiceAct = discoveredServiceAction,
-            };
-            deviceEvent.InitFlags();
+            var deviceEvent = new BleDiscoverEvents(
+                connectedAct: connectedPeripheralAction,
+                discoveredServiceAct: discoveredServiceAction,
+                discoveredCharacteristicAct: discoveredCharacteristicAction,
+                disconnectedAct: disconnectedPeripheralAction
+            );
             s_deviceDiscoverEvents[identifier] = deviceEvent;
         }
 
