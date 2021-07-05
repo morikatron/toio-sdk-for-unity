@@ -8,6 +8,7 @@
   - [3.1. 変数](usage_cube.md#31-変数)
   - [3.2. コールバック](usage_cube.md#32-コールバック)
   - [3.3. メソッド](usage_cube.md#33-メソッド)
+- [4. Cubeの接続設定](usage_cube.md#4-cubeの接続設定)
   <br>
 
 # 1. 概説
@@ -680,3 +681,84 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
+
+<br>
+
+# 4. Cubeの接続設定
+
+通信接続の内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、通信関連クラスのコンストラクタ引数に`ConnectType`を指定する事で接続方法を変更可能です。
+
+- 基本設定(`ConnectType.Auto`)の場合はビルド対象に応じて内部実装が自動的に変わります。<br>
+- シミュレータ設定(`ConnectType.Simulator`)の場合はビルド対象に関わらずシミュレータのキューブが動作します。<br>
+- リアル設定(`ConnectType.Real`)の場合はビルド対象に関わらずリアルのキューブが動作します。
+
+### 定義
+
+```C#
+public enum ConnectType
+{
+    Auto, // ビルド対象に応じて内部実装が自動的に変わる
+    Simulator, // ビルド対象に関わらずシミュレータのキューブで動作する
+    Real // ビルド対象に関わらずリアル(現実)のキューブで動作する
+}
+```
+
+```C#
+public NearestScanner(ConnectType type = ConnectType.Auto);
+
+public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto);
+
+public CubeScanner(ConnectType type = ConnectType.Auto);
+
+public CubeConnecter(ConnectType type = ConnectType.Auto);
+
+public CubeManager(ConnectType type = ConnectType.Auto);
+```
+
+### サンプルコード
+
+```C#
+Cube[] cubes;
+async void Start()
+{
+    // 引数を指定しない場合、ConnectType.Auto がデフォルト値
+    // ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
+    var peripherals = await new CubeScanner().NearScan(2);
+    cube = await new CubeConnecter().Connect(peripherals);
+}
+```
+
+```C#
+CubeManager cubeManager;
+async void Start()
+{
+    // 引数を指定しない場合、ConnectType.Auto がデフォルト値
+    // ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。
+    cubeManager = new CubeManager();
+    await cubeManager.MultiConnect(2);
+}
+```
+
+```C#
+Cube[] cubes;
+async void Start()
+{
+    // どのプラットフォームでもシミュレータキューブに接続する
+    var peripherals = await new CubeScanner(ConnectType.Simulator).NearScan(2);
+    cube = await new CubeConnecter(ConnectType.Simulator).Connect(peripherals);
+}
+```
+
+```C#
+CubeManager cubeManager;
+async void Start()
+{
+    // どのプラットフォームでもリアルキューブに接続する
+    cubeManager = new CubeManager(ConnectType.Real);
+    await cubeManager.MultiConnect(2);
+}
+```
+
+### サンプルプロジェクト
+
+[Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/) をご参照ください。

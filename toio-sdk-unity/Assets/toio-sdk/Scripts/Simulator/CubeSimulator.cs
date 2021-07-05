@@ -61,6 +61,11 @@ namespace toio.Simulator
         /// </summary>
         public bool ready { get; private set; } = false;
 
+        /// <summary>
+        /// シミュレータが稼働しているか
+        /// </summary>
+        public bool isUpdating { get; set; } = false;
+
         // ----- toio ID -----
 
         /// <summary>
@@ -167,26 +172,22 @@ namespace toio.Simulator
 
         private void Start()
         {
-            #if !(UNITY_EDITOR || UNITY_STANDALONE)   // Editor以外で実行される場合は自身を無効かします
-                this.gameObject.SetActive(false);
-            #else
-                this.rb = GetComponent<Rigidbody>();
-                this.rb.maxAngularVelocity = 21f;
-                this.audioSource = GetComponent<AudioSource>();
-                this.LED = transform.Find("LED").gameObject;
-                this.LED.GetComponent<Renderer>().material.color = Color.black;
-                this.cubeModel = transform.Find("cube_model").gameObject;
-                this.col = GetComponent<BoxCollider>();
+            this.rb = GetComponent<Rigidbody>();
+            this.rb.maxAngularVelocity = 21f;
+            this.audioSource = GetComponent<AudioSource>();
+            this.LED = transform.Find("LED").gameObject;
+            this.LED.GetComponent<Renderer>().material.color = Color.black;
+            this.cubeModel = transform.Find("cube_model").gameObject;
+            this.col = GetComponent<BoxCollider>();
 
-                switch (version)
-                {
-                    case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
-                    case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
-                    case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
-                    default : this.impl = new CubeSimImpl_v2_2_0(this);break;
-                }
-                this._InitPresetSounds();
-            #endif
+            switch (version)
+            {
+                case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
+                case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
+                case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
+                default : this.impl = new CubeSimImpl_v2_2_0(this);break;
+            }
+            this._InitPresetSounds();
         }
 
         private void Update()
@@ -195,11 +196,14 @@ namespace toio.Simulator
 
         private void FixedUpdate()
         {
-            SimulatePhysics();
+            if (isUpdating)
+            {
+                SimulatePhysics();
 
-            impl.Simulate();
+                impl.Simulate();
 
-            this.ready = true;  // 一回更新してからシミュレーターがreadyになる
+                this.ready = true;  // 一回更新してからシミュレーターがreadyになる
+            }
         }
 
         internal bool offGroundL = true;
