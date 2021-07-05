@@ -11,7 +11,9 @@ namespace toio
         UniTask<Cube> Connect(BLEPeripheralInterface peripheral);
         UniTask<Cube[]> Connect(BLEPeripheralInterface[] peripherals);
         void Disconnect(Cube cube);
+        [Obsolete("Deprecated. Please use ReConnect(Cube cube) instead.", false)]
         UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral);
+        UniTask ReConnect(Cube cube);
     }
 
     /// <summary>
@@ -55,7 +57,11 @@ namespace toio
         }
         public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
         {
-            await this.impl.ReConnect(cube, peripheral);
+            await this.impl.ReConnect(cube);
+        }
+        public async UniTask ReConnect(Cube cube)
+        {
+            await this.impl.ReConnect(cube);
         }
 
         public class SimImpl : CubeConnecterInterface
@@ -89,7 +95,12 @@ namespace toio
             {
                 return default;
             }
+            public UniTask ReConnect(Cube cube)
+            {
+                return default;
+            }
         }
+
 
         public class RealImpl : CubeConnecterInterface
         {
@@ -154,8 +165,14 @@ namespace toio
 
             public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
             {
+                await ReConnect(cube);
+            }
+
+            public async UniTask ReConnect(Cube cube)
+            {
                 try
                 {
+                    var peripheral = (cube as CubeReal).peripheral;
                     while(this.isConnecting) { await UniTask.Delay(100); }
 
                     this.isConnecting = true;

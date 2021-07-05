@@ -93,7 +93,7 @@ namespace toio.Android
             Action<string> disconnectedPeripheralAction = null)
         {
             if (javaWrapper == null) { return; }
-            RemoveDeviceDataInStaticVars(identifier);
+            javaWrapper.Disconnect(identifier);
         }
         private static void RemoveDeviceDataInStaticVars(string identifier)
         {
@@ -140,7 +140,7 @@ namespace toio.Android
                 characteristicUUID,
                 data, length, withResponse);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            // todo callbackÀ‘•
+            // todo callbackå®Ÿè£…
             if (withResponse)
             {
                 dataEvt.SetWriteAct(didWriteCharacteristicAction);
@@ -167,7 +167,7 @@ namespace toio.Android
             javaWrapper.SetNotificateFlag(identifier,serviceUUID,
                 characteristicUUID, false);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            // todo ˆø”‚ª—Ç‚­‚í‚©‚ç‚È‚¢c
+            // todo å¼•æ•°ãŒè‰¯ãã‚ã‹ã‚‰ãªã„â€¦
             dataEvt.RemoveNotifyAct();
         }
 

@@ -107,6 +107,26 @@ namespace toio
             this.connecter.Disconnect(cube);
         }
 
+        public virtual void DisconnectAll()
+        {
+            foreach (var cube in cubes)
+                if (cube.isConnected)
+                    this.connecter.Disconnect(cube);
+        }
+
+        public virtual async UniTask ReConnect(Cube cube)
+        {
+            await this.connecter.ReConnect(cube);
+        }
+
+        public virtual async UniTask ReConnectAll()
+        {
+            foreach (var cube in cubes)
+                if (!cube.isConnected)
+                    await this.connecter.ReConnect(cube);
+        }
+
+
         /// <summary>
         /// 前回のCubeへの送信から45ミリ秒以上空いていた時にTrueが返ります.
         /// </summary>
@@ -155,7 +175,7 @@ namespace toio
             if (this.cubeTable.ContainsKey(peripheral.device_address))
             {
                 var cube = this.cubeTable[peripheral.device_address];
-                await this.connecter.ReConnect(cube, peripheral);
+                await this.connecter.ReConnect(cube);
                 this.connectedAction(cube, new CONNECTION_STATUS(CONNECTION_STATUS.RE_CONNECTED));
             }
             else
