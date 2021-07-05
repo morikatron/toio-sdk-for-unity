@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace toio
@@ -12,11 +13,13 @@ namespace toio
         public float rssi { get; }
         public bool isConnected { get { return true; } }
         private TCallbackProvider<BLEPeripheralInterface> callback;
+        public List<BLECharacteristicInterface> connectedcharacteristics { get; private set; }
 
         public UnityPeripheral(GameObject _obj)
         {
             this.obj = _obj;
             this.callback = new TCallbackProvider<BLEPeripheralInterface>();
+            this.connectedcharacteristics = new List<BLECharacteristicInterface>();
         }
         public void Connect(Action<BLECharacteristicInterface> characteristicAction)
         {

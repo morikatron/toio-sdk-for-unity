@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace toio
 {
@@ -9,6 +10,7 @@ namespace toio
         string device_name { get; }
         float rssi { get; }
         bool isConnected { get; }
+        List<BLECharacteristicInterface> connectedcharacteristics { get; }
 
         /// peripheralに接続
         /// [peripheral:1 - characteristic:多]の関係なので、characteristicActionが複数回呼び出される

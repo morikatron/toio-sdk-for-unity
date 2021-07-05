@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 
 namespace toio
@@ -9,7 +8,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      プロパティ
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        public override bool isConnected { get { return this.peripheral.isConnected; } }
+        public override bool isConnected { get { return this.peripheral.isConnected && NUM_OF_CHARACTERISTICS == this.peripheral.connectedcharacteristics.Count; } }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      純粋仮想関数
@@ -28,6 +27,7 @@ namespace toio
         public const string CHARACTERISTIC_MOTOR = "10B20102-5B3B-4571-9508-CF3EFCD7BBAE";
         public const string CHARACTERISTIC_LIGHT = "10B20103-5B3B-4571-9508-CF3EFCD7BBAE";
         public const string CHARACTERISTIC_SOUND = "10B20104-5B3B-4571-9508-CF3EFCD7BBAE";
+        public const int NUM_OF_CHARACTERISTICS = 8;
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部変数
