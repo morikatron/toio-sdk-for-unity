@@ -191,6 +191,7 @@ namespace toio
 
         protected void AddCube(Cube cube)
         {
+            if (cube == null) return;
             if (this.cubeTable.ContainsKey(cube.id)) return;
             this.cubes.Add(cube);
             var handle = new CubeHandle(cube);

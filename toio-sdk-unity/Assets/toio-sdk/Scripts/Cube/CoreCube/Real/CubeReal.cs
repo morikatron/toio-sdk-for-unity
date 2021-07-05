@@ -8,7 +8,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      プロパティ
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        public override bool isConnected { get { return this.peripheral.isConnected && NUM_OF_CHARACTERISTICS == this.peripheral.connectedcharacteristics.Count; } }
+        public override bool isConnected { get { return this.peripheral.isConnected && isCharacteristicReady; } }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      純粋仮想関数
@@ -34,11 +34,12 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         public BLEPeripheralInterface peripheral { get; private set; }
         public Dictionary<string, BLECharacteristicInterface> characteristicTable { get; private set; }
+        public bool isCharacteristicReady { get; private set; }
 
         public CubeReal(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             this.peripheral = peripheral;
-            this.characteristicTable = characteristicTable;
+            SetCharacteristicTable(characteristicTable);
             this.isPressed = false; // 初期値:非押下
             this.isSloped = false; // 初期値:水平
             this.isCollisionDetected = false; // 初期値:非衝突
@@ -46,6 +47,18 @@ namespace toio
 
             // idが無効となったため、addrで代用
             this.id = addr;
+        }
+
+        public void SetCharacteristicTable(Dictionary<string, BLECharacteristicInterface> characteristicTable)
+        {
+            this.characteristicTable = characteristicTable;
+
+            isCharacteristicReady = true;
+            foreach (var chara in characteristicTable.Values)
+                if (chara == null)
+                {
+                    isCharacteristicReady = false; break;
+                }
         }
 
         protected void Request(string characteristicName, byte[] buff, bool withResponse, Cube.ORDER_TYPE order, string DEBUG_name, params object[] DEBUG_plist)
