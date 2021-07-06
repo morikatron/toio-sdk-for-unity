@@ -161,6 +161,7 @@ namespace toio
 
             public void Disconnect(Cube cube)
             {
+                (cube as CubeReal).SetCharacteristicTable(null);
                 (cube as CubeReal).peripheral.Disconnect();
             }
 
@@ -178,6 +179,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
+                    (cube as CubeReal).SetCharacteristicTable(characteristicTable);
                     await (cube as CubeReal).Initialize();
                     this.isConnecting = false;
                 }

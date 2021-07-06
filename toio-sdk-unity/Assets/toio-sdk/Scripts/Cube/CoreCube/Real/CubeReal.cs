@@ -52,6 +52,11 @@ namespace toio
         public void SetCharacteristicTable(Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             this.characteristicTable = characteristicTable;
+            if (characteristicTable == null)
+            {
+                isCharacteristicReady = false;
+                return;
+            }
 
             isCharacteristicReady = true;
             foreach (var chara in characteristicTable.Values)
@@ -63,6 +68,7 @@ namespace toio
 
         protected void Request(string characteristicName, byte[] buff, bool withResponse, Cube.ORDER_TYPE order, string DEBUG_name, params object[] DEBUG_plist)
         {
+            if (!isConnected) return;
 #if RELEASE
             CubeOrderBalancer.Instance.AddOrder(this, () => this.characteristicTable[characteristicName].WriteValue(buff, withResponse), order);
 #else
