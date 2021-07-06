@@ -39,7 +39,7 @@ namespace toio
         public CubeReal(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             this.peripheral = peripheral;
-            peripheral.AddConnectionListener("CubeReal", peri => {if (!peri.isConnected) SetCharacteristicTable(null);});
+            peripheral.AddConnectionListener("CubeReal"+(this as object).GetHashCode(), peri => {if (!peri.isConnected) SetCharacteristicTable(null);});
             SetCharacteristicTable(characteristicTable);
 
             this.isPressed = false; // 初期値:非押下
