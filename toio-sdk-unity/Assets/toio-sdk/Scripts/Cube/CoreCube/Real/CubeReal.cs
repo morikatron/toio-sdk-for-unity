@@ -39,7 +39,9 @@ namespace toio
         public CubeReal(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             this.peripheral = peripheral;
+            peripheral.AddConnectionListener("CubeReal", peri => {if (!peri.isConnected) SetCharacteristicTable(null);});
             SetCharacteristicTable(characteristicTable);
+
             this.isPressed = false; // 初期値:非押下
             this.isSloped = false; // 初期値:水平
             this.isCollisionDetected = false; // 初期値:非衝突
