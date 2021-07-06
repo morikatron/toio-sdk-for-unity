@@ -54,7 +54,6 @@ namespace toio.Android
 
         private AndroidJavaObject GetContext()
         {
-            // UnityPlayerƒNƒ‰ƒX‚ðŽæ“¾
             using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
                 using (AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity"))
@@ -320,6 +319,9 @@ namespace toio.Android
                     getDisconnectedDeviceAddr,this.argBuilder.Build());
                 this.disconnectedDevices.Add(addr);
             }
+
+            foreach (var addr in disconnectedDevices)
+                this.charastericsKeyInfos.Remove(addr);
         }
         public List<string> GetDisconnectedDevices()
         {

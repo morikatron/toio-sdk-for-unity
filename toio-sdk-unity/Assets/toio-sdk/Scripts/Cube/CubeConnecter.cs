@@ -141,8 +141,9 @@ namespace toio
                     this.isConnecting = false;
                     return cube;
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
+                    Debug.LogError(e);
                     this.isConnecting = false;
                     return null;
                 }
@@ -177,6 +178,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
+                    (cube as CubeReal).SetCharacteristicTable(characteristicTable);
                     await (cube as CubeReal).Initialize();
                     this.isConnecting = false;
                 }
@@ -205,7 +207,8 @@ namespace toio
 
                 peripheral.Connect((chara) =>
                 {
-                    characteristicTable[chara.characteristicUUID] = chara;
+                    if (chara.serviceUUID == CubeReal.SERVICE_ID)
+                        characteristicTable[chara.characteristicUUID] = chara;
                 });
 
                 bool isBreak = true;

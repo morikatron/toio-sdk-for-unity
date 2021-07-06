@@ -79,8 +79,19 @@ namespace toio
         {
             var peripheral = await this.scanner.NearestScan();
             if (null == peripheral) { return null; }
-            var cube = await this.connecter.Connect(peripheral);
-            this.AddCube(cube);
+
+            Cube cube = null;
+            if (this.cubeTable.ContainsKey(peripheral.device_address))
+            {
+                cube = cubeTable[peripheral.device_address];
+                await this.connecter.ReConnect(cube);
+            }
+            else
+            {
+                cube = await this.connecter.Connect(peripheral);
+                this.AddCube(cube);
+            }
+
             return cube;
         }
 
@@ -191,6 +202,7 @@ namespace toio
 
         protected void AddCube(Cube cube)
         {
+            if (cube == null) return;
             if (this.cubeTable.ContainsKey(cube.id)) return;
             this.cubes.Add(cube);
             var handle = new CubeHandle(cube);
