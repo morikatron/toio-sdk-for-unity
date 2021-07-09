@@ -10,6 +10,8 @@ namespace toio
 
         public virtual void AddListener(string key, Action<T> listener)
         {
+            if (this.listenerTable.ContainsKey(key))
+                this.listenerList.Remove(this.listenerTable[key]);
             this.listenerTable[key] = listener;
             this.listenerList.Add(listener);
         }
@@ -28,9 +30,9 @@ namespace toio
         }
         public virtual void Notify(T target)
         {
-            foreach (var listener in this.listenerList)
+            for (int i=0; i < this.listenerList.Count; i++)
             {
-                listener.Invoke(target);
+                this.listenerList[i].Invoke(target);
             }
         }
     }

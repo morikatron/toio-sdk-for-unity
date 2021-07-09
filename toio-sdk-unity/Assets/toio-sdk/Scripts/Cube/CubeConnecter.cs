@@ -119,13 +119,13 @@ namespace toio
                     switch(version)
                     {
                         case "2.0.0":
-                            cube = new CubeReal_ver2_0_0(peripheral, characteristicTable);
+                            cube = new CubeReal_ver2_0_0(peripheral);
                             break;
                         case "2.1.0":
-                            cube = new CubeReal_ver2_1_0(peripheral, characteristicTable);
+                            cube = new CubeReal_ver2_1_0(peripheral);
                             break;
                         case "2.2.0":
-                            cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
+                            cube = new CubeReal_ver2_2_0(peripheral);
                             break;
                         default:
                             // Basically, BLE protocol version has backward compatibility,
@@ -134,10 +134,10 @@ namespace toio
                             // TODO:
                             // - patch(build) number can be ignored (should be?)
                             // - major number should be checked
-                            cube = new CubeReal_ver2_2_0(peripheral, characteristicTable);
+                            cube = new CubeReal_ver2_2_0(peripheral);
                             break;
                     }
-                    await cube.Initialize();
+                    await cube.Initialize(characteristicTable);
                     this.isConnecting = false;
                     return cube;
                 }
@@ -178,8 +178,7 @@ namespace toio
 
                     this.isConnecting = true;
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    (cube as CubeReal).SetCharacteristicTable(characteristicTable);
-                    await (cube as CubeReal).Initialize();
+                    await (cube as CubeReal).Initialize(characteristicTable);
                     this.isConnecting = false;
                 }
                 catch (System.Exception)
