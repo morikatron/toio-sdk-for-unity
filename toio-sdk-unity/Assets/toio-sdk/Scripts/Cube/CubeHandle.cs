@@ -343,8 +343,8 @@ namespace toio
                 // predicted final stopping state, assuming not output current order.
                 double x = this.stopXPred, y = this.stopYPred, rad = this.radPred;
                 // predicted state if not stopping.
-                double predX = x + Max(spdPred, translate * VDotOverU) * dt * Cos(rad);
-                double predY = y + Max(spdPred, translate * VDotOverU) * dt * Sin(rad);
+                double predX = x + translate * VDotOverU * dt * Cos(rad);
+                double predY = y + translate * VDotOverU * dt * Sin(rad);
                 double predRad = this.radPred;
 
                 // currently outside and going further : stop transition
@@ -623,7 +623,7 @@ namespace toio
 
         /// <summary>
         /// Rotate by given radians and angular velocity (rotate).
-        /// 指定角変位（弧度）、指定回転指令で前進。一回のみ呼んでください。
+        /// 指定角変位（弧度）、指定回転指令で回転。一回のみ呼んでください。
         /// </summary>
         public Movement RotateByRad(double drad, double rotate)
         {
@@ -645,7 +645,7 @@ namespace toio
 
         /// <summary>
         /// Rotate by given degrees and angular velocity (rotate).
-        /// 指定角変位（度）、指定回転指令で前進。一回のみ呼んでください。
+        /// 指定角変位（度）、指定回転指令で回転。一回のみ呼んでください。
         /// </summary>
         public Movement RotateByDeg(double ddeg, double rotate)
         {

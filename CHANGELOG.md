@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Simulator] Simulator's cube object won't disappear when built to mobile device, since new `CubeSanncer` `CubeConnect` require Simulator being able to work under any environment. `CubeSimulator` won't run simulation unless attached to a `CubeUnity` instance.
 
+### Fixed
+
+- [CubeHandle] Not moving backwards on the outside of borders issue fixed.
+
 ## [1.2.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.1) - 2021-04-27
 
 ### Added

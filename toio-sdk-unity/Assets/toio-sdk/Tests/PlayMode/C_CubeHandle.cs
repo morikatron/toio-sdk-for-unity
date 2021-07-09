@@ -57,7 +57,24 @@ namespace toio.Tests
             handle.borderRect = new RectInt(150, 150, 300, 300);
 
             handle.Update();
-            handle.Move(30, 30, 2000);
+            handle.Move(60, 40, 2000);
+
+            test.update = test.UpdateForSeconds(2);
+
+            yield return new MonoBehaviourTest<test>();
+        }
+
+        [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
+        public static IEnumerator b_Move_Outside_In2()
+        {
+            var handle = cubeManager.handles[GetCubeIdxFromHomeIdx(1)];
+            handle.borderRect = new RectInt(150, 150, 300, 300);
+
+            handle.Update();
+            handle.Rotate2Deg(-90).Exec();
+            yield return new WaitForSeconds(1f);
+            handle.Update();
+            var mv = handle.Move(-60, 40, 2000);
 
             test.update = test.UpdateForSeconds(2);
 
