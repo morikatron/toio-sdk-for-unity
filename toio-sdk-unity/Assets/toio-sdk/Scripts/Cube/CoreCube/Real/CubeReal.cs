@@ -11,11 +11,6 @@ namespace toio
         public override bool isConnected { get { return this.peripheral.isConnected && isCharacteristicReady; } }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        //      純粋仮想関数
-        //_/_/_/_/_/_/_/_/_/_/_/_/_/
-        public abstract UniTask Initialize();
-
-        //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      定数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         public const string SERVICE_ID = "10B20100-5B3B-4571-9508-CF3EFCD7BBAE";
@@ -36,12 +31,9 @@ namespace toio
         public Dictionary<string, BLECharacteristicInterface> characteristicTable { get; private set; }
         public bool isCharacteristicReady { get; private set; }
 
-        public CubeReal(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
+        public CubeReal(BLEPeripheralInterface peripheral)
         {
             this.peripheral = peripheral;
-            peripheral.AddConnectionListener("CubeReal"+(this as object).GetHashCode(), peri => {if (!peri.isConnected) SetCharacteristicTable(null);});
-            SetCharacteristicTable(characteristicTable);
-
             this.isPressed = false; // 初期値:非押下
             this.isSloped = false; // 初期値:水平
             this.isCollisionDetected = false; // 初期値:非衝突
@@ -51,7 +43,23 @@ namespace toio
             this.id = addr;
         }
 
-        public void SetCharacteristicTable(Dictionary<string, BLECharacteristicInterface> characteristicTable)
+        public virtual async UniTask Initialize(Dictionary<string, BLECharacteristicInterface> characteristicTable)
+        {
+            if (isConnected || characteristicTable == null) return;
+            var key = "CubeReal"+(this as object).GetHashCode();
+            peripheral.AddConnectionListener(key, peri =>
+                {
+                    if (!peri.isConnected) {
+                        SetCharacteristicTable(null);
+                        peripheral.RemoveConnectionListener(key);
+                    }
+                }
+            );
+            SetCharacteristicTable(characteristicTable);
+            await UniTask.Delay(0);
+        }
+
+        private void SetCharacteristicTable(Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             this.characteristicTable = characteristicTable;
             if (characteristicTable == null)

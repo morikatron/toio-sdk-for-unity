@@ -70,8 +70,7 @@ namespace toio
         public override CallbackProvider<Cube> shakeCallback { get { return this._shakeCallback; } }
         public override CallbackProvider<Cube> motorSpeedCallback { get { return this._motorSpeedCallback; } }
 
-        public CubeReal_ver2_2_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
-        : base(peripheral, characteristicTable)
+        public CubeReal_ver2_2_0(BLEPeripheralInterface peripheral) : base(peripheral)
         {
         }
 
@@ -176,9 +175,9 @@ namespace toio
         /// <summary>
         /// 自動通知機能の購読を開始する
         /// </summary>
-        public override async UniTask Initialize()
+        public override async UniTask Initialize(Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
-            await base.Initialize();
+            await base.Initialize(characteristicTable);
             this.characteristicTable[CHARACTERISTIC_MOTOR].StartNotifications(this.Recv_motor);
             this.characteristicTable[CHARACTERISTIC_CONFIG].StartNotifications(this.Recv_config);
             this.isInitialized = true;
