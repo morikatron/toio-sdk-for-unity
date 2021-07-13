@@ -10,8 +10,8 @@ namespace toio
         public string[] serviceUUIDs { get; }
         public string device_address { get { return obj.GetInstanceID().ToString(); } }
         public string device_name { get { return obj.name; } }
-        public float rssi { get; }
-        public bool isConnected { get { return true; } }
+        public float rssi { get { var p = obj.transform.position; return p.x+p.y+p.z; } }
+        public bool isConnected { get; private set; }
         private TCallbackProvider<BLEPeripheralInterface> callback;
         public List<BLECharacteristicInterface> connectedcharacteristics { get; private set; }
 
@@ -44,6 +44,26 @@ namespace toio
         public void ConnectionNotify(BLEPeripheralInterface peri)
         {
             this.callback.Notify(peri);
+        }
+
+
+        private void OnConnected(string device_address)
+        {
+            if (!this.isConnected)
+            {
+                this.isConnected = true;
+                this.ConnectionNotify(this);
+            }
+        }
+
+        private void OnDisconnected(string device_address)
+        {
+            if (this.isConnected)
+            {
+                this.isConnected = false;
+                this.connectedcharacteristics.Clear();
+                this.ConnectionNotify(this);
+            }
         }
     }
 }
