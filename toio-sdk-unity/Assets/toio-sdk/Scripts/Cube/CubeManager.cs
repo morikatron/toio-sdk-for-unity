@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using toio.Navigation;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 namespace toio
 {
@@ -21,32 +22,48 @@ namespace toio
         public bool synced
         { get {
             if (cubes.Count == 0) return false;
-            foreach (var cube in cubes)
-                if (!IsControllable(cube))
-                    return false;
+            // Either connected cube is not controllable
+            if ( !cubes.TrueForAll(cube => !(cube.isConnected && !IsControllable(cube))) ) return false;
+            // No connected cube
+            if ( cubes.TrueForAll(cube => !cube.isConnected) ) return false;
+            // Connected cube exists, and all controllable
             // Update all navigators (Update runs only once within 15ms)
             foreach (var navigator in navigators)
-                navigator.Update();
+                if (navigator.cube.isConnected)
+                    navigator.Update();
             return true;
+        }}
+
+        public List<Cube> connectedCubes
+        { get {
+            return cubes.Where(c => c.isConnected).ToList();
+        }}
+        public List<CubeHandle> connectedHandles
+        { get {
+            return handles.Where(h => h.cube.isConnected).ToList();
+        }}
+        public List<CubeNavigator> connectedNavigators
+        { get {
+            return navigators.Where(n => n.cube.isConnected).ToList();
         }}
 
         public List<Cube> syncCubes
         { get {
             // Return empty list if any cube is not controllable
             if (!synced) return new List<Cube>();
-            return cubes;
+            return connectedCubes;
         }}
         public List<CubeHandle> syncHandles
         { get {
             // Return empty list if any handle is not controllable
             if (!synced) return new List<CubeHandle>();
-            return handles;
+            return connectedHandles;
         }}
         public List<CubeNavigator> syncNavigators
         { get {
             // Return empty list if any navigator is not controllable
             if (!synced) return new List<CubeNavigator>();
-            return navigators;
+            return connectedNavigators;
         }}
 
 
