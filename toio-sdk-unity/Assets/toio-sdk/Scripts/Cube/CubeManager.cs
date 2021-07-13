@@ -14,10 +14,6 @@ namespace toio
         public List<CubeHandle> handles;
         public List<CubeNavigator> navigators;
         // 接続機能
-        [Obsolete("Deprecated. Please use scanner instead.", false)]
-        protected NearestScannerInterface nearestScanner;
-        [Obsolete("Deprecated. Please use scanner instead.", false)]
-        protected NearScannerInterface nearScanner;
         protected CubeScannerInterface scanner;
         protected CubeConnecterInterface connecter;
         protected Action<Cube, CONNECTION_STATUS> connectedAction;
@@ -152,18 +148,6 @@ namespace toio
         public bool IsControllable(CubeNavigator navigator)
         {
             return IsControllable(navigator.cube);
-        }
-
-        [Obsolete("Deprecated. Please use scanner instead.", false)]
-        public void SetNearScanner(NearScannerInterface scanner)
-        {
-            this.nearScanner = scanner;
-        }
-
-        [Obsolete("Deprecated. Please use scanner instead.", false)]
-        public void SetNearestScanner(NearestScannerInterface scanner)
-        {
-            this.nearestScanner = scanner;
         }
 
         public void SetCubeScanner(CubeScannerInterface scanner)

@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+### Added
+
+- [Scanner] Add class `CubeScanner` that integrates `NearestScanner` and `NearScanner`.
+
 ### Changed
 
 - [Simulator] Simulator's cube object won't disappear when built to mobile device, since new `CubeSanncer` `CubeConnect` require Simulator being able to work under any environment. `CubeSimulator` won't run simulation unless attached to a `CubeUnity` instance.
+- [Scanner] Replace internal implementations of `NearestScanner` and `NearScanner` with `CubeScanner`.
+- [CubeManager] Remove method `CubeManager.SetNearestScanner` and `CubeManager.SetNearScanner` and add method `CubeManager.SetCubeScanner`
 
 ### Fixed
 
