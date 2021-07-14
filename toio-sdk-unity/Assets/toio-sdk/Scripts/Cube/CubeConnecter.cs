@@ -75,15 +75,9 @@ namespace toio
                     while(this.isConnecting) { await UniTask.Delay(100); }
 
                     this.isConnecting = true;
-                    peripheral.Connect(null);
 
-                    float startTime = Time.time;
-                    while (true)
-                    {
-                        if (peripheral.isConnected) break;
-                        if (startTime < Time.time - 10.0f) return null;
-                        await UniTask.Delay(100);
-                    }
+                    bool success = await this.ConnectPeripheral(peripheral);
+                    if (!success) return null;
 
                     var cube = new CubeUnity(peripheral as UnityPeripheral);
                     cube.Initialize();
@@ -112,14 +106,44 @@ namespace toio
             {
                 (cube as CubeUnity).peripheral.Disconnect();
             }
-            public UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
+            public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
             {
-                return default;
+                await ReConnect(cube);
             }
-            public UniTask ReConnect(Cube cube)
+            public async UniTask ReConnect(Cube cube)
             {
-                return default;
+                try
+                {
+                    var peripheral = (cube as CubeUnity).peripheral;
+                    while(this.isConnecting) { await UniTask.Delay(100); }
+
+                    this.isConnecting = true;
+
+                    bool success = await this.ConnectPeripheral(peripheral);
+                    if (!success) return;
+
+                    (cube as CubeUnity).Initialize();
+                    this.isConnecting = false;
+                }
+                catch (System.Exception)
+                {
+                    this.isConnecting = false;
+                }
             }
+
+            protected virtual async UniTask<bool> ConnectPeripheral(BLEPeripheralInterface peripheral)
+            {
+                float startTime = Time.time;
+                peripheral.Connect(null);
+
+                while (true)
+                {
+                    if (peripheral.isConnected) return true;
+                    if (startTime < Time.time - 10.0f) return false;
+                    await UniTask.Delay(100);
+                }
+            }
+
         }
 
 
