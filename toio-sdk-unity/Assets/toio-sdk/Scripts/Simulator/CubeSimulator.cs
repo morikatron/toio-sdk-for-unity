@@ -205,6 +205,7 @@ namespace toio.Simulator
                     isConnected = true;
                     isConnecting = false;
                     onConnected?.Invoke();
+                    impl.PlaySound_Connect();
                 }
             }
 
@@ -243,11 +244,12 @@ namespace toio.Simulator
         public bool Disconnect()
         {
             if (!isConnected) return false;
+            this.Reset();
+            if (gameObject.activeSelf) impl.PlaySound_Disconnect();
             isRunning = false;
             isConnected = false;
             isConnecting = false;
             this.onDisconnected?.Invoke();
-            this.Reset();
             this.onConnected = null;
             this.onDisconnected = null;
             return true;

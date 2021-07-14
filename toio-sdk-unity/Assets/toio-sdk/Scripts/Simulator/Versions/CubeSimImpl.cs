@@ -155,6 +155,10 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
         public virtual void PlayPresetSound(int soundId, int volume)
         { NotSupportedWarning(); }
+        internal virtual void PlaySound_Connect()
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_Disconnect()
+        { NotSupportedWarning(); }
         public virtual void StopSound()
         { NotSupportedWarning(); }
         public virtual void ConfigSlopeThreshold(int angle)

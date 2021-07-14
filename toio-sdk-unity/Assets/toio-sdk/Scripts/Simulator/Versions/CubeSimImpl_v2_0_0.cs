@@ -453,6 +453,27 @@ namespace toio.Simulator
             ops[0] = new Cube.SoundOperation(100, 0, 128);
             PlaySound(1, ops);
         }
+        internal override void PlaySound_Connect()
+        {
+            Cube.SoundOperation[] ops = new Cube.SoundOperation[5];
+            int dur = 130;
+            ops[0] = new Cube.SoundOperation(dur, 255, 59);
+            ops[1] = new Cube.SoundOperation(dur, 255, 66);
+            ops[2] = new Cube.SoundOperation(dur, 255, 59);
+            ops[3] = new Cube.SoundOperation(dur, 255, 66);
+            ops[4] = new Cube.SoundOperation(dur*3, 255, 70);
+            PlaySound(1, ops);
+        }
+        internal override void PlaySound_Disconnect()
+        {
+            Cube.SoundOperation[] ops = new Cube.SoundOperation[4];
+            int dur = 130;
+            ops[0] = new Cube.SoundOperation(dur, 255, 70);
+            ops[1] = new Cube.SoundOperation(dur, 255, 66);
+            ops[2] = new Cube.SoundOperation(dur, 255, 64);
+            ops[3] = new Cube.SoundOperation(dur*3, 255, 59);
+            PlaySound(1, ops);
+        }
 
         // 水平検出の閾値
         protected int slopeThreshold = 45;
