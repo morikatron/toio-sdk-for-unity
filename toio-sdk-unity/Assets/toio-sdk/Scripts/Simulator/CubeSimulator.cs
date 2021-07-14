@@ -216,6 +216,17 @@ namespace toio.Simulator
             this.Disconnect();
         }
 
+        private void Reset()
+        {
+            this.impl.Reset();
+
+            _StopLight();
+            _StopSound();
+            playingSoundId = -1;
+        }
+
+
+        // ======== Connection ========
         public bool isConnected { get; private set; } = false;
         public bool isConnecting { get; private set; } = false;
         private Action onConnected = null;
@@ -236,14 +247,14 @@ namespace toio.Simulator
             isConnected = false;
             isConnecting = false;
             this.onDisconnected?.Invoke();
-            this.impl.Reset();
-            this.rb.velocity = Vector3.zero;
+            this.Reset();
             this.onConnected = null;
             this.onDisconnected = null;
             return true;
         }
 
 
+        // ======== Physics Simulation ========
         internal bool offGroundL = true;
         internal bool offGroundR = true;
         protected float speedL = 0;  // (m/s)
@@ -293,6 +304,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_Button(System.Action<bool> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_Button(action);
         }
 
@@ -301,6 +313,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_StandardID(System.Action<uint, int> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_StandardID(action);
         }
 
@@ -309,6 +322,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_StandardIDMissed(System.Action action)
         {
+            if (!isConnected) return;
             impl.StartNotification_StandardIDMissed(action);
         }
 
@@ -317,6 +331,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_PositionID(System.Action<int, int, int, int, int> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_PositionID(action);
         }
 
@@ -325,6 +340,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_PositionIDMissed(System.Action action)
         {
+            if (!isConnected) return;
             impl.StartNotification_PositionIDMissed(action);
         }
 
@@ -333,6 +349,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_MotionSensor(System.Action<object[]> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_MotionSensor(action);
         }
 
@@ -342,6 +359,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_TargetMove(action);
         }
 
@@ -350,6 +368,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_MultiTargetMove(action);
         }
 
@@ -358,6 +377,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_MotorSpeed(System.Action<int, int> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_MotorSpeed(action);
         }
 
@@ -367,6 +387,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_ConfigMotorRead(System.Action<bool> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_ConfigMotorRead(action);
         }
 
@@ -379,6 +400,7 @@ namespace toio.Simulator
         /// </summary>
         public void Move(int left, int right, int durationMS)
         {
+            if (!isConnected) return;
             impl.Move(left, right, durationMS);
         }
 
@@ -387,6 +409,7 @@ namespace toio.Simulator
         /// </summary>
         public void StopLight()
         {
+            if (!isConnected) return;
             impl.StopLight();
         }
         /// <summary>
@@ -394,6 +417,7 @@ namespace toio.Simulator
         /// </summary>
         public void SetLight(int r, int g, int b, int durationMS)
         {
+            if (!isConnected) return;
             impl.SetLight(r, g, b, durationMS);
         }
         /// <summary>
@@ -401,6 +425,7 @@ namespace toio.Simulator
         /// </summary>
         public void SetLights(int repeatCount, Cube.LightOperation[] operations)
         {
+            if (!isConnected) return;
             impl.SetLights(repeatCount, operations);
         }
 
@@ -409,6 +434,7 @@ namespace toio.Simulator
         /// </summary>
         public void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         {
+            if (!isConnected) return;
             impl.PlaySound(repeatCount, operations);
         }
         /// <summary>
@@ -416,6 +442,7 @@ namespace toio.Simulator
         /// </summary>
         public void PlayPresetSound(int soundId, int volume)
         {
+            if (!isConnected) return;
             impl.PlayPresetSound(soundId, volume);
         }
         /// <summary>
@@ -423,6 +450,7 @@ namespace toio.Simulator
         /// </summary>
         public void StopSound()
         {
+            if (!isConnected) return;
             impl.StopSound();
         }
 
@@ -431,6 +459,7 @@ namespace toio.Simulator
         /// </summary>
         public void ConfigSlopeThreshold(int degree)
         {
+            if (!isConnected) return;
             impl.ConfigSlopeThreshold(degree);
         }
 
@@ -446,6 +475,7 @@ namespace toio.Simulator
             Cube.TargetSpeedType targetSpeedType,
             Cube.TargetRotationType targetRotationType
         ){
+            if (!isConnected) return;
             impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
         }
 
@@ -461,6 +491,7 @@ namespace toio.Simulator
             Cube.TargetSpeedType targetSpeedType,
             Cube.MultiWriteType multiWriteType
         ){
+            if (!isConnected) return;
             impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
         }
 
@@ -471,6 +502,7 @@ namespace toio.Simulator
             Cube.AccPriorityType accPriorityType,
             int controlTime
         ){
+            if (!isConnected) return;
             impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime);
         }
 
@@ -480,11 +512,13 @@ namespace toio.Simulator
         /// </summary>
         public void ConfigMotorRead(bool enabled)
         {
+            if (!isConnected) return;
             impl.ConfigMotorRead(enabled);
         }
 
         public void RequestSensor()
         {
+            if (!isConnected) return;
             impl.RequestSensor();
         }
 
@@ -495,11 +529,13 @@ namespace toio.Simulator
 
         internal void _TriggerCollision()
         {
+            if (!isConnected) return;
             this.impl.TriggerCollision();
         }
 
         internal void _TriggerDoubleTap()
         {
+            if (!isConnected) return;
             this.impl.TriggerDoubleTap();
         }
 
