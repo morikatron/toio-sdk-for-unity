@@ -15,17 +15,17 @@ namespace toio.Simulator
         public override void OnInspectorGUI()
         {
             var cube = target as CubeSimulator;
-
-            EditorGUILayout.LabelField("【シミュレータの設定】");
-            EditorGUILayout.BeginVertical(GUI.skin.box);
-
             serializedObject.Update();
+
             var version = serializedObject.FindProperty("version");
             var motorTau = serializedObject.FindProperty("motorTau");
             var delay = serializedObject.FindProperty("delay");
             var forceStop = serializedObject.FindProperty("forceStop");
 
-            // version
+            // ==== 【シミュレータの設定】 ====
+            EditorGUILayout.LabelField("【シミュレータの設定】");
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+
             if (!EditorApplication.isPlaying)
             {
                 base.OnInspectorGUI();
@@ -41,14 +41,24 @@ namespace toio.Simulator
                 forceStop.boolValue = EditorGUILayout.Toggle("Force Stop", forceStop.boolValue);
                 serializedObject.ApplyModifiedProperties();
             }
-
             EditorGUILayout.EndVertical();
 
-            // ==== 【手動でキューブの状態を模擬】 ====
-            // 実行時のみに表示
+
+            // ==== Connection ====
             if (EditorApplication.isPlaying)
             {
                 EditorGUILayout.Space();
+                EditorGUILayout.LabelField("【Cube Information】");
+                EditorGUILayout.BeginVertical(GUI.skin.box);
+                EditorGUILayout.LabelField("Connected?", cube.isConnected? "YES":" NO");
+                EditorGUILayout.EndVertical();
+            }
+
+
+            // ==== 【手動でキューブの状態を変更】 ====
+            // 実行時のみに表示
+            if (EditorApplication.isPlaying && cube.isConnected)
+            {
                 EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("【手動でキューブの状態を変更】");
