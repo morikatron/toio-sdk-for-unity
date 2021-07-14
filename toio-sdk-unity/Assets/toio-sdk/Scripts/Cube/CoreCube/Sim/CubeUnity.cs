@@ -10,16 +10,17 @@ namespace toio
         GameObject gameObject;
         CubeSimulator simulator;
         public string objName { get { return this.simulator.gameObject.name; } }
+        public UnityPeripheral peripheral { get; private set; }
 
-        public CubeUnity(GameObject gameObject)
+        public CubeUnity(UnityPeripheral peripheral)
         {
-            this.gameObject = gameObject;
+            this.peripheral = peripheral;
+            this.gameObject = peripheral.obj;
+
             id = gameObject.GetInstanceID().ToString();
             simulator = gameObject.GetComponent<CubeSimulator>();
-            simulator.isUpdating = true;
-
         }
-        public bool Init()
+        public bool Initialize()
         {
             if (isConnected)
             {
@@ -41,10 +42,6 @@ namespace toio
             }
             return false;
         }
-        ~CubeUnity ()
-        {
-            simulator.isUpdating = false;
-        }
 
         /////////////// PROPERTY ///////////////
 
@@ -56,7 +53,7 @@ namespace toio
         } }
         public override string id { get; protected set; }
         public override string addr { get { return id; } }
-        public override bool isConnected { get { return simulator.ready; } }
+        public override bool isConnected { get { return simulator.isConnected; } }
         public override int battery { get { return 100; } protected set { } }
 
         public override int x { get; protected set; }

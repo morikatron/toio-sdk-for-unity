@@ -25,6 +25,10 @@ namespace toio.Simulator
             SimulateMotor();
         }
 
+        public virtual void Reset(){
+            ResetMotor();
+        }
+
 
         // ============ toio ID ============
         public virtual int x { get; internal set; }
@@ -101,20 +105,18 @@ namespace toio.Simulator
 
 
         // ============ Motor ============
-        protected float speedL = 0;  // (m/s)
-        protected float speedR = 0;
-        protected float speedTireL = 0;
-        protected float speedTireR = 0;
-        protected float motorLeft{get; set;} = 0;   // モーター指令値
-        protected float motorRight{get; set;} = 0;
+        public float motorOutSpdL {get; protected set;} = 0;   // モーターの出力速度、実際の速度ではない
+        public float motorOutSpdR {get; protected set;} = 0;
+        protected float motorCmdL {get; set;} = 0;   // モーター指令値
+        protected float motorCmdR {get; set;} = 0;
         public virtual void SimulateMotor()
         {
             var dt = Time.deltaTime;
 
             // 目標速度を計算
             // target speed
-            float targetSpeedL = motorLeft * CubeSimulator.VDotOverU / Mat.DotPerM;
-            float targetSpeedR = motorRight * CubeSimulator.VDotOverU / Mat.DotPerM;
+            float targetSpeedL = motorCmdL * CubeSimulator.VDotOverU / Mat.DotPerM;
+            float targetSpeedR = motorCmdR * CubeSimulator.VDotOverU / Mat.DotPerM;
             // if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
             // if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
@@ -122,20 +124,19 @@ namespace toio.Simulator
             // update tires' speed
             if (cube.forceStop || this.button)   // 強制的に停止
             {
-                speedTireL = 0; speedTireR = 0;
+                motorOutSpdL = 0; motorOutSpdR = 0;
             }
             else
             {
-                speedTireL += (targetSpeedL - speedTireL) / Mathf.Max(cube.motorTau,dt) * dt;
-                speedTireR += (targetSpeedR - speedTireR) / Mathf.Max(cube.motorTau,dt) * dt;
+                motorOutSpdL += (targetSpeedL - motorOutSpdL) / Mathf.Max(cube.motorTau,dt) * dt;
+                motorOutSpdR += (targetSpeedR - motorOutSpdR) / Mathf.Max(cube.motorTau,dt) * dt;
             }
 
-            // update object's speed
-            // NOTES: simulation for slipping shall be implemented here
-            speedL = cube.offGroundL? 0: speedTireL;
-            speedR = cube.offGroundR? 0: speedTireR;
-
-            cube._SetSpeed(speedL, speedR);
+        }
+        protected virtual void ResetMotor()
+        {
+            motorOutSpdL = 0; motorOutSpdR = 0;
+            motorCmdL = 0; motorCmdR = 0;
         }
 
 

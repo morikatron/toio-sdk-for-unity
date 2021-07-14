@@ -27,6 +27,17 @@ namespace toio.Simulator
             SimulateMotor();
         }
 
+        public override void Reset()
+        {
+            ResetMotor();
+
+            ResetIDSensor();
+            ResetButton();
+            ResetMotionSensor();
+            ResetLight();
+            ResetSound();
+        }
+
         // ============ toio ID ============
         protected System.Action<uint, int> standardIDCallback = null;
         public override void StartNotification_StandardID(System.Action<uint, int> action)
@@ -109,6 +120,18 @@ namespace toio.Simulator
             }
             else _SetOffGround();
         }
+        protected virtual void ResetIDSensor()
+        {
+            standardIDCallback = null;
+            standardIDMissedCallback = null;
+            IDCallback = null;
+            positionIDMissedCallback = null;
+
+            x = 0; y = 0; deg = 0;
+            xSensor = 0; ySensor = 0;
+            standardID = 0;
+            onMat = false; onStandardID = false;
+        }
 
         // ============ Button ============
         protected bool _button;
@@ -129,6 +152,12 @@ namespace toio.Simulator
         {
             this.buttonCallback = action;
         }
+        protected virtual void ResetButton()
+        {
+            buttonCallback = null;
+
+            _button = false;
+        }
 
         // ============ Motion Sensor ============
         protected System.Action<object[]> motionSensorCallback = null;
@@ -144,6 +173,14 @@ namespace toio.Simulator
             sensors[1] = (object)this._sloped;
             sensors[2] = (object)this._collisonDetected; this._collisonDetected = false;
             this.motionSensorCallback.Invoke(sensors);
+        }
+        protected virtual void ResetMotionSensor()
+        {
+            motionSensorCallback = null;
+
+            _sloped = false;
+            slopeThreshold = 45; // TODO need check
+            _collisonDetected = false;
         }
 
         // ----------- Sloped -----------
@@ -207,13 +244,21 @@ namespace toio.Simulator
             if (currMotorTimeCmd.duration==0
                 || motorCmdElipsed < currMotorTimeCmd.duration/1000f)
             {
-                motorLeft = currMotorTimeCmd.left;
-                motorRight = currMotorTimeCmd.right;
+                motorCmdL = currMotorTimeCmd.left;
+                motorCmdR = currMotorTimeCmd.right;
             }
             else
             {
-                motorLeft = 0; motorRight = 0;
+                motorCmdL = 0; motorCmdR = 0;
             }
+        }
+        protected override void ResetMotor()
+        {
+            base.ResetMotor();
+
+            motorCmdElipsed = 0;
+            motorTimeCmdQ.Clear();
+            currMotorTimeCmd = default;
         }
 
         // ============ Light ============
@@ -280,6 +325,15 @@ namespace toio.Simulator
             }
         }
 
+        protected virtual void ResetLight()
+        {
+            lightCmdElipsed = 0;
+            lightCmdQ.Clear();
+            lightSenarioCmdQ.Clear();
+            currLightCmd = default;
+            currLightSenarioCmd = default;
+        }
+
 
         // ============ Sound ============
         protected float soundCmdElipsed = 0;
@@ -320,6 +374,13 @@ namespace toio.Simulator
                 }
                 cube._PlaySound(sounds[index].note_number, sounds[index].volume);
             }
+        }
+
+        protected virtual void ResetSound()
+        {
+            soundCmdElipsed = 0;
+            soundSenarioCmdQ.Clear();
+            currSoundSenarioCmd = default;
         }
 
 

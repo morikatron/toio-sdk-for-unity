@@ -27,7 +27,7 @@ namespace toio.Simulator
         }
 
         // ---------- Shake -----------
-        protected int _shakeLevel;
+        protected int _shakeLevel = 0;
         public override int shakeLevel
         {
             get {return this._shakeLevel;}
@@ -50,6 +50,13 @@ namespace toio.Simulator
             base.SimulateMotionSensor();
 
             SimulateShake();
+        }
+
+        protected override void ResetMotionSensor()
+        {
+            base.ResetMotionSensor();
+
+            _shakeLevel = 0;
         }
 
         // ---------- Request Sensor -----------
@@ -88,9 +95,18 @@ namespace toio.Simulator
         // ----------- Simulate -----------
         protected void SimulateMotorSpeedSensor()
         {
-            int left = Mathf.RoundToInt(speedTireL/CubeSimulator.VMeterOverU);
-            int right = Mathf.RoundToInt(speedTireR/CubeSimulator.VMeterOverU);
+            int left = Mathf.RoundToInt(motorOutSpdL/CubeSimulator.VMeterOverU);
+            int right = Mathf.RoundToInt(motorOutSpdR/CubeSimulator.VMeterOverU);
             _SetMotorSpeed(left, right);
+        }
+
+        protected override void ResetMotor()
+        {
+            base.ResetMotor();
+
+            configMotorReadCallback = null;
+            motorSpeedEnabled = false;
+            leftMotorSpeed = 0; rightMotorSpeed = 0;
         }
 
         // ---------- Config -----------

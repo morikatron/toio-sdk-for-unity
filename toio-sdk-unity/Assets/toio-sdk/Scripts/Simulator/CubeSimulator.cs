@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 
 namespace toio.Simulator
@@ -56,15 +57,11 @@ namespace toio.Simulator
             return impl.deadzone;
         }}
 
-        /// <summary>
-        /// シミュレータが初期化できたか
-        /// </summary>
-        public bool ready { get; private set; } = false;
 
         /// <summary>
         /// シミュレータが稼働しているか
         /// </summary>
-        public bool isUpdating { get; set; } = false;
+        public bool isRunning { get; set; } = false;
 
         // ----- toio ID -----
 
@@ -196,19 +193,64 @@ namespace toio.Simulator
 
         private void FixedUpdate()
         {
-            if (isUpdating)
-            {
-                SimulatePhysics();
+            SimulatePhysics_Input();
 
+            if (isRunning)
+            {
                 impl.Simulate();
 
-                this.ready = true;  // 一回更新してからシミュレーターがreadyになる
+                // Connection
+                if (!isConnected && isConnecting)
+                {
+                    isConnected = true;
+                    isConnecting = false;
+                    onConnected?.Invoke();
+                }
             }
+
+            SimulatePhysics_Output();
         }
+
+        private void OnDisable()
+        {
+            this.Disconnect();
+        }
+
+        public bool isConnected { get; private set; } = false;
+        public bool isConnecting { get; private set; } = false;
+        private Action onConnected = null;
+        private Action onDisconnected = null;
+        public bool Connect(Action onConnected, Action onDisconnected)
+        {
+            if (isConnected || isConnecting) return false;
+            isConnecting = true;
+            isRunning = true;
+            this.onConnected = onConnected;
+            this.onDisconnected = onDisconnected;
+            return true;
+        }
+        public bool Disconnect()
+        {
+            if (!isConnected) return false;
+            isRunning = false;
+            isConnected = false;
+            isConnecting = false;
+            this.onDisconnected?.Invoke();
+            this.impl.Reset();
+            this.rb.velocity = Vector3.zero;
+            this.onConnected = null;
+            this.onDisconnected = null;
+            return true;
+        }
+
 
         internal bool offGroundL = true;
         internal bool offGroundR = true;
-        private void SimulatePhysics()
+        protected float speedL = 0;  // (m/s)
+        protected float speedR = 0;
+        internal float speedTireL = 0;
+        internal float speedTireR = 0;
+        private void SimulatePhysics_Input()
         {
             // タイヤの着地状態を調査
             // Check if tires are Off Ground
@@ -217,8 +259,29 @@ namespace toio.Simulator
             if (Physics.Raycast(ray, out hit) && hit.distance < 0.002f) offGroundL = false;
             ray = new Ray(transform.position+transform.up*0.001f+transform.right*0.0133f, -transform.up); // right wheel
             if (Physics.Raycast(ray, out hit) && hit.distance < 0.002f) offGroundR = false;
-        }
 
+        }
+        private void SimulatePhysics_Output()
+        {
+            // タイヤの速度を取得
+            if (this.forceStop || this.button || !this.isConnected)   // 強制的に停止
+            {
+                speedTireL = 0; speedTireR = 0;
+            }
+            else
+            {
+                speedTireL = impl.motorOutSpdL; speedTireR = impl.motorOutSpdR;
+            }
+
+            // 着地状態により、キューブの速度を取得
+            // update object's speed
+            // NOTES: simulation for slipping shall be implemented here
+            speedL = offGroundL? 0: speedTireL;
+            speedR = offGroundR? 0: speedTireR;
+
+            // Output
+            _SetSpeed(speedL, speedR);
+        }
 
 
         // ============ Event ============
