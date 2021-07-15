@@ -571,8 +571,8 @@ public override int shakeLevel
 // CubeSimImpl_v2_2_0.cs
 protected void SimulateMotorSpeedSensor()
 {
-    int left = Mathf.RoundToInt(speedTireL/CubeSimulator.VMeterOverU);
-    int right = Mathf.RoundToInt(speedTireR/CubeSimulator.VMeterOverU);
+    int left = Mathf.RoundToInt(cube.speedTireL/CubeSimulator.VMeterOverU);
+    int right = Mathf.RoundToInt(cube.speedTireR/CubeSimulator.VMeterOverU);
     _SetMotorSpeed(left, right);
 }
 ```
@@ -597,19 +597,17 @@ protected void _SetMotorSpeed(int left, int right)
 
 ### 命令処理の流れ
 
-CubeSimulator.cs は以下の図のようなロジックで [CubeUnity](sys_cube.md#2-cube-クラスの構造) から渡された命令を処理しています。
+シミュレータは以下のなロジックで [CubeUnity](sys_cube.md#2-cube-クラスの構造) から渡された命令を処理しています。
 
-<div align="center">
-<img width=600 src="res/simulator/cube_logic.png">
-</div>
-
-- CubeUnity がメソッドを呼び出す際に、命令と命令をセットした時間をキューに入れる
+- CubeUnity が CubeSimulator のメソッドを呼び出すと
+  - 遅延後に実装メソッドを呼び出すコルーチンを開始する
+  - 実装メソッドは、命令と受け取りの時間をキューに入れる
 - 毎フレーム実行される FixedUpdate() の中で以下のように処理する
-  - キューから `受け取った時間 + ラグ ＞ 現在時間` を満たす命令をポップし、 Current Order にセットする
-  - Current Order の継続時間が終わったかを判断し、是の場合 Current Order をクリアする
-  - Current Order を実行する
+  - キューから `受け取った時間 ＞ 現在時間` を満たす命令をポップし、「実行中命令」とする
+  - 「実行中命令」の継続時間が終わったかを判断し、是の場合「実行中命令」をクリアする
+  - 「実行中命令」を実行する
 
-> Cube Prefab のラグ (Delay) は実環境で実測した値をセットしています。デバイス、環境等によってかわる可能性があります。
+> Cube Prefab のラグ (Delay) は実環境で実測した値を設定しています。デバイス、環境等によってかわる可能性があります。
 
 ### モーター
 
@@ -619,7 +617,7 @@ CubeSimulator.cs は以下の図のようなロジックで [CubeUnity](sys_cube
 // CubeSimulator.cs
 internal bool offGroundL = true;
 internal bool offGroundR = true;
-private void SimulatePhysics()
+private void SimulatePhysics_Input()
 {
     // タイヤの着地状態を調査
     // Check if tires are Off Ground
@@ -631,40 +629,33 @@ private void SimulatePhysics()
 }
 ```
 
-現在のモーター制御命令の目標速度を Unity 座標系での速度に変換し、デッドゾーンを加え、
+現在のモーター制御命令の目標速度を Unity 座標系での速度に変換し、
 強制停止・押された場合によってタイヤ速度を計算してから、着地状態によって Cube 速度を計算し、`CubeSimulator._SetSpeed` に渡します。
 
 ```C#
-// CubeSimImpl.cs
-public virtual void SimulateMotor()
+// CubeSimulator.cs
+private void SimulatePhysics_Output()
 {
-    var dt = Time.deltaTime;
-
-    // 目標速度を計算
-    // target speed
-    float targetSpeedL = motorLeft * CubeSimulator.VDotOverU / Mat.DotPerM;
-    float targetSpeedR = motorRight * CubeSimulator.VDotOverU / Mat.DotPerM;
-    if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
-    if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
-
-    // 速度更新
-    // update tires' speed
-    if (cube.forceStop || this.button)   // 強制的に停止
+    // タイヤ速度を更新
+    if (this.forceStop || this.button || !this.isConnected)   // 強制的に停止
     {
         speedTireL = 0; speedTireR = 0;
     }
     else
     {
-        speedTireL += (targetSpeedL - speedTireL) / Mathf.Max(cube.motorTau,dt) * dt;
-        speedTireR += (targetSpeedR - speedTireR) / Mathf.Max(cube.motorTau,dt) * dt;
+        var dt = Time.fixedDeltaTime;
+        speedTireL += (motorTargetSpdL - speedTireL) / Mathf.Max(this.motorTau, dt) * dt;
+        speedTireR += (motorTargetSpdR - speedTireR) / Mathf.Max(this.motorTau, dt) * dt;
     }
 
+    // 着地状態により、キューブの速度を取得
     // update object's speed
     // NOTES: simulation for slipping shall be implemented here
-    speedL = cube.offGroundL? 0: speedTireL;
-    speedR = cube.offGroundR? 0: speedTireR;
+    speedL = offGroundL? 0: speedTireL;
+    speedR = offGroundR? 0: speedTireR;
 
-    cube._SetSpeed(speedL, speedR);
+    // Output
+    _SetSpeed(speedL, speedR);
 }
 ```
 
@@ -705,7 +696,7 @@ internal void _SetSpeed(float speedL, float speedR)
 
 ```c#
 // CubeSimImpl_v2_1_0.cs
-protected (float, float) TargetMove_MoveControl(ushort x, ushort y, byte maxSpd, Cube.TargetSpeedType targetSpeedType, float acc, Cube.TargetMoveType targetMoveType)
+protected (float, float) TargetMove_MoveControl(float elipsed, ushort x, ushort y, byte maxSpd, Cube.TargetSpeedType targetSpeedType, float acc, Cube.TargetMoveType targetMoveType)
 {
     // ...
     Vector2 targetPos = new Vector2(x, y);
@@ -823,7 +814,7 @@ internal void _PlaySound(int soundId, int volume){
         audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
         audioSource.clip = aCubeOnSlot;
     }
-    audioSource.volume = (float)volume/256;
+    audioSource.volume = (float)volume/256 * 0.5f;
     if (!audioSource.isPlaying)
         audioSource.Play();
 }
