@@ -17,7 +17,7 @@ namespace toio.Simulator
         // ============ Motor ============
 
         protected string motorCurrentCmdType = "";
-        protected override void MotorScheduler(float dt, float t)
+        protected override void MotorScheduler(float t)
         {
             float latestRecvTime = 0;
             bool newCmd = false;
