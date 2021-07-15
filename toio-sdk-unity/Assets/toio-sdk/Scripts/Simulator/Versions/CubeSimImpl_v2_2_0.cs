@@ -130,12 +130,14 @@ namespace toio.Simulator
             SimulateMotionSensor();
             SimulateMotorSpeedSensor();
 
-            float dt = Time.deltaTime;
+            float dt = Time.time - simulateLastTime;
             float currentTime = Time.time;
             MotorScheduler(dt, currentTime);
             LightScheduler(dt, currentTime);
             SoundScheduler(dt, currentTime);
             SimulateMotor();
+
+            simulateLastTime = Time.time;
         }
 
     }

@@ -21,8 +21,11 @@ namespace toio.Simulator
 
 
         // ============ Simulate ============
+        protected float simulateLastTime = 0;
         public virtual void Simulate(){
             SimulateMotor();
+
+            simulateLastTime = Time.time;
         }
 
         public virtual void Reset(){
@@ -158,6 +161,10 @@ namespace toio.Simulator
         internal virtual void PlaySound_Connect()
         { NotSupportedWarning(); }
         internal virtual void PlaySound_Disconnect()
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_PowerOn()
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_PowerOff()
         { NotSupportedWarning(); }
         public virtual void StopSound()
         { NotSupportedWarning(); }

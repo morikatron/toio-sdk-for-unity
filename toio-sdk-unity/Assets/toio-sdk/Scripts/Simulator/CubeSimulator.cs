@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ using Cysharp.Threading.Tasks;
 
 namespace toio.Simulator
 {
+    [DisallowMultipleComponent]
     public class CubeSimulator : MonoBehaviour
     {
         #pragma warning disable 0414
@@ -33,6 +35,8 @@ namespace toio.Simulator
         [SerializeField]
         public Version version = Version.v2_2_0;
         [SerializeField]
+        public bool powerStart = true;
+        [SerializeField]
         public float motorTau = 0.04f; // parameter of one-order model for motor, τ
         [SerializeField]
         public float delay = 0.15f; // latency of communication
@@ -42,6 +46,13 @@ namespace toio.Simulator
 
 
         // ======== Properties ========
+
+        private bool _power;
+        public bool power { get {return _power;} set {
+            if (value == _power) return;
+            if (value) PowerOn();
+            else PowerOff();
+        } }
 
         /// <summary>
         /// モーター指令の最大値
@@ -61,7 +72,7 @@ namespace toio.Simulator
         /// <summary>
         /// シミュレータが稼働しているか
         /// </summary>
-        public bool isRunning { get; set; } = false;
+        public bool isRunning { get; private set; } = false;
 
         // ----- toio ID -----
 
@@ -177,6 +188,9 @@ namespace toio.Simulator
             this.cubeModel = transform.Find("cube_model").gameObject;
             this.col = GetComponent<BoxCollider>();
 
+            this._power = powerStart;
+            this.isRunning = powerStart;
+
             switch (version)
             {
                 case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
@@ -195,12 +209,12 @@ namespace toio.Simulator
         {
             SimulatePhysics_Input();
 
-            if (isRunning)
+            if (power)
             {
                 impl.Simulate();
 
                 // Connection
-                if (!isConnected && isConnecting)
+                if (isRunning && !isConnected && isConnecting)
                 {
                     isConnected = true;
                     isConnecting = false;
@@ -214,7 +228,14 @@ namespace toio.Simulator
 
         private void OnDisable()
         {
-            this.Disconnect();
+            if (isConnected)
+            {
+                isConnected = false;
+                isConnecting = false;
+                this.onDisconnected?.Invoke();
+                this.onConnected = null;
+                this.onDisconnected = null;
+            }
         }
 
         private void Reset()
@@ -226,6 +247,46 @@ namespace toio.Simulator
             playingSoundId = -1;
         }
 
+        private bool isPowerChanging = false;
+        private void PowerOn()
+        {
+            if (isPowerChanging) return;
+            isPowerChanging = true;
+
+            IEnumerator _PowerOn(){
+                _power = true;
+                impl.PlaySound_PowerOn();
+                yield return new WaitForSeconds(0.3f);
+                isRunning = true;
+                isPowerChanging = false;
+            }
+            StartCoroutine(_PowerOn());
+        }
+        private void PowerOff()
+        {
+            if (isPowerChanging) return;
+            isPowerChanging = true;
+
+            if (isConnected)
+            {
+                isConnected = false;
+                isConnecting = false;
+                this.onDisconnected?.Invoke();
+                this.onConnected = null;
+                this.onDisconnected = null;
+            }
+
+            IEnumerator _PowerOff(){
+                isRunning = false;
+                impl.PlaySound_PowerOff();
+                yield return new WaitForSeconds(0.7f);
+                Reset();
+                _power = false;
+                isPowerChanging = false;
+            }
+            StartCoroutine(_PowerOff());
+        }
+
 
         // ======== Connection ========
         public bool isConnected { get; private set; } = false;
@@ -234,19 +295,19 @@ namespace toio.Simulator
         private Action onDisconnected = null;
         public bool Connect(Action onConnected, Action onDisconnected)
         {
+            if (!isRunning) return false;
             if (isConnected || isConnecting) return false;
             isConnecting = true;
-            isRunning = true;
             this.onConnected = onConnected;
             this.onDisconnected = onDisconnected;
             return true;
         }
         public bool Disconnect()
         {
+            if (!isRunning) return false;
             if (!isConnected) return false;
             this.Reset();
-            if (gameObject.activeSelf) impl.PlaySound_Disconnect();
-            isRunning = false;
+            impl.PlaySound_Disconnect();
             isConnected = false;
             isConnecting = false;
             this.onDisconnected?.Invoke();
@@ -572,7 +633,7 @@ namespace toio.Simulator
                 audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
                 audioSource.clip = aCubeOnSlot;
             }
-            audioSource.volume = (float)volume/256;
+            audioSource.volume = (float)volume/256 * 0.5f;
             if (!audioSource.isPlaying)
                 audioSource.Play();
         }

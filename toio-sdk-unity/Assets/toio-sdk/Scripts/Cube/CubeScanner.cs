@@ -111,6 +111,7 @@ namespace toio
                     var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                     foreach (var obj in objs)
                     {
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
                         if (!foundObjs.Contains(obj))
                         {
                             foundObjs.Add(obj);
@@ -162,6 +163,7 @@ namespace toio
                     var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                     foreach (var obj in objs)
                     {
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
                         if (!foundObjs.Contains(obj))
                         {
                             foundObjs.Add(obj);
@@ -227,6 +229,7 @@ namespace toio
                     var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
                     foreach (var obj in objs)
                     {
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
                         if (!foundObjs.Contains(obj))
                         {
                             foundObjs.Add(obj);

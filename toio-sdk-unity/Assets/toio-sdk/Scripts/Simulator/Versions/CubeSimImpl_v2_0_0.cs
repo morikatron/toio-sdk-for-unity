@@ -19,12 +19,14 @@ namespace toio.Simulator
             SimulateIDSensor();
             SimulateMotionSensor();
 
-            float dt = Time.deltaTime;
+            float dt = Time.time - simulateLastTime;
             float currentTime = Time.time;
             MotorScheduler(dt, currentTime);
             LightScheduler(dt, currentTime);
             SoundScheduler(dt, currentTime);
             SimulateMotor();
+
+            simulateLastTime = Time.time;
         }
 
         public override void Reset()
@@ -220,7 +222,6 @@ namespace toio.Simulator
 
 
         // ============ Motor ============
-        protected float motorCmdElipsed = 0;
         protected struct MotorTimeCmd
         {
             public int left, right, duration;
@@ -232,17 +233,15 @@ namespace toio.Simulator
 
         protected virtual void MotorScheduler(float dt, float t)
         {
-            motorCmdElipsed += dt;
-
             while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv + cube.delay)
             {
-                motorCmdElipsed = 0;
                 currMotorTimeCmd = motorTimeCmdQ.Dequeue();
             }
+            var elipsed = t - currMotorTimeCmd.tRecv - cube.delay;
 
             // ----- Excute Order -----
             if (currMotorTimeCmd.duration==0
-                || motorCmdElipsed < currMotorTimeCmd.duration/1000f)
+                || elipsed < currMotorTimeCmd.duration/1000f)
             {
                 motorCmdL = currMotorTimeCmd.left;
                 motorCmdR = currMotorTimeCmd.right;
@@ -256,13 +255,11 @@ namespace toio.Simulator
         {
             base.ResetMotor();
 
-            motorCmdElipsed = 0;
             motorTimeCmdQ.Clear();
             currMotorTimeCmd = default;
         }
 
         // ============ Light ============
-        protected float lightCmdElipsed = 0;
         protected struct LightCmd
         {
             public byte r, g, b;
@@ -284,29 +281,27 @@ namespace toio.Simulator
 
         protected void LightScheduler(float dt, float t)
         {
-            lightCmdElipsed += dt;
-
             // ----- Simulate Lag -----
             while (lightCmdQ.Count > 0 && t > lightCmdQ.Peek().tRecv + cube.delay){
-                lightCmdElipsed = 0;
                 currLightCmd = lightCmdQ.Dequeue();
             }
             while (lightSenarioCmdQ.Count > 0 && t > lightSenarioCmdQ.Peek().tRecv + cube.delay){
-                lightCmdElipsed = 0;
                 currLightSenarioCmd = lightSenarioCmdQ.Dequeue();
             }
 
             // ----- Excute Order -----
             if (currLightCmd.tRecv >= currLightSenarioCmd.tRecv)    // light cmd
             {
-                if (currLightCmd.duration==0 || lightCmdElipsed < currLightCmd.duration/1000f)
+                float elipsed = t - currLightCmd.tRecv - cube.delay;
+                if (currLightCmd.duration==0 || elipsed < currLightCmd.duration/1000f)
                     cube._SetLight(currLightCmd.r, currLightCmd.g, currLightCmd.b);
                 else cube._StopLight();
             }
             else    // light senario cmd
             {
+                float elipsed = t - currLightSenarioCmd.tRecv - cube.delay;
                 if (currLightSenarioCmd.period==0
-                    || currLightSenarioCmd.repeat>0 && currLightSenarioCmd.period*currLightSenarioCmd.repeat <= lightCmdElipsed){
+                    || currLightSenarioCmd.repeat>0 && currLightSenarioCmd.period*currLightSenarioCmd.repeat <= elipsed){
                     cube._StopLight();
                 }
                 else
@@ -315,7 +310,7 @@ namespace toio.Simulator
                     float sum = 0; int index=0; var lights = currLightSenarioCmd.lights;
                     for (int i=0; i<lights.Length; ++i){
                         sum += lights[i].durationMs/1000f;
-                        if (lightCmdElipsed % currLightSenarioCmd.period < sum){
+                        if (elipsed % currLightSenarioCmd.period < sum){
                             index = i;
                             break;
                         }
@@ -327,7 +322,6 @@ namespace toio.Simulator
 
         protected virtual void ResetLight()
         {
-            lightCmdElipsed = 0;
             lightCmdQ.Clear();
             lightSenarioCmdQ.Clear();
             currLightCmd = default;
@@ -336,7 +330,6 @@ namespace toio.Simulator
 
 
         // ============ Sound ============
-        protected float soundCmdElipsed = 0;
         protected struct SoundSenarioCmd
         {
             public byte repeat;
@@ -349,17 +342,15 @@ namespace toio.Simulator
 
         protected void SoundScheduler(float dt, float t)
         {
-            soundCmdElipsed += dt;
-
             // ----- Simulate Lag -----
             while (soundSenarioCmdQ.Count > 0 && t > soundSenarioCmdQ.Peek().tRecv + cube.delay){
-                soundCmdElipsed = 0;
                 currSoundSenarioCmd = soundSenarioCmdQ.Dequeue();
             }
+            var elipsed = t - currSoundSenarioCmd.tRecv - cube.delay;
 
             // ----- Excute Order -----
             if (currSoundSenarioCmd.period==0
-                || currSoundSenarioCmd.repeat>0 && currSoundSenarioCmd.period*currSoundSenarioCmd.repeat <= soundCmdElipsed)
+                || currSoundSenarioCmd.repeat>0 && currSoundSenarioCmd.period*currSoundSenarioCmd.repeat <= elipsed)
                 cube._StopSound();
             else
             {
@@ -367,18 +358,18 @@ namespace toio.Simulator
                 float sum = 0; int index=0; var sounds = currSoundSenarioCmd.sounds;
                 for (int i=0; i<sounds.Length; ++i){
                     sum += sounds[i].durationMs/1000f;
-                    if (soundCmdElipsed%currSoundSenarioCmd.period < sum){
+                    if (elipsed%currSoundSenarioCmd.period < sum){
                         index = i;
                         break;
                     }
                 }
+                Debug.Log("elp " + elipsed + "   idx " + index);
                 cube._PlaySound(sounds[index].note_number, sounds[index].volume);
             }
         }
 
         protected virtual void ResetSound()
         {
-            soundCmdElipsed = 0;
             soundSenarioCmdQ.Clear();
             currSoundSenarioCmd = default;
         }
@@ -456,7 +447,7 @@ namespace toio.Simulator
         internal override void PlaySound_Connect()
         {
             Cube.SoundOperation[] ops = new Cube.SoundOperation[5];
-            int dur = 130;
+            int dur = 120;
             ops[0] = new Cube.SoundOperation(dur, 255, 59);
             ops[1] = new Cube.SoundOperation(dur, 255, 66);
             ops[2] = new Cube.SoundOperation(dur, 255, 59);
@@ -467,11 +458,29 @@ namespace toio.Simulator
         internal override void PlaySound_Disconnect()
         {
             Cube.SoundOperation[] ops = new Cube.SoundOperation[4];
-            int dur = 130;
+            int dur = 120;
             ops[0] = new Cube.SoundOperation(dur, 255, 70);
             ops[1] = new Cube.SoundOperation(dur, 255, 66);
             ops[2] = new Cube.SoundOperation(dur, 255, 64);
             ops[3] = new Cube.SoundOperation(dur*3, 255, 59);
+            PlaySound(1, ops);
+        }
+        internal override void PlaySound_PowerOn()
+        {
+            Cube.SoundOperation[] ops = new Cube.SoundOperation[3];
+            int dur = 120;
+            ops[0] = new Cube.SoundOperation(dur, 255, 59);
+            ops[1] = new Cube.SoundOperation(dur, 255, 66);
+            ops[2] = new Cube.SoundOperation(dur*3, 255, 75);
+            PlaySound(1, ops);
+        }
+        internal override void PlaySound_PowerOff()
+        {
+            Cube.SoundOperation[] ops = new Cube.SoundOperation[3];
+            int dur = 120;
+            ops[0] = new Cube.SoundOperation(dur, 255, 70);
+            ops[1] = new Cube.SoundOperation(dur, 255, 66);
+            ops[2] = new Cube.SoundOperation(dur*2, 255, 59);
             PlaySound(1, ops);
         }
 
