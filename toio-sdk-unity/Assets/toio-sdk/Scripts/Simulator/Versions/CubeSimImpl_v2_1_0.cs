@@ -19,7 +19,6 @@ namespace toio.Simulator
         protected string motorCurrentCmdType = "";
         protected override void MotorScheduler(float dt, float t)
         {
-            float elipsed = 0;
             float latestRecvTime = 0;
             bool newCmd = false;
             string oldCmdType = motorCurrentCmdType;
@@ -40,7 +39,6 @@ namespace toio.Simulator
             while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv)
             {
                 currMotorTimeCmd = motorTimeCmdQ.Dequeue();
-                elipsed = t - currMotorTimeCmd.tRecv;
                 motorCurrentCmdType = "Time"; latestRecvTime = currMotorTimeCmd.tRecv;
                 newCmd = true;
                 overwriteMulti = true;
@@ -50,7 +48,6 @@ namespace toio.Simulator
                 currMotorTargetCmd = motorTargetCmdQ.Dequeue();
                 if (currMotorTargetCmd.tRecv > latestRecvTime)
                 {
-                    elipsed = t - currMotorTargetCmd.tRecv;
                     motorCurrentCmdType = "Target"; latestRecvTime = currMotorTargetCmd.tRecv;
                     newCmd = true;
                 }
@@ -61,7 +58,6 @@ namespace toio.Simulator
                 multiCmdTemp = motorMultiTargetCmdQ.Dequeue();
                 if (multiCmdTemp.tRecv > latestRecvTime)
                 {
-                    elipsed = t - multiCmdTemp.tRecv;
                     motorCurrentCmdType = "MultiTarget"; latestRecvTime = multiCmdTemp.tRecv;
                     newCmd = true;
                 }
@@ -71,12 +67,21 @@ namespace toio.Simulator
                 currMotorAccCmd = motorAccCmdQ.Dequeue();
                 if (currMotorAccCmd.tRecv > latestRecvTime)
                 {
-                    elipsed = t - currMotorAccCmd.tRecv;
                     motorCurrentCmdType = "Acc"; latestRecvTime = currMotorAccCmd.tRecv;
                     newCmd = true;
                 }
                 overwriteMulti = true;
             }
+
+            // ----- elipsed -----
+            float elipsed = 0;
+            switch (motorCurrentCmdType) {
+                case "Time" : elipsed = t - currMotorTimeCmd.tRecv; break;
+                case "Target" : elipsed = t - currMotorTargetCmd.tRecv; break;
+                case "MultiTarget" : elipsed = t - multiCmdTemp.tRecv; break;
+                case "Acc" : elipsed = t - currMotorAccCmd.tRecv; break;
+            }
+
 
             // ----- Target -----
             if (newCmd && oldCmdType == "Target")
