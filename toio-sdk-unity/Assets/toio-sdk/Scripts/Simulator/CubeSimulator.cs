@@ -214,7 +214,7 @@ namespace toio.Simulator
                 impl.Simulate();
 
                 // Connection
-                if (isRunning && !isConnected && isConnecting)
+                if (isRunning && !isConnected && isConnecting && Time.renderedFrameCount>4) // fixedTime is not stable at startup
                 {
                     isConnected = true;
                     isConnecting = false;
@@ -257,7 +257,7 @@ namespace toio.Simulator
             IEnumerator _PowerOn(){
                 _power = true;
                 impl.PlaySound_PowerOn();
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(0.5f);
                 isRunning = true;
                 isPowerChanging = false;
             }
@@ -632,7 +632,7 @@ namespace toio.Simulator
 
         private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
-            if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+            if (soundId >= 128) { _StopSound(); return; }
             if (soundId != playingSoundId)
             {
                 playingSoundId = soundId;

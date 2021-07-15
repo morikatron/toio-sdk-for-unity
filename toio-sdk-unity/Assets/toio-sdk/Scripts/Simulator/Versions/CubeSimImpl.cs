@@ -21,11 +21,8 @@ namespace toio.Simulator
 
 
         // ============ Simulate ============
-        protected float simulateLastTime = 0;
         public virtual void Simulate(){
             SimulateMotor();
-
-            simulateLastTime = Time.time;
         }
 
         public virtual void Reset(){

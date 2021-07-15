@@ -19,14 +19,11 @@ namespace toio.Simulator
             SimulateIDSensor();
             SimulateMotionSensor();
 
-            float dt = Time.time - simulateLastTime;
-            float currentTime = Time.time;
-            MotorScheduler(dt, currentTime);
-            LightScheduler(dt, currentTime);
-            SoundScheduler(dt, currentTime);
+            float currentTime = Time.fixedTime;
+            MotorScheduler(currentTime);
+            LightScheduler(currentTime);
+            SoundScheduler(currentTime);
             SimulateMotor();
-
-            simulateLastTime = Time.time;
         }
 
         public override void Reset()
@@ -231,7 +228,7 @@ namespace toio.Simulator
         protected MotorTimeCmd currMotorTimeCmd = default;  // current command
 
 
-        protected virtual void MotorScheduler(float dt, float t)
+        protected virtual void MotorScheduler(float t)
         {
             while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv)
             {
@@ -279,7 +276,7 @@ namespace toio.Simulator
         protected Queue<LightSenarioCmd> lightSenarioCmdQ = new Queue<LightSenarioCmd>();
         protected LightSenarioCmd currLightSenarioCmd = default;
 
-        protected void LightScheduler(float dt, float t)
+        protected void LightScheduler(float t)
         {
             // ----- Simulate Lag -----
             while (lightCmdQ.Count > 0 && t > lightCmdQ.Peek().tRecv){
@@ -340,7 +337,7 @@ namespace toio.Simulator
         protected Queue<SoundSenarioCmd> soundSenarioCmdQ = new Queue<SoundSenarioCmd>();
         protected SoundSenarioCmd currSoundSenarioCmd = default;
 
-        protected void SoundScheduler(float dt, float t)
+        protected void SoundScheduler(float t)
         {
             // ----- Simulate Lag -----
             while (soundSenarioCmdQ.Count > 0 && t > soundSenarioCmdQ.Peek().tRecv){
