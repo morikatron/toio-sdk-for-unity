@@ -35,10 +35,7 @@ namespace toio.Simulator
             }
             else
             {
-
-
                 // ==== Information】 ====
-                EditorGUILayout.Space();
                 EditorGUILayout.LabelField("【Cube Information】");
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 EditorGUILayout.LabelField("Version", versionNames[version.intValue]);
