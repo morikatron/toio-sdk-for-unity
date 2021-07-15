@@ -236,6 +236,7 @@ namespace toio.Simulator
                 this.onConnected = null;
                 this.onDisconnected = null;
             }
+            StopAllCoroutines();
         }
 
         private void Reset()
@@ -283,6 +284,7 @@ namespace toio.Simulator
                 Reset();
                 _power = false;
                 isPowerChanging = false;
+                StopAllCoroutines();
             }
             StartCoroutine(_PowerOff());
         }
@@ -457,14 +459,24 @@ namespace toio.Simulator
 
         // ============ コマンド ============
 
+        private void DelayCommand(Action action)
+        {
+            if (!isConnected) return;
+            IEnumerator Cmd(){
+                yield return new WaitForSeconds(this.delay);
+                if (!isConnected) yield break;
+                action?.Invoke();
+            }
+            StartCoroutine(Cmd());
+        }
+
         // --------- 2.0.0 --------
         /// <summary>
         /// モーター：時間指定付きモーター制御
         /// </summary>
         public void Move(int left, int right, int durationMS)
         {
-            if (!isConnected) return;
-            impl.Move(left, right, durationMS);
+            DelayCommand(() => impl.Move(left, right, durationMS));
         }
 
         /// <summary>
@@ -472,24 +484,21 @@ namespace toio.Simulator
         /// </summary>
         public void StopLight()
         {
-            if (!isConnected) return;
-            impl.StopLight();
+            DelayCommand(() => impl.StopLight());
         }
         /// <summary>
         /// ランプ：点灯
         /// </summary>
         public void SetLight(int r, int g, int b, int durationMS)
         {
-            if (!isConnected) return;
-            impl.SetLight(r, g, b, durationMS);
+            DelayCommand(() => impl.SetLight(r, g, b, durationMS));
         }
         /// <summary>
         /// ランプ：連続的な点灯・消灯
         /// </summary>
         public void SetLights(int repeatCount, Cube.LightOperation[] operations)
         {
-            if (!isConnected) return;
-            impl.SetLights(repeatCount, operations);
+            DelayCommand(() => impl.SetLights(repeatCount, operations));
         }
 
         /// <summary>
@@ -497,24 +506,21 @@ namespace toio.Simulator
         /// </summary>
         public void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         {
-            if (!isConnected) return;
-            impl.PlaySound(repeatCount, operations);
+            DelayCommand(() => impl.PlaySound(repeatCount, operations));
         }
         /// <summary>
         /// サウンド：効果音の再生
         /// </summary>
         public void PlayPresetSound(int soundId, int volume)
         {
-            if (!isConnected) return;
-            impl.PlayPresetSound(soundId, volume);
+            DelayCommand(() => impl.PlayPresetSound(soundId, volume));
         }
         /// <summary>
         /// サウンド：再生の停止
         /// </summary>
         public void StopSound()
         {
-            if (!isConnected) return;
-            impl.StopSound();
+            DelayCommand(() => impl.StopSound());
         }
 
         /// <summary>
@@ -522,8 +528,7 @@ namespace toio.Simulator
         /// </summary>
         public void ConfigSlopeThreshold(int degree)
         {
-            if (!isConnected) return;
-            impl.ConfigSlopeThreshold(degree);
+            DelayCommand(() => impl.ConfigSlopeThreshold(degree));
         }
 
         // --------- 2.1.0 --------
@@ -538,8 +543,7 @@ namespace toio.Simulator
             Cube.TargetSpeedType targetSpeedType,
             Cube.TargetRotationType targetRotationType
         ){
-            if (!isConnected) return;
-            impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
+            DelayCommand(() => impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType));
         }
 
         public void MultiTargetMove(
@@ -554,8 +558,7 @@ namespace toio.Simulator
             Cube.TargetSpeedType targetSpeedType,
             Cube.MultiWriteType multiWriteType
         ){
-            if (!isConnected) return;
-            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
+            DelayCommand(() => impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType));
         }
 
         public void AccelerationMove(
@@ -565,8 +568,7 @@ namespace toio.Simulator
             Cube.AccPriorityType accPriorityType,
             int controlTime
         ){
-            if (!isConnected) return;
-            impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime);
+            DelayCommand(() => impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime));
         }
 
         // --------- 2.2.0 --------
@@ -575,14 +577,12 @@ namespace toio.Simulator
         /// </summary>
         public void ConfigMotorRead(bool enabled)
         {
-            if (!isConnected) return;
-            impl.ConfigMotorRead(enabled);
+            DelayCommand(() => impl.ConfigMotorRead(enabled));
         }
 
         public void RequestSensor()
         {
-            if (!isConnected) return;
-            impl.RequestSensor();
+            DelayCommand(() => impl.RequestSensor());
         }
 
 

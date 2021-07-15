@@ -37,41 +37,41 @@ namespace toio.Simulator
 
 
             // ----- Dequeue Commands -----
-            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv + cube.delay)
+            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv)
             {
                 currMotorTimeCmd = motorTimeCmdQ.Dequeue();
-                elipsed = t - currMotorTimeCmd.tRecv - cube.delay;
+                elipsed = t - currMotorTimeCmd.tRecv;
                 motorCurrentCmdType = "Time"; latestRecvTime = currMotorTimeCmd.tRecv;
                 newCmd = true;
                 overwriteMulti = true;
             }
-            while (motorTargetCmdQ.Count>0 && t > motorTargetCmdQ.Peek().tRecv + cube.delay)
+            while (motorTargetCmdQ.Count>0 && t > motorTargetCmdQ.Peek().tRecv)
             {
                 currMotorTargetCmd = motorTargetCmdQ.Dequeue();
                 if (currMotorTargetCmd.tRecv > latestRecvTime)
                 {
-                    elipsed = t - currMotorTargetCmd.tRecv - cube.delay;
+                    elipsed = t - currMotorTargetCmd.tRecv;
                     motorCurrentCmdType = "Target"; latestRecvTime = currMotorTargetCmd.tRecv;
                     newCmd = true;
                 }
                 overwriteMulti = true;
             }
-            while (motorMultiTargetCmdQ.Count>0 && t > motorMultiTargetCmdQ.Peek().tRecv + cube.delay)
+            while (motorMultiTargetCmdQ.Count>0 && t > motorMultiTargetCmdQ.Peek().tRecv)
             {
                 multiCmdTemp = motorMultiTargetCmdQ.Dequeue();
                 if (multiCmdTemp.tRecv > latestRecvTime)
                 {
-                    elipsed = t - multiCmdTemp.tRecv - cube.delay;
+                    elipsed = t - multiCmdTemp.tRecv;
                     motorCurrentCmdType = "MultiTarget"; latestRecvTime = multiCmdTemp.tRecv;
                     newCmd = true;
                 }
             }
-            while (motorAccCmdQ.Count>0 && t > motorAccCmdQ.Peek().tRecv + cube.delay)
+            while (motorAccCmdQ.Count>0 && t > motorAccCmdQ.Peek().tRecv)
             {
                 currMotorAccCmd = motorAccCmdQ.Dequeue();
                 if (currMotorAccCmd.tRecv > latestRecvTime)
                 {
-                    elipsed = t - currMotorAccCmd.tRecv - cube.delay;
+                    elipsed = t - currMotorAccCmd.tRecv;
                     motorCurrentCmdType = "Acc"; latestRecvTime = currMotorAccCmd.tRecv;
                     newCmd = true;
                 }

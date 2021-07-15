@@ -233,11 +233,11 @@ namespace toio.Simulator
 
         protected virtual void MotorScheduler(float dt, float t)
         {
-            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv + cube.delay)
+            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv)
             {
                 currMotorTimeCmd = motorTimeCmdQ.Dequeue();
             }
-            var elipsed = t - currMotorTimeCmd.tRecv - cube.delay;
+            var elipsed = t - currMotorTimeCmd.tRecv;
 
             // ----- Excute Order -----
             if (currMotorTimeCmd.duration==0
@@ -282,24 +282,24 @@ namespace toio.Simulator
         protected void LightScheduler(float dt, float t)
         {
             // ----- Simulate Lag -----
-            while (lightCmdQ.Count > 0 && t > lightCmdQ.Peek().tRecv + cube.delay){
+            while (lightCmdQ.Count > 0 && t > lightCmdQ.Peek().tRecv){
                 currLightCmd = lightCmdQ.Dequeue();
             }
-            while (lightSenarioCmdQ.Count > 0 && t > lightSenarioCmdQ.Peek().tRecv + cube.delay){
+            while (lightSenarioCmdQ.Count > 0 && t > lightSenarioCmdQ.Peek().tRecv){
                 currLightSenarioCmd = lightSenarioCmdQ.Dequeue();
             }
 
             // ----- Excute Order -----
             if (currLightCmd.tRecv >= currLightSenarioCmd.tRecv)    // light cmd
             {
-                float elipsed = t - currLightCmd.tRecv - cube.delay;
+                float elipsed = t - currLightCmd.tRecv;
                 if (currLightCmd.duration==0 || elipsed < currLightCmd.duration/1000f)
                     cube._SetLight(currLightCmd.r, currLightCmd.g, currLightCmd.b);
                 else cube._StopLight();
             }
             else    // light senario cmd
             {
-                float elipsed = t - currLightSenarioCmd.tRecv - cube.delay;
+                float elipsed = t - currLightSenarioCmd.tRecv;
                 if (currLightSenarioCmd.period==0
                     || currLightSenarioCmd.repeat>0 && currLightSenarioCmd.period*currLightSenarioCmd.repeat <= elipsed){
                     cube._StopLight();
@@ -343,10 +343,10 @@ namespace toio.Simulator
         protected void SoundScheduler(float dt, float t)
         {
             // ----- Simulate Lag -----
-            while (soundSenarioCmdQ.Count > 0 && t > soundSenarioCmdQ.Peek().tRecv + cube.delay){
+            while (soundSenarioCmdQ.Count > 0 && t > soundSenarioCmdQ.Peek().tRecv){
                 currSoundSenarioCmd = soundSenarioCmdQ.Dequeue();
             }
-            var elipsed = t - currSoundSenarioCmd.tRecv - cube.delay;
+            var elipsed = t - currSoundSenarioCmd.tRecv;
 
             // ----- Excute Order -----
             if (currSoundSenarioCmd.period==0
@@ -363,7 +363,6 @@ namespace toio.Simulator
                         break;
                     }
                 }
-                Debug.Log("elp " + elipsed + "   idx " + index);
                 cube._PlaySound(sounds[index].note_number, sounds[index].volume);
             }
         }
