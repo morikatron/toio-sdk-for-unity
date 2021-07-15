@@ -108,37 +108,17 @@ namespace toio.Simulator
 
 
         // ============ Motor ============
-        public float motorOutSpdL {get; protected set;} = 0;   // モーターの出力速度、実際の速度ではない
-        public float motorOutSpdR {get; protected set;} = 0;
         protected float motorCmdL {get; set;} = 0;   // モーター指令値
         protected float motorCmdR {get; set;} = 0;
         public virtual void SimulateMotor()
         {
-            var dt = Time.deltaTime;
-
-            // 目標速度を計算
-            // target speed
             float targetSpeedL = motorCmdL * CubeSimulator.VDotOverU / Mat.DotPerM;
             float targetSpeedR = motorCmdR * CubeSimulator.VDotOverU / Mat.DotPerM;
-            // if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
-            // if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
 
-            // 速度更新
-            // update tires' speed
-            if (cube.forceStop || this.button)   // 強制的に停止
-            {
-                motorOutSpdL = 0; motorOutSpdR = 0;
-            }
-            else
-            {
-                motorOutSpdL += (targetSpeedL - motorOutSpdL) / Mathf.Max(cube.motorTau,dt) * dt;
-                motorOutSpdR += (targetSpeedR - motorOutSpdR) / Mathf.Max(cube.motorTau,dt) * dt;
-            }
-
+            cube.SetMotorTargetSpd(targetSpeedL, targetSpeedR);
         }
         protected virtual void ResetMotor()
         {
-            motorOutSpdL = 0; motorOutSpdR = 0;
             motorCmdL = 0; motorCmdR = 0;
         }
 

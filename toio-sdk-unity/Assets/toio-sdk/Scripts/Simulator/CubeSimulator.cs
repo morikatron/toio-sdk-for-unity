@@ -326,6 +326,8 @@ namespace toio.Simulator
         protected float speedR = 0;
         internal float speedTireL = 0;
         internal float speedTireR = 0;
+        private float motorTargetSpdL = 0;
+        private float motorTargetSpdR = 0;
         private void SimulatePhysics_Input()
         {
             // タイヤの着地状態を調査
@@ -339,14 +341,16 @@ namespace toio.Simulator
         }
         private void SimulatePhysics_Output()
         {
-            // タイヤの速度を取得
+            // タイヤ速度を更新
             if (this.forceStop || this.button || !this.isConnected)   // 強制的に停止
             {
                 speedTireL = 0; speedTireR = 0;
             }
             else
             {
-                speedTireL = impl.motorOutSpdL; speedTireR = impl.motorOutSpdR;
+                var dt = Time.fixedDeltaTime;
+                speedTireL += (motorTargetSpdL - speedTireL) / Mathf.Max(this.motorTau, dt) * dt;
+                speedTireR += (motorTargetSpdR - speedTireR) / Mathf.Max(this.motorTau, dt) * dt;
             }
 
             // 着地状態により、キューブの速度を取得
@@ -357,6 +361,11 @@ namespace toio.Simulator
 
             // Output
             _SetSpeed(speedL, speedR);
+        }
+
+        internal void SetMotorTargetSpd(float left, float right)
+        {
+            motorTargetSpdL = left; motorTargetSpdR = right;
         }
 
 

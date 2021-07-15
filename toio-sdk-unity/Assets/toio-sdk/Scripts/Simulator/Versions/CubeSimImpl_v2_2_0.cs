@@ -95,8 +95,8 @@ namespace toio.Simulator
         // ----------- Simulate -----------
         protected void SimulateMotorSpeedSensor()
         {
-            int left = Mathf.RoundToInt(motorOutSpdL/CubeSimulator.VMeterOverU);
-            int right = Mathf.RoundToInt(motorOutSpdR/CubeSimulator.VMeterOverU);
+            int left = Mathf.RoundToInt(cube.speedTireL/CubeSimulator.VMeterOverU);
+            int right = Mathf.RoundToInt(cube.speedTireR/CubeSimulator.VMeterOverU);
             _SetMotorSpeed(left, right);
         }
 
