@@ -638,6 +638,7 @@ namespace toio.Simulator
                 audioSource.Play();
         }
         internal void _StopSound(){
+            playingSoundId = -1;
             audioSource.clip = null;
             audioSource.Stop();
         }
