@@ -597,7 +597,7 @@ protected void _SetMotorSpeed(int left, int right)
 
 ### 命令処理の流れ
 
-シミュレータは以下のなロジックで [CubeUnity](sys_cube.md#2-cube-クラスの構造) から渡された命令を処理しています。
+シミュレータは以下のようなロジックで [CubeUnity](sys_cube.md#2-cube-クラスの構造) から渡された命令を処理しています。
 
 - CubeUnity が CubeSimulator のメソッドを呼び出すと
   - 遅延後に実装メソッドを呼び出すコルーチンを開始する
