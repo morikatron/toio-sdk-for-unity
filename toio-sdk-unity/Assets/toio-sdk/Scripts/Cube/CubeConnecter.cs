@@ -66,39 +66,84 @@ namespace toio
 
         public class SimImpl : CubeConnecterInterface
         {
+            private bool isConnecting = false;
+
             public async UniTask<Cube> Connect(BLEPeripheralInterface peripheral)
             {
-                var uniperipheral = peripheral as UnityPeripheral;
-                var cube = new CubeUnity(uniperipheral.obj);
-                while (!cube.isConnected) await UniTask.Delay(50);
-                cube.Init();
-                return cube as Cube;
+                try
+                {
+                    while(this.isConnecting) { await UniTask.Delay(100); }
+
+                    this.isConnecting = true;
+
+                    bool success = await this.ConnectPeripheral(peripheral);
+                    if (!success) return null;
+
+                    var cube = new CubeUnity(peripheral as UnityPeripheral);
+                    cube.Initialize();
+                    this.isConnecting = false;
+                    return cube;
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError(e);
+                    this.isConnecting = false;
+                    return null;
+                }
             }
 
             public async UniTask<Cube[]> Connect(BLEPeripheralInterface[] peripherals)
             {
-                if (peripherals == null) return default;
-                var uniperipherals = peripherals as UnityPeripheral[];
-                var cubes = Array.ConvertAll<UnityPeripheral, CubeUnity>(uniperipherals, peri => new CubeUnity(peri.obj));
-                foreach (var cube in cubes)
+                if (peripherals == null) return new Cube[]{};
+                Cube[] cubes = new Cube[peripherals.Length];
+                for (int i = 0; i < peripherals.Length; i++)
                 {
-                    while (!cube.isConnected)
-                        await UniTask.Delay(50);
-                    cube.Init();
+                    cubes[i] = await this.Connect(peripherals[i]);
                 }
-                return cubes as Cube[];
+                return cubes;
             }
             public void Disconnect(Cube cube)
             {
+                (cube as CubeUnity).peripheral.Disconnect();
             }
-            public UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
+            public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
             {
-                return default;
+                await ReConnect(cube);
             }
-            public UniTask ReConnect(Cube cube)
+            public async UniTask ReConnect(Cube cube)
             {
-                return default;
+                try
+                {
+                    var peripheral = (cube as CubeUnity).peripheral;
+                    while(this.isConnecting) { await UniTask.Delay(100); }
+
+                    this.isConnecting = true;
+
+                    bool success = await this.ConnectPeripheral(peripheral);
+                    if (!success) return;
+
+                    (cube as CubeUnity).Initialize();
+                    this.isConnecting = false;
+                }
+                catch (System.Exception)
+                {
+                    this.isConnecting = false;
+                }
             }
+
+            protected virtual async UniTask<bool> ConnectPeripheral(BLEPeripheralInterface peripheral)
+            {
+                float startTime = Time.time;
+                peripheral.Connect(null);
+
+                while (true)
+                {
+                    if (peripheral.isConnected) return true;
+                    if (startTime < Time.time - 10.0f) return false;
+                    await UniTask.Delay(100);
+                }
+            }
+
         }
 
 

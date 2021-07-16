@@ -13,7 +13,7 @@
 - [4. Cube Prefab](usage_simulator.md#4-Cube-Prefab)
   - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-CubeSimulator-のインスペクター)
   - [4.2. CubeSimulator の定数](usage_simulator.md#42-CubeSimulator-の定数)
-  - [4.3. CubeSimulator の変数](usage_simulator.md#43-CubeSimulator-の変数)
+  - [4.3. CubeSimulator のプロパティ](usage_simulator.md#43-CubeSimulator-のプロパティ)
   - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-CubeSimulator-のメソッド)
   - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction)
 - [5. Stage-Prefab](usage_simulator.md#5-Stage-Prefab)
@@ -245,31 +245,42 @@ Cube Prefab はシーンの中に複数台配置することが出来ます。 �
 
 【シミュレータの設定】と【手動でキューブの状態を変更】との二つの部分に分けられています。
 
-### シミュレータの設定
+### シミュレータの設定（非実行時）
 
 <div align="center"><img src="res/usage_simulator/cube_setting.png"></div>
 
-- `Version`： ファームウェアのバージョン。実行時は変更不可。
-- `Motor Tau`： モーターの一次遅れ要素のパラメーター。実行時は変更不可。
-- `Delay`： 通信の遅延(指令の送信から取得した座標が変わるまでのラグ)。実行時は変更不可。
+- `Version`： ファームウェアのバージョン。
+- `Power Start`： キューブ電源の初期状態。
+- `Motor Tau`： モーターの一次遅れ要素のパラメーター。
+- `Delay`： 通信の遅延(指令の送信から取得した座標が変わるまでのラグ)。
 - `Force Stop`: チェックすると、モーターの出力を強制的に停止させる。
 
-### 手動でキューブの状態を変更
+### シミュレータの情報（実行時）
+
+<div align="center"><img src="res/usage_simulator/cube_info.png"></div>
+
+- `Version`： ファームウェアのバージョン。変更不可。
+- `Power`： キューブの電源。
+- `Running`： 起動されて、接続可能な状態。
+- `Connected`： 接続されたか否か。
+- `Force Stop`: チェックすると、モーターの出力を強制的に停止させる。
+
+### 手動でキューブの状態を変更（実行時）
 
 <div align="center"><img src="res/usage_simulator/cube_states.png"></div>
 
-実行時のみに表示されます。
+>接続された状態のみに表示されます。
 
 シミュレータ上でリアルに再現するのが難しい、或いは操作しにくい場合、インスペクターでキューブの状態を変更し、対応イベントを起こすことが出来ます。
 
-- `button 状態`：チェック入れると、ボタンを押したままの状態になります。押された状態ではキューブは動くことが出来ないので、再びキューブを動かしたい場合にはチェックを外しボタンを放した上にする必要があります。また、マウスの操作でボタン状態を変更した場合、この設定が上書きされます。
-- `【sloped の変更を手動で行う】`：チェックすると、`sloped 状態` が表示され設定を変更できるようになります。
+- `button 状態`： チェック入れると、ボタンを押したままの状態になります。押された状態ではキューブは動くことが出来ないので、再びキューブを動かしたい場合にはチェックを外しボタンを放した上にする必要があります。また、マウスの操作でボタン状態を変更した場合、この設定が上書きされます。
+- `【sloped の変更を手動で行う】`： チェックすると、`sloped 状態` が表示され設定を変更できるようになります。
 （通常はシミュレータが毎フレームsloped状態をセットしていますが、この設定が有効な場合はシミュレータがsloped状態をセットしないようになります。）
-  - `sloped 状態`：キューブが斜面にいるかを示します。
-- `collisionDetected 状態`：衝突を検出したか否かを示します。(現在、シミュレータにはキューブの衝突を検出する機能は実装されていません）
-- `doubleTap 状態`：ダブルタップされたかを示します。（現在、シミュレータにはキューブがダブルタップされたことを検出する機能は実装されていません）
-- `pose 状態`：キューブの姿勢を表示・変更できます。
-- `shake レベル`：シェイクの強さを示します。（現在、シミュレータにはキューブがシェイクされたことを検出する機能は実装されていません）
+  - `sloped 状態`： キューブが斜面にいるかを示します。
+- `衝突を発生`： 衝突を発生させるボタンです。(現在、ゲームエンジンで物理的な衝突シミュレーションは実装されていません）
+- `ダブルタップを発生`： ダブルタップを発生させるボタンです。（現在、ゲームエンジンで物理なダブルタップ・シミュレーションは実装されていません）
+- `pose 状態`： キューブの姿勢を表示・変更できます。
+- `shake レベル`： シェイクの強さを示します。（現在、シミュレータにはキューブがシェイクされたことを検出する機能は実装されていません）
 
 ## 4.2. CubeSimulator の定数
 
@@ -284,16 +295,20 @@ public static readonly float WidthM= 0.0318f;
 public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM; // about 2.06
 ```
 
-## 4.3. CubeSimulator の変数
+## 4.3. CubeSimulator のプロパティ
 
 ```c#
-public int x { get; internal set; }        // マット上のｘ座標
-public int y { get; internal set; }        // マット上のｙ座標
-public int deg { get; internal set; }    // マット上の角度（度）
-public int xSensor { get; internal set; }        // 読み取りセンサーのマット上のｘ座標
-public int ySensor { get; internal set; }        // 読み取りセンサーのマット上のｙ座標
-public uint standardID { get; internal set; }  // 読み取った Standard ID
-public bool onMat { get; internal set; }    // Mat 上にあるか
+public bool power { get; set; }                 // 電源
+public bool isRunning { get; private set; }     // 稼働中か否か
+public int maxMotor { get; }                    // モーター指令最大値
+public int deadzone { get; }                    // モーター指令デッドゾーン
+public int x { get; internal set; }             // マット上のｘ座標
+public int y { get; internal set; }             // マット上のｙ座標
+public int deg { get; internal set; }           // マット上の角度（度）
+public int xSensor { get; internal set; }       // 読み取りセンサーのマット上のｘ座標
+public int ySensor { get; internal set; }       // 読み取りセンサーのマット上のｙ座標
+public uint standardID { get; internal set; }   // 読み取った Standard ID
+public bool onMat { get; internal set; }        // Mat 上にあるか
 public bool onStandardID { get; internal set; }   // StandardID 上にあるか
 public bool isGrounded { get {return onMat || onStandardID; } } // Mat 又は StandardID 上にあるか
 ```
@@ -317,7 +332,7 @@ CubeInteraction クラスは、Unity の EventSystem をベースに、Cube オ�
 
 ### Cube オブジェクトを左クリックで押す
 
-Cube オブジェクトを`左クリック`すると、対象の Cube オブジェクトの[底面のボタン](https://toio.github.io/toio-spec/docs/ble_button)を押すことができます。  
+Cube オブジェクトを`左クリック`すると、対象の Cube オブジェクトの[底面のボタン](https://toio.github.io/toio-spec/docs/ble_button)を押すことができます。
 
 > マウスの左ボタンを押し続けている間、Cube オブジェクトの底面ボタンは押され続けます。
 

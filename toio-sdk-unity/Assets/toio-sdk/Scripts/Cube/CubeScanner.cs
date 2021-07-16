@@ -65,52 +65,206 @@ namespace toio
         /// </summary>
         public class SimImpl : CubeScannerInterface
         {
-            public bool isScanning { get { return false; } }
-            private HashSet<int> IDHash = new HashSet<int>();
-            private List<UnityPeripheral> peripheralList = new List<UnityPeripheral>();
+            public bool isScanning { get; private set; }
+            private Dictionary<string, BLEPeripheralInterface> peripheralDatabase = new Dictionary<string, BLEPeripheralInterface>();
+            private Dictionary<string, BLEPeripheralInterface> connectedPeripheralTable = new Dictionary<string, BLEPeripheralInterface>();
+            // connection async
+            private int satisfiedNumForAsync;
+            private MonoBehaviour coroutineObject;
+            private Action<BLEPeripheralInterface> callback;
+            private bool autoRunning;
 
-            public UniTask<BLEPeripheralInterface> NearestScan()
+            public SimImpl()
             {
-                var cubeObjects = GameObject.FindGameObjectsWithTag("Cube");
-                foreach(var obj in cubeObjects)
-                {
-                    if(!this.IDHash.Contains(obj.GetInstanceID()))
-                    {
-                        this.IDHash.Add(obj.GetInstanceID());
-                        return new UniTask<BLEPeripheralInterface>(new UnityPeripheral(obj) as BLEPeripheralInterface);
-                    }
-                }
-                return UniTask.FromResult<BLEPeripheralInterface>(null);
+                this.isScanning = false;
             }
-            public UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
-            {
-                if (satisfiedNum <= this.peripheralList.Count) { return default; }
 
-                var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
-                foreach (var obj in objs)
+            public async UniTask<BLEPeripheralInterface> NearestScan()
+            {
+                List<BLEPeripheralInterface> peripheralList = new List<BLEPeripheralInterface>();
+                List<GameObject> foundObjs = new List<GameObject>();
+
+                Action<GameObject> foundCallback = obj =>
                 {
-                    if (!this.IDHash.Contains(obj.GetInstanceID()) && this.peripheralList.Count < satisfiedNum)
+                    var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
+                    if (!this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
                     {
-                        this.IDHash.Add(obj.GetInstanceID());
-                        var peri = new UnityPeripheral(obj);
-                        this.peripheralList.Add(peri);
+                        if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
+                        {
+                            peripheral = this.peripheralDatabase[peripheral.device_address];
+                        }
+                        else
+                        {
+                            this.peripheralDatabase.Add(peripheral.device_address, peripheral);
+                            peripheral.AddConnectionListener("CubeScanner.SimImpl", this.OnConnectionEvent);
+                        }
+                        peripheralList.Add(peripheral);
                     }
+                };
+
+                isScanning = true;
+
+                // Scanning Loop
+                while (true)
+                {
+                    // Search for new cube object
+                    var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
+                    foreach (var obj in objs)
+                    {
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
+                        if (!foundObjs.Contains(obj))
+                        {
+                            foundObjs.Add(obj);
+                            foundCallback.Invoke(obj);
+                        }
+                    }
+
+                    if (0 < peripheralList.Count) break;
+
+                    // Searching Period
+                    await UniTask.Delay(200);
                 }
-                return new UniTask<BLEPeripheralInterface[]>(this.peripheralList.ToArray() as BLEPeripheralInterface[]);
+
+                peripheralList.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
+                isScanning = false;
+                return peripheralList[0];
+            }
+            public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
+            {
+                var start_time = Time.time;
+                List<BLEPeripheralInterface> peripheralList = new List<BLEPeripheralInterface>();
+                List<GameObject> foundObjs = new List<GameObject>();
+
+                Action<GameObject> foundCallback = obj =>
+                {
+                    var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
+                    if (this.isScanning && peripheralList.Count < satisfiedNum &&
+                        !this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
+                    {
+                        if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
+                        {
+                            peripheral = this.peripheralDatabase[peripheral.device_address];
+                        }
+                        else
+                        {
+                            this.peripheralDatabase.Add(peripheral.device_address, peripheral);
+                            peripheral.AddConnectionListener("CubeScanner.SimImpl", this.OnConnectionEvent);
+                        }
+                        peripheralList.Add(peripheral);
+                    }
+                };
+
+                isScanning = true;
+
+                // Scanning Loop
+                while (true)
+                {
+                    // Search for new cube object
+                    var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
+                    foreach (var obj in objs)
+                    {
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
+                        if (!foundObjs.Contains(obj))
+                        {
+                            foundObjs.Add(obj);
+                            foundCallback.Invoke(obj);
+                        }
+                    }
+
+                    // 必要数に達したらスキャン終了
+                    if (satisfiedNum <= peripheralList.Count) break;
+
+                    // Searching Period
+                    await UniTask.Delay(200);
+
+                    // 待機時間を超えた場合は一旦関数を終了する
+                    var elapsed = Time.time - start_time;
+                    if (waitSeconds <= elapsed) break;
+                }
+
+                peripheralList.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
+                var nearPeripherals = peripheralList.GetRange(0, Mathf.Min(satisfiedNum, peripheralList.Count)).ToArray();
+                this.isScanning = false;
+                return nearPeripherals;
             }
             public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
             {
-                if (satisfiedNum <= this.peripheralList.Count) { return; }
+                this.satisfiedNumForAsync = satisfiedNum;
+                this.coroutineObject = coroutineObject;
+                this.callback = callback;
+                this.autoRunning = autoRunning;
+                this.coroutineObject.StartCoroutine(this.ScanCoroutine(satisfiedNum, callback));
+            }
 
-                var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
-                foreach (var obj in objs)
+            // --- private methods ---
+            private IEnumerator ScanCoroutine(int satisfiedNum, Action<BLEPeripheralInterface> callback)
+            {
+                List<GameObject> foundObjs = new List<GameObject>();
+
+                Action<GameObject> foundCallback = obj =>
                 {
-                    if (!this.IDHash.Contains(obj.GetInstanceID()) && this.peripheralList.Count < satisfiedNum)
+                    var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
+                    if (this.isScanning && foundObjs.Count < satisfiedNum &&
+                        !this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
                     {
-                        this.IDHash.Add(obj.GetInstanceID());
-                        var peri = new UnityPeripheral(obj);
-                        this.peripheralList.Add(peri);
-                        callback(peri);
+                        if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
+                        {
+                            peripheral = this.peripheralDatabase[peripheral.device_address];
+                        }
+                        else
+                        {
+                            this.peripheralDatabase.Add(peripheral.device_address, peripheral);
+                            peripheral.AddConnectionListener("CubeScanner.SimImpl", this.OnConnectionEvent);
+                        }
+                        callback?.Invoke(peripheral);
+                    }
+                };
+
+                isScanning = true;
+
+                // Scanning Loop
+                while (true)
+                {
+                    // Search for new cube object
+                    var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
+                    foreach (var obj in objs)
+                    {
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
+                        if (!foundObjs.Contains(obj))
+                        {
+                            foundObjs.Add(obj);
+                            foundCallback.Invoke(obj);
+                        }
+                    }
+
+                    // 必要数に達したらスキャン終了
+                    if (satisfiedNum <= foundObjs.Count) break;
+
+                    // Searching Period
+                    yield return new WaitForSeconds(0.2f);
+                }
+
+                isScanning = false;
+            }
+
+            private void OnConnectionEvent(BLEPeripheralInterface peripheral)
+            {
+                if (peripheral.isConnected)
+                {
+                    if (!this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
+                    {
+                        this.connectedPeripheralTable.Add(peripheral.device_address, peripheral);
+                    }
+                }
+                else
+                {
+                    if (this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
+                    {
+                        this.connectedPeripheralTable.Remove(peripheral.device_address);
+                    }
+                    if (!this.isScanning && this.autoRunning)
+                    {
+                        this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
                     }
                 }
             }
