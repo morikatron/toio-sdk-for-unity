@@ -114,10 +114,27 @@ namespace toio
             Debug.Log("[CubeManager.MultiConnect]MultiConnect doesn't run on the web");
 #endif
             var peripherals = await this.scanner.NearScan(cubeNum);
-            var cubes = await this.connecter.Connect(peripherals);
-            this.AddCube(cubes);
+            List<Cube> cubes = new List<Cube>();
 
-            return cubes;
+            var peris2reconnect = peripherals.Where(p => this.cubeTable.ContainsKey(p.device_address));
+            var peris2connect = peripherals.Where(p => !this.cubeTable.ContainsKey(p.device_address)).ToArray();
+
+            // Reconnect
+            foreach (var peri in peris2reconnect)
+            {
+                var cube = this.cubeTable[peri.device_address];
+                await this.connecter.ReConnect(cube);
+            }
+            // Connect
+            var new_cubes = await this.connecter.Connect(peris2connect);
+            foreach (var cube in new_cubes)
+            {
+                if (cube == null) continue;
+                cubes.Add(cube);
+                this.AddCube(cube);
+            }
+
+            return cubes.ToArray();
         }
 
         public virtual void MultiConnectAsync(int cubeNum, MonoBehaviour coroutineObject, Action<Cube, CONNECTION_STATUS> connectedAction =null, bool autoRunning=true)
