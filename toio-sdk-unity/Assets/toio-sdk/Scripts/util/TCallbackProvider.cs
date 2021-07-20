@@ -30,7 +30,7 @@ namespace toio
         }
         public virtual void Notify(T target)
         {
-            for (int i=0; i < this.listenerList.Count; i++)
+            for (int i = this.listenerList.Count-1; i >= 0; i--)
             {
                 this.listenerList[i].Invoke(target);
             }
@@ -62,9 +62,9 @@ namespace toio
         }
         public virtual void Notify(T1 p1, T2 p2)
         {
-            foreach (var listener in this.listenerList)
+            for (int i = this.listenerList.Count-1; i >= 0; i--)
             {
-                listener.Invoke(p1, p2);
+                this.listenerList[i].Invoke(p1, p2);
             }
         }
     }
