@@ -18,7 +18,6 @@ namespace toio
         public float rssi { get; private set; }
         public bool isConnected { get; private set; }
         private TCallbackProvider<BLEPeripheralInterface> callback;
-        public List<BLECharacteristicInterface> connectedcharacteristics { get; private set; }
 
         public UnityPeripheral(GameObject _obj)
         {
@@ -31,7 +30,6 @@ namespace toio
             this.rssi = pos.x+pos.y+pos.z;
 
             this.callback = new TCallbackProvider<BLEPeripheralInterface>();
-            this.connectedcharacteristics = new List<BLECharacteristicInterface>();
         }
         public void Connect(Action<BLECharacteristicInterface> characteristicAction)
         {
@@ -71,7 +69,6 @@ namespace toio
             if (this.isConnected)
             {
                 this.isConnected = false;
-                this.connectedcharacteristics.Clear();
                 this.ConnectionNotify(this);
             }
         }

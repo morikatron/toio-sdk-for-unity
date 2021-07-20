@@ -10,7 +10,6 @@ namespace toio
         public string device_name { get; private set; }
         public float rssi { get; private set; }
         public bool isConnected { get; private set; }
-        public List<BLECharacteristicInterface> connectedcharacteristics { get; private set; }
 
         public int serverID { get; private set; }
         public int deviceID { get; private set; }
@@ -23,7 +22,6 @@ namespace toio
             this.device_name = name;
             this.rssi = 0.0f;
             this.isConnected = false;
-            this.connectedcharacteristics = new List<BLECharacteristicInterface>();
             this.deviceID = deviceID;
         }
 
@@ -39,13 +37,11 @@ namespace toio
                     this.ConnectionNotify(this);
                     WebBluetoothScript.Instance.GetCharacteristics(serviceID, (characteristicID, uuid) => {
                         var instance = new BLEWebCharacteristic(serviceID, this.device_address, serviceUUID, characteristicID, uuid);
-                        this.connectedcharacteristics.Add(instance);
                         characteristicAction.Invoke(instance);
                     });
                 },
                 (deviceID) => {
                     this.isConnected = false;
-                    this.connectedcharacteristics.Clear();
                     this.ConnectionNotify(this);
                 }
             );
