@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [BLE] Add MacOS BLE plugin. (Thanks to contribution of [Akihiro Komori](https://github.com/comoc))
 - [Scanner] Add class `CubeScanner` that integrates `NearestScanner` and `NearScanner`.
 - [Simulator] Implement `CubeSimulator.power`, which can be accessed from script or Editor Inspector.
 - [Simulator] Implement diconnection and re-connection. Simulator has more similar behaviour as real cube.
