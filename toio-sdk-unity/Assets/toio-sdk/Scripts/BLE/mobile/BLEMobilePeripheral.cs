@@ -10,7 +10,6 @@ namespace toio
         public string device_name { get; private set; }
         public float rssi { get; private set; }
         public bool isConnected { get; private set; }
-        public List<BLECharacteristicInterface> connectedcharacteristics { get; private set; }
 
         private TCallbackProvider<BLEPeripheralInterface> callback;
 
@@ -23,7 +22,6 @@ namespace toio
             this.rssi = rssi;
             this.callback = new TCallbackProvider<BLEPeripheralInterface>();
             this.isConnected = false;
-            this.connectedcharacteristics = new List<BLECharacteristicInterface>();
         }
 
         /// <summary>
@@ -36,7 +34,6 @@ namespace toio
             {
                 //Debug.Log("address=" + address + ". uuid=" + serviceUUID + ". chara=" + characteristicUUID);
                 var instance = new BLEMobileCharacteristic(this.device_address, serviceUUID, characteristicUUID);
-                this.connectedcharacteristics.Add(instance);
                 characteristicAction(instance);
             }, this.OnDisconnected);
         }
@@ -93,7 +90,6 @@ namespace toio
             if (this.isConnected)
             {
                 this.isConnected = false;
-                this.connectedcharacteristics.Clear();
                 this.ConnectionNotify(this);
             }
         }
