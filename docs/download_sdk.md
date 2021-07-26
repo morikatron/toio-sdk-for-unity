@@ -48,8 +48,8 @@ Unity プロジェクトに読み込まれたら、`Assets/toio-sdk/Tutorials/1.
 
 <img width=300 src="res/download_sdk/play.png">
 
- 以下のようにサンプルが動く事（シミュレーター上）を確認してください。  
- ※実物のtoio™コア キューブに接続するには[docs/README.mdの「ビルド」](README.md#ビルド)を参照してください。
+ 以下のようにサンプルが動く事（シミュレーター上）を確認してください。
+ ※実物のtoio™コア キューブに接続するには[docs/README.mdの「ビルド」](README.md#-3-ビルド)を参照してください。
 
 <img src="res/download_sdk/sample.gif">
 
