@@ -38,9 +38,15 @@
 
 #### 1. Xcodeプロジェクト のダウンロード
 
+[toio/ble-plugin-unity](https://github.com/toio/ble-plugin-unity) を開き、【Code】>【Download ZIP】の順でクリックしてリポジトリをダウンロードします。<br>
+
+<div  align="center">
+<img width=300 src="res/usage_macble/download_zip.png"></img>
+</div>
+
 #### 2. bundleファイル のビルド
 
-ダウンロードしたXcodeプロジェクトを開いたら、【Build Settings】タブをクリックし、<b>Deployment</b> 設定を開きます。
+ダウンロードしたzipファイルを解凍して、`bleplugin_projects/macOS/bleplugin/bleplugin.xcodeproj`にあるXcodeプロジェクトファイルを開きます。プロジェクト設定画面を開き、<b>TARGETS</b>リストにある【bleplugin】をクリック後に【Build Settings】タブをクリックし、<b>Deployment</b> 設定を開きます。
 Deployment 設定内にある <b>macOS Deployment Target</b> の右列にある【macOS (バージョン値)】をクリックして、事前作業で確認したOSバージョンを選択してください。
 
 <div  align="center">
