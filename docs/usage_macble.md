@@ -79,7 +79,7 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 ビルドで生成されたbundleファイルをXcodeウィンドウからUnityウィンドウへ直接ドラッグ&ドロップします。
 
 <div  align="center">
-<img src="res/usage_macble/add_bundle.png"></img>
+<img width=600 src="res/usage_macble/add_bundle.png"></img>
 </div>
 
 <br>
