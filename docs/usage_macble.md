@@ -76,7 +76,7 @@ Deployment 設定内にある <b>macOS Deployment Target</b> の右列にある�
 #### 3. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
 
 Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` までフォルダを移動します。
-ビルドで生成されたbundleファイルをXcodeウィンドウからUnityウィンドウへ直接ドラッグ&ドロップします。
+ビルドで生成されたbundleファイルを<b>Xcodeウィンドウ</b>からUnityウィンドウへ直接ドラッグ&ドロップします。
 
 <div  align="center">
 <img width=600 src="res/usage_macble/add_bundle.png"></img>
