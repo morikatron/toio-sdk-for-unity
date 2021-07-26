@@ -7,6 +7,7 @@
 1. 開発環境を整える [→「事前準備」](preparation.md)
 2. Unity で新規プロジェクトを作り、 toio SDK for Unity を読み込む [→「toio SDK for Unity インストール」](download_sdk.md)
 <br><br>
+3. オプション機能の導入 [→「Mac用BLE通信の導入」](usage_macble.md)
 
 ### 【 2 】開発
 
