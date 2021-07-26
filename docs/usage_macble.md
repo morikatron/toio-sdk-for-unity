@@ -30,7 +30,7 @@
 
 #### 1. bundleファイル のダウンロード
 
-[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
+[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
 
 > 本SDKがv1.3.0時点では、v1.0.0リリースを対象にしています。
 
@@ -57,7 +57,7 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 
 #### 2. bundleファイル のビルド
 
-ダウンロードしたzipファイルを解凍して、`bleplugin_projects/macOS/bleplugin/bleplugin.xcodeproj`にあるXcodeプロジェクトファイルを開きます。プロジェクト設定画面を開き、<b>TARGETS</b>リストにある【bleplugin】をクリック後に【Build Settings】タブをクリックし、<b>Deployment</b> 設定を開きます。
+ダウンロードしたzipファイルを解凍して、`bleplugin_projects/macOS/bleplugin/bleplugin.xcodeproj`にあるXcodeプロジェクトファイルを開きます。プロジェクト設定画面を開き、<b>TARGETS</b>リストにある【bleplugin】をクリック後に【Build Settings】タブをクリックし、<b>Deployment</b> 設定を開きます。
 Deployment 設定内にある <b>macOS Deployment Target</b> の右列にある【macOS (バージョン値)】をクリックして、事前作業で確認したOSバージョンを選択してください。
 
 <div  align="center">
