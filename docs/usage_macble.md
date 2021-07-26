@@ -30,7 +30,18 @@
 
 #### 1. bundleファイル のダウンロード
 
+[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
+
+> 本SDKがv1.3.0時点では、v1.0.0リリースを対象にしています。
+
 #### 2. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
+
+Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` までフォルダを移動します。
+ダウンロードしたzipファイルを解答し、bundleファイルをUnityウィンドウへ直接ドラッグ&ドロップします。
+
+<div  align="center">
+<img width=600 src="res/usage_macble/add_bundle_file.png"></img>
+</div>
 
 <br>
 
