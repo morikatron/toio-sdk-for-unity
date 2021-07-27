@@ -641,7 +641,7 @@ public double p_weight_cohesion = 0.3;  // Weight of the vector to be moved to t
 public double p_max_cohesion = 50;      // Upper limit of vector to move to average position
 public double p_weight_alignment = 0.3; // Vector weights toward the mean direction
 public double p_max_alignment = 30;     // Upper limit of the vector going to the mean direction
-public double p_max_all = 100;          // upper limit of the combined vector
+public double p_max_all = 100;          // upper limit of the resultant vector
 ```
 
 ## 4.2. Method
@@ -652,21 +652,21 @@ public double p_max_all = 100;          // upper limit of the combined vector
 public Vector Run(List<Navigator> others, Vector tarPos);
 ```
 
-Include the vector to the goal and calculate composite vector.
+Include the vector to the goal and calculate resultant vector.
 
 - others
   - Definition of: other Navigator list
 - tarPos
   - Definition: Target coordinates
-- Return value: Composite vector
+- Return value: Resultant vector
 
 ```c#
-// Compute composite vector, no target
+// Compute resultant vector, no target
 public Vector Run(List<Navigator> others);
 ```
 
-Calculate composite vector, except for the vector to the target.
+Calculate resultant vector, except for the vector to the target.
 
 - others
   - Definition of: other Navigator list
-- Return value: Composite vector
+- Return value: Resultant vector
