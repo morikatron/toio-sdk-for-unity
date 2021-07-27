@@ -44,7 +44,7 @@
 #### 2. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
 
 Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` までフォルダを移動します。
-ダウンロードしたzipファイルを解答し、bundleファイルをUnityウィンドウへ直接ドラッグ&ドロップします。
+ダウンロードしたzipファイルを解凍し、bundleファイルをUnityウィンドウへ直接ドラッグ&ドロップします。
 
 <div  align="center">
 <img width=600 src="res/usage_macble/add_bundle_file.png"></img>
