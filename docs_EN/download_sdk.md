@@ -49,7 +49,7 @@ Once the scene file is open, click on the Play button at the top of the editor.
 <img width=300 src="res/download_sdk/play.png">
 
  Make sure that the sample works (on Simulator) as shown below.  
- To connect to the real toio™ Core Cube, please refer to [docs_EN/README.md "Build"](README.md#Build).
+ To connect to the real toio™ Core Cube, please refer to [docs_EN/README.md "Build"](README.md#3-build).
 
 <img src="res/download_sdk/sample.gif">
 
