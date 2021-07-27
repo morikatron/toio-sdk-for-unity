@@ -82,7 +82,7 @@ public class Hello_Toio : MonoBehaviour
 - Mac（macOS ver.10.14以上）
 - Windows 10（64 ビット版のみ）
 - iOS端末（iOS ver.12以上）
-- Android端末(Android OS 9.0以上 ※Experimentalで対応中。)
+- Android端末(Android OS 9.0以上)
 - Unity（2019.4.0f1 LTS）
 
 
