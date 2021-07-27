@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [CubeHandle] Not moving backwards on the outside of borders issue fixed.
 - [CubeManager] Fix logic of `synced` that is always false after any cube is disconnected. And `syncedCubes` `syncedHandles` `syncedNavigators` now return connected entities only.
+- [BLE] Fix Android BLE Plugin disconnection not working issue.
+- [BLE] Fix Android BLE Plugin keeping returning characteristics issue.
 
 ## [1.2.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.1) - 2021-04-27
 
