@@ -94,7 +94,7 @@ public class Hello_Toio : MonoBehaviour
 
 ## サンプルアプリ
 
-- [CubeMarker](https://github.com/morikatron/toio-cube-marker)：多人数オンライン対戦ゲーム
+- [CubeMarker](https://github.com/morikatron/toio-cube-marker)：オンライン対戦サンプルプログラム
 
 ## ライセンス
 
