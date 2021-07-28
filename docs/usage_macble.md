@@ -1,5 +1,8 @@
 # MacBLE利用方法
 
+通常の場合、<b>リアルのキューブ</b>に接続して動作確認するためにはアプリをビルドする必要が有り、動作確認に時間が掛かります。
+MacOS 用の BLE プラグインを利用する事で、アプリをビルドせずに Unity Editor からリアルのキューブに直接接続する事が可能になり、手軽に動作確認が出来ます。
+
 ここでは Mac 上の Unity Editor からリアルのキューブに接続する方法を解説します。
 
 ## 目次
@@ -16,7 +19,7 @@
 
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | MacOS Catalina 10.15.7 | ? |
+| OS                   | MacOS Catalina 10.15.7 | MacOS Catalina 10.15 以上 |
 | Bluetooth®            | 4.2             | 4.2 以上             |
 | Unity                | 2019.4.0f1             | 2019.3 以上             |
 
@@ -87,3 +90,5 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 ## 使い方
 
 [Cubeの接続設定](usage_cube.md#4-cubeの接続設定) をご参照ください。
+
+手軽に動作確認したい場合は、サンプルプロジェクトの [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/) を動かしてみてください。
