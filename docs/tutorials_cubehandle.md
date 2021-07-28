@@ -115,7 +115,7 @@ CubeHandle クラスは、以下のような移動制御を提供します。
 - 一回の命令で指定した距離を移動、指定した角度回転
 - 指定した座標に到達するように移動、指定した方向に到達するように回転
 
-CubeHandle の詳細については[【コチラ】](cubehandle.md)を参照してください。
+CubeHandle の詳細については[【コチラ】](usage_cubehandle.md)を参照してください。
 
 ### 2.1. CubeHandle の Move 関数と MoveRaw 関数
 
