@@ -14,9 +14,23 @@ public class Sample_UI_OneShot_OnWebGL : MonoBehaviour
 
     public async void Connect()
     {
-        if (null == cube)
+        if (null == cube || !cube.isConnected)
         {
             cube = await cubeManager.SingleConnect();
+        }
+    }
+    public void Disconnect()
+    {
+        if (null != cube && cube.isConnected)
+        {
+            cubeManager.DisconnectAll();
+        }
+    }
+    public async void ReConnect()
+    {
+        if (null != cube && !cube.isConnected)
+        {
+            await cubeManager.ReConnectAll();
         }
     }
 

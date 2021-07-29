@@ -15,7 +15,7 @@ namespace toio
         {
             this.serviceID = serviceID;
             this.deviceAddress = deviceAddress;
-            this.serviceUUID = serviceUUID;
+            this.serviceUUID = serviceUUID.ToUpper();
             this.characteristicID = characteristicID;
             this.characteristicUUID = characteristicUUID.ToUpper();
         }

@@ -54,7 +54,6 @@ namespace toio.Android
 
         private AndroidJavaObject GetContext()
         {
-            // UnityPlayerƒNƒ‰ƒX‚ðŽæ“¾
             using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
                 using (AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity"))
@@ -295,7 +294,7 @@ namespace toio.Android
         public void Disconnect(string addr)
         {
             var disconnectMethod = AndroidJNI.GetMethodID(this.bleManagerCls,
-                "disconnect", "(Ljava/lang/String;)");
+                "disconnect", "(Ljava/lang/String;)V");
             this.argBuilder.Clear().Append(ArgJvalueBuilder.GenerateJvalue(addr));
             AndroidJNI.CallVoidMethod(this.javaBleManagerObj, 
                 disconnectMethod, this.argBuilder.Build());
@@ -320,6 +319,9 @@ namespace toio.Android
                     getDisconnectedDeviceAddr,this.argBuilder.Build());
                 this.disconnectedDevices.Add(addr);
             }
+
+            foreach (var addr in disconnectedDevices)
+                this.charastericsKeyInfos.Remove(addr);
         }
         public List<string> GetDisconnectedDevices()
         {

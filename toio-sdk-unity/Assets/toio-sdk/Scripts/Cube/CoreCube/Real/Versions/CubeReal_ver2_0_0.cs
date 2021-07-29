@@ -56,8 +56,7 @@ namespace toio
         // StandardID Missedコールバック
         public override CallbackProvider<Cube> standardIdMissedCallback { get { return this._standardIdMissedCallback; } }
 
-        public CubeReal_ver2_0_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
-        : base(peripheral, characteristicTable)
+        public CubeReal_ver2_0_0(BLEPeripheralInterface peripheral) : base(peripheral)
         {
         }
 
@@ -329,8 +328,10 @@ namespace toio
         /// <summary>
         /// 自動通知機能の購読を開始する
         /// </summary>
-        public override async UniTask Initialize()
+        public override async UniTask Initialize(Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
+            await base.Initialize(characteristicTable);
+
             characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
 #if !UNITY_EDITOR && UNITY_ANDROID
             await UniTask.Delay(500);

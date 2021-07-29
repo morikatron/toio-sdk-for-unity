@@ -12,20 +12,26 @@ using System;
 
 #if UNITY_ANDROID_RUNTIME
 namespace toio.Android.Data {
-    public struct BleDiscoverEvents 
+    public class BleDiscoverEvents
     {
         public Action<string> connectedAct;
         public Action<string, string> discoveredServiceAct;
         public Action<string, string, string> discoveredCharacteristicAct;
         public Action<string> disconnectedAct;
 
-        public bool callDiscoverEvent;
+        public bool callDiscoverEvent = false;
 
-        public void InitFlags()
-        {
-            callDiscoverEvent = false;
+        public BleDiscoverEvents(
+            Action<string> connectedAct,
+            Action<string, string> discoveredServiceAct,
+            Action<string, string, string> discoveredCharacteristicAct,
+            Action<string> disconnectedAct
+        ){
+            this.connectedAct = connectedAct;
+            this.discoveredServiceAct = discoveredServiceAct;
+            this.discoveredCharacteristicAct = discoveredCharacteristicAct;
+            this.disconnectedAct = disconnectedAct;
         }
-        
     }
 
 }

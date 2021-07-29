@@ -25,6 +25,10 @@ namespace toio.Simulator
             SimulateMotor();
         }
 
+        public virtual void Reset(){
+            ResetMotor();
+        }
+
 
         // ============ toio ID ============
         public virtual int x { get; internal set; }
@@ -101,41 +105,18 @@ namespace toio.Simulator
 
 
         // ============ Motor ============
-        protected float speedL = 0;  // (m/s)
-        protected float speedR = 0;
-        protected float speedTireL = 0;
-        protected float speedTireR = 0;
-        protected float motorLeft{get; set;} = 0;   // モーター指令値
-        protected float motorRight{get; set;} = 0;
+        protected float motorCmdL {get; set;} = 0;   // モーター指令値
+        protected float motorCmdR {get; set;} = 0;
         public virtual void SimulateMotor()
         {
-            var dt = Time.deltaTime;
+            float targetSpeedL = motorCmdL * CubeSimulator.VDotOverU / Mat.DotPerM;
+            float targetSpeedR = motorCmdR * CubeSimulator.VDotOverU / Mat.DotPerM;
 
-            // 目標速度を計算
-            // target speed
-            float targetSpeedL = motorLeft * CubeSimulator.VDotOverU / Mat.DotPerM;
-            float targetSpeedR = motorRight * CubeSimulator.VDotOverU / Mat.DotPerM;
-            // if (Mathf.Abs(motorLeft) < deadzone) targetSpeedL = 0;
-            // if (Mathf.Abs(motorRight) < deadzone) targetSpeedR = 0;
-
-            // 速度更新
-            // update tires' speed
-            if (cube.forceStop || this.button)   // 強制的に停止
-            {
-                speedTireL = 0; speedTireR = 0;
-            }
-            else
-            {
-                speedTireL += (targetSpeedL - speedTireL) / Mathf.Max(cube.motorTau,dt) * dt;
-                speedTireR += (targetSpeedR - speedTireR) / Mathf.Max(cube.motorTau,dt) * dt;
-            }
-
-            // update object's speed
-            // NOTES: simulation for slipping shall be implemented here
-            speedL = cube.offGroundL? 0: speedTireL;
-            speedR = cube.offGroundR? 0: speedTireR;
-
-            cube._SetSpeed(speedL, speedR);
+            cube.SetMotorTargetSpd(targetSpeedL, targetSpeedR);
+        }
+        protected virtual void ResetMotor()
+        {
+            motorCmdL = 0; motorCmdR = 0;
         }
 
 
@@ -153,6 +134,14 @@ namespace toio.Simulator
         public virtual void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         { NotSupportedWarning(); }
         public virtual void PlayPresetSound(int soundId, int volume)
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_Connect()
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_Disconnect()
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_PowerOn()
+        { NotSupportedWarning(); }
+        internal virtual void PlaySound_PowerOff()
         { NotSupportedWarning(); }
         public virtual void StopSound()
         { NotSupportedWarning(); }

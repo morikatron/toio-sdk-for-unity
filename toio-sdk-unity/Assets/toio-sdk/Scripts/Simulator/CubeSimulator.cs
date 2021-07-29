@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 
 namespace toio.Simulator
 {
+    [DisallowMultipleComponent]
     public class CubeSimulator : MonoBehaviour
     {
         #pragma warning disable 0414
@@ -32,6 +35,8 @@ namespace toio.Simulator
         [SerializeField]
         public Version version = Version.v2_2_0;
         [SerializeField]
+        public bool powerStart = true;
+        [SerializeField]
         public float motorTau = 0.04f; // parameter of one-order model for motor, τ
         [SerializeField]
         public float delay = 0.15f; // latency of communication
@@ -41,6 +46,13 @@ namespace toio.Simulator
 
 
         // ======== Properties ========
+
+        private bool _power;
+        public bool power { get {return _power;} set {
+            if (value == _power) return;
+            if (value) PowerOn();
+            else PowerOff();
+        } }
 
         /// <summary>
         /// モーター指令の最大値
@@ -56,10 +68,11 @@ namespace toio.Simulator
             return impl.deadzone;
         }}
 
+
         /// <summary>
-        /// シミュレータが初期化できたか
+        /// シミュレータが稼働しているか
         /// </summary>
-        public bool ready { get; private set; } = false;
+        public bool isRunning { get; private set; } = false;
 
         // ----- toio ID -----
 
@@ -167,26 +180,25 @@ namespace toio.Simulator
 
         private void Start()
         {
-            #if !(UNITY_EDITOR || UNITY_STANDALONE)   // Editor以外で実行される場合は自身を無効かします
-                this.gameObject.SetActive(false);
-            #else
-                this.rb = GetComponent<Rigidbody>();
-                this.rb.maxAngularVelocity = 21f;
-                this.audioSource = GetComponent<AudioSource>();
-                this.LED = transform.Find("LED").gameObject;
-                this.LED.GetComponent<Renderer>().material.color = Color.black;
-                this.cubeModel = transform.Find("cube_model").gameObject;
-                this.col = GetComponent<BoxCollider>();
+            this.rb = GetComponent<Rigidbody>();
+            this.rb.maxAngularVelocity = 21f;
+            this.audioSource = GetComponent<AudioSource>();
+            this.LED = transform.Find("LED").gameObject;
+            this.LED.GetComponent<Renderer>().material.color = Color.black;
+            this.cubeModel = transform.Find("cube_model").gameObject;
+            this.col = GetComponent<BoxCollider>();
 
-                switch (version)
-                {
-                    case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
-                    case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
-                    case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
-                    default : this.impl = new CubeSimImpl_v2_2_0(this);break;
-                }
-                this._InitPresetSounds();
-            #endif
+            this._power = powerStart;
+            this.isRunning = powerStart;
+
+            switch (version)
+            {
+                case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
+                case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
+                case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
+                default : this.impl = new CubeSimImpl_v2_2_0(this);break;
+            }
+            this._InitPresetSounds();
         }
 
         private void Update()
@@ -195,16 +207,128 @@ namespace toio.Simulator
 
         private void FixedUpdate()
         {
-            SimulatePhysics();
+            SimulatePhysics_Input();
 
-            impl.Simulate();
+            if (power)
+            {
+                impl.Simulate();
 
-            this.ready = true;  // 一回更新してからシミュレーターがreadyになる
+                // Connection
+                if (isRunning && !isConnected && isConnecting && Time.renderedFrameCount>4) // fixedTime is not stable at startup
+                {
+                    isConnected = true;
+                    isConnecting = false;
+                    onConnected?.Invoke();
+                    impl.PlaySound_Connect();
+                }
+            }
+
+            SimulatePhysics_Output();
         }
 
+        private void OnDisable()
+        {
+            if (isConnected)
+            {
+                isConnected = false;
+                isConnecting = false;
+                this.onDisconnected?.Invoke();
+                this.onConnected = null;
+                this.onDisconnected = null;
+            }
+            StopAllCoroutines();
+        }
+
+        private void Reset()
+        {
+            this.impl.Reset();
+
+            _StopLight();
+            _StopSound();
+            playingSoundId = -1;
+        }
+
+        private bool isPowerChanging = false;
+        private void PowerOn()
+        {
+            if (isPowerChanging) return;
+            isPowerChanging = true;
+
+            IEnumerator _PowerOn(){
+                _power = true;
+                impl.PlaySound_PowerOn();
+                yield return new WaitForSeconds(0.5f);
+                isRunning = true;
+                isPowerChanging = false;
+            }
+            StartCoroutine(_PowerOn());
+        }
+        private void PowerOff()
+        {
+            if (isPowerChanging) return;
+            isPowerChanging = true;
+
+            if (isConnected)
+            {
+                isConnected = false;
+                isConnecting = false;
+                this.onDisconnected?.Invoke();
+                this.onConnected = null;
+                this.onDisconnected = null;
+            }
+
+            IEnumerator _PowerOff(){
+                isRunning = false;
+                impl.PlaySound_PowerOff();
+                yield return new WaitForSeconds(0.7f);
+                Reset();
+                _power = false;
+                isPowerChanging = false;
+                StopAllCoroutines();
+            }
+            StartCoroutine(_PowerOff());
+        }
+
+
+        // ======== Connection ========
+        public bool isConnected { get; private set; } = false;
+        public bool isConnecting { get; private set; } = false;
+        private Action onConnected = null;
+        private Action onDisconnected = null;
+        public bool Connect(Action onConnected, Action onDisconnected)
+        {
+            if (!isRunning) return false;
+            if (isConnected || isConnecting) return false;
+            isConnecting = true;
+            this.onConnected = onConnected;
+            this.onDisconnected = onDisconnected;
+            return true;
+        }
+        public bool Disconnect()
+        {
+            if (!isRunning) return false;
+            if (!isConnected) return false;
+            this.Reset();
+            impl.PlaySound_Disconnect();
+            isConnected = false;
+            isConnecting = false;
+            this.onDisconnected?.Invoke();
+            this.onConnected = null;
+            this.onDisconnected = null;
+            return true;
+        }
+
+
+        // ======== Physics Simulation ========
         internal bool offGroundL = true;
         internal bool offGroundR = true;
-        private void SimulatePhysics()
+        protected float speedL = 0;  // (m/s)
+        protected float speedR = 0;
+        internal float speedTireL = 0;
+        internal float speedTireR = 0;
+        private float motorTargetSpdL = 0;
+        private float motorTargetSpdR = 0;
+        private void SimulatePhysics_Input()
         {
             // タイヤの着地状態を調査
             // Check if tires are Off Ground
@@ -213,8 +337,36 @@ namespace toio.Simulator
             if (Physics.Raycast(ray, out hit) && hit.distance < 0.002f) offGroundL = false;
             ray = new Ray(transform.position+transform.up*0.001f+transform.right*0.0133f, -transform.up); // right wheel
             if (Physics.Raycast(ray, out hit) && hit.distance < 0.002f) offGroundR = false;
+
+        }
+        private void SimulatePhysics_Output()
+        {
+            // タイヤ速度を更新
+            if (this.forceStop || this.button || !this.isConnected)   // 強制的に停止
+            {
+                speedTireL = 0; speedTireR = 0;
+            }
+            else
+            {
+                var dt = Time.fixedDeltaTime;
+                speedTireL += (motorTargetSpdL - speedTireL) / Mathf.Max(this.motorTau, dt) * dt;
+                speedTireR += (motorTargetSpdR - speedTireR) / Mathf.Max(this.motorTau, dt) * dt;
+            }
+
+            // 着地状態により、キューブの速度を取得
+            // update object's speed
+            // NOTES: simulation for slipping shall be implemented here
+            speedL = offGroundL? 0: speedTireL;
+            speedR = offGroundR? 0: speedTireR;
+
+            // Output
+            _SetSpeed(speedL, speedR);
         }
 
+        internal void SetMotorTargetSpd(float left, float right)
+        {
+            motorTargetSpdL = left; motorTargetSpdR = right;
+        }
 
 
         // ============ Event ============
@@ -226,6 +378,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_Button(System.Action<bool> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_Button(action);
         }
 
@@ -234,6 +387,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_StandardID(System.Action<uint, int> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_StandardID(action);
         }
 
@@ -242,6 +396,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_StandardIDMissed(System.Action action)
         {
+            if (!isConnected) return;
             impl.StartNotification_StandardIDMissed(action);
         }
 
@@ -250,6 +405,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_PositionID(System.Action<int, int, int, int, int> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_PositionID(action);
         }
 
@@ -258,6 +414,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_PositionIDMissed(System.Action action)
         {
+            if (!isConnected) return;
             impl.StartNotification_PositionIDMissed(action);
         }
 
@@ -266,6 +423,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_MotionSensor(System.Action<object[]> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_MotionSensor(action);
         }
 
@@ -275,6 +433,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_TargetMove(action);
         }
 
@@ -283,6 +442,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_MultiTargetMove(action);
         }
 
@@ -291,6 +451,7 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_MotorSpeed(System.Action<int, int> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_MotorSpeed(action);
         }
 
@@ -300,11 +461,23 @@ namespace toio.Simulator
         /// </summary>
         public void StartNotification_ConfigMotorRead(System.Action<bool> action)
         {
+            if (!isConnected) return;
             impl.StartNotification_ConfigMotorRead(action);
         }
 
 
         // ============ コマンド ============
+
+        private void DelayCommand(Action action)
+        {
+            if (!isConnected) return;
+            IEnumerator Cmd(){
+                yield return new WaitForSeconds(this.delay);
+                if (!isConnected) yield break;
+                action?.Invoke();
+            }
+            StartCoroutine(Cmd());
+        }
 
         // --------- 2.0.0 --------
         /// <summary>
@@ -312,7 +485,7 @@ namespace toio.Simulator
         /// </summary>
         public void Move(int left, int right, int durationMS)
         {
-            impl.Move(left, right, durationMS);
+            DelayCommand(() => impl.Move(left, right, durationMS));
         }
 
         /// <summary>
@@ -320,21 +493,21 @@ namespace toio.Simulator
         /// </summary>
         public void StopLight()
         {
-            impl.StopLight();
+            DelayCommand(() => impl.StopLight());
         }
         /// <summary>
         /// ランプ：点灯
         /// </summary>
         public void SetLight(int r, int g, int b, int durationMS)
         {
-            impl.SetLight(r, g, b, durationMS);
+            DelayCommand(() => impl.SetLight(r, g, b, durationMS));
         }
         /// <summary>
         /// ランプ：連続的な点灯・消灯
         /// </summary>
         public void SetLights(int repeatCount, Cube.LightOperation[] operations)
         {
-            impl.SetLights(repeatCount, operations);
+            DelayCommand(() => impl.SetLights(repeatCount, operations));
         }
 
         /// <summary>
@@ -342,21 +515,21 @@ namespace toio.Simulator
         /// </summary>
         public void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         {
-            impl.PlaySound(repeatCount, operations);
+            DelayCommand(() => impl.PlaySound(repeatCount, operations));
         }
         /// <summary>
         /// サウンド：効果音の再生
         /// </summary>
         public void PlayPresetSound(int soundId, int volume)
         {
-            impl.PlayPresetSound(soundId, volume);
+            DelayCommand(() => impl.PlayPresetSound(soundId, volume));
         }
         /// <summary>
         /// サウンド：再生の停止
         /// </summary>
         public void StopSound()
         {
-            impl.StopSound();
+            DelayCommand(() => impl.StopSound());
         }
 
         /// <summary>
@@ -364,7 +537,7 @@ namespace toio.Simulator
         /// </summary>
         public void ConfigSlopeThreshold(int degree)
         {
-            impl.ConfigSlopeThreshold(degree);
+            DelayCommand(() => impl.ConfigSlopeThreshold(degree));
         }
 
         // --------- 2.1.0 --------
@@ -379,7 +552,7 @@ namespace toio.Simulator
             Cube.TargetSpeedType targetSpeedType,
             Cube.TargetRotationType targetRotationType
         ){
-            impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType);
+            DelayCommand(() => impl.TargetMove(targetX, targetY, targetAngle, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, targetRotationType));
         }
 
         public void MultiTargetMove(
@@ -394,7 +567,7 @@ namespace toio.Simulator
             Cube.TargetSpeedType targetSpeedType,
             Cube.MultiWriteType multiWriteType
         ){
-            impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType);
+            DelayCommand(() => impl.MultiTargetMove(targetXList, targetYList, targetAngleList, multiRotationTypeList, configID, timeOut, targetMoveType, maxSpd, targetSpeedType, multiWriteType));
         }
 
         public void AccelerationMove(
@@ -404,7 +577,7 @@ namespace toio.Simulator
             Cube.AccPriorityType accPriorityType,
             int controlTime
         ){
-            impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime);
+            DelayCommand(() => impl.AccelerationMove(targetSpeed, acceleration, rotationSpeed, accPriorityType, controlTime));
         }
 
         // --------- 2.2.0 --------
@@ -413,12 +586,12 @@ namespace toio.Simulator
         /// </summary>
         public void ConfigMotorRead(bool enabled)
         {
-            impl.ConfigMotorRead(enabled);
+            DelayCommand(() => impl.ConfigMotorRead(enabled));
         }
 
         public void RequestSensor()
         {
-            impl.RequestSensor();
+            DelayCommand(() => impl.RequestSensor());
         }
 
 
@@ -428,11 +601,13 @@ namespace toio.Simulator
 
         internal void _TriggerCollision()
         {
+            if (!isConnected) return;
             this.impl.TriggerCollision();
         }
 
         internal void _TriggerDoubleTap()
         {
+            if (!isConnected) return;
             this.impl.TriggerDoubleTap();
         }
 
@@ -457,7 +632,7 @@ namespace toio.Simulator
 
         private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
-            if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+            if (soundId >= 128) { _StopSound(); return; }
             if (soundId != playingSoundId)
             {
                 playingSoundId = soundId;
@@ -467,11 +642,12 @@ namespace toio.Simulator
                 audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
                 audioSource.clip = aCubeOnSlot;
             }
-            audioSource.volume = (float)volume/256;
+            audioSource.volume = (float)volume/256 * 0.5f;
             if (!audioSource.isPlaying)
                 audioSource.Play();
         }
         internal void _StopSound(){
+            playingSoundId = -1;
             audioSource.clip = null;
             audioSource.Stop();
         }

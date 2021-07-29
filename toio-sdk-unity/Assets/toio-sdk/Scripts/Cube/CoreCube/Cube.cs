@@ -604,9 +604,9 @@ namespace toio
             }
             public virtual void Notify(T1 p1)
             {
-                foreach (var listener in this.listenerList)
+                for (int i = this.listenerList.Count-1; i >= 0; i--)
                 {
-                    listener.Invoke(p1);
+                    this.listenerList[i].Invoke(p1);
                 }
             }
         }
@@ -657,9 +657,9 @@ namespace toio
             }
             public virtual void Notify(T1 p1, T2 p2)
             {
-                foreach (var listener in this.listenerList)
+                for (int i = this.listenerList.Count-1; i >= 0; i--)
                 {
-                    listener.Invoke(p1, p2);
+                    this.listenerList[i].Invoke(p1, p2);
                 }
             }
         }
@@ -710,9 +710,9 @@ namespace toio
             }
             public virtual void Notify(T1 p1, T2 p2, T3 p3)
             {
-                foreach (var listener in this.listenerList)
+                for (int i = this.listenerList.Count-1; i >= 0; i--)
                 {
-                    listener.Invoke(p1, p2, p3);
+                    this.listenerList[i].Invoke(p1, p2, p3);
                 }
             }
         }
@@ -763,9 +763,9 @@ namespace toio
             }
             public virtual void Notify(T1 p1, T2 p2, T3 p3, T4 p4)
             {
-                foreach (var listener in this.listenerList)
+                for (int i = this.listenerList.Count-1; i >= 0; i--)
                 {
-                    listener.Invoke(p1, p2, p3, p4);
+                    this.listenerList[i].Invoke(p1, p2, p3, p4);
                 }
             }
         }

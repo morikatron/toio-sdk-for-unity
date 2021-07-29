@@ -78,14 +78,12 @@ namespace toio.Android
         {
             if(javaWrapper == null) { return; }
             javaWrapper.ConnectRequest(identifier);
-            var deviceEvent = new BleDiscoverEvents()
-            {
-                connectedAct = connectedPeripheralAction,
-                disconnectedAct = disconnectedPeripheralAction,
-                discoveredCharacteristicAct = discoveredCharacteristicAction,
-                discoveredServiceAct = discoveredServiceAction,
-            };
-            deviceEvent.InitFlags();
+            var deviceEvent = new BleDiscoverEvents(
+                connectedAct: connectedPeripheralAction,
+                discoveredServiceAct: discoveredServiceAction,
+                discoveredCharacteristicAct: discoveredCharacteristicAction,
+                disconnectedAct: disconnectedPeripheralAction
+            );
             s_deviceDiscoverEvents[identifier] = deviceEvent;
         }
 
@@ -93,7 +91,7 @@ namespace toio.Android
             Action<string> disconnectedPeripheralAction = null)
         {
             if (javaWrapper == null) { return; }
-            RemoveDeviceDataInStaticVars(identifier);
+            javaWrapper.Disconnect(identifier);
         }
         private static void RemoveDeviceDataInStaticVars(string identifier)
         {
@@ -140,7 +138,7 @@ namespace toio.Android
                 characteristicUUID,
                 data, length, withResponse);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            // todo callbacké¿ëï
+            // todo callbackÂÆüË£Ö
             if (withResponse)
             {
                 dataEvt.SetWriteAct(didWriteCharacteristicAction);
@@ -167,7 +165,7 @@ namespace toio.Android
             javaWrapper.SetNotificateFlag(identifier,serviceUUID,
                 characteristicUUID, false);
             var dataEvt = GetDataEvent(identifier, serviceUUID, characteristicUUID);
-            // todo à¯êîÇ™ó«Ç≠ÇÌÇ©ÇÁÇ»Ç¢Åc
+            // todo ÂºïÊï∞„ÅåËâØ„Åè„Çè„Åã„Çâ„Å™„ÅÑ‚Ä¶
             dataEvt.RemoveNotifyAct();
         }
 

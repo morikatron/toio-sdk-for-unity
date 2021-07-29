@@ -34,8 +34,7 @@ namespace toio
         // 複数目標指定付きモーター制御の応答コールバック
         // public override CallbackProvider<Cube, int, TargetMoveRespondType> multiTargetMoveCallback { get { return this._multiTargetMoveCallback; } }
 
-        public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral, Dictionary<string, BLECharacteristicInterface> characteristicTable)
-        : base(peripheral, characteristicTable)
+        public CubeReal_ver2_1_0(BLEPeripheralInterface peripheral) : base(peripheral)
         {
         }
 

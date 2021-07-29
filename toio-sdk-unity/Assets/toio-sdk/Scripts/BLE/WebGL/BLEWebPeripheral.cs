@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace toio
 {
@@ -35,7 +36,8 @@ namespace toio
                     this.serverID = serverID;
                     this.ConnectionNotify(this);
                     WebBluetoothScript.Instance.GetCharacteristics(serviceID, (characteristicID, uuid) => {
-                        characteristicAction.Invoke(new BLEWebCharacteristic(serviceID, this.device_address, serviceUUID, characteristicID, uuid));
+                        var instance = new BLEWebCharacteristic(serviceID, this.device_address, serviceUUID, characteristicID, uuid);
+                        characteristicAction.Invoke(instance);
                     });
                 },
                 (deviceID) => {

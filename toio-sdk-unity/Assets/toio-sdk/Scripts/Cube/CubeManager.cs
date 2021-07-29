@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using toio.Navigation;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 namespace toio
 {
@@ -14,46 +15,73 @@ namespace toio
         public List<CubeHandle> handles;
         public List<CubeNavigator> navigators;
         // 接続機能
-        protected NearestScannerInterface nearestScanner;
-        protected NearScannerInterface nearScanner;
+        protected CubeScannerInterface scanner;
         protected CubeConnecterInterface connecter;
         protected Action<Cube, CONNECTION_STATUS> connectedAction;
 
         public bool synced
         { get {
             if (cubes.Count == 0) return false;
-            foreach (var cube in cubes)
-                if (!IsControllable(cube))
-                    return false;
+            // Either connected cube is not controllable
+            if ( !cubes.TrueForAll(cube => !(cube.isConnected && !IsControllable(cube))) ) return false;
+            // No connected cube
+            if ( cubes.TrueForAll(cube => !cube.isConnected) ) return false;
+            // Connected cube exists, and all controllable
             // Update all navigators (Update runs only once within 15ms)
             foreach (var navigator in navigators)
-                navigator.Update();
+                if (navigator.cube.isConnected)
+                    navigator.Update();
             return true;
+        }}
+
+        public List<Cube> connectedCubes
+        { get {
+            return cubes.Where(c => c.isConnected).ToList();
+        }}
+        public List<CubeHandle> connectedHandles
+        { get {
+            return handles.Where(h => h.cube.isConnected).ToList();
+        }}
+        public List<CubeNavigator> connectedNavigators
+        { get {
+            return navigators.Where(n => n.cube.isConnected).ToList();
         }}
 
         public List<Cube> syncCubes
         { get {
             // Return empty list if any cube is not controllable
             if (!synced) return new List<Cube>();
-            return cubes;
+            return connectedCubes;
         }}
         public List<CubeHandle> syncHandles
         { get {
             // Return empty list if any handle is not controllable
             if (!synced) return new List<CubeHandle>();
-            return handles;
+            return connectedHandles;
         }}
         public List<CubeNavigator> syncNavigators
         { get {
             // Return empty list if any navigator is not controllable
             if (!synced) return new List<CubeNavigator>();
-            return navigators;
+            return connectedNavigators;
         }}
 
 
         // --- public methods ---
-        public CubeManager()
+        public CubeManager(CubeScannerInterface scanner, CubeConnecterInterface connecter)
         {
+            this.scanner = scanner;
+            this.connecter = connecter;
+            this.cubes = new List<Cube>();
+            this.handles = new List<CubeHandle>();
+            this.navigators = new List<CubeNavigator>();
+            this.cubeTable = new Dictionary<string, Cube>();
+        }
+
+        public CubeManager(ConnectType type = ConnectType.Auto)
+        {
+            this.scanner = new CubeScanner(type);
+            this.connecter = new CubeConnecter(type);
             this.cubes = new List<Cube>();
             this.handles = new List<CubeHandle>();
             this.navigators = new List<CubeNavigator>();
@@ -62,18 +90,21 @@ namespace toio
 
         public virtual async UniTask<Cube> SingleConnect()
         {
-            if (null == this.nearestScanner)
-            {
-                this.nearestScanner = new NearestScanner();
-            }
-            if (null == this.connecter)
-            {
-                this.connecter = new CubeConnecter();
-            }
-            var peripheral = await this.nearestScanner.Scan();
+            var peripheral = await this.scanner.NearestScan();
             if (null == peripheral) { return null; }
-            var cube = await this.connecter.Connect(peripheral);
-            this.AddCube(cube);
+
+            Cube cube = null;
+            if (this.cubeTable.ContainsKey(peripheral.device_address))
+            {
+                cube = cubeTable[peripheral.device_address];
+                await this.connecter.ReConnect(cube);
+            }
+            else
+            {
+                cube = await this.connecter.Connect(peripheral);
+                this.AddCube(cube);
+            }
+
             return cube;
         }
 
@@ -82,35 +113,60 @@ namespace toio
 #if !UNITY_EDITOR && UNITY_WEBGL
             Debug.Log("[CubeManager.MultiConnect]MultiConnect doesn't run on the web");
 #endif
-            if (null == this.nearScanner)
-            {
-                this.nearScanner = new NearScanner(cubeNum);
-            }
-            if (null == this.connecter)
-            {
-                this.connecter = new CubeConnecter();
-            }
-            var peripheral = await this.nearScanner.Scan();
-            var cubes = await this.connecter.Connect(peripheral);
-            this.AddCube(cubes);
+            var peripherals = await this.scanner.NearScan(cubeNum);
+            List<Cube> cubes = new List<Cube>();
 
-            return cubes;
+            var peris2reconnect = peripherals.Where(p => this.cubeTable.ContainsKey(p.device_address));
+            var peris2connect = peripherals.Where(p => !this.cubeTable.ContainsKey(p.device_address)).ToArray();
+
+            // Reconnect
+            foreach (var peri in peris2reconnect)
+            {
+                var cube = this.cubeTable[peri.device_address];
+                await this.connecter.ReConnect(cube);
+            }
+            // Connect
+            var new_cubes = await this.connecter.Connect(peris2connect);
+            foreach (var cube in new_cubes)
+            {
+                if (cube == null) continue;
+                cubes.Add(cube);
+                this.AddCube(cube);
+            }
+
+            return cubes.ToArray();
         }
 
         public virtual void MultiConnectAsync(int cubeNum, MonoBehaviour coroutineObject, Action<Cube, CONNECTION_STATUS> connectedAction =null, bool autoRunning=true)
         {
-            if (null == this.nearScanner)
-            {
-                this.nearScanner = new NearScanner(cubeNum);
-            }
             this.connectedAction = connectedAction;
-            this.nearScanner.ScanAsync(coroutineObject, this.OnPeripheralScanned, autoRunning);
+            this.scanner.NearScanAsync(cubeNum, coroutineObject, this.OnPeripheralScanned, autoRunning);
         }
 
         public virtual void Disconnect(Cube cube)
         {
             this.connecter.Disconnect(cube);
         }
+
+        public virtual void DisconnectAll()
+        {
+            foreach (var cube in cubes)
+                if (cube.isConnected)
+                    this.connecter.Disconnect(cube);
+        }
+
+        public virtual async UniTask ReConnect(Cube cube)
+        {
+            await this.connecter.ReConnect(cube);
+        }
+
+        public virtual async UniTask ReConnectAll()
+        {
+            foreach (var cube in cubes)
+                if (!cube.isConnected)
+                    await this.connecter.ReConnect(cube);
+        }
+
 
         /// <summary>
         /// 前回のCubeへの送信から45ミリ秒以上空いていた時にTrueが返ります.
@@ -128,14 +184,9 @@ namespace toio
             return IsControllable(navigator.cube);
         }
 
-        public void SetNearScanner(NearScannerInterface scanner)
+        public void SetCubeScanner(CubeScannerInterface scanner)
         {
-            this.nearScanner = scanner;
-        }
-
-        public void SetNearestScanner(NearestScannerInterface scanner)
-        {
-            this.nearestScanner = scanner;
+            this.scanner = scanner;
         }
 
         public void SetCubeConnecter(CubeConnecterInterface _connecter)
@@ -153,7 +204,7 @@ namespace toio
             if (this.cubeTable.ContainsKey(peripheral.device_address))
             {
                 var cube = this.cubeTable[peripheral.device_address];
-                await this.connecter.ReConnect(cube, peripheral);
+                await this.connecter.ReConnect(cube);
                 this.connectedAction(cube, new CONNECTION_STATUS(CONNECTION_STATUS.RE_CONNECTED));
             }
             else
@@ -169,6 +220,7 @@ namespace toio
 
         protected void AddCube(Cube cube)
         {
+            if (cube == null) return;
             if (this.cubeTable.ContainsKey(cube.id)) return;
             this.cubes.Add(cube);
             var handle = new CubeHandle(cube);

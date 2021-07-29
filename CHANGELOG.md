@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.3.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.3.0) - 2021-07-29
+
+### Added
+
+- [BLE] Add MacOS BLE plugin. (Thanks to contribution of [Akihiro Komori](https://github.com/comoc))
+- [Scanner] Add class `CubeScanner` that integrates `NearestScanner` and `NearScanner`.
+- [Simulator] Implement `CubeSimulator.power`, which can be accessed from script or Editor Inspector.
+- [Simulator] Implement diconnection and re-connection. Simulator has more similar behaviour as real cube.
+- [Simulator] Add sound effects including 'power on/off' and 'conncect/disconnect'.
+
+### Changed
+
+- [Simulator] Simulator's cube object won't disappear when built to mobile device, since new `CubeSanncer` `CubeConnect` require Simulator being able to work under any environment. `CubeSimulator` won't run simulation unless attached to a `CubeUnity` instance.
+- [Simulator] Reimplment delay simulation using IEnumerator.
+- [Scanner] Replace internal implementations of `NearestScanner` and `NearScanner` with `CubeScanner`.
+- [CubeManager] Remove method `CubeManager.SetNearestScanner` and `CubeManager.SetNearScanner` and add method `CubeManager.SetCubeScanner`.
+
+### Fixed.
+
+- [CubeHandle] Not moving backwards on the outside of borders issue fixed.
+- [CubeManager] Fix logic of `synced` that is always false after any cube is disconnected. And `syncedCubes` `syncedHandles` `syncedNavigators` now return connected entities only.
+- [BLE] Fix Android BLE Plugin disconnection not working issue.
+- [BLE] Fix Android BLE Plugin keeping returning characteristics issue.
+
 ## [1.2.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.2.1) - 2021-04-27
 
 ### Added
