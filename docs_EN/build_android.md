@@ -21,7 +21,7 @@ Mobile Phone
 
 ## Check Android Build Support in Unity
 
-If you didn't add the Android Build Support module when you installed Unity, open Unity Hub, go to the Install tab, and add Android Build Support from the Add Module menu in the upper right corner of the appropriate version.
+If you didn't add the Android Build Support module when you installed Unity, open Unity Hub, go to the [Installs] tab, and add Android Build Support from the [Add Modules] menu in the upper right corner of the appropriate version.
 
 <img width=500 src="res/build_android/1.png">
 
@@ -41,20 +41,20 @@ Wait a few seconds, and when Unity icon appears to the right of Android, the swi
 
 ## Smart Phone Settings
 
-There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/ja/current/Manual/android-sdksetup.html).
+There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2019.4/Documentation/Manual/android-sdksetup.html).
 
 ### Enable Developer Options
 
-To be able to use USB debugging, we first need to enable the developer options. To do so, look for "Build Number" in the device settings. Where to find the build number varies from device to device; Android Settings is usually found by going to Settings > Device Info > Build Number. For specific information about the device and Android version, please refer to the hardware manufacturer's information.
+To enable USB debugging, you must enable Developer options on your device. To do this, find the build number in your device’s Settings menu. The location of the build number varies between devices; for stock Android, it’s usually Settings > About phone > Build number. For specific information on your device and Android version, refer to your hardware manufacturer.
 
-After finding the build number as described above, tap the build number seven times. Each time you tap it, a small pop-up screen will say "You are X steps away from becoming a developer. Each time you tap, a small pop-up screen will show "You are X steps away from becoming a developer" and X will be the countdown for the number of taps remaining. 7 taps will unlock the developer options.
+After you navigate to the build number using the instructions above, tap on the build number seven times. A pop-up notification saying “You are now X steps away from being a developer” appears, with “X” being a number that counts down with every additional tap. On the seventh tap, Developer options are unlocked.
 
-Note: On operating systems older than version 4.2 (Jelly Bean), the Developer option is enabled by default.
+Note: On Android versions prior to 4.2 (Jelly Bean), the Developer options are enabled by default.
 
 ### Enable USB debugging
 
-Go to Settings > Developer options and enable USB debugging.<br>
-When connected to a computer via USB, Android will enter debug mode.<br>
+Go to Settings > Developer options (or, if this does not work, on some devices the path is Settings > System > Developer options), and check the USB debugging checkbox. Android now enters debug mode when it is connected to a computer via USB.
+
 (When connecting to a PC, the smartphone may display a dialog box asking "Do you want to allow USB debugging? dialog may appear. Tap "OK" when the dialog is displayed.)
 
 ### Check the connection
@@ -75,7 +75,7 @@ Open [Player Settings...] in the lower left corner of [Build Settings]. at the b
 (Or, open the menu [Edit] -> [Project Settings...]) and select "player" on the left side).<br>
 Select the tab with the Android icon.
 
-Expand [More Settings].
+Expand [Other Settings].
 
 <img width=500 src="res/build_android/8.png">
 
@@ -135,13 +135,13 @@ Open [SDK Manager] in the [Configure] menu in the lower right corner.
 <br>
 
 Make a note of the path to the SDK.<br>
-Under [SDK Platform], check the version you need.
+Under [SDK Platforms], check the version you need.
 
 <img width=800 src="res/build_android/5.png">
 
 <br>
 
-Next, switch to the 【SDK Tools】 tab.<br>
+Next, switch to the [SDK Tools] tab.<br>
 Check [Show Package Details] in the lower right corner.<br>
 Check the appropriate version under [NDK (Side by Side)].<br>
 (For Unity version 2019.4, select NDK 19. [Refer to here](https://docs.unity3d.com/ja/2019.3/Manual/android-sdksetup.html))
