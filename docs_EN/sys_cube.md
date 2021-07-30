@@ -536,7 +536,7 @@ There are several possible ways to extend the functionality of toio SDK for Unit
 
 ## 5.1. How to add a function to Cube class
 
-As explained in[Structure of Cube Class](sys_cube.md#2-#2-structure-of-cube-class), Cube class has an inheritance relationship.Therefore, functions can be added by adding virtual functions to the base Cube class and then overriding the functions in derived classes.
+As explained in [Structure of Cube Class](sys_cube.md#2-#2-structure-of-cube-class), Cube class has an inheritance relationship.Therefore, functions can be added by adding virtual functions to the base Cube class and then overriding the functions in derived classes.
 
 <br>
 
