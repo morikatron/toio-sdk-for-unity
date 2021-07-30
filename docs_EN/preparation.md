@@ -1,6 +1,6 @@
 # Advance preparation
 
-This section will prepare you for what you will need to use the toio SDK for Unity and to do the samples and tutorials in this document. Specifically, you will need the following three pieces of software
+This section will prepare you for what you will need to use toio SDK for Unity and to do the samples and tutorials in this document. Specifically, you will need the following three pieces of software
 
 - Unity (2019.4.0f1 LTS)
 - Xcode (11 or later)
@@ -14,7 +14,7 @@ For more information about Unity installation and operating environment, please 
 (Click the right arrow on the linked page to see the system requirements and installation details.)
 
 We recommend using Unity Hub as it allows you to install multiple Unity versions of different versions.
-The Unity version should be **Unity 2019.4.0f1 (LTS)**. (We have tested with Unity 2019.4.0f1 LTS. If you want to use a newer version of Unity, please try it at your own risk)
+Unity version should be **Unity 2019.4.0f1 (LTS)**. (We have tested with Unity 2019.4.0f1 LTS. If you want to use a newer version of Unity, please try it at your own risk)
 
 You can also add **iOS Build Support**, **Android Build Support** or **WebGL Build Support** modules on demand during installation to enable building on supported platforms (modules can also be added later using Unity Hub).
 

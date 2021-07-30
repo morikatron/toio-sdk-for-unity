@@ -15,7 +15,7 @@
 When developing an application for a smart device that communicates with Cube, it is very convenient to have an environment to easily check the behavior of the application in Unity Editor.
 Therefore, toio SDK for Unity provides a simulator as a virtual environment for testing.
 
-This document is the first step in explaining how to use the toio SDK for Unity with Unity Editor.
+This document is the first step in explaining how to use toio SDK for Unity with Unity Editor.
 Please refer to [Usage - Simulator](usage_simulator.md) in the technical documentation for detailed usage (mainly API) for development.
 
 ## Composition

@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Basics](FAQ.md#basics)
-    - [I downloaded the toio SDK for Unity, but the samples don't work.](FAQ.md#i-downloaded-the-toio-sdk-for-unity-but-the-samples-dont-work)
+    - [I downloaded toio SDK for Unity, but the samples don't work.](FAQ.md#i-downloaded-the-toio-sdk-for-unity-but-the-samples-dont-work)
 
 - [Simulators](FAQ.md#simulators)
     - [I'm not sure which mats will work best for my development.](FAQ.md#im-not-sure-which-mats-will-work-best-for-my-development)
@@ -15,7 +15,7 @@
 
 ## Basics
 
-### I downloaded the toio SDK for Unity, but the samples don't work.
+### I downloaded toio SDK for Unity, but the samples don't work.
 
 If you get the following error message and the program does not work, UniTask may not be installed.
 
@@ -23,7 +23,7 @@ If you get the following error message and the program does not work, UniTask ma
 Assets\toio-sdk-unity\Assets\toio-sdk\Scripts\Cube\Scanner\NearScanner.cs(54,22): error CS0246: The type or namespace name 'UniTask<>' could not be found (are you missing a using directive or an assembly reference?)
 ```
 
-To run the toio SDK for Unity, you need to install UniTask, see [here](download_sdk.md#install-unitask).
+To run toio SDK for Unity, you need to install UniTask, see [here](download_sdk.md#install-unitask).
 
 ## Simulators
 

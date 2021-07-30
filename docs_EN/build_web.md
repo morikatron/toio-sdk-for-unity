@@ -1,6 +1,6 @@
 # Web App Build
 
-This section explains how to build a Unity project using the toio SDK for Unity as a web app that runs in a browser, and briefly introduces the steps to publish a web app using Github Pages.
+This section explains how to build a Unity project using toio SDK for Unity as a web app that runs in a browser, and briefly introduces the steps to publish a web app using Github Pages.
 
 ## Contents
 
@@ -14,11 +14,11 @@ This section explains how to build a Unity project using the toio SDK for Unity 
 
 This SDK is a library that runs on Unity engine, which supports building web apps using WebGL, so you can build your project as a web app by switching the target platform.
 
-The Unity Engine does not support Bluetooth communication, so if you build your project as a web app, it will not be able to communicate with Cube.
+Unity Engine does not support Bluetooth communication, so if you build your project as a web app, it will not be able to communicate with Cube.
 Therefore, you can use [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), which is an API that provides a function to control Bluetooth communication from a browser, as a plugin to control Bluetooth communication from a Unity program running in a web app. For this reason, we prepared a plug-in that can control Bluetooth communication from Unity programs running in web apps using [web-bluetooth](), an API that provides the function to control Bluetooth communication from a browser.
 As with the iOS build, if you build on WebGL as the target platform, it will automatically switch to this plugin and allow communication between the web app and Cube.
 
-In the [WebGL Build](build_web.md#webgl-build) chapter, we will explain the settings to run the Bluetooth plugin for the browser when built as a web app.
+In the [WebGL Build](build_web.md#webgl-build) chapter, we will explain the settings to run Bluetooth plugin for the browser when built as a web app.
 In the [Share with SNS](build_web.md#share-on-sns) chapter, we will briefly introduce the steps to publish the built web app to the world through SNS and so on.
 
 <br>
@@ -34,18 +34,18 @@ The following environments have been tested. You don't necessarily have to match
 | Tools & Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS | MacOS Catalina 10.15.2 | macOS Mojave 10.14 or higher
-| BluetoothR | 4.2 | 4.2 or higher | | Unity
+| Bluetooth® | 4.2 | 4.2 or higher | | Unity
 | Unity | 2019.4.9f1 | 2019.3 or higher
 | Browser (Chrome) | 85.0.4183.102 | 56 or higher
 
-To check the version of BlueTooth, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
+To check the version of BlueTooth®, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
 
 #### Windows
 
 | Tools & Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Windows 10 Pro 64bit 1903 | Windows 10 | BluetoothR
-| BluetoothR | 5.0 (LMP 9.256) | 4.2 or higher
+| Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher
 | Unity | 2019.4.9f1 | 2019.3 or higher
 | Browser (Edge) | 85.0.564.51 | 79 or higher
 | Browser (Chrome) | 85.0.4183.102 | 56 or higher
@@ -90,7 +90,7 @@ In order to use the provided WebGL plugin, we will modify Unity's Javascript tem
 
 <img width=600 src="res/build_webgl/8.png">
 
-The WebGL plugin is now ready to use.
+WebGL plugin is now ready to use.
 
 ### Build a web app
 
@@ -154,7 +154,7 @@ There is a web service called [unityroom](https://unityroom.com) that makes it e
 ### Introduction to Github Pages
 
 Github Pages is a static hosting service that allows you to publish your website.
-This service allows you to directly retrieve and execute javascript code, so you can run the Bluetooth communication plugin described above.
+This service allows you to directly retrieve and execute javascript code, so you can run Bluetooth communication plugin described above.
 For a detailed explanation of Github Pages, please refer to the [official documentation](https://docs.github.com/ja/github/working-with-github-pages/about-github-pages).
 
 ### Steps to publish

@@ -1,6 +1,6 @@
 # Technical Documentation - Usage - Navigator Class
 
-## 目次
+##  Table of Contents
 
 - [1. Outline](usage_navigator.md#1-outline)
 - [2. CubeNavigator class API](usage_navigator.md#2-cubenavigator-class-api)

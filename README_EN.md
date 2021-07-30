@@ -60,7 +60,7 @@ public class Hello_Toio : MonoBehaviour
   - Communicate with the Cube via iOS app
   - Communicating with the Cube via Web App
   - Communicate with the Cube in Android app
-  - (Under development: Communicate with the Cube when playing in Unity Editor on Mac)
+  - Communicate with the Cube when playing in Unity Editor on Mac
 - Cube
   - One source code to run both simulator and real Cubes alike
   - Scan, connect, and reconnect Cubes
