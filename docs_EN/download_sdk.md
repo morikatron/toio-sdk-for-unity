@@ -1,4 +1,4 @@
-# Install the toio SDK for Unity
+# Install toio SDK for Unity
 
 ## Unity Project Creation
 
