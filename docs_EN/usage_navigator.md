@@ -652,21 +652,21 @@ public double p_max_all = 100;          // upper limit of the combined vector
 public Vector Run(List<Navigator> others, Vector tarPos);
 ```
 
-Include the vector to the goal and calculate composite vector.
+Include the vector to the goal and calculate resultant vector.
 
 - others
-  - Definition of: other Navigator list
+  - Definition : Other Navigator List
 - tarPos
   - Definition: Target coordinates
-- Return value: Composite vector
+- Return value: Resultant vector
 
 ```c#
-// Compute composite vector, no target
+// Compute resultant vector, no target
 public Vector Run(List<Navigator> others);
 ```
 
-Calculate composite vector, except for the vector to the target.
+Calculate resultant vector, except for the vector to the target.
 
 - others
-  - Definition of: other Navigator list
-- Return value: Composite vector
+  - Definition : Other Navigator List
+- Return value: Resultant vector
