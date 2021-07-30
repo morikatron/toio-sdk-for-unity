@@ -29,15 +29,15 @@ Wait for a while, and when Unity icon appears to the right of iOS, the switch is
 
 ## Build the Xcode project
 
-With the scene file you want to include in the build open, select [File] -> [Build Settings...] from Unity menu. in Unity menu. Next, click the [Add Scene] button under [Build Settings].
+With the scene file you want to include in the build open, select [File] -> [Build Settings...] from Unity menu. in Unity menu. Next, click the [Add Open Scenes] button.
 
 <img width=632 src="res/build_ios/3.png">
 
-BasicScene will be added to the list of "Scenes included in the build". Click on the [Build] button.
+BasicScene will be added to the list of "Scenes In Build". Click on the [Build] button.
 
 <img width=632 src="res/build_ios/4.png">
 
-You will be prompted to save the XCode project file, give it an appropriate name and save it. In this example, we have named it SimpleScene.
+You will be prompted to save the XCode project file, give it an appropriate name and save it. In this example, we have named it "SimpleScene".
 
 <img src="res/build_ios/5.png">
 
