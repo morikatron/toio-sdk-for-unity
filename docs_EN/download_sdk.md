@@ -39,14 +39,14 @@ Open [Assets] of the latest release version of [Click here](https://github.com/m
 ### 2. Drag and drop to Unity project
 After opening the downloaded folder, drag and drop **[toio-sdk-for-unity.unitypackage]** into the **[Assets]** folder.
 
-<img width=500 src="res/download_sdk/import_sdk.png">
+<img src="res/download_sdk/import_sdk.png">
 
 ### 3.Run samples and check operation
 Once loaded into your Unity project, navigate to the `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` folder and double-click on `0.BasicScene scene file` to open it.
 
 Once the scene file is open, click on the Play button at the top of the editor.
 
-<img width=300 src="res/download_sdk/play.png">
+<img src="res/download_sdk/play.png">
 
  Make sure that the sample works (on Simulator) as shown below.  
  To connect to the real toio™ Core Cube, please refer to [docs_EN/README.md "Build"](README.md#3-build).
