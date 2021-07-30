@@ -655,7 +655,7 @@ public Vector Run(List<Navigator> others, Vector tarPos);
 Include the vector to the goal and calculate resultant vector.
 
 - others
-  - Definition of: other Navigator list
+  - Definition : Other Navigator List
 - tarPos
   - Definition: Target coordinates
 - Return value: Resultant vector
@@ -668,5 +668,5 @@ public Vector Run(List<Navigator> others);
 Calculate resultant vector, except for the vector to the target.
 
 - others
-  - Definition of: other Navigator list
+  - Definition : Other Navigator List
 - Return value: Resultant vector
