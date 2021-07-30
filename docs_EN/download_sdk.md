@@ -2,7 +2,7 @@
 
 ## Unity Project Creation
 
-Open Unity Hub and click [Create New] in the upper right corner.
+Open Unity Hub and click [New] in the upper right corner.
 
 <img width=500 src="res/download_sdk/new_project1.png">
 
@@ -23,9 +23,9 @@ Make sure that Unity is up and running.
 toio SDK for Unity uses Unity-optimized asynchronous processing library [UniTask](https://github.com/Cysharp/UniTask) . Therefore, you need to install UniTask (2.0.0 or later) in this Unity project.<br>
 
 To install UniTask, follow the steps below (as of September 24, 2020; Unity 2019.4 LTS).
-1. In Unity, go to the Window menu and select Package Manager to open the Package Manager. 1.
-1. click the [+] icon and select Add package from git URL... and select
-1. add https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask
+1. In Unity, go to the [Window] menu and select [Package Manager] to open the Package Manager.
+1. Click the [+] icon and select [Add package from git URL...]
+1. Add https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask
 
 The following document contains installation instructions and screenshots of UniTask for your reference.
 * [Description of the UniTask Github repository](https://github.com/Cysharp/UniTask#install-via-git-url)
@@ -48,7 +48,7 @@ Once the scene file is open, click on the Play button at the top of the editor.
 
 <img src="res/download_sdk/play.png">
 
- Make sure that the sample works (on Simulator) as shown below.  
+ Make sure that the sample works (on Simulator) as shown below.
  To connect to the real toio™ Core Cube, please refer to [docs_EN/README.md "Build"](README.md#3-build).
 
 <img src="res/download_sdk/sample.gif">
