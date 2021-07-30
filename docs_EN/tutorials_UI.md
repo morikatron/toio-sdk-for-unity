@@ -33,7 +33,7 @@ When run in Unity Editor, UI and simulator are displayed in parallel, and when r
 > Set the Default Orientation to Portrait in the project settings.
 
 ## 11.1. Creating Scenes
-The first step is to create a scene.  
+The first step is to create a scene.
 This is the same as ["Creating Scenes"](tutorials_basic.md#2-creating-scenes) in the tutorial (Basic).
 
 ### How to arrange the stage
@@ -43,7 +43,7 @@ This is the same as ["Creating Scenes"](tutorials_basic.md#2-creating-scenes) in
 3. Open the "Assets/toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/Resources" folder in the project window
 4. Drag and drop "Cube" Prefab file and "Stage" Prefab file into the hierarchy.<br>
 You can also move Cube object with the mouse in the scene.
-5. Right-click on the hierarchy, click "Create Empty Object" from the right-click menu, and name it "scene".
+5. Right-click on the hierarchy, click "Create Empty" from the right-click menu, and name it "scene".
 6. Select "scene" object and click "Add Component" in the inspector.
 7. Enter any script name (e.g. MyUIScript) to create a script.
 8. Rewrite the script you have created with the sample code below. (The class name must be the same as the script file)
@@ -111,14 +111,14 @@ After all this work, the hierarchy and game view should look like the one below.
 ## 11.2. Creating UI
 Next, let's create UI for manipulating Cube.
 
-1. Right-click on the hierarchy, click "Create Empty Object" from the menu, and name it "UI".
+1. Right-click on the hierarchy, click "Create Empty" from the menu, and name it "UI".
 
-2. The (Optional) EventSystem is already included in the Stage, so you don't need to create it yourself, but if you do, right-click on the hierarchy and select "UI -> EventSystem" to create it.
+2. (Optional) The EventSystem is already included in the Stage, so you don't need to create it yourself, but if you do, right-click on the hierarchy and select "UI -> Event System" to create it.
 
 3. Create a canvas for UI.
     1. Select "UI" object, and from the right-click menu, click "UI -> Canvas" and name it "Canvas".
     2. Change "Layer" in "Canvas" inspector from "Default" to "UI".
-    3. Set "UI Scale Mode" of "Canvas Scaler" component to "Scale to Screen Size", X to 720, Y to 1440, and "Match" to 1.
+    3. Set "UI Scale Mode" of "Canvas Scaler" component to "Scale with Screen Size", X to 720, Y to 1440, and "Match" to 1.
 
 > By setting "Match" to 1, the size of UI will change depending on the height of the screen to fit.
 
@@ -197,7 +197,7 @@ public class MySimUI : MonoBehaviour
 ```
 
 The above script implements the following three things.
-    1. Since this is a process that we want to execute only in Simulator, we have written the entire implementation of the class in #if [UNITY_EDITOR](https://docs.unity3d.com/ja/current/Manual/PlatformDependentCompilation.html) .
+    1. Since this is a process that we want to execute only in Simulator, we have written the entire implementation of the class in "#if [UNITY_EDITOR](https://docs.unity3d.com/ja/current/Manual/PlatformDependentCompilation.html)".
     2. The camera has been moved to the left because we want Simulator screen to be slightly to the right.
     3. Set the parent of [UI]-[Canvas] to [SimCanvas], and then move it to the left edge.(Using [Transform.SetParent](https://docs.unity3d.com/ScriptReference/Transform.SetParent.html))
 
