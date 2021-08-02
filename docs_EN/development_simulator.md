@@ -57,13 +57,6 @@ In Unity's Inspector, from the "Type" list of the script Mat.cs
 
 from the "Type" list of the script Mat.cs in Unity inspector to change the mat's appearance and coordinates.
 
-| Unity Editor 上での表記 | 正式名称 |
-| :-- | :-- |
-| トイコレ付属マット（土俵面） | トイオ・コレクション付属のプレイマット(土俵の面) |
-| トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) | 
-| キューブ（単体）付属簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
-| 開発用マット | toio™開発用プレイマット（仮称） |
-
 For specifications of each type, please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_position_id)  and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
 
 
@@ -86,7 +79,7 @@ The supported "Titles" are as follows
 - toio Collection
 - Simple card
 
-For more information about "type", please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_standard_id).
+For more information about "Type", please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_standard_id).
 
 
 # 4. Cube Prefab
@@ -115,13 +108,13 @@ It is divided into two parts: [Simulator Settings] and [Manually Change Cube Sta
 
 It is displayed only at runtime.
 
-If Simulator is too difficult to reproduce or manipulate realistically, you can use the inspector to change the state of Cube and trigger the corresponding events.
+Since it is too difficult to reproduce realistically in simulation, you can use the inspector to change the state of Cube and trigger the corresponding events.
 
 - `button state`: If checked, the button will be kept pressed. If you want to move Cube again, you need to uncheck the box and release the button. Also, if you change the button state by mouse operation, this setting will be overwritten.
-- `[Change sloped manually]': If checked, the `sloped state' will be displayed and the setting can be changed.
-(Normally, Simulator sets the sloped state every frame, but if this setting is enabled, Simulator will not set the sloped state).
+- `[Change sloped manually]`: If checked, the  `sloped state` will be displayed and the setting can be changed.
+(Normally, Simulator sets the `sloped state` every frame, but if this setting is enabled, Simulator will not set the `sloped state`).
   - `sloped state`: Indicates if Cube is on a slope.
-- `collisionDetected status`: Indicates whether a collision has been detected or not. (Currently, Simulator does not implement the function to detect the collision of Cube).
+- `collisionDetected state`: Indicates whether a collision has been detected or not. (Currently, Simulator does not implement the function to detect the collision of Cube).
 
 ## Operations on Cube Objects
 
@@ -129,7 +122,7 @@ While Simulator is running, you can manipulate Cube objects with the mouse.
 
 | Operation | Description |
 | :--: | :--: |
-| Left click | Press a button on Cube |
+| Left click | Press the button on Cube |
 | Right click | Lift Cube / Release Cube |
 | Wheel while lifting | Change the angle of Cube  |
 | Right drag | Pulling Cube by force  |

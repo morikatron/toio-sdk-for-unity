@@ -10,7 +10,7 @@
 
 ### About Assembly Definition
 
-This SDK uses a feature called Assembly Definition to divide a script into multiple assemblies.
+This SDK uses a feature called Assembly Definition to divide scripts into multiple assemblies.
 For more details on Assembly Definition, please refer to [here](https://docs.unity3d.com/ja/2018.4/Manual/ScriptCompilationAssemblyDefinitionFiles.html).
 
 The following items should be noted about this function.
