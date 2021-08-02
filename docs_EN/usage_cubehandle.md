@@ -135,7 +135,7 @@ Specify the presence or absence of a border, and execute it by calling Move on t
 ```c#
 public void SetBorderRect(RectInt matRect, int margin=20)
 ```
-Set the border borderRect by RectInt and margin, which represent the size of the mat.
+Set the border `borderRect` by RectInt and margin, which represent the size of the mat.
 
 > The RectInt of a mat can be conveniently obtained by specifying the MatType in the GetRectForMatType method of the Mat class.
 

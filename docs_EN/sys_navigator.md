@@ -218,7 +218,7 @@ Please refer to that as well.
 
 To summarize HLAvoid.
 
-- - If the robot moves forward at maximum speed in each direction, and the other robot maintains its direction and speed.
+- If the robot moves forward at maximum speed in each direction, and the other robot maintains its direction and speed.
 - Calculate how far away the other robots will collide if they maintain their direction and speed.
 - Calculate the distance at which the other robot will collide with the robot if it maintains its direction and speed, and aim at the point closest to the target in the area before the collision.
   This is the algorithm that prevents the robot from colliding with other robots.
@@ -288,7 +288,7 @@ Merge multiple ScanResult as follows.
 
 ### 4.1.3. Algorithm: How to calculate scans and how to choose waypoints
 
-Meta-Thesis　[Guzzi, Jérôme, et al. "Human-friendly robot navigation in dynamic environments." 2013 IEEE International Conference on Robotics and Automation. IEEE, 2013.](https://ieeexplore.ieee.org/abstract/document/6630610) <br>
+See orignal thesis [Guzzi, Jérôme, et al. "Human-friendly robot navigation in dynamic environments." 2013 IEEE International Conference on Robotics and Automation. IEEE, 2013.](https://ieeexplore.ieee.org/abstract/document/6630610) <br>
 and see [Blog explaining the improved method](https://tech.morikatron.ai/entry/2020/03/04/100000).
 
 <details>

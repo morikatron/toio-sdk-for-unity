@@ -53,14 +53,6 @@ In Unity's Inspector, you can change the look and coordinates of the mat by sele
 - toio play mat for development(Inside)
 - Customize
 
-
-| Notation in Unity Editor | Formal name |
-| :-- | :-- |
-| Play mat(sumo ring) | Play mat(sumo ring) |
-| Play mat(Colored tiles) | Play mat(Colored tiles) |
-| Simple mat | Simple mat |
-| toio play mat for development(Inside) | toio play mat for development(Inside) |
-
  > The surface of the toio play mat for development #1 ~ #6 has the same specifications as Simple mat, so they are combined into one type "Simple mat,toio play mat for development1~6".
 
 Please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_position_id) and [toio play mat for development](https://toio.io/blog/detail/20200423-1.html) for the specifications of each type.

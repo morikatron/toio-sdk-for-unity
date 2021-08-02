@@ -82,6 +82,7 @@ The following table shows the implementation correspondence.
 |                    | [Magnetic sensor setting response](https://toio.github.io/toio-spec/docs/ble_configuration#[磁気センサーの設定の応答)                       | x             | x            |
 |                    | [Setting up the acquisition of motor speed information](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)            | o             | o            |
 |                    | [Motor speed information acquisition setting response](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定の応答)| o             | o            |
+
 <br>
 
 # 2. Comparison with existing toio™ library (toio.js)
@@ -556,17 +557,17 @@ Controls Cube's motor with target designation.<br>
   - Range : -1, 0~65534
     - -1, the X coordinate is set to the same as in the write operation
 - targetY
-  - 定義 : Y-coordinate value of the target point
+  - Definition : Y-coordinate value of the target point
   - Range : -1, 0~65534
     - -1, the Y coordinate is set to the same as in the write operation
 - targetAngle
-  - 定義 : Angle of Cube at the target point Θ
+  - Definition : Angle of Cube at the target point Θ
   - Range : 0~8191
 - configID
   - Definition: Control identification value, a value used to identify the response of a control. The value set here will also be included in the corresponding response.
   - Range : 0~255
 - timeOut
-  - 定義 : timeout period
+  - Definition : timeout period
   - Range : 0~255
     -  The only exception is 0, which is 10 seconds.
 - targetMoveType
