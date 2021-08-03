@@ -259,6 +259,39 @@ namespace toio
         public virtual UniTask ConfigMotorRead(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
+        /// 読み取りセンサーの Position ID および Standard ID の通知頻度を設定します。「最小通知間隔」と「通知条件」の両方を満たした場合に通知が行われます。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-通知設定
+        /// </summary>
+        /// <param name="interval">最小通知間隔</param>
+        /// <param name="notificationType">通知条件(10 ミリ秒単位)</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigIDNotification(int interval, IDNotificationType notificationType = IDNotificationType.Balanced,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+
+        /// <summary>
+        /// 読み取りセンサーの Position ID missed および Standard ID missed の通知感度を設定します。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-missed-通知設定
+        /// </summary>
+        /// <param name="sensitivity">通知感度(10 ミリ秒単位)</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigIDMissedNotification(int sensitivity,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+
+        /// <summary>
+        /// キューブの磁気センサーの機能の有効化・無効化を設定します。デフォルトでは無効化されています。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定
+        /// </summary>
+        /// <param name="valid">有効無効フラグ</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigMagneticSensor(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+
+        /// <summary>
         /// モーションセンサー情報を要求します
         /// https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求
         /// </summary>
@@ -416,6 +449,14 @@ namespace toio
             Right=5,
             Left=6
         };
+
+        // ID 通知条件
+        public enum IDNotificationType: byte
+        {
+            Always = 0,
+            OnChanged = 1,
+            Balanced = 0xff
+        }
 
         // 効果音
         public enum NOTE_NUMBER : byte

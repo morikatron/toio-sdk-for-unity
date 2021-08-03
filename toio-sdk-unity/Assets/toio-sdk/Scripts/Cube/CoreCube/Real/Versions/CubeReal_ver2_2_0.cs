@@ -7,17 +7,55 @@ namespace toio
 {
     public class CubeReal_ver2_2_0 : CubeReal_ver2_1_0
     {
-        private class MotorReadRequest
+        private class RequestBase
         {
-            public bool valid;
             public float timeOutSec;
             public Action<bool, Cube> callback;
             public ORDER_TYPE order;
             public bool isRequesting = false;
-            public bool hasMotorResponse = false;
             public bool hasConfigResponse = false;
             public bool isConfigResponseSucceeded = false;
             public bool wasTimeOut = false;
+        }
+        private class MotorReadRequest : RequestBase
+        {
+            public bool valid;
+            public bool hasMotorResponse = false;
+        }
+        private class IDNotificationRequest : RequestBase
+        {
+            public int interval;
+            public IDNotificationType notificationType;
+        }
+        private class IDMissedNotificationRequest : RequestBase
+        {
+            public int sensitivity;
+        }
+        private class MagneticSensorRequest : RequestBase
+        {
+            public bool valid;
+            public bool hasMagnetResponse = false;
+        }
+
+        private async UniTask RunConfigRequest(RequestBase request, Action action, float startTime)
+        {
+            while(!request.hasConfigResponse)
+            {
+                if ((startTime + request.timeOutSec) < Time.time)
+                {
+                    request.wasTimeOut = true;
+                    break;
+                }
+
+                if (!this.isConnected || !this.isInitialized)
+                {
+                    await UniTask.Delay(50);
+                    continue;
+                }
+
+                action.Invoke();
+                await UniTask.Delay(100);
+            }
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -28,6 +66,9 @@ namespace toio
         protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
         protected CallbackProvider<Cube> _motorSpeedCallback = new CallbackProvider<Cube>();
         private MotorReadRequest motorReadRequest = null;
+        private IDNotificationRequest idNotificationRequest = null;
+        private IDMissedNotificationRequest idMissedNotificationRequest = null;
+        private MagneticSensorRequest magneticSensorRequest = null;
         private int _leftSpeed = -1;
         private int _rightSpeed = -1;
 
@@ -132,25 +173,171 @@ namespace toio
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMotorRead", valid, timeOutSec, callback, order);
             });
 
-            while(!this.motorReadRequest.hasConfigResponse)
+            await RunConfigRequest(this.motorReadRequest, request, startTime);
+
+            this.motorReadRequest.isRequesting = false;
+            callback?.Invoke(this.motorReadRequest.isConfigResponseSucceeded, this);
+        }
+
+        /// <summary>
+        /// 読み取りセンサーの Position ID および Standard ID の通知頻度を設定します。「最小通知間隔」と「通知条件」の両方を満たした場合に通知が行われます。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-通知設定
+        /// </summary>
+        /// <param name="interval">最小通知間隔</param>
+        /// <param name="notificationType">通知条件(10 ミリ秒単位)</param>
+        /// <param name="order">命令の優先度</param>
+        public override async UniTask ConfigIDNotification(int interval, IDNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+#if !RELEASE
+            const float minTimeOut = 0.5f;
+            if (minTimeOut > timeOutSec)
+            {
+                Debug.LogWarningFormat("[CubeReal_ver2_2_0.ConfigIDNotification]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
+            }
+#endif
+
+            var startTime = Time.time;
+
+            // 既に別の命令が実行されている場合は待機する
+            while (null != this.idNotificationRequest && this.idNotificationRequest.isRequesting)
             {
                 if ((startTime + timeOutSec) < Time.time)
                 {
-                    this.motorReadRequest.wasTimeOut = true;
-                    break;
+                    callback?.Invoke(false, this);
+                    return;
                 }
-
-                if (!this.isConnected || !this.isInitialized)
-                {
-                    await UniTask.Delay(50);
-                    continue;
-                }
-
-                request();
-                await UniTask.Delay(100);
+                await UniTask.Delay(50);
             }
-            this.motorReadRequest.isRequesting = false;
-            callback?.Invoke(this.motorReadRequest.isConfigResponseSucceeded, this);
+
+            this.idNotificationRequest = new IDNotificationRequest();
+            this.idNotificationRequest.interval = interval;
+            this.idNotificationRequest.notificationType = notificationType;
+            this.idNotificationRequest.timeOutSec = timeOutSec;
+            this.idNotificationRequest.callback = callback;
+            this.idNotificationRequest.order = order;
+            this.idNotificationRequest.isRequesting = true;
+
+            Action request = (() =>
+            {
+                byte[] buff = new byte[4];
+                buff[0] = 0x18;
+                buff[1] = 0;
+                buff[2] = BitConverter.GetBytes(Mathf.Clamp(interval, 0, 255))[0];
+                buff[3] = (byte)notificationType;
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDNotification", interval, notificationType, timeOutSec, callback, order);
+            });
+
+            await RunConfigRequest(this.idNotificationRequest, request, startTime);
+
+            this.idNotificationRequest.isRequesting = false;
+            callback?.Invoke(this.idNotificationRequest.isConfigResponseSucceeded, this);
+        }
+
+
+        /// <summary>
+        /// 読み取りセンサーの Position ID missed および Standard ID missed の通知感度を設定します。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-missed-通知設定
+        /// </summary>
+        /// <param name="sensitivity">通知感度(10 ミリ秒単位)</param>
+        /// <param name="order">命令の優先度</param>
+        public override async UniTask ConfigIDMissedNotification(int sensitivity,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+#if !RELEASE
+            const float minTimeOut = 0.5f;
+            if (minTimeOut > timeOutSec)
+            {
+                Debug.LogWarningFormat("[CubeReal_ver2_2_0.ConfigIDMissedNotification]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
+            }
+#endif
+
+            var startTime = Time.time;
+
+            // 既に別の命令が実行されている場合は待機する
+            while (null != this.idMissedNotificationRequest && this.idMissedNotificationRequest.isRequesting)
+            {
+                if ((startTime + timeOutSec) < Time.time)
+                {
+                    callback?.Invoke(false, this);
+                    return;
+                }
+                await UniTask.Delay(50);
+            }
+
+            this.idMissedNotificationRequest = new IDMissedNotificationRequest();
+            this.idMissedNotificationRequest.sensitivity = sensitivity;
+            this.idMissedNotificationRequest.timeOutSec = timeOutSec;
+            this.idMissedNotificationRequest.callback = callback;
+            this.idMissedNotificationRequest.order = order;
+            this.idMissedNotificationRequest.isRequesting = true;
+
+            Action request = (() =>
+            {
+                byte[] buff = new byte[3];
+                buff[0] = 0x18;
+                buff[1] = 0;
+                buff[2] = BitConverter.GetBytes(Mathf.Clamp(sensitivity, 0, 255))[0];
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDMissedNotification", sensitivity, timeOutSec, callback, order);
+            });
+
+            await RunConfigRequest(this.idMissedNotificationRequest, request, startTime);
+
+            this.idMissedNotificationRequest.isRequesting = false;
+            callback?.Invoke(this.idMissedNotificationRequest.isConfigResponseSucceeded, this);
+        }
+
+        /// <summary>
+        /// キューブの磁気センサーの機能の有効化・無効化を設定します。デフォルトでは無効化されています。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定
+        /// </summary>
+        /// <param name="valid">有効無効フラグ</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public override async UniTask ConfigMagneticSensor(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
+        {
+#if !RELEASE
+            const float minTimeOut = 0.5f;
+            if (minTimeOut > timeOutSec)
+            {
+                Debug.LogWarningFormat("[CubeReal_ver2_2_0.ConfigMagneticSensor]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
+            }
+#endif
+
+            var startTime = Time.time;
+
+            // 既に別の命令が実行されている場合は待機する
+            while (null != this.magneticSensorRequest && this.magneticSensorRequest.isRequesting)
+            {
+                if ((startTime + timeOutSec) < Time.time)
+                {
+                    callback?.Invoke(false, this);
+                    return;
+                }
+                await UniTask.Delay(50);
+            }
+
+            this.magneticSensorRequest = new MagneticSensorRequest();
+            this.magneticSensorRequest.valid = valid;
+            this.magneticSensorRequest.timeOutSec = timeOutSec;
+            this.magneticSensorRequest.callback = callback;
+            this.magneticSensorRequest.order = order;
+            this.magneticSensorRequest.isRequesting = true;
+
+            Action request = (() =>
+            {
+                byte[] buff = new byte[3];
+                buff[0] = 0x1b;
+                buff[1] = 0;
+                buff[2] = BitConverter.GetBytes(valid)[0];
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMagneticSensor", valid, timeOutSec, callback, order);
+            });
+
+            await RunConfigRequest(this.magneticSensorRequest, request, startTime);
+
+            this.magneticSensorRequest.isRequesting = false;
+            callback?.Invoke(this.magneticSensorRequest.isConfigResponseSucceeded, this);
         }
 
         /// <summary>
@@ -226,11 +413,27 @@ namespace toio
         {
             // https://toio.github.io/toio-spec/docs/ble_configuration
             int type = data[0];
-            if (0x9c == type)
+            if (0x9c == type)   // Motoer Read
             {
                 this.motorReadRequest.hasConfigResponse = true;
                 this.motorReadRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 this.motorSpeedCallback.Notify(this);
+            }
+
+            else if (0x98 == type)  // ID Notification
+            {
+                this.idNotificationRequest.hasConfigResponse = true;
+                this.idNotificationRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+            }
+
+            else if (0x99 == type)  // ID Missed Notification
+            {
+                this.idMissedNotificationRequest.hasConfigResponse = true;
+                this.idMissedNotificationRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+            }
+
+            else if (0x9b == type)   // Mag
+            {
             }
         }
    }
