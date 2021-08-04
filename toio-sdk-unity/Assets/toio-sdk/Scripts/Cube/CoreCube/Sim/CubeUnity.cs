@@ -37,6 +37,9 @@ namespace toio
 
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
                 simulator.StartNotification_ConfigMotorRead(this.Recv_ConfigMotorRead);
+                simulator.StartNotification_ConfigIDNotification(this.Recv_ConfigIDNotification);
+                simulator.StartNotification_ConfigIDMissedNotification(this.Recv_ConfigIDMissedNotification);
+                simulator.StartNotification_ConfigMagneticSensor(this.Recv_ConfigMagneticSensor);
 
                 return true;
             }
@@ -121,7 +124,8 @@ namespace toio
         }
 
 
-        /////////////// Callbacks to user ///////////////
+        //============ Callbacks to user ============
+
         protected CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
         public override CallbackProvider<Cube> buttonCallback { get { return this._buttonCallback; } }
         protected CallbackProvider<Cube> _slopeCallback = new CallbackProvider<Cube>();
@@ -165,7 +169,16 @@ namespace toio
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
 
-        /////////////// Callbacks from CubeSimulator ///////////////
+
+        //============ Requests to CubeSimulator ============
+
+        private Request configMotorReadRequest = new Request();
+        private Request configIDNotificationRequest = new Request();
+        private Request configIDMissedNotificationRequest = new Request();
+        private Request configMagneticSensorRequest = new Request();
+
+        //============ Callbacks from CubeSimulator ============
+
         private void Recv_Button(bool pressed)
         {
             isPressed = pressed;
@@ -286,10 +299,25 @@ namespace toio
             this.motorSpeedCallback.Notify(this);
         }
 
-        protected void Recv_ConfigMotorRead(bool valid)
+        protected void Recv_ConfigMotorRead(bool success)
         {
-            this.isEnabledMotorSpeed = valid;
-            this.motorSpeedCallback.Notify(this);
+            this.configMotorReadRequest.hadResponse = true;
+            // this.motorSpeedCallback.Notify(this);
+        }
+
+        protected void Recv_ConfigIDNotification(bool success)
+        {
+            this.configIDNotificationRequest.hadResponse = true;
+        }
+
+        protected void Recv_ConfigIDMissedNotification(bool success)
+        {
+            this.configIDMissedNotificationRequest.hadResponse = true;
+        }
+
+        protected void Recv_ConfigMagneticSensor(bool success)
+        {
+            this.configMagneticSensorRequest.hadResponse = true;
         }
 
 
@@ -476,14 +504,140 @@ namespace toio
         public override async UniTask ConfigMotorRead(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
         {
             isCalled_ConfigMotorRead = true;
-            this.simulator.ConfigMotorRead(valid);
-            await UniTask.Delay(0);
-            callback?.Invoke(true, this);
+
+            var deadline = Time.time + timeOutSec;
+            bool available = await this.configMotorReadRequest.WaitForAccess(deadline);
+            if (!available) {
+                callback?.Invoke(false, this); return;
+            }
+
+            this.configMotorReadRequest.deadline = deadline;
+            this.configMotorReadRequest.callback = suc => callback?.Invoke(suc, this);
+            this.configMotorReadRequest.quest = () =>
+            {
+#if RELEASE
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigMotorRead(valid), order);
+#else
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigMotorRead(valid), order, "ConfigMotorRead", valid);
+#endif
+            };
+
+            await this.configMotorReadRequest.Run();
+        }
+
+        public override async UniTask ConfigIDNotification(int interval, IDNotificationType notificationType = IDNotificationType.Balanced,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            var deadline = Time.time + timeOutSec;
+            bool available = await this.configIDNotificationRequest.WaitForAccess(deadline);
+            if (!available) {
+                callback?.Invoke(false, this); return;
+            }
+
+            this.configIDNotificationRequest.deadline = deadline;
+            this.configIDNotificationRequest.callback = suc => callback?.Invoke(suc, this);
+            this.configIDNotificationRequest.quest = () =>
+            {
+#if RELEASE
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigIDNotification(interval, notificationType), order);
+#else
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigIDNotification(interval, notificationType), order, "ConfigIDNotification", interval, notificationType);
+#endif
+            };
+
+            await this.configIDNotificationRequest.Run();
+        }
+
+        public override async UniTask ConfigIDMissedNotification(int sensitivity,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            var deadline = Time.time + timeOutSec;
+            bool available = await this.configIDMissedNotificationRequest.WaitForAccess(deadline);
+            if (!available) {
+                callback?.Invoke(false, this); return;
+            }
+
+            this.configIDMissedNotificationRequest.deadline = deadline;
+            this.configIDMissedNotificationRequest.callback = suc => callback?.Invoke(suc, this);
+            this.configIDMissedNotificationRequest.quest = () =>
+            {
+#if RELEASE
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigIDMissedNotification(sensitivity), order);
+#else
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigIDMissedNotification(sensitivity), order, "ConfigIDMissedNotification", sensitivity);
+#endif
+            };
+
+            await this.configIDMissedNotificationRequest.Run();
+        }
+
+        public override async UniTask ConfigMagneticSensor(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            var deadline = Time.time + timeOutSec;
+            bool available = await this.configMagneticSensorRequest.WaitForAccess(deadline);
+            if (!available) {
+                callback?.Invoke(false, this); return;
+            }
+
+            this.configMagneticSensorRequest.deadline = deadline;
+            this.configMagneticSensorRequest.callback = suc => callback?.Invoke(suc, this);
+            this.configMagneticSensorRequest.quest = () =>
+            {
+#if RELEASE
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigMagneticSensor(valid), order);
+#else
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigMagneticSensor(valid), order, "ConfigMagneticSensor", valid);
+#endif
+            };
+
+            await this.configMagneticSensorRequest.Run();
         }
 
         public override void RequestSensor(ORDER_TYPE order)
         {
             this.simulator.RequestSensor();
+        }
+
+
+        private class Request
+        {
+            public float deadline;
+            public Action<bool> callback;
+            public Action quest;
+            public bool isRequesting = false;
+            public bool hadResponse = false;
+
+            public async UniTask<bool> WaitForAccess(float deadline)
+            {
+                while (this.isRequesting)
+                {
+                    if (deadline < Time.time) return false;
+                    await UniTask.Delay(50);
+                }
+                this.isRequesting = true;
+                this.hadResponse = false;
+                return true;
+            }
+
+            public async UniTask Run()
+            {
+                this.isRequesting = true;
+                bool success = true;
+                while(!this.hadResponse)
+                {
+                    if (deadline < Time.time)
+                    {
+                        success = false;
+                        break;
+                    }
+
+                    quest.Invoke();
+                    await UniTask.Delay(100);
+                }
+
+                this.isRequesting = false;
+                callback?.Invoke(success);
+            }
         }
     }
 }

@@ -12,6 +12,142 @@ namespace toio.Simulator
         public  CubeSimImpl_v2_2_0(CubeSimulator cube) : base(cube){}
 
 
+        // ============ ID Sensor ============
+        protected byte idNotificationInterval = 0;
+        protected Cube.IDNotificationType idNotificationType = Cube.IDNotificationType.Balanced;
+        protected byte idMissedNotificationSensitivity = 0;
+
+        private float idNotificationLastTime = 0;
+        private float idMissedNotificationMissTime = 0;
+        private bool idMissedNotificationMissMat = false;
+        private int x_sent = 0, y_sent = 0, deg_sent = 0;
+        private uint standardID_sent = 0;
+
+        private Action<bool> configIDNotificationCallback = null;
+        private Action<bool> configIDMissedNotificationCallback = null;
+
+        public override void StartNotification_ConfigIDNotification(System.Action<bool> action)
+        {
+            this.configIDNotificationCallback = action;
+        }
+        public override void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
+        {
+            this.configIDMissedNotificationCallback = action;
+        }
+
+        public override void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
+        {
+            idNotificationInterval = (byte) Mathf.Clamp(interval, 0, 255);
+            idNotificationType = notificationType;
+            this.configIDNotificationCallback?.Invoke(true);
+        }
+
+        public override void ConfigIDMissedNotification(int sensitivity)
+        {
+            idMissedNotificationSensitivity = (byte) Mathf.Clamp(sensitivity, 0, 255);
+            this.configIDMissedNotificationCallback?.Invoke(true);
+        }
+
+        protected override void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
+        {
+            deg = (deg%360+360)%360;
+            float now = Time.fixedTime;
+
+            // Decide whether to notify
+            bool isToNotify_Interval = now - idNotificationLastTime >= (float)idNotificationInterval/100;
+
+            bool isToNotify_Type = false;
+            if (Cube.IDNotificationType.Always == idNotificationType)
+                isToNotify_Type = true;
+            else if (Cube.IDNotificationType.OnChanged == idNotificationType)
+                isToNotify_Type = Mathf.Abs(x-x_sent) >= 2 || Mathf.Abs(y-y_sent) >= 2 || (deg-deg_sent+360)%360 >=3;
+            else if (Cube.IDNotificationType.Balanced == idNotificationType)
+                isToNotify_Type = x_sent != x || y_sent != y || deg_sent != deg
+                    || now - idNotificationLastTime >= 0.3f;
+            isToNotify_Type = isToNotify_Type || !this.onMat;
+
+            // Notify ID
+            if (isToNotify_Interval && isToNotify_Type)
+            {
+                this.IDCallback?.Invoke(x, y, deg, xSensor, ySensor);
+                idNotificationLastTime = now;
+                this.x_sent = x; this.y_sent = y; this.deg_sent = deg;
+            }
+
+            // Update realtime vars
+            this.x = x; this.y = y; this.deg = deg;
+            this.xSensor = xSensor; this.ySensor = ySensor;
+            this.onMat = true;
+            this.onStandardID = false;
+        }
+
+        protected override void _SetSandardID(uint stdID, int deg)
+        {
+            deg = (deg%360+360)%360;
+            float now = Time.fixedTime;
+
+            // Decide whether to notify
+            bool isToNotify_Interval = now - idNotificationLastTime >= (float)idNotificationInterval/100;
+
+            bool isToNotify_Type = false;
+            if (Cube.IDNotificationType.Always == idNotificationType)
+                isToNotify_Type = true;
+            else if (Cube.IDNotificationType.OnChanged == idNotificationType)
+                isToNotify_Type = this.standardID != stdID || (deg-this.deg+360)%360 >=3;
+            else if (Cube.IDNotificationType.Balanced == idNotificationType)
+                isToNotify_Type = this.standardID != stdID || this.deg != deg
+                    || now - idNotificationLastTime >= 0.3f;
+            isToNotify_Type = isToNotify_Type || !this.onStandardID;
+
+            // Notify ID
+            if (isToNotify_Interval && isToNotify_Type)
+            {
+                this.standardIDCallback?.Invoke(stdID, deg);
+                idNotificationLastTime = now;
+                this.x_sent = x; this.y_sent = y; this.deg_sent = deg;
+                this.standardID_sent = stdID;
+            }
+
+            // Update realtime vars
+            this.standardID = stdID;
+            this.deg = deg;
+            this.onStandardID = true;
+            this.onMat = false;
+        }
+
+        protected override void _SetOffGround()
+        {
+            float now = Time.fixedTime;
+
+            // Missing
+            if (this.onMat)
+            {
+                idMissedNotificationMissTime = now;
+                idMissedNotificationMissMat = true;
+            }
+            else if (this.onStandardID)
+            {
+                idMissedNotificationMissTime = now;
+                idMissedNotificationMissMat = false;
+            }
+
+            // Missed for idMissedNotificationSensitivity
+            bool isToNotify = (now - idMissedNotificationMissTime >= (float)idMissedNotificationSensitivity/100) && idMissedNotificationMissTime > 0;
+            if (isToNotify)
+            {
+                if (idMissedNotificationMissMat)
+                    this.positionIDMissedCallback?.Invoke();
+                else
+                    this.standardIDMissedCallback?.Invoke();
+                idMissedNotificationMissTime = 0;
+            }
+
+            // Update realtime vars
+            this.onMat = false;
+            this.onStandardID = false;
+        }
+
+
         // ============ Motion Sensor ============
         protected override void InvokeMotionSensorCallback()
         {

@@ -101,6 +101,12 @@ namespace toio.Simulator
         { NotSupportedWarning(); }
         public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
         { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigIDNotification(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigMagneticSensor(System.Action<bool> action)
+        { NotSupportedWarning(); }
 
 
 
@@ -182,6 +188,15 @@ namespace toio.Simulator
 
         // ---------- 2.2.0 ----------
         public virtual void ConfigMotorRead(bool enabled)
+        { NotSupportedWarning(); }
+
+        public virtual void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
+        { NotSupportedWarning(); }
+
+        public virtual void ConfigIDMissedNotification(int sensitivity)
+        { NotSupportedWarning(); }
+
+        public virtual void ConfigMagneticSensor(bool enabled)
         { NotSupportedWarning(); }
 
         public virtual void RequestSensor()

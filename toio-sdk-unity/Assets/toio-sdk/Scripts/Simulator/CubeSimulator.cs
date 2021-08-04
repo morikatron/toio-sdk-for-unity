@@ -456,13 +456,31 @@ namespace toio.Simulator
         }
 
         /// <summary>
-        /// 設定の応答の読み出しコールバックを設定する
+        /// モーター速度設定の応答の読み出しコールバックを設定する
         /// 引数：モーター速度設定応答
         /// </summary>
         public void StartNotification_ConfigMotorRead(System.Action<bool> action)
         {
             if (!isConnected) return;
             impl.StartNotification_ConfigMotorRead(action);
+        }
+
+        public void StartNotification_ConfigIDNotification(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigIDNotification(action);
+        }
+
+        public void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigIDMissedNotification(action);
+        }
+
+        public void StartNotification_ConfigMagneticSensor(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigMagneticSensor(action);
         }
 
 
@@ -587,6 +605,21 @@ namespace toio.Simulator
         public void ConfigMotorRead(bool enabled)
         {
             DelayCommand(() => impl.ConfigMotorRead(enabled));
+        }
+
+        public void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
+        {
+            DelayCommand(() => impl.ConfigIDNotification(interval, notificationType));
+        }
+
+        public void ConfigIDMissedNotification(int sensitivity)
+        {
+            DelayCommand(() => impl.ConfigIDMissedNotification(sensitivity));
+        }
+
+        public void ConfigMagneticSensor(bool enabled)
+        {
+            DelayCommand(() => impl.ConfigMagneticSensor(enabled));
         }
 
         public void RequestSensor()

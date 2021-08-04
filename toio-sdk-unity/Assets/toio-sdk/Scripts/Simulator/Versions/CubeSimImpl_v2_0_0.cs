@@ -60,7 +60,7 @@ namespace toio.Simulator
         {
             this.positionIDMissedCallback= action;
         }
-        protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
+        protected virtual void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
         {
             deg = (deg%360+360)%360;
             if (this.x != x || this.y != y || this.deg != deg || !this.onMat)
@@ -70,7 +70,7 @@ namespace toio.Simulator
             this.onMat = true;
             this.onStandardID = false;
         }
-        protected void _SetSandardID(uint stdID, int deg)
+        protected virtual void _SetSandardID(uint stdID, int deg)
         {
             deg = (deg%360+360)%360;
             if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
@@ -80,7 +80,7 @@ namespace toio.Simulator
             this.onStandardID = true;
             this.onMat = false;
         }
-        protected void _SetOffGround()
+        protected virtual void _SetOffGround()
         {
             if (this.onMat)
                 this.positionIDMissedCallback?.Invoke();
