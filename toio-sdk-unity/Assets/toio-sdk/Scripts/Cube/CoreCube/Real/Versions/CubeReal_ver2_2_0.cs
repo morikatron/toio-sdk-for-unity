@@ -275,7 +275,7 @@ namespace toio
             Action request = (() =>
             {
                 byte[] buff = new byte[3];
-                buff[0] = 0x18;
+                buff[0] = 0x19;
                 buff[1] = 0;
                 buff[2] = BitConverter.GetBytes(Mathf.Clamp(sensitivity, 0, 255))[0];
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDMissedNotification", sensitivity, timeOutSec, callback, order);
