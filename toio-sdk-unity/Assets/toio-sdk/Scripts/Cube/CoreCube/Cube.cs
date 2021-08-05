@@ -20,6 +20,7 @@ namespace toio
         public abstract string id { get; protected set; }
         // コアキューブのアドレス
         public abstract string addr { get; }
+        public abstract string localName { get; }
         // コアキューブの接続状態
         public abstract bool isConnected { get; }
         // コアキューブのバッテリー状態

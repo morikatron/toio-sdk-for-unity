@@ -9,7 +9,6 @@ namespace toio
     {
         GameObject gameObject;
         CubeSimulator simulator;
-        public string objName { get { return this.simulator.gameObject.name; } }
         public UnityPeripheral peripheral { get; private set; }
 
         public CubeUnity(UnityPeripheral peripheral)
@@ -57,6 +56,7 @@ namespace toio
         public override string id { get; protected set; }
         public override string addr { get { return id; } }
         public override bool isConnected { get { return simulator.isConnected; } }
+        public override string localName { get { return this.simulator.gameObject.name; } }
         public override int battery { get { return 100; } protected set { } }
 
         public override int x { get; protected set; }

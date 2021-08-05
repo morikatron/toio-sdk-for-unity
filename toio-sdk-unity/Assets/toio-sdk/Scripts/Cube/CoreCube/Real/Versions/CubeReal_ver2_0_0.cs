@@ -26,6 +26,7 @@ namespace toio
         public override string version { get { return "2.0.0"; } }
         public override string id { get; protected set; }
         public override string addr { get { return this.peripheral.device_address; } }
+        public override string localName { get { return this.peripheral.device_name; } }
         public override int battery { get; protected set; }
         public override int x { get; protected set; }
         public override int y { get; protected set; }
