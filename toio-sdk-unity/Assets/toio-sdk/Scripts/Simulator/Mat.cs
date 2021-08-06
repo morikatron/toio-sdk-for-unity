@@ -14,7 +14,8 @@ namespace toio.Simulator
             toio_collection_back = 1,
             simple_playmat = 2,
             developer = 3,
-            custom = 4  // 座標範囲をカスタマイズ
+            gesundroid = 4,
+            custom = 99  // 座標範囲をカスタマイズ
         }
 
         public static readonly string[] MatTypeNames = new string[]
@@ -23,7 +24,8 @@ namespace toio.Simulator
             "トイコレ付属マット（色タイル面）",     //1
             "簡易マット・開発用マット（表面）1~6",        //2
             "開発用マット（裏面）",        //3
-            "カスタマイズ",           //4
+            "ゲズンロイド",                 //4
+            "カスタマイズ",           //99
         };
 
         public enum DeveloperMatType
@@ -82,6 +84,9 @@ namespace toio.Simulator
                 case MatType.developer:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
+                case MatType.gesundroid:
+                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/gesundroid");
+                    break;
                 case MatType.custom:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
                     break;
@@ -113,6 +118,8 @@ namespace toio.Simulator
                         case DeveloperMatType._12: return new RectInt(645, 683, 304, 215);
                     }
                     throw new System.Exception("devMatType out of range.");
+                case MatType.gesundroid:
+                    return new RectInt(1050, 45, 410, 410);
                 case MatType.custom:
                     Debug.LogError("Custom MatType not supported in this method.");
                     return new RectInt(0, 0, 0, 0);
