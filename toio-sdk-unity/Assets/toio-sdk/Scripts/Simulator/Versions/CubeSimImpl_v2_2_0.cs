@@ -13,16 +13,19 @@ namespace toio.Simulator
 
 
         // ============ ID Sensor ============
+        // ------ Configs ------
         protected byte idNotificationInterval = 0;
         protected Cube.IDNotificationType idNotificationType = Cube.IDNotificationType.Balanced;
         protected byte idMissedNotificationSensitivity = 0;
 
+        // ------ Temp Vars ------
         private float idNotificationLastTime = 0;
         private float idMissedNotificationMissTime = 0;
         private bool idMissedNotificationMissMat = false;
         private int x_sent = 0, y_sent = 0, deg_sent = 0;
         private uint standardID_sent = 0;
 
+        // ------ Callbacks ------
         private Action<bool> configIDNotificationCallback = null;
         private Action<bool> configIDMissedNotificationCallback = null;
 
@@ -148,7 +151,19 @@ namespace toio.Simulator
         }
 
 
+
+        // ============ Magnetic Sensor ============
+
+        // ------ Configs ------
+        protected bool magneticSensorEnabled = false;
+
+        // ------ Callbacks ------
+        private Action<bool> configMagneticSensorCallback = null;
+
+
+
         // ============ Motion Sensor ============
+
         protected override void InvokeMotionSensorCallback()
         {
             if (this.motionSensorCallback == null) return;

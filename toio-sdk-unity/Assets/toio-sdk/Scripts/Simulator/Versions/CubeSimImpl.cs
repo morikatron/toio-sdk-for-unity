@@ -111,6 +111,12 @@ namespace toio.Simulator
 
 
         // ============ Motor ============
+        protected enum MotorCmdType : byte
+        {
+            None, MotorTimeCmd, MotorTargetCmd, MotorMultiTargetCmd, MotorAccCmd
+        }
+        protected MotorCmdType motorCmdType = MotorCmdType.None;
+
         protected float motorCmdL {get; set;} = 0;   // モーター指令値
         protected float motorCmdR {get; set;} = 0;
         public virtual void SimulateMotor()
@@ -125,6 +131,19 @@ namespace toio.Simulator
             motorCmdL = 0; motorCmdR = 0;
         }
 
+        // ============ Light ============
+        protected enum LightCmdType : byte
+        {
+            None, LightCmd, LightSenarioCmd
+        }
+        protected LightCmdType lightCmdType = LightCmdType.None;
+
+        // ============ Sound ============
+        protected enum SoundCmdType : byte
+        {
+            None, SoundSenarioCmd
+        }
+        protected SoundCmdType soundCmdType = SoundCmdType.None;
 
 
         // ============ Commands ============
