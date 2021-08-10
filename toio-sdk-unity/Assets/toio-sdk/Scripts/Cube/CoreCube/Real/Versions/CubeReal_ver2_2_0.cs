@@ -355,7 +355,7 @@ namespace toio
             byte[] buff = new byte[1];
             buff[0] = 0x81;
 
-            this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "requestSensor");
+            this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "RequestMotionSensor");
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
