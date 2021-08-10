@@ -311,6 +311,13 @@ namespace toio
         [Obsolete("RequestSensor is deprecated. Use RequestMotionSensor instead.", false)]
         public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { RequestMotionSensor(order); }
 
+        /// <summary>
+        /// 磁気センサー情報を要求します
+        /// https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求
+        /// </summary>
+        /// <param name="order">命令の優先度</param>
+        public virtual void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/

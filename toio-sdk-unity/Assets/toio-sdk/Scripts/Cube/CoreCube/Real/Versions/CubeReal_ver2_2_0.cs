@@ -358,6 +358,21 @@ namespace toio
             this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "RequestMotionSensor");
         }
 
+        /// <summary>
+        /// 磁気センサー情報を要求します
+        /// https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求
+        /// </summary>
+        /// <param name="order">命令の優先度</param>
+        public override void RequestMagneticSensor(ORDER_TYPE order)
+        {
+            if (!this.isConnected) { return; }
+
+            byte[] buff = new byte[1];
+            buff[0] = 0x82;
+
+            this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "RequestMagneticSensor");
+        }
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < subscribe >
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
