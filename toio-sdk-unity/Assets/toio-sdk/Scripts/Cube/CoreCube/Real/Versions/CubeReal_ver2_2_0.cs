@@ -65,6 +65,7 @@ namespace toio
         private bool isInitialized = false;
         protected CallbackProvider<Cube> _shakeCallback = new CallbackProvider<Cube>();
         protected CallbackProvider<Cube> _motorSpeedCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _magnetStateCallback = new CallbackProvider<Cube>();
         private MotorReadRequest motorReadRequest = null;
         private IDNotificationRequest idNotificationRequest = null;
         private IDMissedNotificationRequest idMissedNotificationRequest = null;
@@ -77,6 +78,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         public override int shakeLevel { get; protected set; }
+        public override MagnetState magnetState { get; protected set; }
         public override string version { get { return "2.2.0"; } }
         public override int leftSpeed
         {
@@ -110,6 +112,7 @@ namespace toio
         // シェイクコールバック
         public override CallbackProvider<Cube> shakeCallback { get { return this._shakeCallback; } }
         public override CallbackProvider<Cube> motorSpeedCallback { get { return this._motorSpeedCallback; } }
+        public override CallbackProvider<Cube> magnetStateCallback { get { return this._magnetStateCallback; } }
 
         public CubeReal_ver2_2_0(BLEPeripheralInterface peripheral) : base(peripheral)
         {
@@ -377,9 +380,9 @@ namespace toio
         protected override void Recv_sensor(byte[] data)
         {
             base.Recv_sensor(data);
-
-            // https://toio.github.io/toio-spec/docs/ble_sensor
             int type = data[0];
+
+            // Motion Sensor https://toio.github.io/toio-spec/docs/2.2.0/ble_sensor
             if (1 == type)
             {
                 var _shakeLevel = data[5];
@@ -388,6 +391,17 @@ namespace toio
                 {
                     this.shakeLevel = _shakeLevel;
                     this.shakeCallback.Notify(this);
+                }
+            }
+            // Magnetic Sensor https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor
+            else if (2 == type)
+            {
+                var _magnetState = (MagnetState) data[1];
+
+                if (_magnetState != this.magnetState)
+                {
+                    this.magnetState = _magnetState;
+                    this.magnetStateCallback.Notify(this);
                 }
             }
         }

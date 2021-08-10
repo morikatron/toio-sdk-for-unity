@@ -75,6 +75,10 @@ namespace toio
         public virtual int rightSpeed {
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
+        // コアキューブの磁石状態
+        public virtual MagnetState magnetState {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -333,6 +337,7 @@ namespace toio
         public virtual CallbackProvider<Cube> shakeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // モータースピードコールバック
         public virtual CallbackProvider<Cube> motorSpeedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        public virtual CallbackProvider<Cube> magnetStateCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
         public Cube()
         {
@@ -457,6 +462,15 @@ namespace toio
             Always = 0,
             OnChanged = 1,
             Balanced = 0xff
+        }
+
+        // 磁石の状態 https://toio.github.io/toio-spec/docs/2.2.0/hardware_magnet#磁石のレイアウト仕様
+        public enum MagnetState: byte
+        {
+            None = 0, // 未装着
+            S_Center = 1, N_Center = 2,
+            S_Right = 3, N_Right = 4,
+            S_Left = 5, N_Left = 6
         }
 
         // 効果音
