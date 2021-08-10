@@ -209,7 +209,7 @@ namespace toio.Simulator
         }
 
         // ---------- Request Sensor -----------
-        public override void RequestSensor()
+        public override void RequestMotionSensor()
         {
             this.InvokeMotionSensorCallback();
         }

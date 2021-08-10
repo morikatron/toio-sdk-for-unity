@@ -348,7 +348,7 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_sensor#書き込み操作
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public override void RequestSensor(ORDER_TYPE order)
+        public override void RequestMotionSensor(ORDER_TYPE order)
         {
             if (!this.isConnected) { return; }
 

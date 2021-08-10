@@ -215,7 +215,7 @@ namespace toio.Simulator
         public virtual void ConfigMagneticSensor(bool enabled)
         { NotSupportedWarning(); }
 
-        public virtual void RequestSensor()
+        public virtual void RequestMotionSensor()
         { NotSupportedWarning(); }
 
         protected virtual void NotSupportedWarning()

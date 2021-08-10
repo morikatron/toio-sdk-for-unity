@@ -301,7 +301,7 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求
         /// </summary>
         /// <param name="order">命令の優先度</param>
-        public virtual void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+        public virtual void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック

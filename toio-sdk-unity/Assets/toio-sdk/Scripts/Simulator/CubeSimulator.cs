@@ -622,9 +622,9 @@ namespace toio.Simulator
             DelayCommand(() => impl.ConfigMagneticSensor(enabled));
         }
 
-        public void RequestSensor()
+        public void RequestMotionSensor()
         {
-            DelayCommand(() => impl.RequestSensor());
+            DelayCommand(() => impl.RequestMotionSensor());
         }
 
 

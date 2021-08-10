@@ -31,7 +31,7 @@ namespace toio.tutorial
         private IEnumerator DelayedRequestSensor(Cube cube)
         {
             yield return new WaitForSecondsRealtime(0.05f);
-            cube.RequestSensor();
+            cube.RequestMotionSensor();
         }
 
         void OnSlope(Cube c)

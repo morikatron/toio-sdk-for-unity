@@ -593,9 +593,9 @@ namespace toio
             await this.configMagneticSensorRequest.Run();
         }
 
-        public override void RequestSensor(ORDER_TYPE order)
+        public override void RequestMotionSensor(ORDER_TYPE order)
         {
-            this.simulator.RequestSensor();
+            this.simulator.RequestMotionSensor();
         }
 
 
