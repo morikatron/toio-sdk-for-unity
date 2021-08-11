@@ -80,6 +80,13 @@ namespace toio
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
 
+        // ver2.3.0
+        // コアキューブの磁石状態
+        public virtual Vector3 magneticForce {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -296,6 +303,19 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual UniTask ConfigMagneticSensor(MagneticSensorMode mode, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
+        /// <summary>
+        /// キューブの磁気センサーの機能のモードを設定します。デフォルトでは無効化されています。(v2.3.0から対応)
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定
+        /// </summary>
+        /// <param name="mode">モード</param>
+        /// <param name="interval">通知間隔(20 ミリ秒単位) (v2.3.0以上対応)</param>
+        /// <param name="notificationType">通知条件 (v2.3.0以上対応)</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+
 
         /// <summary>
         /// モーションセンサー情報を要求します
@@ -355,6 +375,11 @@ namespace toio
         public virtual CallbackProvider<Cube> motorSpeedCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
         // 磁石状態コールバック
         public virtual CallbackProvider<Cube> magnetStateCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+
+        // ver2.3.0
+        // 磁力検出コールバック
+        public virtual CallbackProvider<Cube> magneticForceCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+
 
         public Cube()
         {
@@ -494,6 +519,12 @@ namespace toio
             S_Center = 1, N_Center = 2,
             S_Right = 3, N_Right = 4,
             S_Left = 5, N_Left = 6
+        }
+
+        // 磁気センサーの機能設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-1
+        public enum MagneticSensorNotificationType: byte
+        {
+            Always = 0, OnChanged = 1
         }
 
         // 効果音
