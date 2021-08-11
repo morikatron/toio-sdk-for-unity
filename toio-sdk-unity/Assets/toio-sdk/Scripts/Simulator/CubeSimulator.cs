@@ -617,9 +617,9 @@ namespace toio.Simulator
             DelayCommand(() => impl.ConfigIDMissedNotification(sensitivity));
         }
 
-        public void ConfigMagneticSensor(bool enabled)
+        public void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
         {
-            DelayCommand(() => impl.ConfigMagneticSensor(enabled));
+            DelayCommand(() => impl.ConfigMagneticSensor(mode));
         }
 
         public void RequestMotionSensor()

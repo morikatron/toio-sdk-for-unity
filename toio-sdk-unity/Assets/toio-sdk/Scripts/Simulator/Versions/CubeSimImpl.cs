@@ -212,7 +212,7 @@ namespace toio.Simulator
         public virtual void ConfigIDMissedNotification(int sensitivity)
         { NotSupportedWarning(); }
 
-        public virtual void ConfigMagneticSensor(bool enabled)
+        public virtual void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
         { NotSupportedWarning(); }
 
         public virtual void RequestMotionSensor()

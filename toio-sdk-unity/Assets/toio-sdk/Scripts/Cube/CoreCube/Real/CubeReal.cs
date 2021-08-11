@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace toio
 {
@@ -26,6 +28,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
+        protected bool isInitialized = false;
         public BLEPeripheralInterface peripheral { get; private set; }
         public Dictionary<string, BLECharacteristicInterface> characteristicTable { get; private set; }
         public bool isCharacteristicReady { get; private set; }
@@ -49,6 +52,7 @@ namespace toio
             peripheral.AddConnectionListener(key, peri =>
                 {
                     if (!peri.isConnected) {
+                        isInitialized = false;
                         SetCharacteristicTable(null);
                         peripheral.RemoveConnectionListener(key);
                     }
@@ -56,6 +60,7 @@ namespace toio
             );
             SetCharacteristicTable(characteristicTable);
             await UniTask.Delay(0);
+            isInitialized = true;
         }
 
         private void SetCharacteristicTable(Dictionary<string, BLECharacteristicInterface> characteristicTable)
@@ -84,5 +89,55 @@ namespace toio
             CubeOrderBalancer.Instance.DEBUG_AddOrder(this, () => this.characteristicTable[characteristicName].WriteValue(buff, withResponse), order, DEBUG_name, DEBUG_plist);
 #endif
         }
+
+        protected class RequestInfo
+        {
+            public float deadline;
+            public Action<bool, Cube> callback;
+            public ORDER_TYPE order;
+            public bool isRequesting = true;
+            public bool hasConfigResponse = false;
+            public bool isConfigResponseSucceeded = false;
+            public bool wasTimeOut = false;
+            public bool hasReceivedData = false;
+        }
+
+        protected async UniTask<bool> WaitForNewRequest(RequestInfo request, Action<bool,Cube> callback, float deadline)
+        {
+            // 既に別の命令が実行されている場合は待機する
+            while (null != request && request.isRequesting)
+            {
+                if (deadline < Time.time)
+                {
+                    callback?.Invoke(false, this);
+                    return false;
+                }
+                await UniTask.Delay(50);
+            }
+            return true;
+        }
+
+        protected async UniTask RunConfigRequest(RequestInfo request, Action action)
+        {
+            while(!request.hasConfigResponse)
+            {
+                if (request.deadline < Time.time)
+                {
+                    request.wasTimeOut = true;
+                    break;
+                }
+
+                if (!this.isConnected || !this.isInitialized)
+                {
+                    await UniTask.Delay(50);
+                    continue;
+                }
+
+                action.Invoke();
+                await UniTask.Delay(100);
+            }
+            request.isRequesting = false;
+        }
+
     }
 }

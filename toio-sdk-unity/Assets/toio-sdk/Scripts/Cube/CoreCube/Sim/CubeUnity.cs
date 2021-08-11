@@ -571,7 +571,7 @@ namespace toio
             await this.configIDMissedNotificationRequest.Run();
         }
 
-        public override async UniTask ConfigMagneticSensor(bool valid, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             var deadline = Time.time + timeOutSec;
             bool available = await this.configMagneticSensorRequest.WaitForAccess(deadline);
@@ -584,9 +584,9 @@ namespace toio
             this.configMagneticSensorRequest.quest = () =>
             {
 #if RELEASE
-                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigMagneticSensor(valid), order);
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigMagneticSensor(mode), order);
 #else
-                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigMagneticSensor(valid), order, "ConfigMagneticSensor", valid);
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigMagneticSensor(mode), order, "ConfigMagneticSensor", mode);
 #endif
             };
 

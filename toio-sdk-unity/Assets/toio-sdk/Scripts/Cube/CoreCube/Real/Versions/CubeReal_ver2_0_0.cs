@@ -332,6 +332,7 @@ namespace toio
         public override async UniTask Initialize(Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             await base.Initialize(characteristicTable);
+            isInitialized = false;
 
             characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
 #if !UNITY_EDITOR && UNITY_ANDROID
@@ -351,6 +352,7 @@ namespace toio
 #if !UNITY_EDITOR && UNITY_ANDROID
             await UniTask.Delay(500);
 #endif
+            isInitialized = true;
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
