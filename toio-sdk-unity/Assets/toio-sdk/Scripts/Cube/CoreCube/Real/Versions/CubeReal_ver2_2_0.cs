@@ -147,7 +147,7 @@ namespace toio
                 }
 
                 request();
-                await UniTask.Delay(100);
+                await UniTask.Delay(200);
             }
             this.motorReadRequest.isRequesting = false;
             callback?.Invoke(this.motorReadRequest.isConfigResponseSucceeded, this);
