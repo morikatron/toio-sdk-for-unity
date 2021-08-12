@@ -210,7 +210,8 @@ namespace toio.Simulator
             // 水平検出
             if (cube.isSimulateSloped)
             {
-                cube.sloped = Vector3.Angle(Vector3.up, cube.transform.up)>slopeThreshold;
+                var slopedAngle = Vector3.Angle(Vector3.up, cube.transform.up);
+                cube.sloped = slopedAngle > slopeThreshold && slopedAngle < 180-slopeThreshold;
             }
 
             // 衝突検出
