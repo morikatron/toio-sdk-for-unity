@@ -14,6 +14,9 @@ namespace toio.Simulator
         // === Global ===
         public static Object current { get; set; }　// currently object under interaction
 
+        [SerializeField]
+        public Camera targetCamera;
+
         CubeSimulator cube;
         Rigidbody rb;
 
@@ -253,7 +256,7 @@ namespace toio.Simulator
             cubeIndicator.eulerAngles = cube.transform.eulerAngles;
 
             // Following mouse
-            var camera = Camera.main;
+            var camera = targetCamera != null ? targetCamera : Camera.main;
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             var hits = Physics.RaycastAll(ray);
             System.Array.Sort(hits, (x,y) => x.distance.CompareTo(y.distance));
@@ -343,7 +346,7 @@ namespace toio.Simulator
 
         void PullCube()
         {
-            var camera = Camera.main;
+            var camera = targetCamera != null ? targetCamera : Camera.main;
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             var t = (pullInitialY - ray.origin.y) / ray.direction.y;
             Vector3 dragEndPos = new Vector3(
