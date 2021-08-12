@@ -18,7 +18,7 @@ namespace toio.Android.Data {
         Action<string, string> writeCharacteristicAct;
         Action<string, string, byte[]> notifiedCharacteristicAct;
         Action<string> unsubscribeAct;
-    
+
         public void SetReadAct(Action<string, string, byte[]> act)
         {
             this.readChracteristicAct = act;
@@ -47,18 +47,18 @@ namespace toio.Android.Data {
 
         public void SetNotifyAct(Action<string, string, byte[]> act)
         {
-            this.readChracteristicAct = act;
+            this.notifiedCharacteristicAct = act;
         }
         public void RemoveNotifyAct()
         {
-            this.readChracteristicAct = null;
+            this.notifiedCharacteristicAct = null;
         }
 
         public void CallNotify(string service,string characteristic,byte [] data)
         {
-            if (this.readChracteristicAct != null)
+            if (this.notifiedCharacteristicAct != null)
             {
-                this.readChracteristicAct(service, characteristic, data);
+                this.notifiedCharacteristicAct(service, characteristic, data);
             }
         }
 
