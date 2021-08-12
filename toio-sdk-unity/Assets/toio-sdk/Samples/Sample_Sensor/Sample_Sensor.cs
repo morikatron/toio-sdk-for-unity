@@ -7,17 +7,19 @@ public class Sample_Sensor : MonoBehaviour
 {
     Cube cube;
 
-    UnityEngine.UI.Text textBattery;
-    UnityEngine.UI.Text textFlat;
-    UnityEngine.UI.Text textCollision;
-    UnityEngine.UI.Text textButton;
-    UnityEngine.UI.Text textPositionID;
-    UnityEngine.UI.Text textStandardID;
-    UnityEngine.UI.Text textAngle;
-    UnityEngine.UI.Text textDoubleTap;
-    UnityEngine.UI.Text textPose;
-    UnityEngine.UI.Text textShake;
-    UnityEngine.UI.Text textSpeed;
+    Text textBattery;
+    Text textFlat;
+    Text textCollision;
+    Text textButton;
+    Text textPositionID;
+    Text textStandardID;
+    Text textAngle;
+    Text textDoubleTap;
+    Text textPose;
+    Text textShake;
+    Text textSpeed;
+    Text textMagnet;
+    Text textMagForce;
 
     async void Start()
     {
@@ -33,6 +35,8 @@ public class Sample_Sensor : MonoBehaviour
         this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
         this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
+        this.textMagnet = GameObject.Find("TextMagnet").GetComponent<Text>();
+        this.textMagForce = GameObject.Find("TextMagForce").GetComponent<Text>();
 
         // Cube の接続
         var peripheral = await new NearestScanner().Scan();
@@ -47,11 +51,21 @@ public class Sample_Sensor : MonoBehaviour
         cube.idCallback.AddListener("Sample_Sensor", OnUpdateID);                  // 座標角度イベント
         cube.standardIdCallback.AddListener("Sample_Sensor", OnUpdateStandardId);  // standardIdイベント
         cube.idMissedCallback.AddListener("Sample_Sensor", OnMissedID);            // 座標角度 missedイベント
-        cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedID);    // standardId missedイベント
+        cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedStandardID);    // standardId missedイベント
         cube.poseCallback.AddListener("Sample_Sensor", OnPose);                    // 姿勢イベント
         cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);          // ダブルタップイベント
-        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  //
-        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             //
+        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  // Shake
+        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             // Motor Speed
+        cube.magnetStateCallback.AddListener("Sample_Sensor", OnMagnetState);      // Magnet State
+        cube.magneticForceCallback.AddListener("Sample_Sensor", OnMagForce);       // Magnetic Force
+
+        await cube.ConfigIDNotification(100);
+        await cube.ConfigIDMissedNotification(100);
+        await cube.ConfigMagneticSensor(
+            Cube.MagneticSensorMode.MagneticForce,
+            interval:1,
+            notificationType:Cube.MagneticSensorNotificationType.OnChanged
+        );
     }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
@@ -151,25 +165,32 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnUpdateID(Cube c)
     {
-        this.textPositionID.text = "PositionID:" + " X=" + c.pos.x.ToString() + " Y=" + c.pos.y.ToString();
+        this.textPositionID.text = "PosID:" + " X=" + c.pos.x.ToString() + " Y=" + c.pos.y.ToString();
         this.textAngle.text = " Angle: " + c.angle.ToString();
+        Debug.LogWarning("pos = " + c.pos.x.ToString() + ", " + c.pos.y.ToString());
     }
 
     public void OnUpdateStandardId(Cube c)
     {
         this.textStandardID.text =  "StandardID: " + c.standardId.ToString();
         this.textAngle.text = " Angle: " + c.angle.ToString();
+        Debug.LogWarning("stdid = " + c.standardId.ToString());
     }
 
     public void OnMissedID(Cube c)
     {
         this.textPositionID.text = "PositionID Missed";
+        this.textAngle.text = "Angle Missed";
+    }
+    public void OnMissedStandardID(Cube c)
+    {
         this.textStandardID.text = "StandardID Missed";
         this.textAngle.text = "Angle Missed";
     }
 
     public void OnSpeed(Cube c)
     {
+        Debug.LogWarning("Speed = " + " L=" + c.leftSpeed.ToString() + " R=" + c.rightSpeed.ToString());
         this.textSpeed.text = "Speed:" + " L=" + c.leftSpeed.ToString() + " R=" + c.rightSpeed.ToString();
     }
 
@@ -177,4 +198,18 @@ public class Sample_Sensor : MonoBehaviour
     {
         this.textShake.text = "Shake: " + c.shakeLevel.ToString();
     }
+
+    public void OnMagnetState(Cube c)
+    {
+        this.textMagnet.text = "Magnet: " + c.magnetState.ToString();
+    }
+
+    public void OnMagForce(Cube c)
+    {
+        int x = (int) c.magneticForce.x;
+        int y = (int) c.magneticForce.y;
+        int z = (int) c.magneticForce.z;
+        this.textMagForce.text = "MagForce=(" + x + ", " + y + ", " + z + ")";
+    }
+
 }
