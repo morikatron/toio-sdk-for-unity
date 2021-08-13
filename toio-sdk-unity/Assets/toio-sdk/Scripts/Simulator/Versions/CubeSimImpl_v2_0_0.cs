@@ -97,7 +97,7 @@ namespace toio.Simulator
             // 読み取りセンサーを模擬
             // Simuate Position ID & Standard ID Sensor
             RaycastHit hit;
-            Vector3 gposSensor = cube.transform.Find("sensor").position;
+            Vector3 gposSensor = cube.transform.Find("IDSensor").position;
             Ray ray = new Ray(gposSensor, -cube.transform.up);
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < 0.005f){
