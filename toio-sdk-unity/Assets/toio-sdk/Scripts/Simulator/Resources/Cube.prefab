@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11db91d6fc205dedaa64396bef9937c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 2
+  version: 3
   powerStart: 1
   motorTau: 0.04
   delay: 0.13
