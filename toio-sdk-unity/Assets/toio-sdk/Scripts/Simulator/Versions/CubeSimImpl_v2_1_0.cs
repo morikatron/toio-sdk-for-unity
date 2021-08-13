@@ -17,8 +17,6 @@ namespace toio.Simulator
 
         protected virtual void MotorSetCmd(MotorCmdType type, object cmd)
         {
-            // var timeCmd = (MotorTimeCmd)cmd;
-
             // ------ Overwrite Events ------
 
             // TargetCmd -> Any
@@ -78,7 +76,12 @@ namespace toio.Simulator
                     // newCmd.acc = 0;    // 直ちに目標速度にする      ※仕様書
                 this.motorAccCmd = newCmd;
             }
+            else if (type == MotorCmdType.MotorTimeCmd)
+            {
+                this.motorTimeCmd = (MotorTimeCmd)cmd;
+            }
 
+            // Set motorCmdType
             if (initSuccess) this.motorCmdType = type;
             else this.motorCmdType = MotorCmdType.None;
         }
