@@ -43,8 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &565281998567433634
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,8 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &1187996923454953448
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,8 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &1483082144610847988
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,6 +408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &2827180228429044437
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &2869498222816167521
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &3109839897163378701
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,8 +544,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &3458491505153603281
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,6 +631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &4520312669873179779
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,8 +675,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &5259601004941815209
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,8 +721,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &5487945530176171892
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,6 +769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &5566876859949505442
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,8 +813,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &6190438087256129498
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,8 +859,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &6669649212704043201
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,6 +907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &6978455877849179424
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,6 +953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &7090465348382858300
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,8 +997,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: -14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &8019228207196654972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,6 +1045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &8548173888665949391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,7 +1058,7 @@ GameObject:
   - component: {fileID: 8306175705903958879}
   m_Layer: 0
   m_Name: Magnet
-  m_TagString: Untagged
+  m_TagString: t4u_Magnet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1078,6 +1095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 0
   relativePermeability: 1
+  maxDistance: 0.05
 --- !u!1 &8836826622244943642
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,3 +1141,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxwell: 14
   relativePermeability: 1
+  maxDistance: 0.05

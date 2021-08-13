@@ -16,6 +16,9 @@ namespace toio.Simulator
         [SerializeField, TooltipAttribute("relative permeability")]
         public float relativePermeability = 1;
 
+        [SerializeField, TooltipAttribute("H of position further than this distance will be 0.")]
+        public float maxDistance = 0.05f;
+
         public float mu => mu0 * relativePermeability;
 
 
@@ -32,11 +35,14 @@ namespace toio.Simulator
             var src = transform.position;
             var dpos = pos - src;
             var r = dpos.magnitude;
-            return maxwell / (4 * Mathf.PI * mu * r * r * r) * dpos;
+            if (r > maxDistance) return Vector3.zero;
+            return maxwell * 10e-8f / (4 * Mathf.PI * mu * r * r * r) * dpos;
         }
 
         public Vector3 SumUpH(Vector3 pos)
         {
+            if (Vector3.Distance(pos, transform.position) > maxDistance) return Vector3.zero;
+
             var magnets = GetComponentsInChildren<Magnet>();
             Vector3 h = Vector3.zero;
             foreach (var magnet in magnets)
