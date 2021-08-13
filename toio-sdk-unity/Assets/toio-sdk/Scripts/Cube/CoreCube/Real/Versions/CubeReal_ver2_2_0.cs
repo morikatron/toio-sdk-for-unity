@@ -109,6 +109,11 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public override async UniTask ConfigMotorRead(bool valid, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
         {
+            if (this.motorReadRequest == null) this.motorReadRequest = new RequestInfo(this);
+            if (!this.isConnected || !this.isInitialized)
+            {
+                callback?.Invoke(false, this); return;
+            }
 #if !RELEASE
             const float minTimeOut = 0.5f;
             if (minTimeOut > timeOutSec)
@@ -116,17 +121,12 @@ namespace toio
                 Debug.LogWarningFormat("[CubeReal_ver2_2_0.ConfigMotorRead]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
             }
 #endif
-            var deadline = Time.time + timeOutSec;
-            bool availabe = await WaitForNewRequest(this.motorReadRequest, callback, deadline);
+            bool availabe = await this.motorReadRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
             this.requestedMotorReadValid = valid;
-            this.motorReadRequest = new RequestInfo();
-            this.motorReadRequest.deadline = deadline;
-            this.motorReadRequest.callback = callback;
-            this.motorReadRequest.order = order;
 
-            Action request = (() =>
+            this.motorReadRequest.request = (() =>
             {
                 byte[] buff = new byte[3];
                 buff[0] = 0x1c;
@@ -134,10 +134,7 @@ namespace toio
                 buff[2] = BitConverter.GetBytes(valid)[0];
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMotorRead", valid, timeOutSec, callback, order);
             });
-
-            await RunConfigRequest(this.motorReadRequest, request);
-
-            callback?.Invoke(this.motorReadRequest.isConfigResponseSucceeded, this);
+            await this.motorReadRequest.Run();
         }
 
         /// <summary>
@@ -150,6 +147,11 @@ namespace toio
         public override async UniTask ConfigIDNotification(int interval, IDNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
+            if (this.idNotificationRequest == null) this.idNotificationRequest = new RequestInfo(this);
+            if (!this.isConnected || !this.isInitialized)
+            {
+                callback?.Invoke(false, this); return;
+            }
 #if !RELEASE
             const float minTimeOut = 0.5f;
             if (minTimeOut > timeOutSec)
@@ -157,16 +159,10 @@ namespace toio
                 Debug.LogWarningFormat("[CubeReal_ver2_2_0.ConfigIDNotification]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
             }
 #endif
-            var deadline = Time.time + timeOutSec;
-            bool availabe = await WaitForNewRequest(this.idNotificationRequest, callback, deadline);
+            bool availabe = await this.idNotificationRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
-            this.idNotificationRequest = new RequestInfo();
-            this.idNotificationRequest.deadline = deadline;
-            this.idNotificationRequest.callback = callback;
-            this.idNotificationRequest.order = order;
-
-            Action request = (() =>
+            this.idNotificationRequest.request = () =>
             {
                 byte[] buff = new byte[4];
                 buff[0] = 0x18;
@@ -174,11 +170,8 @@ namespace toio
                 buff[2] = BitConverter.GetBytes(Mathf.Clamp(interval, 0, 255))[0];
                 buff[3] = (byte)notificationType;
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDNotification", interval, notificationType, timeOutSec, callback, order);
-            });
-
-            await RunConfigRequest(this.idNotificationRequest, request);
-
-            callback?.Invoke(this.idNotificationRequest.isConfigResponseSucceeded, this);
+            };
+            await this.idNotificationRequest.Run();
         }
 
 
@@ -191,6 +184,11 @@ namespace toio
         public override async UniTask ConfigIDMissedNotification(int sensitivity,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
+            if (this.idMissedNotificationRequest == null) this.idMissedNotificationRequest = new RequestInfo(this);
+            if (!this.isConnected || !this.isInitialized)
+            {
+                callback?.Invoke(false, this); return;
+            }
 #if !RELEASE
             const float minTimeOut = 0.5f;
             if (minTimeOut > timeOutSec)
@@ -198,27 +196,18 @@ namespace toio
                 Debug.LogWarningFormat("[CubeReal_ver2_2_0.ConfigIDMissedNotification]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
             }
 #endif
-            var deadline = Time.time + timeOutSec;
-            bool availabe = await WaitForNewRequest(this.idMissedNotificationRequest, callback, deadline);
+            bool availabe = await this.idMissedNotificationRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
-            this.idMissedNotificationRequest = new RequestInfo();
-            this.idMissedNotificationRequest.deadline = deadline;
-            this.idMissedNotificationRequest.callback = callback;
-            this.idMissedNotificationRequest.order = order;
-
-            Action request = (() =>
+            this.idMissedNotificationRequest.request = () =>
             {
                 byte[] buff = new byte[3];
                 buff[0] = 0x19;
                 buff[1] = 0;
                 buff[2] = BitConverter.GetBytes(Mathf.Clamp(sensitivity, 0, 255))[0];
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDMissedNotification", sensitivity, timeOutSec, callback, order);
-            });
-
-            await RunConfigRequest(this.idMissedNotificationRequest, request);
-
-            callback?.Invoke(this.idMissedNotificationRequest.isConfigResponseSucceeded, this);
+            };
+            await this.idMissedNotificationRequest.Run();
         }
 
         /// <summary>
@@ -231,6 +220,11 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
         {
+            if (this.magneticSensorRequest == null) this.magneticSensorRequest = new RequestInfo(this);
+            if (!this.isConnected || !this.isInitialized)
+            {
+                callback?.Invoke(false, this); return;
+            }
 #if !RELEASE
             const float minTimeOut = 0.5f;
             if (minTimeOut > timeOutSec)
@@ -245,28 +239,20 @@ namespace toio
                 return;
             }
 
-            var deadline = Time.time + timeOutSec;
-            bool availabe = await WaitForNewRequest(this.magneticSensorRequest, callback, deadline);
+            bool availabe = await this.magneticSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
             this.requestedMagneticSensorMode = mode;
-            this.magneticSensorRequest = new RequestInfo();
-            this.magneticSensorRequest.deadline = deadline;
-            this.magneticSensorRequest.callback = callback;
-            this.magneticSensorRequest.order = order;
 
-            Action request = (() =>
+            this.magneticSensorRequest.request = () =>
             {
                 byte[] buff = new byte[3];
                 buff[0] = 0x1b;
                 buff[1] = 0;
                 buff[2] = (byte) mode;
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMagneticSensor", mode, timeOutSec, callback, order);
-            });
-
-            await RunConfigRequest(this.magneticSensorRequest, request);
-
-            callback?.Invoke(this.magneticSensorRequest.isConfigResponseSucceeded, this);
+            };
+            await this.magneticSensorRequest.Run();
         }
 
         /// <summary>

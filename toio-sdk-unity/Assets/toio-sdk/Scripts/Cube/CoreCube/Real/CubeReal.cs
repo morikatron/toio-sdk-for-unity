@@ -90,54 +90,5 @@ namespace toio
 #endif
         }
 
-        protected class RequestInfo
-        {
-            public float deadline;
-            public Action<bool, Cube> callback;
-            public ORDER_TYPE order;
-            public bool isRequesting = true;
-            public bool hasConfigResponse = false;
-            public bool isConfigResponseSucceeded = false;
-            public bool wasTimeOut = false;
-            public bool hasReceivedData = false;
-        }
-
-        protected async UniTask<bool> WaitForNewRequest(RequestInfo request, Action<bool,Cube> callback, float deadline)
-        {
-            // 既に別の命令が実行されている場合は待機する
-            while (null != request && request.isRequesting)
-            {
-                if (deadline < Time.time)
-                {
-                    callback?.Invoke(false, this);
-                    return false;
-                }
-                await UniTask.Delay(50);
-            }
-            return true;
-        }
-
-        protected async UniTask RunConfigRequest(RequestInfo request, Action action)
-        {
-            while(!request.hasConfigResponse)
-            {
-                if (request.deadline < Time.time)
-                {
-                    request.wasTimeOut = true;
-                    break;
-                }
-
-                if (!this.isConnected || !this.isInitialized)
-                {
-                    await UniTask.Delay(50);
-                    continue;
-                }
-
-                action.Invoke();
-                await UniTask.Delay(100);
-            }
-            request.isRequesting = false;
-        }
-
     }
 }
