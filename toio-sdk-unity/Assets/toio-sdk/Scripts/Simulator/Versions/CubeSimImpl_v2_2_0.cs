@@ -151,13 +151,47 @@ namespace toio.Simulator
 
 
         // ============ Magnetic Sensor ============
+        // ------ Configs ------
+        protected Cube.MagneticSensorMode magneticSensorMode = Cube.MagneticSensorMode.Off;
+
+        private Action<bool> configMagneticSensorCallback = null;
+        public override void StartNotification_ConfigMagneticSensor(Action<bool> action)
+        {
+            this.configMagneticSensorCallback = action;
+        }
+        public override void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
+        {
+            if (mode > Cube.MagneticSensorMode.MagnetState) return;
+            this.configIDMissedNotificationCallback?.Invoke(true);
+            this.magneticSensorMode = mode;
+        }
 
         // ------ Configs ------
-        protected bool magneticSensorEnabled = false;
+        public override void RequestMagneticSensor()
+        {
+            // TODO run SimulateMagneticSensor?
+            this.magnetStateCallback?.Invoke(this.magnetState);
+        }
 
-        // ------ Callbacks ------
-        private Action<bool> configMagneticSensorCallback = null;
+        // ------ Magnet State ------
+        public override Cube.MagnetState magnetState {get; protected set; }
+        protected Action<Cube.MagnetState> magnetStateCallback = null;
+        public override void StartNotification_MagnetState(Action<Cube.MagnetState> action)
+        {
+            this.magnetStateCallback = action;
 
+        }
+
+        // protected virtual void _SetMagnet
+
+        protected virtual void SimulateMagneticSensor()
+        {
+            var force = cube._GetMagneticForce();
+        }
+        protected virtual void ResetMagneticSensor()
+        {
+
+        }
 
 
         // ============ Motion Sensor ============
@@ -279,12 +313,20 @@ namespace toio.Simulator
             SimulateIDSensor();
             SimulateMotionSensor();
             SimulateMotorSpeedSensor();
+            SimulateMagneticSensor();
 
             float currentTime = Time.fixedTime;
             MotorScheduler(currentTime);
             LightScheduler(currentTime);
             SoundScheduler(currentTime);
             SimulateMotor();
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+
+            ResetMagneticSensor();
         }
 
     }

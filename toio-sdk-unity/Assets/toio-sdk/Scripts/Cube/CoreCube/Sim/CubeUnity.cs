@@ -671,10 +671,47 @@ namespace toio
             await this.configMagneticSensorRequest.Run();
         }
 
-        public override void RequestMotionSensor(ORDER_TYPE order)
+        public override void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong)
         {
-            this.simulator.RequestMotionSensor();
+#if RELEASE
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.RequestMotionSensor(), order);
+#else
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.RequestMotionSensor(), order, "RequestMotionSensor");
+#endif
         }
+
+        public override void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+#if RELEASE
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.RequestMagneticSensor(), order);
+#else
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.RequestMagneticSensor(), order, "RequestMagneticSensor");
+#endif
+        }
+
+        // -------- ver2.3.0 --------
+        public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            if (this.configMagneticSensorRequest == null) this.configMagneticSensorRequest = new RequestInfo(this);
+
+            bool available = await this.configMagneticSensorRequest.GetAccess(Time.time + timeOutSec, callback);
+            if (!available) return;
+
+            this.requestedMagneticSensorMode = mode;
+
+            this.configMagneticSensorRequest.request = () =>
+            {
+#if RELEASE
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigMagneticSensor(mode, interval, notificationType), order);
+#else
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigMagneticSensor(mode, interval, notificationType), order, "ConfigMagneticSensor", mode, interval, notificationType);
+#endif
+            };
+
+            await this.configMagneticSensorRequest.Run();
+        }
+
 
         #endregion
 

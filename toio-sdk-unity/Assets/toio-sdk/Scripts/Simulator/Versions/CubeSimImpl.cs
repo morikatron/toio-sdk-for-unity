@@ -231,7 +231,6 @@ namespace toio.Simulator
         public virtual void ConfigMotorRead(bool enabled)
         { NotSupportedWarning(); }
 
-
         public virtual void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
         { NotSupportedWarning(); }
 
@@ -240,14 +239,14 @@ namespace toio.Simulator
 
         public virtual void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
         { NotSupportedWarning(); }
+        public virtual void ConfigMagneticSensor(Cube.MagneticSensorMode mode, int interval, Cube.MagneticSensorNotificationType notificationType)
+        { NotSupportedWarning(); }
 
         public virtual void RequestMotionSensor()
         { NotSupportedWarning(); }
 
-        protected virtual void NotSupportedWarning()
-        {
-            // Debug.LogWarning("Not Supported in this firmware version.");
-        }
+        public virtual void RequestMagneticSensor()
+        { NotSupportedWarning(); }
 
 
         // ============ Utils ============
@@ -255,5 +254,10 @@ namespace toio.Simulator
         {
             return (d%360 + 540)%360 -180;
         }
+        protected virtual void NotSupportedWarning()
+        {
+            // Debug.LogWarning("Not Supported in this firmware version.");
+        }
+
     }
 }

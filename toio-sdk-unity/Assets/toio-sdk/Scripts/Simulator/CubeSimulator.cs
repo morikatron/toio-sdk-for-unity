@@ -321,7 +321,7 @@ namespace toio.Simulator
         }
 
 
-        // ======== Physics Simulation ========
+        // ======== Hardware Simulation ========
         internal bool offGroundL = true;
         internal bool offGroundR = true;
         protected float speedL = 0;  // (m/s)
@@ -371,7 +371,7 @@ namespace toio.Simulator
         }
 
 
-        // ============ Event ============
+        #region ============ Event ============
 
         // ------------ v2.0.0 ------------
 
@@ -505,7 +505,11 @@ namespace toio.Simulator
             impl.StartNotification_MagneticForce(action);
         }
 
-        // ============ コマンド ============
+        #endregion
+
+
+
+        #region ============ コマンド ============
 
         private void DelayCommand(Action action)
         {
@@ -648,11 +652,24 @@ namespace toio.Simulator
             DelayCommand(() => impl.RequestMotionSensor());
         }
 
+        public void RequestMagneticSensor()
+        {
+            DelayCommand(() => impl.RequestMagneticSensor());
+        }
 
-        // ====== 内部関数 ======
+        // --------- 2.3.0 --------
 
-        // Sensor Triggers
+        public void ConfigMagneticSensor(Cube.MagneticSensorMode mode, int interval, Cube.MagneticSensorNotificationType notificationType)
+        {
+            DelayCommand(() => impl.ConfigMagneticSensor(mode, interval, notificationType));
+        }
 
+        #endregion
+
+
+        #region  ============ 内部関数 ============
+
+        // -------- Motion Sensor Triggers --------
         internal void _TriggerCollision()
         {
             if (!isConnected) return;
@@ -665,7 +682,7 @@ namespace toio.Simulator
             this.impl.TriggerDoubleTap();
         }
 
-        // 速度変化によって力を与え、位置と角度を更新
+        // -------- Motor --------
         internal void _SetSpeed(float speedL, float speedR)
         {
             this.rb.angularVelocity = transform.up * (float)((speedL - speedR) / TireWidthM);
@@ -673,6 +690,8 @@ namespace toio.Simulator
             var dv = vel - this.rb.velocity;
             this.rb.AddForce(dv, ForceMode.VelocityChange);
         }
+
+        // -------- LED --------
         internal void _SetLight(int r, int g, int b){
             r = Mathf.Clamp(r, 0, 255);
             g = Mathf.Clamp(g, 0, 255);
@@ -684,6 +703,7 @@ namespace toio.Simulator
             LED.GetComponent<Renderer>().material.color = Color.black;
         }
 
+        // -------- Sound --------
         private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
             if (soundId >= 128) { _StopSound(); return; }
@@ -706,7 +726,6 @@ namespace toio.Simulator
             audioSource.Stop();
         }
 
-        // Sound Preset を設定
         internal void _InitPresetSounds(){
             impl.presetSounds.Add( new Cube.SoundOperation[2]
             {
@@ -773,12 +792,31 @@ namespace toio.Simulator
             });
         }
 
+        // -------- Button --------
         internal void _SetPressed(bool pressed)
         {
             this.cubeModel.transform.localEulerAngles
                     = pressed? new Vector3(-93,0,0) : new Vector3(-90,0,0);
         }
 
+        // -------- Magnetic Sensor --------
+        internal Vector3 _GetMagneticForce()
+        {
+            var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+            var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
+
+            Vector3 magSensor = transform.Find("MagneticSensor").position;
+
+            Vector3 h = Vector3.zero;
+            foreach (var magnet in magnets)
+            {
+                h += magnet.SumUpH(magSensor);
+            }
+
+            return new Vector3(h.z, h.x, -h.y);
+        }
+
+        #endregion
 
 
     }
