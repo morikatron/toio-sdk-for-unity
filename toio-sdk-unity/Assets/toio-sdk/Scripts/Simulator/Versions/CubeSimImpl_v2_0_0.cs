@@ -100,7 +100,7 @@ namespace toio.Simulator
             Vector3 gposSensor = cube.transform.Find("sensor").position;
             Ray ray = new Ray(gposSensor, -cube.transform.up);
             if (Physics.Raycast(ray, out hit)) {
-                if (hit.transform.gameObject.tag == "Mat" && hit.distance < 0.005f){
+                if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < 0.005f){
                     var mat = hit.transform.gameObject.GetComponent<Mat>();
                     var coord = mat.UnityCoord2MatCoord(cube.transform.position);
                     var deg = mat.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
@@ -108,7 +108,7 @@ namespace toio.Simulator
                     var xSensor = coordSensor.x; var ySensor = coordSensor.y;
                     _SetXYDeg(coord.x, coord.y, deg, xSensor, ySensor);
                 }
-                else if (hit.transform.gameObject.tag == "StandardID" && hit.distance < 0.005f)
+                else if (hit.transform.gameObject.tag == "t4u_StandardID" && hit.distance < 0.005f)
                 {
                     var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
                     var deg = stdID.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
