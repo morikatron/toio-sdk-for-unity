@@ -267,8 +267,9 @@ namespace toio.Simulator
         public override void ConfigMotorRead(bool enabled)
         {
             this.motorSpeedEnabled = enabled;
-            this.configMotorReadCallback?.Invoke(enabled);  // TODO probably not same as REAL
-            // this.motorReadCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
+            this.configMotorReadCallback?.Invoke(true);
+            if (enabled)
+                this.motorSpeedCallback?.Invoke(leftMotorSpeed, rightMotorSpeed);
         }
 
 
