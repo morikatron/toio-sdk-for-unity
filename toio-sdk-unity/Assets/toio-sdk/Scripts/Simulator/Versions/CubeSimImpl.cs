@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace toio.Simulator
@@ -75,36 +76,12 @@ namespace toio.Simulator
         // Double Tap
         internal virtual void TriggerDoubleTap()
         { NotSupportedWarning(); }
-        // Target Move
-        public virtual void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
-        { NotSupportedWarning(); }
-        // Multi Target Move
-        public virtual void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
-        { NotSupportedWarning(); }
 
         // ---------- 2.2.0 ----------
         // Shake
         public virtual int shakeLevel {
             get{ NotSupportedWarning(); return default; }
             internal set{ NotSupportedWarning(); }}
-        // Motor Speed
-        public virtual int leftMotorSpeed {
-            get{ NotSupportedWarning(); return default; }
-            protected set{ NotSupportedWarning(); }}
-        public virtual int rightMotorSpeed {
-            get{ NotSupportedWarning(); return default; }
-            protected set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
-        { NotSupportedWarning(); }
-        public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
-        { NotSupportedWarning(); }
-        public virtual void StartNotification_ConfigIDNotification(System.Action<bool> action)
-        { NotSupportedWarning(); }
-        public virtual void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
-        { NotSupportedWarning(); }
-        public virtual void StartNotification_ConfigMagneticSensor(System.Action<bool> action)
-        { NotSupportedWarning(); }
-
 
 
         // ============ Motor ============
@@ -128,6 +105,44 @@ namespace toio.Simulator
             motorCmdL = 0; motorCmdR = 0;
         }
 
+        // ---------- 2.1.0 ----------
+        // Target Move
+        public virtual void StartNotification_TargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+        // Multi Target Move
+        public virtual void StartNotification_MultiTargetMove(System.Action<int, Cube.TargetMoveRespondType> action)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.2.0 ----------
+        // Motor Speed
+        public virtual int leftMotorSpeed {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual int rightMotorSpeed {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MotorSpeed(System.Action<int, int> action)
+        { NotSupportedWarning(); }
+
+
+        // ============ Magnetic ============
+        // ---------- 2.2.0 ----------
+        // Magnet State
+        public virtual Cube.MagnetState magnetState {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MagnetState(System.Action<Cube.MagnetState> action)
+        { NotSupportedWarning(); }
+
+        // ---------- 2.3.0 ----------
+        // Magnetic Force
+        public virtual Vector3 magneticForce {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MagneticForce(System.Action<Vector3> action)
+        { NotSupportedWarning(); }
+
+
         // ============ Light ============
         protected enum LightCmdType : byte
         {
@@ -141,6 +156,16 @@ namespace toio.Simulator
             None, SoundSenarioCmd
         }
         protected SoundCmdType soundCmdType = SoundCmdType.None;
+
+        // ============ Config ============
+        public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigIDNotification(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigMagneticSensor(System.Action<bool> action)
+        { NotSupportedWarning(); }
 
 
         // ============ Commands ============
@@ -205,6 +230,7 @@ namespace toio.Simulator
         // ---------- 2.2.0 ----------
         public virtual void ConfigMotorRead(bool enabled)
         { NotSupportedWarning(); }
+
 
         public virtual void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
         { NotSupportedWarning(); }

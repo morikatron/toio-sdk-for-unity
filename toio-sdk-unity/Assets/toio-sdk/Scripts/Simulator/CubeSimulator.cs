@@ -429,7 +429,7 @@ namespace toio.Simulator
             impl.StartNotification_MotionSensor(action);
         }
 
-
+        // ------------ v2.1.0 ------------
         /// <summary>
         /// 目標指定付きモーター制御の応答コールバックを設定する
         /// </summary>
@@ -448,6 +448,7 @@ namespace toio.Simulator
             impl.StartNotification_MultiTargetMove(action);
         }
 
+        // ------------ v2.2.0 ------------
         /// <summary>
         /// モーター速度読み取りのイベントコールバックを設定する
         /// </summary>
@@ -455,6 +456,15 @@ namespace toio.Simulator
         {
             if (!isConnected) return;
             impl.StartNotification_MotorSpeed(action);
+        }
+
+        /// <summary>
+        /// 磁石状態読み取りのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_MagnetState(System.Action<Cube.MagnetState> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_MagnetState(action);
         }
 
         /// <summary>
@@ -485,6 +495,15 @@ namespace toio.Simulator
             impl.StartNotification_ConfigMagneticSensor(action);
         }
 
+        // ------------ v2.3.0 ------------
+        /// <summary>
+        /// 磁力読み取りのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_MagneticForce(System.Action<Vector3> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_MagneticForce(action);
+        }
 
         // ============ コマンド ============
 
