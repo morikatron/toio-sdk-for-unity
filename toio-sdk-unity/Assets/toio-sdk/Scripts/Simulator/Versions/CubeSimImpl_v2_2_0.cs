@@ -162,31 +162,70 @@ namespace toio.Simulator
         public override void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
         {
             if (mode > Cube.MagneticSensorMode.MagnetState) return;
-            this.configIDMissedNotificationCallback?.Invoke(true);
             this.magneticSensorMode = mode;
+            this.configIDMissedNotificationCallback?.Invoke(true);
         }
 
         // ------ Configs ------
         public override void RequestMagneticSensor()
         {
-            // TODO run SimulateMagneticSensor?
+            SimulateMagneticSensor();
             this.magnetStateCallback?.Invoke(this.magnetState);
         }
 
         // ------ Magnet State ------
         public override Cube.MagnetState magnetState {get; protected set; }
         protected Action<Cube.MagnetState> magnetStateCallback = null;
+
         public override void StartNotification_MagnetState(Action<Cube.MagnetState> action)
         {
             this.magnetStateCallback = action;
-
+            if (this.magneticSensorMode == Cube.MagneticSensorMode.MagnetState)
+                action?.Invoke(this.magnetState);
         }
 
-        // protected virtual void _SetMagnet
+        protected virtual void _SetMagnetState(Cube.MagnetState state)
+        {
+            if (state != this.magnetState)
+            {
+                this.magnetState = state;
+                this.magnetStateCallback?.Invoke(state);
+            }
+        }
+        protected virtual void SimulateMagnetState(Vector3 force)
+        {
+            if (this.magneticSensorMode != Cube.MagneticSensorMode.MagnetState)
+            {
+                this.magnetState = Cube.MagnetState.None;
+                return;
+            }
 
+            var e = force.normalized;
+            var m = force.magnitude;
+            const float orientThreshold = 0.95f;
+            Cube.MagnetState state = this.magnetState;
+
+            if (m > 9000 && Vector3.Dot(e, Vector3.forward) > orientThreshold)
+                state = Cube.MagnetState.N_Center;
+            else if (m > 9000 && Vector3.Dot(e, Vector3.back) > orientThreshold)
+                state = Cube.MagnetState.S_Center;
+            else if (m > 6000 && Vector3.Dot(e, new Vector3(0, -1, 1).normalized) > orientThreshold)
+                state = Cube.MagnetState.N_Right;
+            else if (m > 6000 && Vector3.Dot(e, new Vector3(0, 1, 1).normalized) > orientThreshold)
+                state = Cube.MagnetState.N_Left;
+            else if (m > 6000 && Vector3.Dot(e, new Vector3(0, 1, -1).normalized) > orientThreshold)
+                state = Cube.MagnetState.S_Right;
+            else if (m > 6000 && Vector3.Dot(e, new Vector3(0, -1, -1).normalized) > orientThreshold)
+                state = Cube.MagnetState.S_Left;
+            else if (m < 200)
+                state = Cube.MagnetState.None;
+
+            _SetMagnetState(state);
+        }
         protected virtual void SimulateMagneticSensor()
         {
             var force = cube._GetMagneticForce();
+            SimulateMagnetState(force);
         }
         protected virtual void ResetMagneticSensor()
         {
