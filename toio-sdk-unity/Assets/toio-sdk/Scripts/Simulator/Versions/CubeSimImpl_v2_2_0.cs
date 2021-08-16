@@ -154,7 +154,7 @@ namespace toio.Simulator
         // ------ Configs ------
         protected Cube.MagneticSensorMode magneticSensorMode = Cube.MagneticSensorMode.Off;
 
-        private Action<bool> configMagneticSensorCallback = null;
+        protected Action<bool> configMagneticSensorCallback = null;
         public override void StartNotification_ConfigMagneticSensor(Action<bool> action)
         {
             this.configMagneticSensorCallback = action;
@@ -163,7 +163,7 @@ namespace toio.Simulator
         {
             if (mode > Cube.MagneticSensorMode.MagnetState) return;
             this.magneticSensorMode = mode;
-            this.configIDMissedNotificationCallback?.Invoke(true);
+            this.configMagneticSensorCallback?.Invoke(true);
         }
 
         // ------ Configs ------
@@ -229,7 +229,10 @@ namespace toio.Simulator
         }
         protected virtual void ResetMagneticSensor()
         {
-
+            this.magneticSensorMode = Cube.MagneticSensorMode.Off;
+            this.magnetState = Cube.MagnetState.None;
+            this.magnetStateCallback = null;
+            this.configMagneticSensorCallback = null;
         }
 
 
