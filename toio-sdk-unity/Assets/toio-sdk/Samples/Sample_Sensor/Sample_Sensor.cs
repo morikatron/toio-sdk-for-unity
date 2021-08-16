@@ -59,11 +59,11 @@ public class Sample_Sensor : MonoBehaviour
         cube.magnetStateCallback.AddListener("Sample_Sensor", OnMagnetState);      // Magnet State
         cube.magneticForceCallback.AddListener("Sample_Sensor", OnMagForce);       // Magnetic Force
 
-        await cube.ConfigIDNotification(100);
-        await cube.ConfigIDMissedNotification(100);
+        await cube.ConfigIDNotification(10);        // 100ms interval
+        await cube.ConfigIDMissedNotification(10);  // 100ms interval
         await cube.ConfigMagneticSensor(
             Cube.MagneticSensorMode.MagneticForce,
-            interval:1,
+            interval:1,                             // 20ms interval
             notificationType:Cube.MagneticSensorNotificationType.OnChanged
         );
     }
@@ -167,14 +167,12 @@ public class Sample_Sensor : MonoBehaviour
     {
         this.textPositionID.text = "PosID:" + " X=" + c.pos.x.ToString() + " Y=" + c.pos.y.ToString();
         this.textAngle.text = " Angle: " + c.angle.ToString();
-        Debug.LogWarning("pos = " + c.pos.x.ToString() + ", " + c.pos.y.ToString());
     }
 
     public void OnUpdateStandardId(Cube c)
     {
         this.textStandardID.text =  "StandardID: " + c.standardId.ToString();
         this.textAngle.text = " Angle: " + c.angle.ToString();
-        Debug.LogWarning("stdid = " + c.standardId.ToString());
     }
 
     public void OnMissedID(Cube c)
@@ -190,7 +188,6 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnSpeed(Cube c)
     {
-        Debug.LogWarning("Speed = " + " L=" + c.leftSpeed.ToString() + " R=" + c.rightSpeed.ToString());
         this.textSpeed.text = "Speed:" + " L=" + c.leftSpeed.ToString() + " R=" + c.rightSpeed.ToString();
     }
 
