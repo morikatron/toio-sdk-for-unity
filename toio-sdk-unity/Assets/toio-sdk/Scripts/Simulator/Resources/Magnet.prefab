@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &565281998567433634
@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &1187996923454953448
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &1483082144610847988
@@ -406,7 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &2827180228429044437
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &2869498222816167521
@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &3109839897163378701
@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &3458491505153603281
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &4520312669873179779
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &5259601004941815209
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &5487945530176171892
@@ -767,7 +767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &5566876859949505442
@@ -813,7 +813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &6190438087256129498
@@ -859,7 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &6669649212704043201
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &6978455877849179424
@@ -951,7 +951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &7090465348382858300
@@ -997,7 +997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: -14
+  maxwell: -13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &8019228207196654972
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
 --- !u!1 &8548173888665949391
@@ -1139,6 +1139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd27284df22b4714382656abeff3ae36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxwell: 14
+  maxwell: 13
   relativePermeability: 1
   maxDistance: 0.05
