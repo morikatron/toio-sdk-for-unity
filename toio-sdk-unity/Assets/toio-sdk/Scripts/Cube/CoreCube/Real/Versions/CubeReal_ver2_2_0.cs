@@ -331,7 +331,8 @@ namespace toio
             else if (2 == type)
             {
                 var _magnetState = (MagnetState) data[1];
-                this.magneticSensorRequest.hasReceivedData = true;
+                if (this.magneticSensorRequest != null)
+                    this.magneticSensorRequest.hasReceivedData = true;
 
                 if (_magnetState != this._magnetState)
                 {
@@ -350,7 +351,8 @@ namespace toio
             int type = data[0];
             if (0xe0 == type)
             {
-                this.motorReadRequest.hasReceivedData = true;
+                if (this.motorReadRequest != null)
+                    this.motorReadRequest.hasReceivedData = true;
                 this._leftSpeed = data[1];
                 this._rightSpeed = data[2];
                 this.motorSpeedCallback.Notify(this);
