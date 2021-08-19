@@ -79,7 +79,7 @@ The following table shows the implementation correspondence.
 |                    | [Acquisition of magnetic sensor information](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
 | Motor           | [Obtaining motor speed information](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得)                                | o             | o            |
 | Settings               | [Setting up magnetic sensor](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)                                    | x             | x            |
-|                    | [Magnetic sensor setting response](https://toio.github.io/toio-spec/docs/ble_configuration#[磁気センサーの設定の応答)                       | x             | x            |
+|                    | [Magnetic sensor setting response](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定の応答)                       | x             | x            |
 |                    | [Setting up the acquisition of motor speed information](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)            | o             | o            |
 |                    | [Motor speed information acquisition setting response](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定の応答)| o             | o            |
 
