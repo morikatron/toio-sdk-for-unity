@@ -6,7 +6,7 @@
 
 1. Prepare the development environment ["Preparation"](preparation.md)
 2. Create a new project in Unity and load toio SDK for Unity ["toio SDK for Unity Installation"](download_sdk.md)
-3. (Optional)Install optional functions ["Install BLE communication for Mac"](usage_macble.md)
+3. (Optional)Install BLE plugin for Mac ["How to set up MacBLE"](usage_macble.md)
 <br><br>
 
 ### [2] Development

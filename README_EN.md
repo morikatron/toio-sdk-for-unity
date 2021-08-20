@@ -72,7 +72,7 @@ public class Hello_Toio : MonoBehaviour
   - Control Cube for a certain distance or angle with a single call
 - Navigator (advanced group control)
   - Human-like collision avoidance allows multiple cubes to avoid colliding with each other
-  - Bird-oid multiple Cubes to move as a herd
+  - Bird-oid allows Cubes to move as a herd
   - Collision avoidance and voids can be combined and run simultaneously
   - In addition to moving to the target, it can also navigate away from the target.
 
