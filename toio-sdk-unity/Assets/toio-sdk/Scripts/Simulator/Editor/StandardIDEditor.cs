@@ -19,7 +19,7 @@ namespace toio.Simulator
             var simpleCardType = serializedObject.FindProperty("simpleCardType");
 
             // StandardID Title list
-            int title_new = (int)EditorGUILayout.Popup("タイトル",
+            int title_new = (int)EditorGUILayout.Popup("Title",
                 (int)title.intValue,
                 StandardID.TitleNames
             );
@@ -29,7 +29,7 @@ namespace toio.Simulator
             if (title_new == (int)StandardID.Title.toio_collection)
             {
                 // toio Collection Type list
-                int toioColleType_new = (int)EditorGUILayout.Popup("タイプ",
+                int toioColleType_new = (int)EditorGUILayout.Popup("Type",
                     (int)toioColleType.intValue,
                     StandardID.ToioColleNames
                 );
@@ -39,7 +39,7 @@ namespace toio.Simulator
             else if (title_new == (int)StandardID.Title.simple_card)
             {
                 // simple card Type list
-                int simpleCardType_new = (int)EditorGUILayout.Popup("タイプ",
+                int simpleCardType_new = (int)EditorGUILayout.Popup("Type",
                     (int)simpleCardType.intValue,
                     StandardID.SimpleCardNames
                 );
