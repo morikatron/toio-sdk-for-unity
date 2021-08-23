@@ -228,7 +228,7 @@ Cube Prefab has two scripts.
 - `CubeInteraction`: Implemented operations of pushing and grabbing Cube objects on Simulator.
 
 > There are some functional differences from Real Cube.<br>
-> For more details, please see [Feature Support](usage_cube.md#real-sim-performance-meter).
+> For more details, please see [Feature Support](usage_cube.md#realsim-performance-meter).
 
 Multiple Cube Prefabs can be placed in a scene. (Please make sure that Cube Prefab does not overlap with any other object.)
 
