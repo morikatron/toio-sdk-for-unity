@@ -120,7 +120,7 @@ public Vector boidsVector { get; }  // Boids result vector (backup information)
 
 ### Get and set up a wall
 
-> Please refer to the samples [Sample_VisualizeNavigator](/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/) and [Sample_MultiMat](/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/).
+> Please refer to the samples [Sample_VisualizeNavigator](/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/README_EN.md) and [Sample_MultiMat](/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/README_EN.md).
 
 #### Walls
 

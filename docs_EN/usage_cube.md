@@ -760,4 +760,4 @@ async void Start()
 
 ### Sample Projects
 
-Please refer to [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)
+Please refer to [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md)
