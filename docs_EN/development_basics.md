@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [1. Script dependencies](development_basics.md#1.script-dependencies)
+- [1. Script dependencies](development_basics.md#1script-dependencies)
 
 <br>
 
@@ -11,7 +11,7 @@
 ### About Assembly Definition
 
 This SDK uses a feature called Assembly Definition to divide scripts into multiple assemblies.
-For more details on Assembly Definition, please refer to [here](https://docs.unity3d.com/ja/2018.4/Manual/ScriptCompilationAssemblyDefinitionFiles.html).
+For more details on Assembly Definition, please refer to [here](https://docs.unity3d.com/2018.4/Documentation/Manual/ScriptCompilationAssemblyDefinitionFiles.html).
 
 The following items should be noted about this function.
 

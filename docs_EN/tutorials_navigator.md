@@ -333,8 +333,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
 
 ### 1.3. Population Control with Boids
 
-> The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/".
-<br>
+> The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/boids/).
 
 "Boids" is an algorithm that simulates the collective behavior of birds and allows Cubes to move as a flock while maintaining a certain distance from each other.

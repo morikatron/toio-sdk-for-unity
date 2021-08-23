@@ -228,7 +228,7 @@ Cube Prefab has two scripts.
 - `CubeInteraction`: Implemented operations of pushing and grabbing Cube objects on Simulator.
 
 > There are some functional differences from Real Cube.<br>
-> For more details, please see [Feature Support](usage_cube.md#real-sim-performance-meter).
+> For more details, please see [Feature Support](usage_cube.md#realsim-performance-meter).
 
 Multiple Cube Prefabs can be placed in a scene. (Please make sure that Cube Prefab does not overlap with any other object.)
 
@@ -381,7 +381,7 @@ public bool targetPoleActive { get; }      // Is the target pole in place?
 public Vector2Int targetPoleCoord { get; } // Get the mat coordinates of the target pole.
 ```
 
-The specific way to manipulate Cube using the target pole is described in [tutorials](tutorials_cubehandle.md#follow-targetpole-demo).
+The specific way to manipulate Cube using the target pole is described in [tutorials](tutorials_cubehandle.md#3-follow-targetpole-demo).
 
 ## 5.2. Focus on Cube
 

@@ -7,7 +7,7 @@ This section explains how to build a Unity project using toio SDK for Unity as a
 - [Overview](build_web.md#overview)
 - [WebGL Build](build_web.md#webgl-build)
 - [Share on SNS](build_web.md#share-on-sns)
-- [Notes](build_web.md#notes)
+- [Notes](build_web.md#notes-1)
 <br>
 
 ## Overview
@@ -15,11 +15,11 @@ This section explains how to build a Unity project using toio SDK for Unity as a
 This SDK is a library that runs on Unity engine, which supports building web apps using WebGL, so you can build your project as a web app by switching the target platform.
 
 Unity Engine does not support Bluetooth communication, so if you build your project as a web app, it will not be able to communicate with Cube.
-Therefore, you can use [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), which is an API that provides a function to control Bluetooth communication from a browser, as a plugin to control Bluetooth communication from a Unity program running in a web app. For this reason, we prepared a plug-in that can control Bluetooth communication from Unity programs running in web apps using [web-bluetooth](), an API that provides the function to control Bluetooth communication from a browser.
+Therefore, you can use [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), which is an API that provides a function to control Bluetooth communication from a browser, as a plugin to control Bluetooth communication from a Unity program running in a web app. For this reason, we prepared a plug-in that can control Bluetooth communication from Unity programs running in web apps using web-bluetooth, an API that provides the function to control Bluetooth communication from a browser.
 As with the iOS build, if you build on WebGL as the target platform, it will automatically switch to this plugin and allow communication between the web app and Cube.
 
 In the [WebGL Build](build_web.md#webgl-build) chapter, we will explain the settings to run Bluetooth plugin for the browser when built as a web app.
-In the [Share with SNS](build_web.md#share-on-sns) chapter, we will briefly introduce the steps to publish the built web app to the world through SNS and so on.
+In the [Share on SNS](build_web.md#share-on-sns) chapter, we will briefly introduce the steps to publish the built web app to the world through SNS and so on.
 
 <br>
 
@@ -52,9 +52,9 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 
 <br>
 
-For other browsers, please refer to [WebGL](https://developer.mozilla.org/ja/docs/Web/API/WebGL_API) and [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/).
+For other browsers, please refer to [WebGL](https://developer.mozilla.org/docs/Web/API/WebGL_API) and [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/).
 - WebGL
-  - [WebGL compatibility across browsers](https://docs.unity3d.com/ja/2019.4/Manual/webgl-browsercompatibility.html)
+  - [WebGL Browser Compatibility](https://docs.unity3d.com/2019.4/Documentation/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
@@ -70,7 +70,7 @@ Open Unity Hub, go to the Install tab, and in the top right menu of the appropri
 
 ### Switch build platform to WebGL
 
-We will assume that you have completed the [toio SDK for Unity installation] (download_sdk.md) and opened `Assets/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`. Let's proceed as follows.
+We will assume that you have completed the [toio SDK for Unity installation](download_sdk.md) and opened `Assets/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`. Let's proceed as follows.
 
 Select [File] -> [Build Settings...] from Unity menu. in Unity menu. Next, in the Platform list under Build Settings, select WebGL and click the Switch Platform button at the bottom right.
 
@@ -155,17 +155,17 @@ There is a web service called [unityroom](https://unityroom.com) that makes it e
 
 Github Pages is a static hosting service that allows you to publish your website.
 This service allows you to directly retrieve and execute javascript code, so you can run Bluetooth communication plugin described above.
-For a detailed explanation of Github Pages, please refer to the [official documentation](https://docs.github.com/ja/github/working-with-github-pages/about-github-pages).
+For a detailed explanation of Github Pages, please refer to the [official documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages).
 
 ### Steps to publish
 
-1. Login to [github](https://github.com) and [create](https://docs.github.com/ja/github/getting-started-with-github/create-a-repo) a repository. <br> The repository name should be `[username].github.io`.
+1. Login to [github](https://github.com) and [create](https://docs.github.com/en/get-started/quickstart/create-a-repo) a repository. <br> The repository name should be `[username].github.io`.
 
-2. [Clone](https://docs.github.com/ja/github/creating-cloning-and-archiving-repositories/cloning-a-repository) the remote repository you created.
+2. [Clone](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository) the remote repository you created.
 
 3. Copy the web app directory generated by Unity engine (`e.g. Sample_UI/`) into the cloned repository directory.
 
-4. [Add](https://docs.github.com/ja/github/managing-files-in-a-repository/adding-a-file-to-a-repository-using-the-command-line) the directory of the added web app to the remote repository.
+4. [Add](https://docs.github.com/en/github/managing-files-in-a-repository/managing-files-using-the-command-line/adding-a-file-to-a-repository-using-the-command-line) the directory of the added web app to the remote repository.
 
 5. Open a browser and type `https://[username].github.io/sample_ui` in the address bar to open the web app.
 
@@ -175,7 +175,7 @@ For a detailed explanation of Github Pages, please refer to the [official docume
 
 ### Scan one Cube at a time.
 
-When scanning devices by running [navigator.bluetooth.requestDevice](https://webbluetoothcg.github.io/web-bluetooth/#dom-bluetooth-requestdevice) provided in [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), it is necessary to scan <b>one device at a time</b> from the user's operation event every time. Therefore, you need to take care of the following when you make it into a web app. We also have a sample scene collection [Sample_WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/), which you can refer to here.
+When scanning devices by running [navigator.bluetooth.requestDevice](https://webbluetoothcg.github.io/web-bluetooth/#dom-bluetooth-requestdevice) provided in [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), it is necessary to scan <b>one device at a time</b> from the user's operation event every time. Therefore, you need to take care of the following when you make it into a web app. We also have a sample scene collection [Sample_WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/README_EN.md), which you can refer to here.
 
 - #### Let's have a connection button.
 
@@ -185,7 +185,7 @@ This is because it needs to be triggered by a user operation event.
 
 Again, it should be one scan per user operation event.<br>
 In the connection program, multiple unit connections using `NearScanner` and `CubeManager.MultiConnect` will be disabled.<br>
-Please consider modifying your program to use `NearestScanner` or `CubeManager.SingleConnect`, referring to the implementation in [Sample_UI on WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI).
+Please consider modifying your program to use `NearestScanner` or `CubeManager.SingleConnect`, referring to the implementation in [Sample_UI on WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/README_EN.md).
 
 ### Unstable multi-unit connection using Windows PC
 

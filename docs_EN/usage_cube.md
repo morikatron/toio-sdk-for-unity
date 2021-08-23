@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [1. Outline](usage_cube.md#1-outline)
-- [2. Comparison with existing toio™ library (toio.js)](usage_cube.md#2-comparison-with-existing-toio™-library-toiojs)
+- [2. Comparison with existing toio™ library (toio.js)](usage_cube.md#2-comparison-with-existing-toio-library-toiojs)
 - [3. Cube Class API](usage_cube.md#3-cube-class-api)
   - [3.1. Variable](usage_cube.md#31-variable)
   - [3.2. Callback](usage_cube.md#32-callback)
@@ -760,4 +760,4 @@ async void Start()
 
 ### Sample Projects
 
-Please refer to [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)
+Please refer to [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md)

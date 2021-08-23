@@ -68,41 +68,41 @@
 
 ### Basics
 
-- [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/)
+- [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/README_EN.md)
 
   This is a sample to see how the behavior of many Cubes changes depending on the mode of CubeNavigator.
 
-- [Sample_Cross](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Cross/)
+- [Sample_Cross](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Cross/README_EN.md)
 
   This is a sample of how to use CubeNavigator to move multiple Cubes with avoiding collisions.
 
-- [Sample_Sensor](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Sensor/)
+- [Sample_Sensor](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Sensor/README_EN.md)
 
   This is a sample that detects each sensor value of Cube and displays it on UI.
 
-- [Sample_Motor](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Motor/)
+- [Sample_Motor](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Motor/README_EN.md)
 
   This is a sample of moving Cube using Cube.TargetMove and Cube.AccelerationMove.
 
-- [Sample_VisualizeNavigator](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/)
+- [Sample_VisualizeNavigator](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/README_EN.md)
 
   This is an example of visualizing the results of HLAvoid calculation of CubeNavigator and all defined walls.
 
 ### Application
 
-- [Sample_MultiMat](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/)
+- [Sample_MultiMat](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/README_EN.md)
 
   This is a sample of using multiple mats together as one large mat.
 
-- [Sample_Bluetooth](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Bluetooth/)
+- [Sample_Bluetooth](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Bluetooth/README_EN.md)
 
   This is a sample of communicating with Cube by directly using BLE interface, which is a low-level module.
 
-- [Sample_WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/)
+- [Sample_WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/README_EN.md)
 
   This is a collection of sample web applications that run in a browser.
 
-- [Sample_Scenes](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/)
+- [Sample_Scenes](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/README_EN.md)
 
   This sample handles scene transitions while maintaining the connection with the real Cube and the correlated instance with Cube on Simulator.
 

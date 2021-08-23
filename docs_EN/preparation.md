@@ -10,7 +10,7 @@ This section introduces what you need to use toio SDK for Unity. Specifically, y
 
 For more information about Unity installation and operating environment, please refer to the official documentation below.
 
-- [Installing Unity \- Unity Manual](https://docs.unity3d.com/ja/2019.4/Manual/GettingStartedInstallingUnity.html)
+- [Installing Unity \- Unity Manual](https://docs.unity3d.com/2019.4/Documentation/Manual/GettingStartedInstallingUnity.html)
 (*Japanese. Click the right arrow on the linked page to see the system requirements and installation details.)
 
 We recommend using Unity Hub as it allows you to install multiple Unity versions of different versions.
@@ -24,7 +24,7 @@ You can also add **iOS Build Support**, **Android Build Support** or **WebGL Bui
 
 To run your application on iOS, you will need Xcode (macOS app). Get the latest version of Xcode from the link below.
 
-- [‎Xcode on Mac App Store](https://apps.apple.com/jp/app/xcode/id497799835)
+- [‎Xcode on Mac App Store](https://apps.apple.com/app/xcode/id497799835)
 
 ## About git
 

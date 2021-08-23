@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [1. Overview](sys_ble.md#1-overview)
-- [2. Structure of BLE class](sys_ble.md#2-structure-of-the-ble-class)
+- [2. Structure of BLE class](sys_ble.md#2-structure-of-ble-class)
 - [3. How Communication Works](sys_ble.md#3-how-communication-works)
   - [3.1. Search and connect](sys_ble.md#31-search-and-connect)
   - [3.2. Send and Receive](sys_ble.md#32-send-and-receive)
