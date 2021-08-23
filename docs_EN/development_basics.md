@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [1. Script dependencies](development_basics.md#1.script-dependencies)
+- [1. Script dependencies](development_basics.md#1script-dependencies)
 
 <br>
 
