@@ -381,7 +381,7 @@ public bool targetPoleActive { get; }      // Is the target pole in place?
 public Vector2Int targetPoleCoord { get; } // Get the mat coordinates of the target pole.
 ```
 
-The specific way to manipulate Cube using the target pole is described in [tutorials](tutorials_cubehandle.md#follow-targetpole-demo).
+The specific way to manipulate Cube using the target pole is described in [tutorials](tutorials_cubehandle.md#3-follow-targetpole-demo).
 
 ## 5.2. Focus on Cube
 
