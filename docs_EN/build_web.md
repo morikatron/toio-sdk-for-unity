@@ -15,7 +15,7 @@ This section explains how to build a Unity project using toio SDK for Unity as a
 This SDK is a library that runs on Unity engine, which supports building web apps using WebGL, so you can build your project as a web app by switching the target platform.
 
 Unity Engine does not support Bluetooth communication, so if you build your project as a web app, it will not be able to communicate with Cube.
-Therefore, you can use [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), which is an API that provides a function to control Bluetooth communication from a browser, as a plugin to control Bluetooth communication from a Unity program running in a web app. For this reason, we prepared a plug-in that can control Bluetooth communication from Unity programs running in web apps using [web-bluetooth](), an API that provides the function to control Bluetooth communication from a browser.
+Therefore, you can use [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), which is an API that provides a function to control Bluetooth communication from a browser, as a plugin to control Bluetooth communication from a Unity program running in a web app. For this reason, we prepared a plug-in that can control Bluetooth communication from Unity programs running in web apps using web-bluetooth, an API that provides the function to control Bluetooth communication from a browser.
 As with the iOS build, if you build on WebGL as the target platform, it will automatically switch to this plugin and allow communication between the web app and Cube.
 
 In the [WebGL Build](build_web.md#webgl-build) chapter, we will explain the settings to run Bluetooth plugin for the browser when built as a web app.
