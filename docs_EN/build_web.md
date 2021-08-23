@@ -70,7 +70,7 @@ Open Unity Hub, go to the Install tab, and in the top right menu of the appropri
 
 ### Switch build platform to WebGL
 
-We will assume that you have completed the [toio SDK for Unity installation](download_sdk.md) and opened `Assets/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`. Let's proceed as follows.
+We will assume that you have completed the [toio SDK for Unity installation](download_sdk.md) and opened `Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`. Let's proceed as follows.
 
 Select [File] -> [Build Settings...] from Unity menu. in Unity menu. Next, in the Platform list under Build Settings, select WebGL and click the Switch Platform button at the bottom right.
 
