@@ -24,7 +24,7 @@ You can also add **iOS Build Support**, **Android Build Support** or **WebGL Bui
 
 To run your application on iOS, you will need Xcode (macOS app). Get the latest version of Xcode from the link below.
 
-- [‎Xcode on Mac App Store](https://apps.apple.com/jp/app/xcode/id497799835)
+- [‎Xcode on Mac App Store](https://apps.apple.com/app/xcode/id497799835)
 
 ## About git
 
