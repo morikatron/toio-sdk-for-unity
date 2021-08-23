@@ -19,7 +19,7 @@ If you did not add the iOS Build Support module when you installed Unity, open U
 
 ## Switch the build platform to iOS
 
-We will assume that you have opened `Assets/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` by continuing from the end of [Installing toio SDK for Unity](download_sdk.md).
+We will assume that you have opened `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` by continuing from the end of [Installing toio SDK for Unity](download_sdk.md).
 
 First, select [File] -> [Build Settings...] from Unity menu.In [Build Settings], select [iOS] from the [Platform] list and click the [Switch Platform] button on the bottom right.
 
