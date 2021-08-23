@@ -175,7 +175,7 @@ For a detailed explanation of Github Pages, please refer to the [official docume
 
 ### Scan one Cube at a time.
 
-When scanning devices by running [navigator.bluetooth.requestDevice](https://webbluetoothcg.github.io/web-bluetooth/#dom-bluetooth-requestdevice) provided in [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), it is necessary to scan <b>one device at a time</b> from the user's operation event every time. Therefore, you need to take care of the following when you make it into a web app. We also have a sample scene collection [Sample_WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/), which you can refer to here.
+When scanning devices by running [navigator.bluetooth.requestDevice](https://webbluetoothcg.github.io/web-bluetooth/#dom-bluetooth-requestdevice) provided in [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/), it is necessary to scan <b>one device at a time</b> from the user's operation event every time. Therefore, you need to take care of the following when you make it into a web app. We also have a sample scene collection [Sample_WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/README_EN.md), which you can refer to here.
 
 - #### Let's have a connection button.
 
@@ -185,7 +185,7 @@ This is because it needs to be triggered by a user operation event.
 
 Again, it should be one scan per user operation event.<br>
 In the connection program, multiple unit connections using `NearScanner` and `CubeManager.MultiConnect` will be disabled.<br>
-Please consider modifying your program to use `NearestScanner` or `CubeManager.SingleConnect`, referring to the implementation in [Sample_UI on WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI).
+Please consider modifying your program to use `NearestScanner` or `CubeManager.SingleConnect`, referring to the implementation in [Sample_UI on WebGL](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/README_EN.md).
 
 ### Unstable multi-unit connection using Windows PC
 
