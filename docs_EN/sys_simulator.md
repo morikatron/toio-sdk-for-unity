@@ -594,7 +594,7 @@ protected void _SetMotorSpeed(int left, int right)
 
 ### Command processing flow
 
-Simulator uses the following logic to process instructions passed from [CubeUnity](sys_cube.md#2-structure-of-the-cube-class).
+Simulator uses the following logic to process instructions passed from [CubeUnity](sys_cube.md#2-structure-of-cube-class).
 
 - When CubeUnity calls a method of CubeSimulator
   - Start a coroutine that calls the implementation method after the delay
