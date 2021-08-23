@@ -13,9 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Docs] English documents added.
 
+### Changed
+
+- [Simulator] Camera used by `CubeInteraction` can be assigned from inspector.
+(THANKS to contribution from [**zurachu**](https://github.com/zurachu))
+
 ### Fixed
 
 - [Simulator] Behaviour of sloped simualtion fixed. The same as real cube, sloped is now set false when cube is upside-down.
+- [CubeReal] Add delay after `StartNotifications` at initialization, which otherwise may fail.
 
 ## [1.3.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.3.0) - 2021-07-29
 
