@@ -7,7 +7,7 @@ This section explains how to build a Unity project using toio SDK for Unity as a
 - [Overview](build_web.md#overview)
 - [WebGL Build](build_web.md#webgl-build)
 - [Share on SNS](build_web.md#share-on-sns)
-- [Notes](build_web.md#notes)
+- [Notes](build_web.md#notes-1)
 <br>
 
 ## Overview
