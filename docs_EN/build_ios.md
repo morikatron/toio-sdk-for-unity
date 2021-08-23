@@ -49,7 +49,7 @@ Open the project file (SimpleScene/Unity-iPhone.xcodeproj in this example) in Xc
 
 Configure the Xcode project settings and provisioning profile settings with reference to the following Unity official page.
 
-- [Developing Games for iOS - Unity Manual](https://docs.unity3d.com/ja/2019.4/Manual/iphone-GettingStarted.html)
+- [Developing Games for iOS - Unity Manual](https://docs.unity3d.com/2019.4/Documentation/Manual/iphone-GettingStarted.html)
 
 ## Xcode Build
 

@@ -29,7 +29,7 @@ To install UniTask, follow the steps below (as of September 24, 2020; Unity 2019
 
 The following document contains installation instructions and screenshots of UniTask for your reference.
 * [Description of the UniTask Github repository](https://github.com/Cysharp/UniTask#install-via-git-url)
-* You can also refer to Unity manual ["Installing from a Git URL"](https://docs.unity3d.com/ja/current/Manual/upm-ui-giturl.html).
+* You can also refer to Unity manual ["Installing from a Git URL"](https://docs.unity3d.com/2019.4/Documentation/Manual/upm-ui-giturl.html).
 
 ## Adding the SDK
 

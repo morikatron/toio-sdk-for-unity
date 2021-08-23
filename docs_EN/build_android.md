@@ -144,7 +144,7 @@ Under [SDK Platforms], check the version you need.
 Next, switch to the [SDK Tools] tab.<br>
 Check [Show Package Details] in the lower right corner.<br>
 Check the appropriate version under [NDK (Side by Side)].<br>
-(For Unity version 2019.4, select NDK 19. [Refer to here](https://docs.unity3d.com/ja/2019.3/Manual/android-sdksetup.html))
+(For Unity version 2019.4, select NDK 19. [Refer to here](https://docs.unity3d.com/2019.3/Documentation/Manual/android-sdksetup.html))
 <br>
 Press "OK" to proceed and the installation will begin.
 
