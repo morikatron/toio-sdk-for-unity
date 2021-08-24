@@ -147,7 +147,7 @@ namespace toio
                 }
 
                 request();
-                await UniTask.Delay(100);
+                await UniTask.Delay(200);
             }
             this.motorReadRequest.isRequesting = false;
             callback?.Invoke(this.motorReadRequest.isConfigResponseSucceeded, this);
@@ -179,7 +179,13 @@ namespace toio
         {
             await base.Initialize(characteristicTable);
             this.characteristicTable[CHARACTERISTIC_MOTOR].StartNotifications(this.Recv_motor);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
             this.characteristicTable[CHARACTERISTIC_CONFIG].StartNotifications(this.Recv_config);
+#if !UNITY_EDITOR && UNITY_ANDROID
+            await UniTask.Delay(500);
+#endif
             this.isInitialized = true;
         }
 
