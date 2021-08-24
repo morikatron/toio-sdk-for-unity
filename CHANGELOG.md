@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+### Removed
+
+- [CubeHandle] Remove deprecated members (`CenterX`, `CenterY`, `SizeX`, `SizeY`, `RangeX`, `RangeY`). Please use `borderRect` or `SetBorderRect` instead.
+
 ## [1.3.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.3.1) - 2021-08-24
 
 ### Added
