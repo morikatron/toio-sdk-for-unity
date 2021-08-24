@@ -1,1 +1,1 @@
-toio SDK for Unity v1.3.0
+toio SDK for Unity v1.3.1
