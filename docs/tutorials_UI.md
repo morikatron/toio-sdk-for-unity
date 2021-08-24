@@ -40,7 +40,7 @@ Unity Editor で実行した場合はUIとシミュレータが並列表示さ�
 
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
 2. ヒエラルキーにある「Main Camera」と「Directional Light」を削除
-3. プロジェクトウィンドウで「Assets/toio-sdk-unity/Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます
+3. プロジェクトウィンドウで「Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます
 4. 「Cube」Prefab ファイル と 「Stage」Prefab ファイルをヒエラルキーにドラック&ドロップします。<br>
 ※ シーン上でマウス操作すれば「Cube」オブジェクトの移動も出来ます。
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします。

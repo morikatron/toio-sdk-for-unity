@@ -1,5 +1,7 @@
 # toio SDK for Unity
 
+> **Switch Language:**　`日本語`　|　[`English`](README_EN.md)
+
 ## 概要
 
 **toio SDK for Unity** は、Unity で toio™コア キューブ（以降キューブ）を制御するための開発環境です。

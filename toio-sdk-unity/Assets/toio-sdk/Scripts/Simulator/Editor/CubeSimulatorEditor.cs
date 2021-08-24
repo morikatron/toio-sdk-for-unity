@@ -24,7 +24,7 @@ namespace toio.Simulator
 
             if (!EditorApplication.isPlaying)
             {
-                EditorGUILayout.LabelField("【シミュレータの設定】");
+                EditorGUILayout.LabelField("【Settings】");
                 EditorGUILayout.BeginVertical(GUI.skin.box);
 
                 base.OnInspectorGUI();
@@ -53,26 +53,26 @@ namespace toio.Simulator
                 {
                     EditorGUILayout.Space();
 
-                    EditorGUILayout.LabelField("【手動でキューブの状態を変更】");
+                    EditorGUILayout.LabelField("【Change states manually】");
                     EditorGUILayout.BeginVertical(GUI.skin.box);
 
-                    var button_new = GUILayout.Toggle(cube.button, "button 状態");
+                    var button_new = GUILayout.Toggle(cube.button, "button");
                     if (cube.button!=button_new){
                         cube.button = button_new;
                     }
                     EditorGUILayout.Space();
 
-                    cube.isSimulateSloped = !GUILayout.Toggle(!cube.isSimulateSloped, "【sloped の変更を手動で行う】");
+                    cube.isSimulateSloped = !GUILayout.Toggle(!cube.isSimulateSloped, "【Change sloped manually】");
                     if (!cube.isSimulateSloped)
                     {
-                        var sloped_new = GUILayout.Toggle(cube.sloped, "└ sloped 状態");
+                        var sloped_new = GUILayout.Toggle(cube.sloped, "└ sloped");
                         if (cube.sloped!=sloped_new){
                             cube.sloped = sloped_new;
                         }
                     }
                     EditorGUILayout.Space();
 
-                    if (GUILayout.Button("'衝突'を発生"))
+                    if (GUILayout.Button("Trigger Collision"))
                     {
                         cube._TriggerCollision();
                     }
@@ -82,7 +82,7 @@ namespace toio.Simulator
                     if (version.intValue > 0)
                     {
                         // double tap
-                        if (GUILayout.Button("'ダブルタップ'を発生"))
+                        if (GUILayout.Button("Trigger DoubleTap"))
                         {
                             cube._TriggerDoubleTap();
                         }
@@ -90,7 +90,7 @@ namespace toio.Simulator
 
                         // pose
                         int pose_new = (int)EditorGUILayout.Popup(
-                            "pose 状態",
+                            "pose",
                             (int)cube.pose-1,
                             poseNames
                         )+1;
@@ -114,7 +114,7 @@ namespace toio.Simulator
                     if (version.intValue > 1)
                     {
                         // shake
-                        var shake_new = EditorGUILayout.IntSlider("shake レベル", cube.shakeLevel, 0, 10);
+                        var shake_new = EditorGUILayout.IntSlider("shake level", cube.shakeLevel, 0, 10);
                         if (cube.shakeLevel!=shake_new){
                             cube.shakeLevel = shake_new;
                         }
