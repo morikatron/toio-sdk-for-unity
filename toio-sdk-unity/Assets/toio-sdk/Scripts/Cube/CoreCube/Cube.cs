@@ -506,7 +506,7 @@ namespace toio
             Balanced = 0xff
         }
 
-        // 磁気センサーの機能設定 https://toio.github.io/toio-spec/docs/ble_configuration#_磁気センサーの設定_
+        // 磁気センサーの設定 https://toio.github.io/toio-spec/docs/ble_configuration#_磁気センサーの設定_
         public enum MagneticSensorMode: byte
         {
             Off = 0, MagnetState = 1, MagneticForce = 2
@@ -521,7 +521,7 @@ namespace toio
             S_Left = 5, N_Left = 6
         }
 
-        // 磁気センサーの機能設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-1
+        // 磁気センサーの設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-1
         public enum MagneticSensorNotificationType: byte
         {
             Always = 0, OnChanged = 1

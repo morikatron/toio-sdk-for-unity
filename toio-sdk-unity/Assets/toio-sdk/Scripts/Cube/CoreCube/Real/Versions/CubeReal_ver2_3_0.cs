@@ -15,6 +15,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         protected CallbackProvider<Cube> _magneticForceCallback = new CallbackProvider<Cube>();
+        protected Vector3 _magneticForce = default;
 
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -22,9 +23,25 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         public override string version { get { return "2.3.0"; } }
-        public override Vector3 magneticForce { get; protected set; }
+        public override Vector3 magneticForce {
+            get {
+                if (null == this.magneticSensorRequest)
+                {
+                    Debug.Log("磁気センサーが有効化されていません. ConfigMagneticSensor関数を実行して有効化して下さい.");
+                    return default;
+                }
+                else if (this.magneticSensorMode != MagneticSensorMode.MagneticForce || !this.magneticSensorRequest.hasReceivedData)
+                    return default;
+                else
+                    return this._magneticForce;
+            }
+            protected set { this.NotImplementedWarning(); }
+        }
         public override CallbackProvider<Cube> magneticForceCallback { get => _magneticForceCallback; }
 
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      CoreCube API
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
@@ -69,7 +86,7 @@ namespace toio
             base.Recv_sensor(data);
             int type = data[0];
 
-            // Magnetic Sensor https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor
+            // Magnetic Sensor https://toio.github.io/toio-spec/docs/ble_magnetic_sensor
             if (2 == type)
             {
                 var magnitude = (float) data[2];
@@ -80,9 +97,9 @@ namespace toio
                 force.Normalize();
                 force *= magnitude;
 
-                if (force != this.magneticForce)
+                if (force != this._magneticForce)
                 {
-                    this.magneticForce = force;
+                    this._magneticForce = force;
                     this.magneticForceCallback.Notify(this);
                 }
             }
