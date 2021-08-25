@@ -35,7 +35,7 @@ namespace toio.Simulator
         public static readonly string[] DeveloperMatTypeNames = new string[]
         { "#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8", "#9", "#10", "#11", "#12" };
 
-        public static readonly float DotPerM = 411f/0.560f; // 411/0.560 dot/m
+        public const float DotPerM = 411f/0.560f; // 411/0.560 dot/m
 
         [SerializeField]
         public MatType matType;
@@ -137,6 +137,10 @@ namespace toio.Simulator
         {
             return Mathf.RoundToInt((deg-this.transform.eulerAngles.y-90)%360+360)%360;
         }
+        internal float UnityDeg2MatDegF(float deg)
+        {
+            return ((deg-this.transform.eulerAngles.y-90)%360+360)%360;
+        }
         /// <summary>
         /// Unity上の角度をマットmat上の角度に変換
         /// </summary>
@@ -170,6 +174,17 @@ namespace toio.Simulator
         /// </summary>
         public Vector2Int UnityCoord2MatCoord(Vector3 unityCoord)
         {
+            var coord = UnityCoord2MatCoordF(unityCoord);
+
+            // マット単位に変換
+            return new Vector2Int(
+                Mathf.RoundToInt(coord.x),
+                Mathf.RoundToInt(coord.y)
+            );
+        }
+
+        internal Vector2 UnityCoord2MatCoordF(Vector3 unityCoord)
+        {
             var matPos = this.transform.position;
             var drad = - this.transform.eulerAngles.y * Mathf.Deg2Rad;
             var _cos = Mathf.Cos(drad);
@@ -183,9 +198,9 @@ namespace toio.Simulator
             Vector2 coord = new Vector2(dx*_cos-dy*_sin, dx*_sin+dy*_cos);
 
             // マット単位に変換
-            return new Vector2Int(
-                Mathf.RoundToInt(coord.x*DotPerM + this.xCenter),
-                Mathf.RoundToInt(coord.y*DotPerM + this.yCenter)
+            return new Vector2(
+                coord.x*DotPerM + this.xCenter,
+                coord.y*DotPerM + this.yCenter
             );
         }
 

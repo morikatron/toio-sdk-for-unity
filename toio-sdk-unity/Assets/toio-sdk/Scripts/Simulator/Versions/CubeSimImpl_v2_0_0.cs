@@ -69,7 +69,7 @@ namespace toio.Simulator
             this.onMat = true;
             this.onStandardID = false;
         }
-        protected virtual void _SetSandardID(uint stdID, int deg)
+        protected virtual void _SetStandardID(uint stdID, int deg)
         {
             deg = (deg%360+360)%360;
             if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
@@ -94,29 +94,29 @@ namespace toio.Simulator
         /// </summary>
         protected virtual void SimulateIDSensor()
         {
-            // 読み取りセンサーを模擬
-            // Simuate Position ID & Standard ID Sensor
-            RaycastHit hit;
-            Vector3 gposSensor = cube.transform.Find("IDSensor").position;
-            Ray ray = new Ray(gposSensor, -cube.transform.up);
-            if (Physics.Raycast(ray, out hit)) {
-                if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < 0.005f){
-                    var mat = hit.transform.gameObject.GetComponent<Mat>();
-                    var coord = mat.UnityCoord2MatCoord(cube.transform.position);
-                    var deg = mat.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-                    var coordSensor = mat.UnityCoord2MatCoord(gposSensor);
-                    var xSensor = coordSensor.x; var ySensor = coordSensor.y;
-                    _SetXYDeg(coord.x, coord.y, deg, xSensor, ySensor);
-                }
-                else if (hit.transform.gameObject.tag == "t4u_StandardID" && hit.distance < 0.005f)
-                {
-                    var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
-                    var deg = stdID.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-                    _SetSandardID(stdID.id, deg);
-                }
-                else _SetOffGround();
+            (var coordSensor, var stdID, var deg) = cube._GetIDSensor();
+            if (coordSensor != Vector2.zero)
+            {
+                // Calc. Cube position from Sensor position
+                const float dx = 0.0149f * Mat.DotPerM;
+                const float dy = 0.0094f * Mat.DotPerM;
+                var rad = deg * Mathf.PI/180;
+                var dx2 = dx * Mathf.Cos(rad) - dy * Mathf.Sin(rad);
+                var dy2 = dx * Mathf.Sin(rad) + dy * Mathf.Cos(rad);
+                var cx = coordSensor.x + dx2;
+                var cy = coordSensor.y + dy2;
+                _SetXYDeg(
+                    Mathf.RoundToInt(cx),
+                    Mathf.RoundToInt(cy),
+                    Mathf.RoundToInt(deg),
+                    Mathf.RoundToInt(coordSensor.x),
+                    Mathf.RoundToInt(coordSensor.y)
+                );
             }
-            else _SetOffGround();
+            else if (stdID != 0)
+                _SetStandardID(stdID, Mathf.RoundToInt(deg));
+            else
+                _SetOffGround();
         }
         protected virtual void ResetIDSensor()
         {

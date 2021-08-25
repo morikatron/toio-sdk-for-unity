@@ -16,14 +16,14 @@ namespace toio.Simulator
 
         // ======== Physical Constants ========
         // from https://toio.github.io/toio-spec/
-        public static readonly float TireWidthM = 0.0266f;
-        public static readonly float TireWidthDot= 0.0266f * Mat.DotPerM;
-        public static readonly float WidthM= 0.0318f;
+        public const float TireWidthM = 0.0266f;
+        public const float TireWidthDot= 0.0266f * Mat.DotPerM;
+        public const float WidthM= 0.0318f;
         // ratio of Speed(Dot/s) and order ( 2.04f in real test )
         // theorically, 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
-        public static readonly float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
-        public static readonly float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
-        public static readonly float MagneticFieldScale = 450;
+        public const float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
+        public const float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
+        public const float MagneticFieldScale = 450;
 
 
         // ======== Simulator Settings ========
@@ -675,7 +675,32 @@ namespace toio.Simulator
         #endregion
 
 
-        #region  ============ 内部関数 ============
+        #region  ============ Internal Methods: Hardware Simulation ============
+
+        // -------- ID Sensor --------
+        internal (Vector2, uint, float) _GetIDSensor()
+        {
+            const float maxDistance = 0.005f;
+
+            RaycastHit hit;
+            Vector3 gposSensor = transform.Find("IDSensor").position;
+            Ray ray = new Ray(gposSensor, -transform.up);
+            if (Physics.Raycast(ray, out hit)) {
+                if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < maxDistance){
+                    var mat = hit.transform.gameObject.GetComponent<Mat>();
+                    var deg = mat.UnityDeg2MatDegF(transform.eulerAngles.y);
+                    var coordSensor = mat.UnityCoord2MatCoordF(gposSensor);
+                    return (coordSensor, 0, deg);
+                }
+                else if (hit.transform.gameObject.tag == "t4u_StandardID" && hit.distance < maxDistance)
+                {
+                    var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
+                    var deg = stdID.UnityDeg2MatDegF(transform.eulerAngles.y);
+                    return (Vector2.zero, stdID.id, deg);
+                }
+            }
+            return (Vector2.zero, 0, 0);
+        }
 
         // -------- Motion Sensor Triggers --------
         internal void _TriggerCollision()

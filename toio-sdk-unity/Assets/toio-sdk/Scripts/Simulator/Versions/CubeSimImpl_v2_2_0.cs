@@ -82,7 +82,7 @@ namespace toio.Simulator
             this.onStandardID = false;
         }
 
-        protected override void _SetSandardID(uint stdID, int deg)
+        protected override void _SetStandardID(uint stdID, int deg)
         {
             deg = (deg%360+360)%360;
             float now = Time.fixedTime;
