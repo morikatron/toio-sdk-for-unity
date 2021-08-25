@@ -99,7 +99,7 @@ namespace toio.Simulator
 
         protected override void SimulateMagneticSensor()
         {
-            var force = cube._GetMagneticForce();
+            var force = cube._GetMagneticField();
             SimulateMagnetState(force);
             SimulateMagneticForce(force);
         }

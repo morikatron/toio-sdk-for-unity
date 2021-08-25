@@ -224,7 +224,7 @@ namespace toio.Simulator
         }
         protected virtual void SimulateMagneticSensor()
         {
-            var force = cube._GetMagneticForce();
+            var force = cube._GetMagneticField();
             SimulateMagnetState(force);
         }
         protected virtual void ResetMagneticSensor()

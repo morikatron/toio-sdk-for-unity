@@ -23,6 +23,7 @@ namespace toio.Simulator
         // theorically, 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
         public static readonly float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
         public static readonly float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
+        public static readonly float MagneticFieldScale = 450;
 
 
         // ======== Simulator Settings ========
@@ -136,7 +137,7 @@ namespace toio.Simulator
         /// 水平検出をシミュレータがシミュレーションするか
         /// </summary>
         [HideInInspector]
-        public bool isSimulateSloped = true;
+        internal bool isSimulateSloped = true;
 
         /// <summary>
         /// 傾斜であるか
@@ -166,6 +167,13 @@ namespace toio.Simulator
         /// コアキューブのモーター ID 2（右）の速度
         /// </summary>
         public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
+
+        // ----- Magnetic Sensor -----
+
+        [HideInInspector]
+        internal bool isSimulateMagneticSensor = true;
+        public Cube.MagnetState magnetState { get {return impl.magnetState;} }
+        public Vector3 magneticForce { get {return impl.magneticForce;} }
 
 
         // ======== Objects ========
@@ -800,20 +808,47 @@ namespace toio.Simulator
         }
 
         // -------- Magnetic Sensor --------
-        internal Vector3 _GetMagneticForce()
+        private Vector3 _magneticField = default;
+        internal Vector3 _GetMagneticField()
         {
-            var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
-            var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
-
-            Vector3 magSensor = transform.Find("MagneticSensor").position;
-
-            Vector3 h = Vector3.zero;
-            foreach (var magnet in magnets)
+            if (isSimulateMagneticSensor)
             {
-                h += magnet.SumUpH(magSensor);
-            }
+                var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+                var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
 
-            return new Vector3(h.z, h.x, -h.y);
+                Vector3 magSensor = transform.Find("MagneticSensor").position;
+
+                Vector3 h = Vector3.zero;
+                foreach (var magnet in magnets)
+                {
+                    h += magnet.SumUpH(magSensor);
+                }
+
+                this._magneticField = new Vector3(h.z, h.x, -h.y);
+            }
+            return this._magneticField;
+        }
+        internal void _SetMagneticField(Cube.MagnetState state)
+        {
+            Vector3 field = default;
+            switch (state){
+                case Cube.MagnetState.S_Center: field = Vector3.back * MagneticFieldScale * 24; break;
+                case Cube.MagnetState.N_Center: field = Vector3.forward * MagneticFieldScale * 24; break;
+                case Cube.MagnetState.N_Right: field = new Vector3(0, -1, 1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.N_Left: field = new Vector3(0, 1, 1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.S_Right: field = new Vector3(0, 1, -1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.S_Left: field = new Vector3(0, -1, -1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.None: field = Vector3.zero; break;
+            }
+            this._magneticField = field;
+        }
+        internal Vector3 _GetScaledMagneticField()
+        {
+            return _GetMagneticField() / MagneticFieldScale;
+        }
+        internal void _SetMagneticField(Vector3 scaledField)
+        {
+            this._magneticField = scaledField * MagneticFieldScale;
         }
 
         #endregion
