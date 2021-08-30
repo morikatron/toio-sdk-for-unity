@@ -51,7 +51,7 @@ Also, the Mat.cs inspector is customized by the script Editor/MatEditor.cs.
 
 ## 2.1. Conversion from mat coordinate units to meters
 
-According to [toio™ Core Cube Technical specifications / Communication specifications / Various functions / Reading sensor](https://toio.github.io/toio-spec/docs/ble_id), the size of the playmat included with toio collection is 410 units in length and width.<br>
+According to [toio™ Core Cube Technical specifications / Communication specifications / Various functions / Reading sensor](https://toio.github.io/toio-spec/en/docs/ble_id), the size of the playmat included with toio collection is 410 units in length and width.<br>
 The actual measurement of the mat was 56 cm = 0.560 m per side.
 
 From here, we define the coordinate information of the mat and the factor `DotPerM` to convert it to distance (meters) as follows
@@ -280,7 +280,7 @@ This chapter introduces the implementation of each version of `CubeSimulator`.
 
 ## 4.1. Definition of constants
 
-From the dimensions listed in [toio™ Core Cube Technical specifications/Hardware specifications/Shape and size](https://toio.github.io/toio-spec/docs/hardware_shape) and [Mat.DotPerM constants](sys_simulator.md#21-conversion-from-mat-coordinate-units-to-meters), the distance between the left and right tires and the size of Cube are defined as follows
+From the dimensions listed in [toio™ Core Cube Technical specifications/Hardware specifications/Shape and size](https://toio.github.io/toio-spec/en/docs/hardware_shape) and [Mat.DotPerM constants](sys_simulator.md#21-conversion-from-mat-coordinate-units-to-meters), the distance between the left and right tires and the size of Cube are defined as follows
 
 ```c#
 // Distance between left and right tires (meters)
@@ -291,7 +291,7 @@ public static readonly float TireWidthDot= 0.0266f * Mat.DotPerM;
 public static readonly float WidthM= 0.0318f;
 ```
 
-Based on the motor specs listed in [toio™ Core Cube Technical Specifications / Communication Specifications / Various Functions / Motors](https://toio.github.io/toio-spec/docs/ble_motor) and the tire diameter (0.0125m) listed in [toio™ Core Cube Technical specifications/Hardware specifications/Shape and size](https://toio.github.io/toio-spec/docs/hardware_shape), The coefficients of the speed on the mat and the speed indication are defined as follows.
+Based on the motor specs listed in [toio™ Core Cube Technical Specifications / Communication Specifications / Various Functions / Motors](https://toio.github.io/toio-spec/en/docs/ble_motor) and the tire diameter (0.0125m) listed in [toio™ Core Cube Technical specifications/Hardware specifications/Shape and size](https://toio.github.io/toio-spec/en/docs/hardware_shape), The coefficients of the speed on the mat and the speed indication are defined as follows.
 
 ```c#
 // Proportional to the speed (dots per second) and the indicated value
@@ -790,7 +790,7 @@ for i in range(11):
 </details>
 <br>
 
-This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-%E3%81%A8-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/Resources/Octave].
+This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/en/docs/ble_sound#midi-note-number-and-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/Resources/Octave].
 
 
 #### Playing sounds

@@ -22,8 +22,8 @@
 
 シミュレータは `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つのプリハブから構成されています。
 
-- Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/info_position_id)を模したもの
-- StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/info_standard_id)を模したもの
+- Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/hardware_position_id)を模したもの
+- StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/hardware_standard_id)を模したもの
 - Cube … toio™コア キューブを模したもの
 - Stage … シミュレーション環境に必要な一通りの機能をセットにしたもの
 
@@ -64,7 +64,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 | キューブ（単体）付属簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
 | 開発用マット | toio™開発用プレイマット（仮称） |
 
-各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/info_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考してください。
+各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考してください。
 
 
 # 3. StandardID Prefab
@@ -86,7 +86,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 - トイオ・コレクション
 - 簡易カード
 
-「タイプ」については、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/info_standard_id)を参照してください。
+「タイプ」については、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_standard_id)を参照してください。
 
 
 # 4. Cube Prefab

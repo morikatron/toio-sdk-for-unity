@@ -64,7 +64,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 
  > ※ toio™開発用プレイマット（仮称）#1 ~ #6 の表面は、toio™コア キューブ（単体）付属の簡易プレイマットと同じ仕様なので、一つのタイプ「簡易マット・開発用マット（表面）1~6」にまとめています。
 
-各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/info_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考にしてください。
+各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考にしてください。
 
 ## 2.2. 定数
 
@@ -192,7 +192,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 - トイオ・コレクション
 - 簡易カード
 
-「タイプ」については、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/info_standard_id)を参照してください。
+「タイプ」については、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_standard_id)を参照してください。
 
 
 ## 3.2. メソッド
