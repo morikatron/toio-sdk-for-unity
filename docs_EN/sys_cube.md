@@ -73,7 +73,7 @@ Cube  +-------------------------------+ Cube-root directory
 This is the interface for operating Cube.<br>
 The contents of all functions and properties are not yet implemented, and all processing is left to the derived class.<br>
 By doing so, it absorbs differences in internal implementation between execution environments and versions, and enables abstract programming with polymorphism.<br>
-To maintain reusability, there is no functionality in this class other than [toio™ Core Cube Technical Specification (Communication Specification)](https://toio.github.io/toio-spec/docs/ble_communication_overview.html).<br>
+To maintain reusability, there is no functionality in this class other than [toio™ Core Cube Technical Specification (Communication Specification)](https://toio.github.io/toio-spec/en/docs/ble_communication_overview).<br>
 To use/extend functions other than toio™ Core Cube technical specifications (communication specifications), use extension classes such as [CubeHandle](usage_cubehandle.md), [CubeNavigator](sys_navigator.md), etc.<br>
 
 Implementation Code:[Cube.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
@@ -93,17 +93,17 @@ Implementation Code:[CubeReal.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube
 <b>ver2_0_0:</b>
 
 - Implementation Code:[CubeReal_ver2_0_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
-- Communication Specifications:https://toio.github.io/toio-spec/docs/2.0.0/about
+- Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.0.0/about
 
 <b>ver2_1_0:</b>
 
 - Implementation Code:[CubeReal_ver2_1_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
-- Communication Specifications:https://toio.github.io/toio-spec/docs/2.1.0/about
+- Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.1.0/about
 
 <b>ver2_2_0:</b>
 
 - Implementation Code:[CubeReal_ver2_2_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
-- Communication Specifications:https://toio.github.io/toio-spec/docs/about
+- Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.2.0/about
 
 <br>
 

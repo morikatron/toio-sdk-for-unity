@@ -297,7 +297,7 @@ Cube クラスの TurnLedOn メソッドでキューブ底面についている 
 ```C#
 //--------------------------------------------------------
 // 点灯・消灯
-// https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯
+// https://toio.github.io/toio-spec/docs/ble_light#点灯消灯
 //--------------------------------------------------------
 
 // red   | 色の強さ | 範囲(0~255)
@@ -311,7 +311,7 @@ cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=OR
 ```C#
 //--------------------------------------------------------
 // 連続的な点灯・消灯
-// https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯
+// https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯消灯
 //--------------------------------------------------------
 
 // durationMs | 持続時間 | 範囲(10~2550)

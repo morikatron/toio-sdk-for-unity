@@ -73,7 +73,7 @@ Cube  +-------------------------------+ キューブルートディレクトリ
 Cube を操作するためのインタフェースです。<br>
 全ての関数・プロパティの中身が未実装となっており、派生クラスに全ての処理を委ねています。<br>
 こうする事で実行環境やバージョン毎の内部実装の違いを吸収し、ポリモーフィズムによる抽象的なプログラミングを可能にします。<br>
-再利用性を保つために、このクラスには[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_communication_overview.html)以外の機能が存在しません。<br>
+再利用性を保つために、このクラスには[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_communication_overview)以外の機能が存在しません。<br>
 toio™コア キューブ 技術仕様（通信仕様）以外の機能を利用/拡張する場合は、[CubeHandle](usage_cubehandle.md), [CubeNavigator](sys_navigator.md)等の拡張クラスを利用します。<br>
 
 実装コード：[Cube.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
@@ -103,7 +103,7 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 <b>ver2_2_0：</b>
 
 - 実装コード：[CubeReal_ver2_2_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
-- 通信仕様：https://toio.github.io/toio-spec/docs/about
+- 通信仕様：https://toio.github.io/toio-spec/docs/2.2.0/about
 
 <br>
 
