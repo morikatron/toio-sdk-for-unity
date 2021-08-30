@@ -30,7 +30,7 @@ To run toio SDK for Unity, you need to install UniTask, see [here](download_sdk.
 ### I'm not sure which mats will work best for my development.
 > Keywords: Mat Specifications
 
-The only difference between the various mats is the appearance and the coordinate range. For specifications, please refer to [toio™ Core Cube Technical Specification 2.1.0](https://toio.github.io/toio-spec/docs/info_position_id) and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
+The only difference between the various mats is the appearance and the coordinate range. For specifications, please refer to [toio™ Core Cube Technical Specification 2.1.0](https://toio.github.io/toio-spec/en/docs/hardware_position_id) and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
 
 If you simply want to run it in Simulator, it doesn't matr which one you use.<br>
 If you want to develop an application that actually runs Cube and not just complete it in Simulator, you should use the same type of mat that you actually use.

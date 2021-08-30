@@ -225,7 +225,7 @@ public interface BLECharacteristicInterface
 スキャンは大まかに以下の手順で実行します。
 
 1. RequestDevice 関数を呼び、BLEDeviceInterface 変数を取得します。
-2. [CoreCube 識別 ID](https://toio.github.io/toio-spec/docs/ble_communication_overview.html#キューブの発見)を対象にスキャンを開始
+2. [CoreCube 識別 ID](https://toio.github.io/toio-spec/docs/ble_communication_overview#キューブの発見-)を対象にスキャンを開始
 3. スキャン終了条件(接続数、待機時間)を満たしたらスキャンを終了
 4. スキャンにより取得した BLEPeripheralInterface 変数をリターン
 

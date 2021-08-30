@@ -99,7 +99,7 @@ Move method of Cube class can be used to control the motors of Cube.
 ```C#
 //--------------------------------------------------------
 // Motor control with time specification
-// https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御
+// https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-specified-duration
 //--------------------------------------------------------
 
 // left       | Left motor speed | Range (0~100)
@@ -189,12 +189,12 @@ public class MoveScene : MonoBehaviour
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/basic/sound/).
 
 You can use PlayPresetSound method of Cube class to play a pre-prepared sound effect from Cube.
-For more information about the sound effects available, see [[here]](https://toio.github.io/toio-spec/docs/ble_sound#効果音の-id).
+For more information about the sound effects available, see [[here]](https://toio.github.io/toio-spec/en/docs/ble_sound/#sound-effect-id).
 
 ```C#
 //--------------------------------------------------------
 // Play sound effects
-// https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生
+// https://toio.github.io/toio-spec/en/docs/ble_sound/#playing-sound-effects
 //--------------------------------------------------------
 
 // soundID | ID    | Range (0~10)
@@ -208,7 +208,7 @@ If you want to play an arbitrary sound, define the sound you want to play as an 
 ```C#
 //--------------------------------------------------------
 // Play MIDI note number
-// https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
+// https://toio.github.io/toio-spec/en/docs/ble_sound/#playing-the-midi-note-numbers
 //--------------------------------------------------------
 
 // durationMs  | Duration | Range(10~2550)
@@ -297,7 +297,7 @@ The TurnLedOn method of Cube class can be used to control the LED on the bottom 
 ```C#
 //--------------------------------------------------------
 // Turn on/off
-// https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯
+// https://toio.github.io/toio-spec/en/docs/ble_light/#turning-the-indicator-on-and-off
 //--------------------------------------------------------
 
 // red   | Color Intensity | Range (0~255)
@@ -311,7 +311,7 @@ cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=OR
 ```C#
 //--------------------------------------------------------
 // Continuous on/off
-// https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯
+// https://toio.github.io/toio-spec/en/docs/ble_light/#repeated-turning-on-and-off-of-indicator
 //--------------------------------------------------------
 
 // durationMs | Duration | Range(10~2550)
@@ -383,7 +383,7 @@ public class LEDScene : MonoBehaviour
 > The sample files for this chapter are located in "Assets/toio-sdk/Tutorials/1.Basic/4.toioID/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/basic/toio_id/).
 
-For more information about toio ID, see [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/ble_id).
+For more information about toio ID, see [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/ble_id).
 
 <div align="center"><img width=300 src="res/tutorial/toioID.gif"></div>
 
@@ -459,27 +459,27 @@ public class toioIDScene : MonoBehaviour
 In the following callbacks, you can describe what happens when a change occurs in Cube (an event is detected).
 Each event conforms to toio™ Core Cube Technical Specification, so please refer to that for details.
 
-- Button event: https://toio.github.io/toio-spec/docs/ble_button
-- Tilt, collision event: https://toio.github.io/toio-spec/docs/ble_sensor
-- Coordinate angle, Standard ID event: https://toio.github.io/toio-spec/docs/ble_id
+- Button event: https://toio.github.io/toio-spec/en/docs/ble_button
+- Tilt, collision event: https://toio.github.io/toio-spec/en/docs/ble_sensor
+- Coordinate angle, Standard ID event: https://toio.github.io/toio-spec/en/docs/ble_id
   - To detect this event, you need to move Cube on the mat or Standard ID.
 
 ```C#
 // Button event
-// https://toio.github.io/toio-spec/docs/ble_button
+// https://toio.github.io/toio-spec/en/docs/ble_button
 cube.buttonCallback.AddListener("EventScene", OnPressButton);
 // Tilt event
-// https://toio.github.io/toio-spec/docs/ble_sensor#水平検出
+// https://toio.github.io/toio-spec/en/docs/ble_sensor/#horizontal-detection
 cube.slopeCallback.AddListener("EventScene", OnSlope);
 // Collision event
-// https://toio.github.io/toio-spec/docs/ble_sensor#衝突検出
+// https://toio.github.io/toio-spec/en/docs/ble_sensor/#collision-detection
 cube.collisionCallback.AddListener("EventScene", OnCollision);
 // Coordinate angle event
-// https://toio.github.io/toio-spec/docs/ble_id#position-id
+// https://toio.github.io/toio-spec/en/docs/ble_id#position-id
 cube.idCallback.AddListener("EventScene", OnUpdateID);        // Update
-cube.idMissedCallback.AddListener("EventScene", OnMissedID);　// Lost
+cube.idMissedCallback.AddListener("EventScene", OnMissedID);  // Lost
 // Standard ID Event
-// https://toio.github.io/toio-spec/docs/ble_id#standard-id
+// https://toio.github.io/toio-spec/en/docs/ble_id#standard-id
 cube.standardIdCallback.AddListener("EventScene", OnUpdateStandardID);       // Update
 cube.standardIdMissedCallback.AddListener("EventScene", OnMissedStandardID); // Lost
 ```

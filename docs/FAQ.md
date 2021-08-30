@@ -30,7 +30,7 @@ toio SDK for Unity を動作させるには UniTask のインストールが必�
 ### どのマットを使えば自分の開発に合うのかがよくわかりません
 > Keywords： マット Mat 仕様
 
-各種マットの違いは見た目と座標範囲だけです。仕様は [toio™コア キューブ 技術仕様 2.1.0](https://toio.github.io/toio-spec/docs/info_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考にしてください。
+各種マットの違いは見た目と座標範囲だけです。仕様は [toio™コア キューブ 技術仕様 2.1.0](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考にしてください。
 
 単にシミュレータで動かしたい場合は、どちらを使っても問題ありません。<br>
 シミュレータだけで完結せず、実際にキューブを動かすアプリを開発したい場合は、実際に使うマットと同じタイプを使ったほうが良いです。

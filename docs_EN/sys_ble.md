@@ -225,7 +225,7 @@ For an overview of the Scanner class, refer to [here](sys_cube.md#31-search-scan
 The scan roughly follows the steps below.
 
 1. Call the RequestDevice function to obtain the BLDeviceInterface variable.
-2. Start scanning for [CoreCube Identification ID](https://toio.github.io/toio-spec/docs/ble_communication_overview.html#キューブの発見).
+2. Start scanning for [CoreCube Identification ID](https://toio.github.io/toio-spec/en/docs/ble_communication_overview#discovering-the-cube-).
 3. End the scan when the conditions (number of connections, waiting time) are met
 4. Return BLEPeripheralInterface variable obtained by scanning
 
