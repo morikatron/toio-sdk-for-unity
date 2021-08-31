@@ -15,6 +15,10 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         protected CallbackProvider<Cube> _magneticForceCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _attitudeCallback = new CallbackProvider<Cube>();
+        protected RequestInfo attitudeSensorRequest = null;
+        protected AttitudeSensorFormat attitudeSensorFormat = AttitudeSensorFormat.Eulers;
+        protected AttitudeSensorFormat requestedAttitudeSensorFormat = AttitudeSensorFormat.Eulers;
         protected Vector3 _magneticForce = default;
 
 
@@ -38,6 +42,10 @@ namespace toio
             protected set { this.NotImplementedWarning(); }
         }
         public override CallbackProvider<Cube> magneticForceCallback { get => _magneticForceCallback; }
+        public override CallbackProvider<Cube> attitudeCallback { get => _attitudeCallback; }
+        public override Vector3 eulers { get; protected set; }
+        public override Quaternion quaternion { get; protected set; }
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API
@@ -76,6 +84,39 @@ namespace toio
             await this.magneticSensorRequest.Run();
         }
 
+        public override async UniTask ConfigAttitudeSensor(AttitudeSensorFormat format, int interval, AttitudeSensorNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            if (this.attitudeSensorRequest == null) this.attitudeSensorRequest = new RequestInfo(this);
+            if (!this.isConnected || !this.isInitialized)
+            {
+                callback?.Invoke(false, this); return;
+            }
+#if !RELEASE
+            const float minTimeOut = 0.5f;
+            if (minTimeOut > timeOutSec)
+            {
+                Debug.LogWarningFormat("[CubeReal_ver2_3_0.ConfigAttitudeSensor]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
+            }
+#endif
+            bool availabe = await this.attitudeSensorRequest.GetAccess(Time.time + timeOutSec, callback);
+            if (!availabe) return;
+
+            this.attitudeSensorFormat = format;
+
+            this.attitudeSensorRequest.request = () =>
+            {
+                byte[] buff = new byte[5];
+                buff[0] = 0x1d;
+                buff[1] = 0;
+                buff[2] = (byte) format;
+                buff[3] = (byte) interval;
+                buff[4] = (byte) notificationType;
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigAttitudeSensor", format, interval, notificationType, timeOutSec, callback, order);
+            };
+            await this.attitudeSensorRequest.Run();
+        }
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < recv >
@@ -103,7 +144,86 @@ namespace toio
                     this.magneticForceCallback.Notify(this);
                 }
             }
+            // Attitude Sensor
+            else if (3 == type)
+            {
+                if (this.attitudeSensorRequest != null)
+                    this.attitudeSensorRequest.hasReceivedData = true;
+                AttitudeSensorFormat format = (AttitudeSensorFormat)data[1];
+                if (format != this.attitudeSensorFormat)
+                {
+                    Debug.LogWarning("Received attitude foramt does not match this.attitudeSensorFormat.");
+                    this.attitudeSensorFormat = format;
+                }
+
+                if (format == AttitudeSensorFormat.Eulers)
+                {
+                    int roll = BitConverter.ToInt16(data, 2);
+                    int pitch = BitConverter.ToInt16(data, 4);
+                    int yaw = BitConverter.ToInt16(data, 6);
+                    Vector3 eulers = new Vector3(roll, pitch, yaw);
+                    // TODO ファームウェアからのオイラーとクォータニオンの座標系が不一致のため、変換しない
+                    // 仕様書により、「回転順序はYaw（ヨー/Z軸）、Pitch（ピッチ/Y軸）、Roll（ロール/X軸）の順です。」 ※仕様書の xyz は unity のzxy に相当する。
+                    // Quaternion.Euler の順序が zxy の為、仕様書通りの zyx を組むために掛け算をする。
+                    // Quaternion q = Quaternion.Euler(roll,0,0) * Quaternion.Euler(0,pitch,0) * Quaternion.Euler(0,0,yaw);
+
+                    if (eulers != this.eulers)
+                    {
+                        this.eulers = eulers;
+                        this.quaternion = Quaternion.identity;
+                        this.attitudeCallback?.Notify(this);
+                    }
+                }
+                else if (format == AttitudeSensorFormat.Quaternion)
+                {
+                    float w = BitConverter.ToInt16(data, 2) / 10000f;
+                    float x = BitConverter.ToInt16(data, 4) / 10000f;
+                    float y = BitConverter.ToInt16(data, 6) / 10000f;
+                    float z = BitConverter.ToInt16(data, 8) / 10000f;
+                    Quaternion q = new Quaternion(x, y, z, w);
+
+                    // TODO ファームウェアからのオイラーとクォータニオンの座標系が不一致のため、変換しない
+                    // Quaternion to ZYX-ordered eulers
+                    // Vector3 eulers = Vector3.zero;
+                    // float sinx_cosy = 2 * (w * x + y * z);
+                    // float cosx_cosy = 1 - 2 * (x * x + y * y);
+                    // eulers.x = Mathf.Atan2(sinx_cosy, cosx_cosy) * 180/Mathf.PI;
+
+                    // float siny = 2 * (w * y - z * x);
+                    // if (Mathf.Abs(siny) >= 1)
+                    //     eulers.y = 90 * Mathf.Sign(siny);
+                    // else
+                    //     eulers.y = Mathf.Asin(siny) * 180/Mathf.PI;
+
+                    // float sinz_cosy = 2 * (w * z + x * y);
+                    // float cosz_cosy = 1 - 2 * (y * y + z * z);
+                    // eulers.z = Mathf.Atan2(sinz_cosy, cosz_cosy) * 180/Mathf.PI;
+
+                    if (q != this.quaternion)
+                    {
+                        this.eulers = Vector3.zero;
+                        this.quaternion = q;
+                        this.attitudeCallback?.Notify(this);
+                    }
+                }
+            }
         }
+
+        protected override void Recv_config(byte[] data)
+        {
+            base.Recv_config(data);
+
+            // https://toio.github.io/toio-spec/docs/ble_configuration
+            int type = data[0];
+            if (0x9d == type)       // Attitude
+            {
+                this.attitudeSensorRequest.hasConfigResponse = true;
+                this.attitudeSensorRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+                if (this.attitudeSensorRequest.isConfigResponseSucceeded)
+                    this.attitudeSensorFormat = this.requestedAttitudeSensorFormat;
+            }
+        }
+
     }
 
 }

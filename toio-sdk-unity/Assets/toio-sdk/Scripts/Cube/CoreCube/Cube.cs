@@ -86,6 +86,15 @@ namespace toio
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
 
+        // コアキューブのオイラー
+        public virtual Vector3 eulers {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+        // コアキューブのクォータニオン
+        public virtual Quaternion quaternion {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}}
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -316,6 +325,18 @@ namespace toio
         public virtual UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
+        /// <summary>
+        /// キューブの姿勢角検出機能の有効化・無効化を設定します。デフォルトでは無効化されています。(v2.3.0から対応)
+        /// https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定
+        /// </summary>
+        /// <param name="mode">モード</param>
+        /// <param name="interval">通知間隔(20 ミリ秒単位) (v2.3.0以上対応)</param>
+        /// <param name="notificationType">通知条件 (v2.3.0以上対応)</param>
+        /// <param name="timeOutSec">タイムアウト(秒)</param>
+        /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigAttitudeSensor(AttitudeSensorFormat format, int interval, AttitudeSensorNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
         /// モーションセンサー情報を要求します
@@ -379,6 +400,9 @@ namespace toio
         // ver2.3.0
         // 磁力検出コールバック
         public virtual CallbackProvider<Cube> magneticForceCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+
+        // 姿勢角検出コールバック
+        public virtual CallbackProvider<Cube> attitudeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
 
         public Cube()
@@ -523,6 +547,18 @@ namespace toio
 
         // 磁気センサーの設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-1
         public enum MagneticSensorNotificationType: byte
+        {
+            Always = 0, OnChanged = 1
+        }
+
+        // 姿勢角検出の設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-2
+        public enum AttitudeSensorFormat: byte
+        {
+            Eulers = 1, Quaternion = 2
+        }
+
+        // 姿勢角検出の設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-2
+        public enum AttitudeSensorNotificationType: byte
         {
             Always = 0, OnChanged = 1
         }
