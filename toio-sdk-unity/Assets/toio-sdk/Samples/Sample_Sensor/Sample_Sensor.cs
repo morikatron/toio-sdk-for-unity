@@ -18,8 +18,8 @@ public class Sample_Sensor : MonoBehaviour
     Text textPose;
     Text textShake;
     Text textSpeed;
-    Text textMagnet;
-    Text textMagForce;
+    Text textMag;
+    Text textAttitude;
 
     async void Start()
     {
@@ -35,8 +35,8 @@ public class Sample_Sensor : MonoBehaviour
         this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
         this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
-        this.textMagnet = GameObject.Find("TextMagnet").GetComponent<Text>();
-        this.textMagForce = GameObject.Find("TextMagForce").GetComponent<Text>();
+        this.textMag = GameObject.Find("TextMag").GetComponent<Text>();
+        this.textAttitude = GameObject.Find("TextAttitude").GetComponent<Text>();
 
         // Cube の接続
         var peripheral = await new NearestScanner().Scan();
@@ -58,14 +58,31 @@ public class Sample_Sensor : MonoBehaviour
         cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             // Motor Speed
         cube.magnetStateCallback.AddListener("Sample_Sensor", OnMagnetState);      // Magnet State
         cube.magneticForceCallback.AddListener("Sample_Sensor", OnMagForce);       // Magnetic Force
+        cube.attitudeCallback.AddListener("Sample_Sensor", OnAttitude);            // Attitude
 
         await cube.ConfigIDNotification(10);        // 100ms interval
         await cube.ConfigIDMissedNotification(10);  // 100ms interval
-        await cube.ConfigMagneticSensor(
-            Cube.MagneticSensorMode.MagneticForce,
-            interval:1,                             // 20ms interval
-            notificationType:Cube.MagneticSensorNotificationType.OnChanged
-        );
+
+        // float roll = 127;
+        // float pitch = -28;
+        // float yaw = 97;
+        // Quaternion q2 = Quaternion.Euler(0, 0, yaw) * Quaternion.Euler(0, pitch, 0) * Quaternion.Euler(roll, 0, 0); //xyz
+        // Debug.Log(q2);
+
+        // float cy = Mathf.Cos(yaw * 0.5f *Mathf.PI/180);
+        // float sy = Mathf.Sin(yaw * 0.5f *Mathf.PI/180);
+        // float cp = Mathf.Cos(pitch * 0.5f *Mathf.PI/180);
+        // float sp = Mathf.Sin(pitch * 0.5f *Mathf.PI/180);
+        // float cr = Mathf.Cos(roll * 0.5f *Mathf.PI/180);
+        // float sr = Mathf.Sin(roll * 0.5f *Mathf.PI/180);
+
+        // var w = cr * cp * cy + sr * sp * sy;
+        // var x = sr * cp * cy - cr * sp * sy;
+        // var y = cr * sp * cy + sr * cp * sy;
+        // var z = cr * cp * sy - sr * sp * cy;
+        // Debug.Log(new Quaternion(x, y, z, w));
+        // Debug.Log(w);
+
     }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
@@ -73,6 +90,47 @@ public class Sample_Sensor : MonoBehaviour
     public void TurnRight() { cube.Move(60, 30, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+
+    Cube.MagneticSensorMode magMode = Cube.MagneticSensorMode.Off;
+    public async void OnSwitchMag()
+    {
+        this.magMode = (Cube.MagneticSensorMode)(((int)this.magMode + 1) % 3);
+        await cube.ConfigMagneticSensor(
+            this.magMode,
+            interval: 10,                            // 200ms interval
+            notificationType: Cube.MagneticSensorNotificationType.OnChanged
+        );
+        if (this.magMode == Cube.MagneticSensorMode.Off)
+            this.textMag.text = "MagneticSensor Off";
+    }
+
+    int attitudeMode = 0;
+    public async void OnSwitchAttitude()
+    {
+        this.attitudeMode = (((int)this.attitudeMode + 1) % 3);
+        if (attitudeMode == 0)
+        {
+            // The only way to Disable attitude notifications is to set interval to 0
+            await cube.ConfigAttitudeSensor(
+                Cube.AttitudeSensorFormat.Eulers, interval: 0,
+                notificationType: Cube.AttitudeSensorNotificationType.OnChanged
+            );
+        }
+        else if (attitudeMode == 1)
+        {
+            await cube.ConfigAttitudeSensor(
+                Cube.AttitudeSensorFormat.Eulers, interval: 10,
+                notificationType: Cube.AttitudeSensorNotificationType.OnChanged
+            );
+        }
+        else if (attitudeMode == 2)
+        {
+            await cube.ConfigAttitudeSensor(
+                Cube.AttitudeSensorFormat.Quaternion, interval: 10,
+                notificationType: Cube.AttitudeSensorNotificationType.OnChanged
+            );
+        }
+    }
 
     public void Update()
     {
@@ -198,15 +256,30 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnMagnetState(Cube c)
     {
-        this.textMagnet.text = "Magnet: " + c.magnetState.ToString();
+        this.textMag.text = "MagnetState: " + c.magnetState.ToString();
     }
 
     public void OnMagForce(Cube c)
     {
-        int x = (int) c.magneticForce.x;
-        int y = (int) c.magneticForce.y;
-        int z = (int) c.magneticForce.z;
-        this.textMagForce.text = "MagForce=(" + x + ", " + y + ", " + z + ")";
+        this.textMag.text = "MagForce=" + c.magneticForce.ToString("F0");
+    }
+
+    public void OnAttitude(Cube c)
+    {
+        var eulers = c.eulers;
+        var q = c.quaternion;
+        if (this.attitudeMode == 0)
+        {
+            this.textAttitude.text = "AttitudeSensor Off";
+        }
+        else if (this.attitudeMode == 1)
+        {
+            this.textAttitude.text = "Eulers=" + eulers.ToString("F0");
+        }
+        else
+        {
+            this.textAttitude.text = "Quat=" + q.ToString("F2");
+        }
     }
 
 }
