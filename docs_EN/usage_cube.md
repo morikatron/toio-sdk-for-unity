@@ -18,7 +18,7 @@ This class is a multi-platform class that can switch between implementations for
 
 For more information about Simulator, please refer to [here](usage_simulator.md) page.
 
-In real Cube, you control real Cube through Bluetooth communication from Unity program according to the [toio™ Core Cube Technical Specification (Communication Specification)](https://toio.github.io/toio-spec/docs/ble_communication_overview.html).
+In real Cube, you control real Cube through Bluetooth communication from Unity program according to the [toio™ Core Cube Technical Specification (Communication Specification)](https://toio.github.io/toio-spec/en/docs/ble_communication_overview).
 
 ### Real/Sim Performance Meter
 
@@ -31,57 +31,67 @@ The following table shows the implementation correspondence.
 
 #### Firmware version 2.0.0
 
-| Function Type         | Function                                                                                                                           | Real Support Status | Sim Support Status |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| Readout sensor   | [Position ID](https://toio.github.io/toio-spec/docs/2.0.0/ble_id#position-id)                                                  | o             | o            |
-|                    | [Standard ID](https://toio.github.io/toio-spec/docs/2.0.0/ble_id#standard-id)                                                  | o             | o            |
-| Motion sensor | [Horizontal detection](https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor#水平検出)                                                    | o             | o            |
-|                    | [Collision detection](https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor#衝突検出)                                                    | o             | ※            |
-| Button             | [Button status](https://toio.github.io/toio-spec/docs/2.0.0/ble_button#ボタンの状態)                                            | o             | o            |
-| Battery         | [Battery life](https://toio.github.io/toio-spec/docs/2.0.0/ble_battery#バッテリー残量)                                       | o             | x            |
-| Motor           | [Motor control](https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#モーター制御)                                             | x             | x            |
-|                    | [Motor control with time specification](https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#時間指定付きモーター制御)                     | o             | o            |
-| Lamp             | [Turn on/off](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#点灯-消灯)                                                  | o             | o            |
-|                    | [Continuous on/off](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#連続的な点灯-消灯)                                  | o             | o            |
-|                    | [Turn off all lamps.](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#全てのランプを消灯)                                 | x             | x            |
-|                    | [Turn off specific lamps.](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#特定のランプを消灯)                                 | x             | x            |
-| Sound           | [Playback of sound effects](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#効果音の再生)                                             | o             | o            |
-|                    | [Playback MIDI note number](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#midi-note-number-の再生)                       | o             | o            |
-|                    | [Stop playback](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#再生の停止)                                                 | o             | o            |
-| Settings               | [Requesting BLE protocol version](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの要求) | o             | x            |
-|                    | [Threshold setting for horizontal detection](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#水平検出のしきい値設定)                 | o             | o            |
-|                    | [Threshold setting for collision detection](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#衝突検出のしきい値設定)                 | o             | x            |
-|                    | [Get BLE protocol version](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの取得) | o             | x            |
+> Links are of version 2.3.0, which is the lowerest version supporting English.
 
-> ... The detection function is not implemented on Simulator side, but you can manually switch the judgment on and off from the inspector. For more details, please refer to [[here](usage_simulator.md#41-inspector-in-cubesimulator)].
+| Function Type      | Function                                                                                                                     | Real Support Status | Sim Support Status |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| Identification sensor | [Position ID](https://toio.github.io/toio-spec/en/docs/ble_id#position-id)                                                      | o             | o            |
+|                    | [Standard ID](https://toio.github.io/toio-spec/en/docs/ble_id#standard-id)                                                         | o             | o            |
+| Motion sensor      | [Horizontal detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#horizontal-detection)                                   | o             | o            |
+|                    | [Collision detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#collision-detection)                                     | o             | ※           |
+| Button             | [State of button](https://toio.github.io/toio-spec/en/docs/ble_button#state-of-button)                                             | o             | o            |
+| Battery            | [Remaining battery level](https://toio.github.io/toio-spec/en/docs/ble_battery#remaining-battery-level)                            | o             | x            |
+| Motor              | [Motor control](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control)                                                  | x             | x            |
+|                    | [Motor control with specified duration](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-specified-duration)  | o             | o            |
+| Indicator          | [Turning the indicator on and off](https://toio.github.io/toio-spec/en/docs/ble_light#turning-the-indicator-on-and-off)            | o             | o            |
+|                    | [Repeated turning on and off of indicator](https://toio.github.io/toio-spec/en/docs/ble_light#repeated-turning-on-and-off-of-indicator) | o        | o            |
+|                    | [Turn off all indicators.](https://toio.github.io/toio-spec/en/docs/ble_light#turn-off-all-indicators)                             | x             | x            |
+|                    | [Turn off a specific indicator.](https://toio.github.io/toio-spec/en/docs/ble_light#turn-off-a-specific-indicator)                 | x             | x            |
+| Sound              | [Playing sound effects](https://toio.github.io/toio-spec/en/docs/ble_sound#playing-sound-effects)                                  | o             | o            |
+|                    | [Playing the MIDI note numbers](https://toio.github.io/toio-spec/en/docs/ble_sound#playing-the-midi-note-numbers)                  | o             | o            |
+|                    | [Stop playing](https://toio.github.io/toio-spec/en/docs/ble_sound#stop-playing)                                                    | o             | o            |
+| Configuration      | [Requesting the BLE protocol version](https://toio.github.io/toio-spec/en/docs/ble_configuration#requesting-the-ble-protocol-version) | o          | x            |
+|                    | [Horizontal detection threshold settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#horizontal-detection-threshold-settings) | o  | o            |
+|                    | [Collision detection threshold settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#collision-detection-threshold-settings) | o    | x            |
+|                    | [Obtaining the BLE protocol version](https://toio.github.io/toio-spec/en/docs/ble_configuration#obtaining-the-ble-protocol-version)         | o    | x            |
+
+> ... The detection function is not implemented on Simulator side, but you can manually switch the judgment on and off from the inspector. For more details, please refer to [[here]](usage_simulator.md#41-inspector-in-cubesimulator).
 
 #### Firmware version 2.1.0
 
-| Function Type         | Function                                                                                                                                | Real Support Status | Sim Support Status |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
-| Motion sensor | [Double-tap detection](https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出)                                        | o             | ※            |
-|                    | [Attitude detection](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
-| Motor           | [Motor control (instruction value range change)](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
-|                    | [Motor control with target specification](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | o             | o            |
-|                    | [Motor control with multiple target specification](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
-|                    | [Motor control with acceleration specification](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | o             | o            |
-|                    | [Response of motor control with target specification](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | o             | o            |
-|                    | [Response of motor control with multiple target specification](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
-| Settings               | [Setting the time interval for double-tap detection](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | o             | x            |
+> Links are of version 2.3.0, which is the lowerest version supporting English.
+
+| Function Type      | Function                                                                                                                              | Real Support Status | Sim Support Status |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| Motion sensor      | [Double-tap detection](https://toio.github.io/toio-spec/en/docs/ble_sensor/#double-tap-detection)                                           | o             | ※           |
+|                    | [Posture detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#posture-detection)                                                  | o             | o            |
+| Motor              | [Motor speed command values (updated)](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-speed-command-values)                       | o             | o            |
+|                    | [Motor control with target specified](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-target-specified)               | o             | o            |
+|                    | [Motor control with multiple targets specified](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-multiple-targets-specified) | x       | x            |
+|                    | [Motor control with acceleration specified](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-acceleration-specified)         | o       | o            |
+|                    | [Responses to motor control with target specified](https://toio.github.io/toio-spec/en/docs/ble_motor#responses-to-motor-control-with-target-specified) | o | o            |
+|                    | [Responses to motor control with multiple targets specified](https://toio.github.io/toio-spec/en/docs/ble_motor#responses-to-motor-control-with-multiple-targets-specified) | x | x |
+| Configuration      | [Double-tap detection time interval settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#double-tap-detection-time-interval-settings) | o   | x            |
 
 #### Firmware version 2.2.0
 
-| Function Type         | Function                                                                                                                                       | Real Support Status | Sim Support Status |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| Motion sensor  | [Request motion sensor information](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)                                       | o             | o            |
-|                   | [Shake detection](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                      | o             | o            |
-| Magnetic sensors        | [Request for magnetic sensor information](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
-|                    | [Acquisition of magnetic sensor information](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
-| Motor           | [Obtaining motor speed information](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得)                                | o             | o            |
-| Settings               | [Setting up magnetic sensor](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)                                    | x             | x            |
-|                    | [Magnetic sensor setting response](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定の応答)                       | x             | x            |
-|                    | [Setting up the acquisition of motor speed information](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)            | o             | o            |
-|                    | [Motor speed information acquisition setting response](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定の応答)| o             | o            |
+> Links are of version 2.3.0, which is the lowerest version supporting English.
+
+| Function Type      | Function                                                                                                                              | Real Support Status | Sim Support Status |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| Motion sensor      | [Requesting motion detection information](https://toio.github.io/toio-spec/en/docs/ble_sensor#requesting-motion-detection-information)      | o             | o            |
+|                    | [Shake detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#shake-detection)                                                      | o             | o            |
+| Magnetic sensor    | [Requests for magnetic sensor information](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#requests-for-magnetic-sensor-information) | x       | x            |
+|                    | [Obtaining magnetic sensor information](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#obtaining-magnetic-sensor-information-)      | x       | x            |
+| Motor              | [Obtaining motor speed information](https://toio.github.io/toio-spec/en/docs/ble_motor#obtaining-motor-speed-information)                   | o             | o            |
+| Configuration      | [Identification sensor ID notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#identification-sensor-id-notification-settings) | x     | x    |
+|                    | [Identification sensor ID missed notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#identification-sensor-id-missed-notification-settings)| x | x |
+|                    | [Responses to identification sensor ID notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-identification-sensor-id-notification-settings) | x | x |
+|                    | [Responses to identification sensor ID missed notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-identification-sensor-id-missed-notification-settings) | x | x |
+|                    | [Magnetic sensor settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#magnetic-sensor-settings-)                            | x             | x            |
+|                    | [Responses to magnetic sensor settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-magnetic-sensor-settings)   | x             | x            |
+|                    | [Motor speed information acquisition settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#motor-speed-information-acquisition-settings) | o | o            |
+|                    | [Responses to motor speed information acquisition settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-motor-speed-information-acquisition-settings)| o | o |
 
 <br>
 
@@ -308,7 +318,7 @@ public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYP
 ```
 
 Controls Cube's motor.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_motor/#motor-control-with-specified-duration)
 
 - left
   - Definition: Left motor speed
@@ -338,7 +348,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 ```
 
 Controls the LEDs on the bottom of Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_light#turning-the-indicator-on-and-off)
 
 - red
   - Definition : Red intensity
@@ -375,7 +385,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 ```
 
 Continuously controls the LEDs on the bottom of Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_light#repeated-turning-on-and-off-of-indicator)
 
 - repeatCount
   - Definition: number of repetitions
@@ -396,7 +406,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 Turn off the LED on the bottom of Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_light#全てのランプを消灯)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_light#turn-off-all-indicators)
 
 - order
   - Definition : [instruction priority](sys_cube.md#4-send-command)
@@ -411,7 +421,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 ```
 
 Play the sound effects provided in Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sound#playing-sound-effects)
 
 - soundId
   - Definition: Sound ID
@@ -428,7 +438,7 @@ Play the sound effects provided in Cube.<br>
 ### PlaySound
 
 Play any sound from Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sound#playing-the-midi-note-numbers)
 
 ```C#
 // Argument version
@@ -458,7 +468,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 - buff
-  - Definition : Data block defined by[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
+  - Definition : Data block defined by[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sound#playing-the-midi-note-numbers)
 - order
   - Definition : [instruction priority](sys_cube.md#4-send-command)
   - Type : Weak, Strong
@@ -472,7 +482,7 @@ public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 Stops Cube from playing sound.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_sound#再生の停止)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sound#stop-playing)
 
 - order
   - Definition : [instruction priority](sys_cube.md#4-send-command)
@@ -487,7 +497,7 @@ public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
 Sets the threshold for horizontal detection of Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_configuration#水平検出のしきい値設定)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration#horizontal-detection-threshold-settings)
 
 - angle
   - Definition : Threshold for tilt detection
@@ -505,7 +515,7 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
 ```
 
 Sets the threshold for collision detection for Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_configuration#衝突検出のしきい値設定)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration#collision-detection-threshold-settings)
 
 - level
   - Definition: Collision detection threshold
@@ -523,7 +533,7 @@ public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.St
 ```
 
 Set the time interval for double-tap detection of Cube <br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration#double-tap-detection-time-interval-settings)
 
 - interval
   - Definition: Time interval for double-tap detection
@@ -550,7 +560,7 @@ public void TargetMove(
             ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 Controls Cube's motor with target designation.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-target-specified)
 
 - targetX
   - Definition: X-coordinate value of the target point
@@ -615,7 +625,7 @@ public void AccelerationMove(
 ```
 
 Performs motor control with acceleration specified for Cube.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-acceleration-specified)
 
 - targetSpeed
   - Definition: the speed at which Cube moves in the direction of travel.
@@ -650,7 +660,7 @@ public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cu
 ```
 
 Enables or disables the acquisition of Cube's motor speed information.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration#motor-speed-information-acquisition-settings)
 
 - valid
   - Definition : enable/disable flag
@@ -673,7 +683,7 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
 Requests Cube to notify you of motion sensor information once.<br>
-[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/docs/ble_sensor#モーションセンサー情報の要求)
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sensor#requesting-motion-detection-information)
 
 > Since collision detection and double tap detection are notified only when they occur, it is impossible for the variable `Cube.isCollisionDetected` `Cube.isDoubleTap` to return from the `True` state to `False` unless it is notified by another motion sensor. Therefore, it is possible to update these two variables by using `RequestSensor` to ask for notification.
 

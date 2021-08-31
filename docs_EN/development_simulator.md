@@ -22,8 +22,8 @@ Please refer to [Usage - Simulator](usage_simulator.md) in the technical documen
 
 Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Resources/`.
 
-- Mat … Various imitations of [Play mat](https://toio.github.io/toio-spec/docs/info_position_id)
-- StandardID … Imitation of various [cards or sheets](https://toio.github.io/toio-spec/docs/info_standard_id) that can be read for Standard ID
+- Mat … Various imitations of [Play mat](https://toio.github.io/toio-spec/en/docs/hardware_position_id)
+- StandardID … Imitation of various [cards or sheets](https://toio.github.io/toio-spec/en/docs/hardware_standard_id) that can be read for Standard ID
 - Cube … Imitation of toio™Core Cube
 - Stage … A set of functions required for a simulation environment.
 
@@ -57,7 +57,7 @@ In Unity's Inspector, from the "Type" list of the script Mat.cs
 
 from the "Type" list of the script Mat.cs in Unity inspector to change the mat's appearance and coordinates.
 
-For specifications of each type, please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_position_id)  and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
+For specifications of each type, please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_position_id)  and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
 
 
 # 3. StandardID Prefab
@@ -79,7 +79,7 @@ The supported "Titles" are as follows
 - toio Collection
 - Simple card
 
-For more information about "Type", please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_standard_id).
+For more information about "Type", please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_standard_id).
 
 
 # 4. Cube Prefab

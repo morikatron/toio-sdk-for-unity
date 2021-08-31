@@ -55,7 +55,7 @@ In Unity's Inspector, you can change the look and coordinates of the mat by sele
 
  > The surface of toio play mat for development #1 ~ #6 has the same specifications as Simple mat, so they are combined into one type "Simple mat,toio play mat for development1~6".
 
-Please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_position_id) and [toio play mat for development](https://toio.io/blog/detail/20200423-1.html) for the specifications of each type.
+Please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_position_id) and [toio play mat for development](https://toio.io/blog/detail/20200423-1.html) for the specifications of each type.
 
 ## 2.2. Constants
 
@@ -183,7 +183,7 @@ The following "titles" can be supported.
 - toio collection
 - Simple card
 
-See [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/docs/info_standard_id) for "type".
+See [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_standard_id) for "type".
 
 
 ## 3.2. Method
@@ -323,7 +323,7 @@ CubeInteraction class is based on Unity's EventSystem and implements operations 
 
 ### Left-click on Cube object to press
 
-By `left-clicking` on Cube object, you can press the [bottom button](https://toio.github.io/toio-spec/docs/ble_button) of the target Cube object.
+By `left-clicking` on Cube object, you can press the [bottom button](https://toio.github.io/toio-spec/en/docs/ble_button) of the target Cube object.
 
 > As long as you hold down the left mouse button, the bottom button of Cube object will remain pressed.
 

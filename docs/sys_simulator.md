@@ -793,7 +793,7 @@ for i in range(11):
 </details>
 <br>
 
-この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](<(https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-%E3%81%A8-note-name)>) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
+この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-と-note-name) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
 
 
 #### 再生

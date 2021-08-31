@@ -19,7 +19,7 @@ Unity システム上で動くキューブ(以下シミュレータ) と 現実�
 
 シミュレータについては[コチラ](usage_simulator.md)のページをご参照下さい。
 
-現実のキューブでは、[toio™コア キューブ技術仕様(通信仕様)](https://toio.github.io/toio-spec/docs/ble_communication_overview.html)に沿って Unity プログラムから Bluetooth 通信を行う事で、現実のキューブを操作します。
+現実のキューブでは、[toio™コア キューブ技術仕様(通信仕様)](https://toio.github.io/toio-spec/docs/ble_communication_overview)に沿って Unity プログラムから Bluetooth 通信を行う事で、現実のキューブを操作します。
 
 ### Real/Sim 機能表
 
@@ -32,57 +32,62 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 
 #### ファームウェアバージョン 2.0.0
 
-| 機能タイプ         | 機能                                                                                                                           | Real 対応状況 | Sim 対応状況 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| 読み取りセンサー   | [Position ID](https://toio.github.io/toio-spec/docs/2.0.0/ble_id#position-id)                                                  | o             | o            |
-|                    | [Standard ID](https://toio.github.io/toio-spec/docs/2.0.0/ble_id#standard-id)                                                  | o             | o            |
-| モーションセンサー | [水平検出](https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor#水平検出)                                                    | o             | o            |
-|                    | [衝突検出](https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor#衝突検出)                                                    | o             | ※            |
-| ボタン             | [ボタンの状態](https://toio.github.io/toio-spec/docs/2.0.0/ble_button#ボタンの状態)                                            | o             | o            |
-| バッテリー         | [バッテリー残量](https://toio.github.io/toio-spec/docs/2.0.0/ble_battery#バッテリー残量)                                       | o             | x            |
-| モーター           | [モーター制御](https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#モーター制御)                                             | x             | x            |
-|                    | [時間指定付きモーター制御](https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#時間指定付きモーター制御)                     | o             | o            |
-| ランプ             | [点灯・消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#点灯-消灯)                                                  | o             | o            |
-|                    | [連続的な点灯・消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#連続的な点灯-消灯)                                  | o             | o            |
-|                    | [全てのランプを消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#全てのランプを消灯)                                 | x             | x            |
-|                    | [特定のランプを消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#特定のランプを消灯)                                 | x             | x            |
-| サウンド           | [効果音の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#効果音の再生)                                             | o             | o            |
-|                    | [MIDI note number の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#midi-note-number-の再生)                       | o             | o            |
+| 機能タイプ          | 機能                                                                                                                          | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| 読み取りセンサー    | [Position ID](https://toio.github.io/toio-spec/docs/2.0.0/ble_id#position-id)                                                 | o             | o            |
+|                    | [Standard ID](https://toio.github.io/toio-spec/docs/2.0.0/ble_id#standard-id)                                                | o             | o            |
+| モーションセンサー  | [水平検出](https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor#水平検出)                                                    | o             | o            |
+|                    | [衝突検出](https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor#衝突検出)                                                    | o             | ※           |
+| ボタン             | [ボタンの状態](https://toio.github.io/toio-spec/docs/2.0.0/ble_button#ボタンの状態)                                             | o             | o            |
+| バッテリー         | [バッテリー残量](https://toio.github.io/toio-spec/docs/2.0.0/ble_battery#バッテリー残量)                                         | o             | x            |
+| モーター           | [モーター制御](https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#モーター制御)                                              | x             | x            |
+|                    | [時間指定付きモーター制御](https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#時間指定付きモーター制御)                       | o             | o            |
+| ランプ             | [点灯・消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#点灯消灯)                                                   | o             | o            |
+|                    | [連続的な点灯・消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#連続的な点灯消灯)                                    | o             | o            |
+|                    | [全てのランプを消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#全てのランプを消灯)                                  | x             | x            |
+|                    | [特定のランプを消灯](https://toio.github.io/toio-spec/docs/2.0.0/ble_light#特定のランプを消灯)                                  | x             | x            |
+| サウンド           | [効果音の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#効果音の再生)                                              | o             | o            |
+|                    | [MIDI note number の再生](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#midi-note-number-の再生)                      | o             | o            |
 |                    | [再生の停止](https://toio.github.io/toio-spec/docs/2.0.0/ble_sound#再生の停止)                                                 | o             | o            |
-| 設定               | [BLE プロトコルバージョンの要求](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの要求) | o             | x            |
-|                    | [水平検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#水平検出のしきい値設定)                 | o             | o            |
-|                    | [衝突検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#衝突検出のしきい値設定)                 | o             | x            |
-|                    | [BLE プロトコルバージョンの取得](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの取得) | o             | x            |
+| 設定               | [BLE プロトコルバージョンの要求](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの要求)    | o             | x            |
+|                    | [水平検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#水平検出のしきい値設定)                   | o             | o            |
+|                    | [衝突検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#衝突検出のしきい値設定)                   | o             | x            |
+|                    | [BLE プロトコルバージョンの取得](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの取得)    | o             | x            |
 
 > ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-CubeSimulator-のインスペクター)をご確認ください。
 
 #### ファームウェアバージョン 2.1.0
 
-| 機能タイプ         | 機能                                                                                                                                | Real 対応状況 | Sim 対応状況 |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
-| モーションセンサー | [ダブルタップ検出](https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出)                                        | o             | ※            |
-|                    | [姿勢検出](https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出)                                                        | o             | o            |
-| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度指示値)                       | o             | o            |
-|                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御)                         | o             | o            |
-|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御)                 | x             | x            |
-|                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/ble_motor#加速度指定付きモーター制御)                     | o             | o            |
-|                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#目標指定付きモーター制御の応答)             | o             | o            |
-|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/ble_motor#複数目標指定付きモーター制御の応答)     | x             | x            |
-| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/ble_configuration#ダブルタップ検出の時間間隔の設定) | o             | x            |
+| 機能タイプ          | 機能                                                                                                                            | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
+| モーションセンサー  | [ダブルタップ検出](https://toio.github.io/toio-spec/docs/2.1.0/ble_sensor#ダブルタップ検出-)                                       | o             | ※           |
+|                    | [姿勢検出](https://toio.github.io/toio-spec/docs/2.1.0/ble_sensor#姿勢検出-)                                                     | o             | o            |
+| モーター           | [モーター制御（指示値範囲変更）](https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#モーターの速度指示値)                         | o             | o            |
+|                    | [目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#目標指定付きモーター制御-)                         | o             | o            |
+|                    | [複数目標指定付きモーター制御](https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#複数目標指定付きモーター制御-)                  | x             | x            |
+|                    | [加速度指定付きモーター制御](https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#加速度指定付きモーター制御-)                     | o             | o            |
+|                    | [目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#目標指定付きモーター制御の応答)               | o             | o            |
+|                    | [複数目標指定付きモーター制御の応答](https://toio.github.io/toio-spec/docs/2.1.0/ble_motor#複数目標指定付きモーター制御の応答-)       | x             | x            |
+| 設定               | [ダブルタップ検出の時間間隔の設定](https://toio.github.io/toio-spec/docs/2.1.0/ble_configuration#ダブルタップ検出の時間間隔の設定-)   | o             | x            |
 
 #### ファームウェアバージョン 2.2.0
 
-| 機能タイプ         | 機能                                                                                                                                       | Real 対応状況 | Sim 対応状況 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------------ |
-| モーションセンサー  | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)                                       | o             | o            |
-|                   | [シェイク検出](https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出)                                                      | o             | o            |
-| 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
-|                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
-| モーター           | [モーターの速度情報の取得](https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得)                                | o             | o            |
-| 設定               | [磁気センサーの設定](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)                                    | x             | x            |
-|                    | [磁気センサーの設定の応答](https://toio.github.io/toio-spec/docs/ble_configuration#[磁気センサーの設定の応答)                       | x             | x            |
-|                    | [モーターの速度情報の取得の設定](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定)            | o             | o            |
-|                    | [モーターの速度情報の取得の設定の応答](https://toio.github.io/toio-spec/docs/ble_configuration#モーターの速度情報の取得の設定の応答)| o             | o            |
+| 機能タイプ          | 機能                                                                                                                                   | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| モーションセンサー   | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/2.2.0/ble_sensor#モーションセンサー情報の要求)                        | o             | o            |
+|                    | [シェイク検出](https://toio.github.io/toio-spec/docs/2.2.0/ble_sensor#シェイク検出-)                                                    | o             | o            |
+| 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
+|                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
+| モーター            | [モーターの速度情報の取得](https://toio.github.io/toio-spec/docs/2.2.0/ble_motor#モーターの速度情報の取得-)                               | o             | o            |
+| 設定               | [読み取りセンサーの ID 通知設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-通知設定-)            | x             | x            |
+|                    | [読み取りセンサーの ID missed 通知設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-missed-通知設定-)| x           | x            |
+|                    | [読み取りセンサーの ID 通知設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-通知設定の応答-) | x             | x            |
+|                    | [読み取りセンサーの ID missed 通知設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-missed-通知設定の応答-)| x | x           |
+|                    | [磁気センサーの設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#磁気センサーの設定-)                                  | x             | x            |
+|                    | [磁気センサーの設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#磁気センサーの設定の応答-)                       | x             | x            |
+|                    | [モーターの速度情報の取得の設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#モーターの速度情報の取得の設定-)            | o             | o            |
+|                    | [モーターの速度情報の取得の設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#モーターの速度情報の取得の設定の応答-) | o             | o            |
+
 <br>
 
 # 2. 既存 toio™ ライブラリ(toio.js)との比較
@@ -339,7 +344,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 ```
 
 キューブ底面についている LED を制御します。<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#点灯-消灯)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#点灯消灯)
 
 - red
   - 定義 : 赤色の強さ
@@ -376,7 +381,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 ```
 
 キューブ底面についている LED を連続的に制御します。<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯-消灯)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯消灯)
 
 - repeatCount
   - 定義 : 繰り返し回数
@@ -674,7 +679,7 @@ public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
 キューブにモーションセンサー情報の通知を一回要求します。<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sensor#モーションセンサー情報の要求)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)
 
 > ※ 衝突検出とダブルタップ検出は、発生時のみ通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
 
