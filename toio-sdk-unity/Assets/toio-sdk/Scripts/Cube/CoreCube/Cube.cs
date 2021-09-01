@@ -310,7 +310,7 @@ namespace toio
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigMagneticSensor(MagneticSensorMode mode, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+        public virtual UniTask ConfigMagneticSensor(MagneticMode mode, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
         /// キューブの磁気センサーの機能のモードを設定します。デフォルトでは無効化されています。(v2.3.0から対応)
@@ -322,7 +322,7 @@ namespace toio
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
+        public virtual UniTask ConfigMagneticSensor(MagneticMode mode, int interval, MagneticNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace toio
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigAttitudeSensor(AttitudeSensorFormat format, int interval, AttitudeSensorNotificationType notificationType,
+        public virtual UniTask ConfigAttitudeSensor(AttitudeFormat format, int interval, AttitudeNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace toio
         }
 
         // 磁気センサーの設定 https://toio.github.io/toio-spec/docs/ble_configuration#_磁気センサーの設定_
-        public enum MagneticSensorMode: byte
+        public enum MagneticMode: byte
         {
             Off = 0, MagnetState = 1, MagneticForce = 2
         }
@@ -546,19 +546,19 @@ namespace toio
         }
 
         // 磁気センサーの設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-1
-        public enum MagneticSensorNotificationType: byte
+        public enum MagneticNotificationType: byte
         {
             Always = 0, OnChanged = 1
         }
 
         // 姿勢角検出の設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-2
-        public enum AttitudeSensorFormat: byte
+        public enum AttitudeFormat: byte
         {
             Eulers = 1, Quaternion = 2
         }
 
         // 姿勢角検出の設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-2
-        public enum AttitudeSensorNotificationType: byte
+        public enum AttitudeNotificationType: byte
         {
             Always = 0, OnChanged = 1
         }

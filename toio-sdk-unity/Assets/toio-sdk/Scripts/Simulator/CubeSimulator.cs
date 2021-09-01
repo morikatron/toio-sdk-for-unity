@@ -650,7 +650,7 @@ namespace toio.Simulator
             DelayCommand(() => impl.ConfigIDMissedNotification(sensitivity));
         }
 
-        public void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
+        public void ConfigMagneticSensor(Cube.MagneticMode mode)
         {
             DelayCommand(() => impl.ConfigMagneticSensor(mode));
         }
@@ -667,7 +667,7 @@ namespace toio.Simulator
 
         // --------- 2.3.0 --------
 
-        public void ConfigMagneticSensor(Cube.MagneticSensorMode mode, int interval, Cube.MagneticSensorNotificationType notificationType)
+        public void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
         {
             DelayCommand(() => impl.ConfigMagneticSensor(mode, interval, notificationType));
         }

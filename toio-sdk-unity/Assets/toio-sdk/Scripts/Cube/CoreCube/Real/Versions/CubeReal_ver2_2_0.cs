@@ -17,8 +17,8 @@ namespace toio
         protected CallbackProvider<Cube> _magnetStateCallback = new CallbackProvider<Cube>();
         protected bool motorReadValid = false;
         protected bool requestedMotorReadValid;
-        protected MagneticSensorMode magneticSensorMode = MagneticSensorMode.Off;
-        protected MagneticSensorMode requestedMagneticSensorMode;
+        protected MagneticMode magneticMode = MagneticMode.Off;
+        protected MagneticMode requestedMagneticMode;
         private RequestInfo motorReadRequest = null;
         private RequestInfo idNotificationRequest = null;
         private RequestInfo idMissedNotificationRequest = null;
@@ -42,7 +42,7 @@ namespace toio
                     Debug.Log("磁気センサーが有効化されていません. ConfigMagneticSensor関数を実行して有効化して下さい.");
                     return MagnetState.None;
                 }
-                else if (this.magneticSensorMode != MagneticSensorMode.MagnetState || !this.magneticSensorRequest.hasReceivedData)
+                else if (this.magneticMode != MagneticMode.MagnetState || !this.magneticSensorRequest.hasReceivedData)
                     return MagnetState.None;
                 else
                     return this._magnetState;
@@ -218,7 +218,7 @@ namespace toio
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
+        public override async UniTask ConfigMagneticSensor(MagneticMode mode, float timeOutSec, Action<bool, Cube> callback, ORDER_TYPE order)
         {
             if (this.magneticSensorRequest == null) this.magneticSensorRequest = new RequestInfo(this);
             if (!this.isConnected || !this.isInitialized)
@@ -242,7 +242,7 @@ namespace toio
             bool availabe = await this.magneticSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
-            this.requestedMagneticSensorMode = mode;
+            this.requestedMagneticMode = mode;
 
             this.magneticSensorRequest.request = () =>
             {
@@ -390,7 +390,7 @@ namespace toio
                 this.magneticSensorRequest.hasConfigResponse = true;
                 this.magneticSensorRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 if (this.magneticSensorRequest.isConfigResponseSucceeded)
-                    this.magneticSensorMode = this.requestedMagneticSensorMode;
+                    this.magneticMode = this.requestedMagneticMode;
             }
         }
    }

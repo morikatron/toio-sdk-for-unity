@@ -17,8 +17,8 @@ namespace toio
         protected CallbackProvider<Cube> _magneticForceCallback = new CallbackProvider<Cube>();
         protected CallbackProvider<Cube> _attitudeCallback = new CallbackProvider<Cube>();
         protected RequestInfo attitudeSensorRequest = null;
-        protected AttitudeSensorFormat attitudeSensorFormat = AttitudeSensorFormat.Eulers;
-        protected AttitudeSensorFormat requestedAttitudeSensorFormat = AttitudeSensorFormat.Eulers;
+        protected AttitudeFormat attitudeFormat = AttitudeFormat.Eulers;
+        protected AttitudeFormat requestedAttitudeFormat = AttitudeFormat.Eulers;
         protected Vector3 _magneticForce = default;
 
 
@@ -34,7 +34,7 @@ namespace toio
                     Debug.Log("磁気センサーが有効化されていません. ConfigMagneticSensor関数を実行して有効化して下さい.");
                     return default;
                 }
-                else if (this.magneticSensorMode != MagneticSensorMode.MagneticForce || !this.magneticSensorRequest.hasReceivedData)
+                else if (this.magneticMode != MagneticMode.MagneticForce || !this.magneticSensorRequest.hasReceivedData)
                     return default;
                 else
                     return this._magneticForce;
@@ -51,7 +51,7 @@ namespace toio
         //      CoreCube API
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
+        public override async UniTask ConfigMagneticSensor(MagneticMode mode, int interval, MagneticNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.magneticSensorRequest == null) this.magneticSensorRequest = new RequestInfo(this);
@@ -69,7 +69,7 @@ namespace toio
             bool availabe = await this.magneticSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
-            this.requestedMagneticSensorMode = mode;
+            this.requestedMagneticMode = mode;
 
             this.magneticSensorRequest.request = () =>
             {
@@ -84,7 +84,7 @@ namespace toio
             await this.magneticSensorRequest.Run();
         }
 
-        public override async UniTask ConfigAttitudeSensor(AttitudeSensorFormat format, int interval, AttitudeSensorNotificationType notificationType,
+        public override async UniTask ConfigAttitudeSensor(AttitudeFormat format, int interval, AttitudeNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.attitudeSensorRequest == null) this.attitudeSensorRequest = new RequestInfo(this);
@@ -102,7 +102,7 @@ namespace toio
             bool availabe = await this.attitudeSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
-            this.attitudeSensorFormat = format;
+            this.attitudeFormat = format;
 
             this.attitudeSensorRequest.request = () =>
             {
@@ -149,14 +149,14 @@ namespace toio
             {
                 if (this.attitudeSensorRequest != null)
                     this.attitudeSensorRequest.hasReceivedData = true;
-                AttitudeSensorFormat format = (AttitudeSensorFormat)data[1];
-                if (format != this.attitudeSensorFormat)
+                AttitudeFormat format = (AttitudeFormat)data[1];
+                if (format != this.attitudeFormat)
                 {
                     Debug.LogWarning("Received attitude foramt does not match this.attitudeSensorFormat.");
-                    this.attitudeSensorFormat = format;
+                    this.attitudeFormat = format;
                 }
 
-                if (format == AttitudeSensorFormat.Eulers)
+                if (format == AttitudeFormat.Eulers)
                 {
                     int roll = BitConverter.ToInt16(data, 2);
                     int pitch = BitConverter.ToInt16(data, 4);
@@ -174,7 +174,7 @@ namespace toio
                         this.attitudeCallback?.Notify(this);
                     }
                 }
-                else if (format == AttitudeSensorFormat.Quaternion)
+                else if (format == AttitudeFormat.Quaternion)
                 {
                     float w = BitConverter.ToInt16(data, 2) / 10000f;
                     float x = BitConverter.ToInt16(data, 4) / 10000f;
@@ -220,7 +220,7 @@ namespace toio
                 this.attitudeSensorRequest.hasConfigResponse = true;
                 this.attitudeSensorRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 if (this.attitudeSensorRequest.isConfigResponseSucceeded)
-                    this.attitudeSensorFormat = this.requestedAttitudeSensorFormat;
+                    this.attitudeFormat = this.requestedAttitudeFormat;
             }
         }
 

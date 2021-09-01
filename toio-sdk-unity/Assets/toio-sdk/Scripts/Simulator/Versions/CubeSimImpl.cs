@@ -237,17 +237,17 @@ namespace toio.Simulator
         public virtual void ConfigIDMissedNotification(int sensitivity)
         { NotSupportedWarning(); }
 
-        public virtual void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
+        public virtual void ConfigMagneticSensor(Cube.MagneticMode mode)
         { NotSupportedWarning(); }
-        public virtual void ConfigMagneticSensor(Cube.MagneticSensorMode mode, int interval, Cube.MagneticSensorNotificationType notificationType)
-        { NotSupportedWarning(); }
-
         public virtual void RequestMotionSensor()
         { NotSupportedWarning(); }
 
         public virtual void RequestMagneticSensor()
         { NotSupportedWarning(); }
 
+        // ---------- 2.3.0 ----------
+        public virtual void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
+        { NotSupportedWarning(); }
 
         // ============ Utils ============
         protected float Deg(float d)

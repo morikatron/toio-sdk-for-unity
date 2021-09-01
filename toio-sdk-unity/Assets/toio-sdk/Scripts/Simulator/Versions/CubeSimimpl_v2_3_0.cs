@@ -13,14 +13,14 @@ namespace toio.Simulator
 
         // ============ Magnetic Sensor ============
         public override Vector3 magneticForce { get; protected set; }
-        protected Cube.MagneticSensorNotificationType magneticSensorNotificationType = Cube.MagneticSensorNotificationType.OnChanged;
-        protected int magneticSensorInterval = 1;   // x20ms
+        protected Cube.MagneticNotificationType magneticNotificationType = Cube.MagneticNotificationType.OnChanged;
+        protected int magneticNotificationInterval = 1;   // x20ms
 
-        public override void ConfigMagneticSensor(Cube.MagneticSensorMode mode, int interval, Cube.MagneticSensorNotificationType notificationType)
+        public override void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
         {
-            this.magneticSensorMode = mode;
-            this.magneticSensorInterval = Mathf.Clamp(interval, 0, 255);
-            this.magneticSensorNotificationType = notificationType;
+            this.magneticMode = mode;
+            this.magneticNotificationInterval = Mathf.Clamp(interval, 0, 255);
+            this.magneticNotificationType = notificationType;
             this.configMagneticSensorCallback?.Invoke(true);
         }
 
@@ -28,11 +28,11 @@ namespace toio.Simulator
         public override void StartNotification_MagneticForce(Action<Vector3> action)
         {
             this.magneticForceCallback = action;
-            if (this.magneticSensorMode == Cube.MagneticSensorMode.MagneticForce)
+            if (this.magneticMode == Cube.MagneticMode.MagneticForce)
                 action?.Invoke(this.magneticForce);
         }
 
-        private float magneticSensorNotificationLastTime = 0;
+        private float magneticNotificationLastTime = 0;
         public override void RequestMagneticSensor()
         {
             SimulateMagneticSensor();
@@ -42,44 +42,44 @@ namespace toio.Simulator
 
         protected override void _SetMagnetState(Cube.MagnetState state)
         {
-            bool isToNotify_Interval = this.magneticSensorInterval > 0
-                && Time.time - magneticSensorNotificationLastTime > this.magneticSensorInterval *0.02f;
+            bool isToNotify_Interval = this.magneticNotificationInterval > 0
+                && Time.time - magneticNotificationLastTime > this.magneticNotificationInterval *0.02f;
 
             bool isToNotify_Type = false;
-            if (this.magneticSensorNotificationType == Cube.MagneticSensorNotificationType.Always)
+            if (this.magneticNotificationType == Cube.MagneticNotificationType.Always)
                 isToNotify_Type = true;
-            else if (this.magneticSensorNotificationType == Cube.MagneticSensorNotificationType.OnChanged)
+            else if (this.magneticNotificationType == Cube.MagneticNotificationType.OnChanged)
                 isToNotify_Type = state != this.magnetState;
 
             if (isToNotify_Interval && isToNotify_Type)
             {
                 this.magnetStateCallback?.Invoke(state);
                 this.magnetState = state;
-                this.magneticSensorNotificationLastTime = Time.time;
+                this.magneticNotificationLastTime = Time.time;
             }
         }
         protected virtual void _SetMagneticForce(Vector3 force)
         {
-            bool isToNotify_Interval = this.magneticSensorInterval > 0
-                && Time.time - magneticSensorNotificationLastTime > this.magneticSensorInterval *0.02f;
+            bool isToNotify_Interval = this.magneticNotificationInterval > 0
+                && Time.time - magneticNotificationLastTime > this.magneticNotificationInterval *0.02f;
 
             bool isToNotify_Type = false;
-            if (this.magneticSensorNotificationType == Cube.MagneticSensorNotificationType.Always)
+            if (this.magneticNotificationType == Cube.MagneticNotificationType.Always)
                 isToNotify_Type = true;
-            else if (this.magneticSensorNotificationType == Cube.MagneticSensorNotificationType.OnChanged)
+            else if (this.magneticNotificationType == Cube.MagneticNotificationType.OnChanged)
                 isToNotify_Type = force != this.magneticForce;
 
             if (isToNotify_Interval && isToNotify_Type)
             {
                 this.magneticForceCallback?.Invoke(force);
                 this.magneticForce = force;
-                this.magneticSensorNotificationLastTime = Time.time;
+                this.magneticNotificationLastTime = Time.time;
             }
         }
 
         protected virtual void SimulateMagneticForce(Vector3 force)
         {
-            if (this.magneticSensorMode != Cube.MagneticSensorMode.MagneticForce)
+            if (this.magneticMode != Cube.MagneticMode.MagneticForce)
             {
                 this.magneticForce = Vector3.zero;
                 return;

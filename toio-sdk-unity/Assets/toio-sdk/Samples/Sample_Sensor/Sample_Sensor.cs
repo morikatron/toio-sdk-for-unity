@@ -91,16 +91,16 @@ public class Sample_Sensor : MonoBehaviour
     public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
 
-    Cube.MagneticSensorMode magMode = Cube.MagneticSensorMode.Off;
+    Cube.MagneticMode magMode = Cube.MagneticMode.Off;
     public async void OnSwitchMag()
     {
-        this.magMode = (Cube.MagneticSensorMode)(((int)this.magMode + 1) % 3);
+        this.magMode = (Cube.MagneticMode)(((int)this.magMode + 1) % 3);
         await cube.ConfigMagneticSensor(
             this.magMode,
             interval: 10,                            // 200ms interval
-            notificationType: Cube.MagneticSensorNotificationType.OnChanged
+            notificationType: Cube.MagneticNotificationType.OnChanged
         );
-        if (this.magMode == Cube.MagneticSensorMode.Off)
+        if (this.magMode == Cube.MagneticMode.Off)
             this.textMag.text = "MagneticSensor Off";
     }
 
@@ -112,22 +112,22 @@ public class Sample_Sensor : MonoBehaviour
         {
             // The only way to Disable attitude notifications is to set interval to 0
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeSensorFormat.Eulers, interval: 0,
-                notificationType: Cube.AttitudeSensorNotificationType.OnChanged
+                Cube.AttitudeFormat.Eulers, interval: 0,
+                notificationType: Cube.AttitudeNotificationType.OnChanged
             );
         }
         else if (attitudeMode == 1)
         {
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeSensorFormat.Eulers, interval: 10,
-                notificationType: Cube.AttitudeSensorNotificationType.OnChanged
+                Cube.AttitudeFormat.Eulers, interval: 10,
+                notificationType: Cube.AttitudeNotificationType.OnChanged
             );
         }
         else if (attitudeMode == 2)
         {
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeSensorFormat.Quaternion, interval: 10,
-                notificationType: Cube.AttitudeSensorNotificationType.OnChanged
+                Cube.AttitudeFormat.Quaternion, interval: 10,
+                notificationType: Cube.AttitudeNotificationType.OnChanged
             );
         }
     }

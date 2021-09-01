@@ -404,7 +404,7 @@ namespace toio
         {
             this.configMagneticSensorRequest.hasConfigResponse = true;
             this.configMagneticSensorRequest.isConfigResponseSucceeded = true;
-            this.magneticSensorMode = this.requestedMagneticSensorMode;
+            this.magneticMode = this.requestedMagneticMode;
         }
 
         #endregion
@@ -650,14 +650,14 @@ namespace toio
             await this.configIDMissedNotificationRequest.Run();
         }
 
-        public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        public override async UniTask ConfigMagneticSensor(MagneticMode mode, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.configMagneticSensorRequest == null) this.configMagneticSensorRequest = new RequestInfo(this);
 
             bool available = await this.configMagneticSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!available) return;
 
-            this.requestedMagneticSensorMode = mode;
+            this.requestedMagneticMode = mode;
 
             this.configMagneticSensorRequest.request = () =>
             {
@@ -690,7 +690,7 @@ namespace toio
         }
 
         // -------- ver2.3.0 --------
-        public override async UniTask ConfigMagneticSensor(MagneticSensorMode mode, int interval, MagneticSensorNotificationType notificationType,
+        public override async UniTask ConfigMagneticSensor(MagneticMode mode, int interval, MagneticNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.configMagneticSensorRequest == null) this.configMagneticSensorRequest = new RequestInfo(this);
@@ -698,7 +698,7 @@ namespace toio
             bool available = await this.configMagneticSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!available) return;
 
-            this.requestedMagneticSensorMode = mode;
+            this.requestedMagneticMode = mode;
 
             this.configMagneticSensorRequest.request = () =>
             {

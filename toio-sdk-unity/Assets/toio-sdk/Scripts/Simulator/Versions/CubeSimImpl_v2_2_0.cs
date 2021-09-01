@@ -152,17 +152,17 @@ namespace toio.Simulator
 
         // ============ Magnetic Sensor ============
         // ------ Configs ------
-        protected Cube.MagneticSensorMode magneticSensorMode = Cube.MagneticSensorMode.Off;
+        protected Cube.MagneticMode magneticMode = Cube.MagneticMode.Off;
 
         protected Action<bool> configMagneticSensorCallback = null;
         public override void StartNotification_ConfigMagneticSensor(Action<bool> action)
         {
             this.configMagneticSensorCallback = action;
         }
-        public override void ConfigMagneticSensor(Cube.MagneticSensorMode mode)
+        public override void ConfigMagneticSensor(Cube.MagneticMode mode)
         {
-            if (mode > Cube.MagneticSensorMode.MagnetState) return;
-            this.magneticSensorMode = mode;
+            if (mode > Cube.MagneticMode.MagnetState) return;
+            this.magneticMode = mode;
             this.configMagneticSensorCallback?.Invoke(true);
         }
 
@@ -180,7 +180,7 @@ namespace toio.Simulator
         public override void StartNotification_MagnetState(Action<Cube.MagnetState> action)
         {
             this.magnetStateCallback = action;
-            if (this.magneticSensorMode == Cube.MagneticSensorMode.MagnetState)
+            if (this.magneticMode == Cube.MagneticMode.MagnetState)
                 action?.Invoke(this.magnetState);
         }
 
@@ -194,7 +194,7 @@ namespace toio.Simulator
         }
         protected virtual void SimulateMagnetState(Vector3 force)
         {
-            if (this.magneticSensorMode != Cube.MagneticSensorMode.MagnetState)
+            if (this.magneticMode != Cube.MagneticMode.MagnetState)
             {
                 this.magnetState = Cube.MagnetState.None;
                 return;
@@ -229,7 +229,7 @@ namespace toio.Simulator
         }
         protected virtual void ResetMagneticSensor()
         {
-            this.magneticSensorMode = Cube.MagneticSensorMode.Off;
+            this.magneticMode = Cube.MagneticMode.Off;
             this.magnetState = Cube.MagnetState.None;
             this.magnetStateCallback = null;
             this.configMagneticSensorCallback = null;
