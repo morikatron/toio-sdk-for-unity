@@ -142,7 +142,7 @@ namespace toio
                     Debug.Log("磁気センサーが有効化されていません. ConfigMagneticSensor関数を実行して有効化して下さい.");
                     return MagnetState.None;
                 }
-                if (this.magneticSensorMode!=MagneticSensorMode.MagnetState || !this.configMotorReadRequest.hasReceivedData)
+                if (this.magneticMode!=MagneticMode.MagnetState || !this.configMotorReadRequest.hasReceivedData)
                     return MagnetState.None;
                 return this._magnetState;
             }
@@ -158,7 +158,7 @@ namespace toio
                     Debug.Log("磁気センサーが有効化されていません. ConfigMagneticSensor関数を実行して有効化して下さい.");
                     return Vector3.zero;
                 }
-                if (this.magneticSensorMode!=MagneticSensorMode.MagneticForce || !this.configMotorReadRequest.hasReceivedData)
+                if (this.magneticMode!=MagneticMode.MagneticForce || !this.configMotorReadRequest.hasReceivedData)
                     return Vector3.zero;
                 return this._magneticForce;
             }
@@ -226,8 +226,8 @@ namespace toio
 
         protected bool motorReadValid = false;
         protected bool requestedMotorReadValid;
-        protected MagneticSensorMode magneticSensorMode = MagneticSensorMode.Off;
-        protected MagneticSensorMode requestedMagneticSensorMode;
+        protected MagneticMode magneticMode = MagneticMode.Off;
+        protected MagneticMode requestedMagneticMode;
 
 
         // -------- Requests to CubeSimulator --------
