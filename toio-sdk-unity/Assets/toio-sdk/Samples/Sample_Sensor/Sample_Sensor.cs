@@ -62,27 +62,6 @@ public class Sample_Sensor : MonoBehaviour
 
         await cube.ConfigIDNotification(10);        // 100ms interval
         await cube.ConfigIDMissedNotification(10);  // 100ms interval
-
-        // float roll = 127;
-        // float pitch = -28;
-        // float yaw = 97;
-        // Quaternion q2 = Quaternion.Euler(0, 0, yaw) * Quaternion.Euler(0, pitch, 0) * Quaternion.Euler(roll, 0, 0); //xyz
-        // Debug.Log(q2);
-
-        // float cy = Mathf.Cos(yaw * 0.5f *Mathf.PI/180);
-        // float sy = Mathf.Sin(yaw * 0.5f *Mathf.PI/180);
-        // float cp = Mathf.Cos(pitch * 0.5f *Mathf.PI/180);
-        // float sp = Mathf.Sin(pitch * 0.5f *Mathf.PI/180);
-        // float cr = Mathf.Cos(roll * 0.5f *Mathf.PI/180);
-        // float sr = Mathf.Sin(roll * 0.5f *Mathf.PI/180);
-
-        // var w = cr * cp * cy + sr * sp * sy;
-        // var x = sr * cp * cy - cr * sp * sy;
-        // var y = cr * sp * cy + sr * cp * sy;
-        // var z = cr * cp * sy - sr * sp * cy;
-        // Debug.Log(new Quaternion(x, y, z, w));
-        // Debug.Log(w);
-
     }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
@@ -115,6 +94,7 @@ public class Sample_Sensor : MonoBehaviour
                 Cube.AttitudeFormat.Eulers, interval: 0,
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
+            this.textAttitude.text = "AttitudeSensor Off";
         }
         else if (attitudeMode == 1)
         {
@@ -122,6 +102,7 @@ public class Sample_Sensor : MonoBehaviour
                 Cube.AttitudeFormat.Eulers, interval: 10,
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
+            cube.RequestAttitudeSensor(Cube.AttitudeFormat.Eulers);
         }
         else if (attitudeMode == 2)
         {
@@ -129,6 +110,7 @@ public class Sample_Sensor : MonoBehaviour
                 Cube.AttitudeFormat.Quaternion, interval: 10,
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
+            cube.RequestAttitudeSensor(Cube.AttitudeFormat.Quaternion);
         }
     }
 
