@@ -110,6 +110,149 @@ namespace toio.Simulator
             this.magneticForceCallback = null;
         }
 
+
+        // ============ Attitude Sensor ============
+        protected Vector3 attitudeEulers;
+        protected Quaternion attitudeQuat;
+        Cube.AttitudeFormat attitudeFormat = Cube.AttitudeFormat.Eulers;
+        Cube.AttitudeNotificationType attitudeNotificationType = Cube.AttitudeNotificationType.OnChanged;
+        protected int attitudeNotificationInterval = 0;     // x10ms
+        private float attitudeNotificationLastTime = 0;
+
+        private Action<bool> configAttitudeSensorCallback = null;
+        public override void StartNotification_ConfigAttitudeSensor(Action<bool> action)
+        {
+            this.configAttitudeSensorCallback = action;
+        }
+
+        public override void ConfigAttitudeSensor(Cube.AttitudeFormat format, int interval, Cube.AttitudeNotificationType notificationType)
+        {
+            this.attitudeFormat = format;
+            this.attitudeNotificationInterval = Mathf.Clamp(interval, 0, 255);
+            this.attitudeNotificationType = notificationType;
+            this.configAttitudeSensorCallback?.Invoke(true);
+        }
+
+        private Action<Vector3> attitudeEulersCallback = null;
+        private Action<Quaternion> attitudeQuatCallback = null;
+        public override void StartNotification_Attitude(Action<Vector3> actionE, Action<Quaternion> actionQ)
+        {
+            this.attitudeEulersCallback = actionE;
+            this.attitudeQuatCallback = actionQ;
+            if (attitudeNotificationInterval > 0)
+            {
+                if (attitudeFormat == Cube.AttitudeFormat.Eulers)
+                {
+                    this.attitudeEulersCallback?.Invoke(this.attitudeEulers);
+                    this.attitudeNotificationLastTime = Time.time;
+                }
+                if (attitudeFormat == Cube.AttitudeFormat.Quaternion)
+                {
+                    this.attitudeQuatCallback?.Invoke(this.attitudeQuat);
+                    this.attitudeNotificationLastTime = Time.time;
+                }
+            }
+        }
+
+        public override void RequestAttitudeSensor(Cube.AttitudeFormat format)
+        {
+            SimulateAttitudeSensor();
+            if (attitudeNotificationInterval > 0)
+            {
+                if (format == Cube.AttitudeFormat.Eulers)
+                {
+                    this.attitudeEulersCallback?.Invoke(this.attitudeEulers);
+                    this.attitudeNotificationLastTime = Time.time;
+                }
+                if (format == Cube.AttitudeFormat.Quaternion)
+                {
+                    this.attitudeQuatCallback?.Invoke(this.attitudeQuat);
+                    this.attitudeNotificationLastTime = Time.time;
+                }
+            }
+        }
+
+        private float attitudeInitialYaw = 0;
+        protected virtual void SimulateAttitudeSensor()
+        {
+            var e = cube._GetIMU();
+            int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
+            var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
+
+            // NOTE Reproducing real firmware's BUG
+            var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
+            quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
+                                    Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
+
+            _SetAttitude(eulers, quat);
+        }
+
+        protected virtual void _SetAttitude(Vector3 eulers, Quaternion quat)
+        {
+            bool isToNotify_Interval = this.attitudeNotificationInterval > 0
+                && Time.time - this.attitudeNotificationLastTime > this.attitudeNotificationInterval *0.02f;
+
+            bool isToNotify_Type = false;
+            if (this.attitudeNotificationType == Cube.AttitudeNotificationType.Always)
+                isToNotify_Type = true;
+            else if (this.attitudeNotificationType == Cube.AttitudeNotificationType.OnChanged)
+            {
+                if (this.attitudeFormat == Cube.AttitudeFormat.Eulers)
+                    isToNotify_Type = eulers != this.attitudeEulers;
+                if (this.attitudeFormat == Cube.AttitudeFormat.Quaternion)
+                    isToNotify_Type = quat != this.attitudeQuat;
+            }
+
+            if (isToNotify_Interval && isToNotify_Type)
+            {
+                if (this.attitudeFormat == Cube.AttitudeFormat.Eulers)
+                    this.attitudeEulersCallback?.Invoke(eulers);
+                if (this.attitudeFormat == Cube.AttitudeFormat.Quaternion)
+                    this.attitudeQuatCallback?.Invoke(quat);
+                this.attitudeEulers = eulers;
+                this.attitudeQuat = quat;
+                this.attitudeNotificationLastTime = Time.time;
+            }
+        }
+
+        protected virtual void ResetAttitudeSensor()
+        {
+            this.attitudeNotificationType = Cube.AttitudeNotificationType.OnChanged;
+            this.attitudeNotificationInterval = 0;
+            this.attitudeFormat = Cube.AttitudeFormat.Eulers;
+            this.configAttitudeSensorCallback = null;
+
+            this.attitudeEulers = Vector3.zero;
+            this.attitudeQuat = Quaternion.identity;
+            this.attitudeEulersCallback = null;
+            this.attitudeQuatCallback = null;
+        }
+
+
+        // ============ Attitude Sensor ============
+
+        public override void Simulate()
+        {
+            SimulateIDSensor();
+            SimulateMotionSensor();
+            SimulateMotorSpeedSensor();
+            SimulateMagneticSensor();
+            SimulateAttitudeSensor();
+
+            float currentTime = Time.fixedTime;
+            MotorScheduler(currentTime);
+            LightScheduler(currentTime);
+            SoundScheduler(currentTime);
+            SimulateMotor();
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+
+            ResetAttitudeSensor();
+        }
+
     }
 
 }

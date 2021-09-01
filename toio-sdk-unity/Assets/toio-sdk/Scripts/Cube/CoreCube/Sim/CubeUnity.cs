@@ -37,11 +37,13 @@ namespace toio
                 simulator.StartNotification_MotorSpeed(this.Recv_MotorSpeed);
                 simulator.StartNotification_MagnetState(this.Recv_MagnetState);
                 simulator.StartNotification_MagneticForce(this.Recv_MagneticForce);
+                simulator.StartNotification_Attitude(this.Recv_AttitudeEulers, this.Recv_AttitudeQuaternion);
 
                 simulator.StartNotification_ConfigMotorRead(this.Recv_ConfigMotorRead);
                 simulator.StartNotification_ConfigIDNotification(this.Recv_ConfigIDNotification);
                 simulator.StartNotification_ConfigIDMissedNotification(this.Recv_ConfigIDMissedNotification);
                 simulator.StartNotification_ConfigMagneticSensor(this.Recv_ConfigMagneticSensor);
+                simulator.StartNotification_ConfigAttitudeSensor(this.Recv_ConfigAttitudeSensor);
 
                 return true;
             }
@@ -164,6 +166,21 @@ namespace toio
             }
         }
 
+        protected Vector3 _eulers = Vector3.zero;
+        public override Vector3 eulers {
+            get {
+                if (this.simulator.version < CubeSimulator.Version.v2_3_0) { NotSupportedWarning(); return Vector3.zero; }
+                return this._eulers;
+            }
+        }
+        protected Quaternion _quaternion = Quaternion.identity;
+        public override Quaternion quaternion {
+            get {
+                if (this.simulator.version < CubeSimulator.Version.v2_3_0) { NotSupportedWarning(); return Quaternion.identity; }
+                return this._quaternion;
+            }
+        }
+
         // -------- Callbacks to user --------
 
         protected CallbackProvider<Cube> _buttonCallback = new CallbackProvider<Cube>();
@@ -218,6 +235,11 @@ namespace toio
             if (simulator.version>=CubeSimulator.Version.v2_3_0) return this._magneticForceCallback;
             else return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
+        protected CallbackProvider<Cube> _attitudeCallback = new CallbackProvider<Cube>();
+        public override CallbackProvider<Cube> attitudeCallback { get {
+            if (simulator.version>=CubeSimulator.Version.v2_3_0) return this._attitudeCallback;
+            else return CallbackProvider<Cube>.NotSupported.Get(this); } }
+
         #endregion
 
 
@@ -236,6 +258,7 @@ namespace toio
         private RequestInfo configIDNotificationRequest = null;
         private RequestInfo configIDMissedNotificationRequest = null;
         private RequestInfo configMagneticSensorRequest = null;
+        private RequestInfo configAttitudeSensorRequest = null;
 
         #endregion
 
@@ -378,6 +401,21 @@ namespace toio
             this.magneticForceCallback.Notify(this);
         }
 
+        // ---------- Attitude Receiver ----------
+
+        private void Recv_AttitudeEulers(Vector3 eulers)
+        {
+            this.configAttitudeSensorRequest.hasReceivedData = true;
+            this._eulers = eulers;
+            this.attitudeCallback.Notify(this);
+        }
+        private void Recv_AttitudeQuaternion(Quaternion quat)
+        {
+            this.configAttitudeSensorRequest.hasReceivedData = true;
+            this._quaternion = quat;
+            this.attitudeCallback.Notify(this);
+        }
+
         // ---------- Config Response Receiver ----------
 
         protected void Recv_ConfigMotorRead(bool success)
@@ -405,6 +443,12 @@ namespace toio
             this.configMagneticSensorRequest.hasConfigResponse = true;
             this.configMagneticSensorRequest.isConfigResponseSucceeded = true;
             this.magneticMode = this.requestedMagneticMode;
+        }
+
+        protected void Recv_ConfigAttitudeSensor(bool success)
+        {
+            this.configAttitudeSensorRequest.hasConfigResponse = true;
+            this.configAttitudeSensorRequest.isConfigResponseSucceeded = true;
         }
 
         #endregion
@@ -710,6 +754,35 @@ namespace toio
             };
 
             await this.configMagneticSensorRequest.Run();
+        }
+
+        public override async UniTask ConfigAttitudeSensor(AttitudeFormat format, int interval, AttitudeNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            if (this.configAttitudeSensorRequest == null) this.configAttitudeSensorRequest = new RequestInfo(this);
+
+            bool available = await this.configAttitudeSensorRequest.GetAccess(Time.time + timeOutSec, callback);
+            if (!available) return;
+
+            this.configAttitudeSensorRequest.request = () =>
+            {
+#if RELEASE
+                CubeOrderBalancer.Instance.AddOrder(this, () => simulator.ConfigAttitudeSensor(format, interval, notificationType), order);
+#else
+                CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.ConfigAttitudeSensor(format, interval, notificationType), order, "ConfigAttitudeSensor", format, interval, notificationType);
+#endif
+            };
+
+            await this.configAttitudeSensorRequest.Run();
+        }
+
+        public override void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+#if RELEASE
+            CubeOrderBalancer.Instance.AddOrder(this, () => simulator.RequestAttitudeSensor(format), order);
+#else
+            CubeOrderBalancer.Instance.DEBUG_AddOrderParams(this, () => simulator.RequestAttitudeSensor(format), order, "RequestAttitudeSensor", format);
+#endif
         }
 
 

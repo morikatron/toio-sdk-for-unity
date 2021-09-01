@@ -23,6 +23,10 @@ namespace toio.Simulator
             SimulateMotor();
         }
 
+        public virtual void Init(){
+
+        }
+
         public virtual void Reset(){
             ResetMotor();
         }
@@ -136,12 +140,8 @@ namespace toio.Simulator
 
         // ---------- 2.3.0 ----------
         // Magnetic Force
-        public virtual Vector3 magneticForce {
-            get{ NotSupportedWarning(); return default; }
-            protected set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_MagneticForce(System.Action<Vector3> action)
+        public virtual void StartNotification_Attitude(System.Action<Vector3> actionE, System.Action<Quaternion> actionQ)
         { NotSupportedWarning(); }
-
 
         // ============ Light ============
         protected enum LightCmdType : byte
@@ -157,6 +157,15 @@ namespace toio.Simulator
         }
         protected SoundCmdType soundCmdType = SoundCmdType.None;
 
+        // ============ Attitude ============
+        // ---------- 2.3.0 ----------
+        public virtual Vector3 magneticForce {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MagneticForce(System.Action<Vector3> action)
+        { NotSupportedWarning(); }
+
+
         // ============ Config ============
         public virtual void StartNotification_ConfigMotorRead(System.Action<bool> action)
         { NotSupportedWarning(); }
@@ -165,6 +174,8 @@ namespace toio.Simulator
         public virtual void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
         { NotSupportedWarning(); }
         public virtual void StartNotification_ConfigMagneticSensor(System.Action<bool> action)
+        { NotSupportedWarning(); }
+        public virtual void StartNotification_ConfigAttitudeSensor(System.Action<bool> action)
         { NotSupportedWarning(); }
 
 
@@ -248,6 +259,13 @@ namespace toio.Simulator
         // ---------- 2.3.0 ----------
         public virtual void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
         { NotSupportedWarning(); }
+        public virtual void ConfigAttitudeSensor(Cube.AttitudeFormat format, int interval, Cube.AttitudeNotificationType notificationType)
+        { NotSupportedWarning(); }
+
+        public virtual void RequestAttitudeSensor(Cube.AttitudeFormat format)
+        { NotSupportedWarning(); }
+
+
 
         // ============ Utils ============
         protected float Deg(float d)

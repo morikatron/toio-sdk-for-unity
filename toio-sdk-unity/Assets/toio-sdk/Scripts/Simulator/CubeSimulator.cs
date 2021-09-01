@@ -249,10 +249,21 @@ namespace toio.Simulator
             StopAllCoroutines();
         }
 
+        private void Init()
+        {
+            // Hardware
+            _InitIMU();
+
+            // Firmware
+            this.impl.Init();
+        }
+
         private void Reset()
         {
+            // Firmware
             this.impl.Reset();
 
+            // Hardware
             _StopLight();
             _StopSound();
             playingSoundId = -1;
@@ -263,6 +274,7 @@ namespace toio.Simulator
         {
             if (isPowerChanging) return;
             isPowerChanging = true;
+            Init();
 
             IEnumerator _PowerOn(){
                 _power = true;
@@ -504,13 +516,21 @@ namespace toio.Simulator
         }
 
         // ------------ v2.3.0 ------------
-        /// <summary>
-        /// 磁力読み取りのイベントコールバックを設定する
-        /// </summary>
         public void StartNotification_MagneticForce(System.Action<Vector3> action)
         {
             if (!isConnected) return;
             impl.StartNotification_MagneticForce(action);
+        }
+
+        public void StartNotification_Attitude(System.Action<Vector3> actionE, System.Action<Quaternion> actionQ)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_Attitude(actionE, actionQ);
+        }
+        public void StartNotification_ConfigAttitudeSensor(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigAttitudeSensor(action);
         }
 
         #endregion
@@ -670,6 +690,16 @@ namespace toio.Simulator
         public void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
         {
             DelayCommand(() => impl.ConfigMagneticSensor(mode, interval, notificationType));
+        }
+
+        public void ConfigAttitudeSensor(Cube.AttitudeFormat format, int interval, Cube.AttitudeNotificationType notificationType)
+        {
+            DelayCommand(() => impl.ConfigAttitudeSensor(format, interval, notificationType));
+        }
+
+        public void RequestAttitudeSensor(Cube.AttitudeFormat format)
+        {
+            DelayCommand(() => impl.RequestAttitudeSensor(format));
         }
 
         #endregion
@@ -874,6 +904,28 @@ namespace toio.Simulator
         internal void _SetMagneticField(Vector3 scaledField)
         {
             this._magneticField = scaledField * MagneticFieldScale;
+        }
+
+        // -------- Magnetic Sensor --------
+
+        private float _attitudeYawBias;
+        private void _InitIMU()
+        {
+            this._attitudeYawBias = transform.eulerAngles.y;
+        }
+        private void _SimulateIMU()
+        {
+            this._attitudeYawBias += UnityEngine.Random.value * 0.01f;
+        }
+        internal Vector3 _GetIMU()
+        {
+            var e = transform.eulerAngles;
+            float roll = e.z;
+            float pitch = e.x;
+            float yaw = e.y - this._attitudeYawBias;
+
+            // https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor/#姿勢角情報の取得オイラー角での通知
+            return new Vector3(roll, pitch, yaw);
         }
 
         #endregion
