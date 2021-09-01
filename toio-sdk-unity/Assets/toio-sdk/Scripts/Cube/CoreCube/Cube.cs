@@ -360,6 +360,15 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
+        /// <summary>
+        /// 姿勢角検出情報を要求します
+        /// https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角検出の要求
+        /// </summary>
+        /// <param name="format">通知内容の種類（オイラーかクォータニオンか）</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
+
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
         //_/_/_/_/_/_/_/_/_/_/_/_/_/

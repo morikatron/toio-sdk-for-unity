@@ -117,6 +117,15 @@ namespace toio
             await this.attitudeSensorRequest.Run();
         }
 
+        public override void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order)
+        {
+            if (!this.isConnected) { return; }
+
+            byte[] buff = new byte[1];
+            buff[0] = 0x82;
+
+            this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "RequestMagneticSensor");
+        }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < recv >
