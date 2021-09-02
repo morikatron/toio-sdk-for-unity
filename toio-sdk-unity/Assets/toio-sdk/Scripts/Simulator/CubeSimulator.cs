@@ -221,6 +221,10 @@ namespace toio.Simulator
 
             if (power)
             {
+                // Hardware Simulation
+                _SimulateIMU();
+
+                // Firmware Simulation
                 impl.Simulate();
 
                 // Connection
@@ -909,13 +913,16 @@ namespace toio.Simulator
         // -------- Magnetic Sensor --------
 
         private float _attitudeYawBias;
+        private float _attitudeYawBiasD;
         private void _InitIMU()
         {
             this._attitudeYawBias = transform.eulerAngles.y;
         }
         private void _SimulateIMU()
         {
-            this._attitudeYawBias += UnityEngine.Random.value * 0.01f;
+            this._attitudeYawBiasD += (UnityEngine.Random.value-0.5f) * 0.1f;
+            this._attitudeYawBiasD = Mathf.Clamp(this._attitudeYawBiasD, -1, 1);
+            this._attitudeYawBias += (this._attitudeYawBiasD + UnityEngine.Random.value-0.5f) * 0.01f;
         }
         internal Vector3 _GetIMU()
         {
