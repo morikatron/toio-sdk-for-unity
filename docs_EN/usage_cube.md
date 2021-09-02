@@ -18,13 +18,13 @@ This class is a multi-platform class that can switch between implementations for
 
 For more information about Simulator, please refer to [here](usage_simulator.md) page.
 
-In real Cube, you control real Cube through Bluetooth communication from Unity program according to the [toio™ Core Cube Technical Specification (Communication Specification)](https://toio.github.io/toio-spec/en/docs/ble_communication_overview).
+In real Cube, you control real Cube through Bluetooth communication from Unity program according to the [toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_communication_overview).
 
 ### Real/Sim Performance Meter
 
-Currently (12/15/2020), there are 3 firmware versions in Cube.
+Currently (09/01/2021), there are 4 firmware versions in Cube.
 
-`2.0.0`　`2.1.0`　`2.2.0`
+`2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`
 
 toio SDK for Unity has two internal implementations: Cube class that runs in real life (Real-compatible) and Cube class that runs in Simulator (Sim-compatible). Since the internal implementations are different, there are differences in the support status.<br>
 The following table shows the implementation correspondence.
@@ -81,17 +81,29 @@ The following table shows the implementation correspondence.
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
 | Motion sensor      | [Requesting motion detection information](https://toio.github.io/toio-spec/en/docs/ble_sensor#requesting-motion-detection-information)      | o             | o            |
 |                    | [Shake detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#shake-detection)                                                      | o             | o            |
-| Magnetic sensor    | [Requests for magnetic sensor information](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#requests-for-magnetic-sensor-information) | x       | x            |
-|                    | [Obtaining magnetic sensor information](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#obtaining-magnetic-sensor-information-)      | x       | x            |
+| Magnetic sensor    | [Requests for magnetic sensor information](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#requests-for-magnetic-sensor-information) | o       | o            |
+|                    | [Magnet state](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#magnet-state)                                                   | o             | o            |
 | Motor              | [Obtaining motor speed information](https://toio.github.io/toio-spec/en/docs/ble_motor#obtaining-motor-speed-information)                   | o             | o            |
-| Configuration      | [Identification sensor ID notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#identification-sensor-id-notification-settings) | x     | x    |
-|                    | [Identification sensor ID missed notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#identification-sensor-id-missed-notification-settings)| x | x |
-|                    | [Responses to identification sensor ID notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-identification-sensor-id-notification-settings) | x | x |
-|                    | [Responses to identification sensor ID missed notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-identification-sensor-id-missed-notification-settings) | x | x |
-|                    | [Magnetic sensor settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#magnetic-sensor-settings-)                            | x             | x            |
-|                    | [Responses to magnetic sensor settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-magnetic-sensor-settings)   | x             | x            |
+| Configuration      | [Identification sensor ID notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#identification-sensor-id-notification-settings) | o     | o    |
+|                    | [Identification sensor ID missed notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#identification-sensor-id-missed-notification-settings)| o | o |
+|                    | [Responses to identification sensor ID notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-identification-sensor-id-notification-settings) | o | o |
+|                    | [Responses to identification sensor ID missed notification settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-identification-sensor-id-missed-notification-settings) | o | o |
+|                    | [Magnetic sensor settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#magnetic-sensor-settings-)                            | o             | o            |
+|                    | [Responses to magnetic sensor settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-magnetic-sensor-settings)   | o             | o            |
 |                    | [Motor speed information acquisition settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#motor-speed-information-acquisition-settings) | o | o            |
 |                    | [Responses to motor speed information acquisition settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-motor-speed-information-acquisition-settings)| o | o |
+
+#### Firmware version 2.3.0
+
+| Function Type      | Function                                                                                                                              | Real Support Status | Sim Support Status |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| Magnetic sensor    | [Magnetic force detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#magnetic-force-detection-)                                   | o             | o            |
+| Posture Angle      | [Requesting posture angle detection](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#requesting-posture-angle-detection) | o        | o            |
+|                    | [Obtaining posture angle information (notifications in Euler angles)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-euler-angles) | o | o |
+|                    | [Obtaining posture angle information (notifications in quaternions)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-quaternions) | o | o |
+| Configuration      | [Magnetic sensor settings(updated)](https://toio.github.io/toio-spec/en/docs/ble_configuration#magnetic-sensor-settings-)                   | o             | o            |
+|                    | [Posture angle detection settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#posture-angle-detection-settings-)            | o             | o            |
+|                    | [Responses to posture angle detection settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-posture-angle-detection-settings-) | o | o         |
 
 <br>
 
@@ -163,6 +175,9 @@ public string id { get; protected set; }
 
 // Address of Cube
 public string addr { get; }
+
+// Complete Local Name
+public abstract string localName { get; }
 
 // Connection status of Cube
 public bool isConnected { get; }
@@ -259,6 +274,24 @@ public int leftSpeed { get; protected set; }
 // Speed of Cube's motor ID 2 (Right)
 // Callback function: motorSpeedCallback
 public int rightSpeed { get; protected set; }
+
+// Magnet state of Cube
+// Callback function: magnetStateCallback
+public virtual MagnetState magnetState { get; protected set; }
+
+// ver2.3.0
+// Magnetic force of Cube
+// Callback function: magneticForceCallback
+public virtual Vector3 magneticForce { get; protected set; }
+
+// Attitude of Cube in eulers
+// Callback function: attitudeCallback
+public virtual Vector3 eulers { get; protected set; }
+
+// Attitude of Cube in quaternion
+// Callback function: attitudeCallback
+// Currently (2021.09.01), the coordinates of quaternion is different from euler's. The euler's is correct to the specification.
+public virtual Quaternion quaternion { get; protected set; }
 ```
 
 <br>
@@ -307,6 +340,14 @@ public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCall
 public virtual CallbackProvider<Cube> shakeCallback { get; }
 // Motor speed callback
 public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
+// Magnet state callback
+public virtual CallbackProvider<Cube> magnetStateCallback { get; }
+
+// ver2.3.0
+// Magnetic force detection callback
+public virtual CallbackProvider<Cube> magneticForceCallback { get; }
+// Attitude callback
+public virtual CallbackProvider<Cube> attitudeCallback { get; }
 ```
 
 ## 3.3. Method
@@ -334,7 +375,7 @@ Controls Cube's motor.<br>
   - Definition: Duration (milliseconds)
   - Range :
     - 0~9 : No time limit
-    - 10~2550 : Accuracy is 10ms, the first place is omitted
+    - 10~2550 : Precision is 10ms, ones place is omitted
 - order
   - Definition : [instruction priority](sys_cube.md#4-send-command)
   - Type : Weak, Strong
@@ -678,20 +719,203 @@ Enables or disables the acquisition of Cube's motor speed information.<br>
 
 ### RequestSensor
 
+Deprecated. Please use `RequestMotionSensor` instead.
+
+<br>
+
+### RequestMotionSensor
+
 ```C#
-public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
+public void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
 Requests Cube to notify you of motion sensor information once.<br>
 [toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sensor#requesting-motion-detection-information)
 
-> Since collision detection and double tap detection are notified only when they occur, it is impossible for the variable `Cube.isCollisionDetected` `Cube.isDoubleTap` to return from the `True` state to `False` unless it is notified by another motion sensor. Therefore, it is possible to update these two variables by using `RequestSensor` to ask for notification.
+> Since collision detection and double tap detection are notified only when they occur, it is impossible for the variable `Cube.isCollisionDetected` `Cube.isDoubleTap` to return from the `True` state to `False` unless it is notified by another motion sensor. Therefore, it is possible to update these two variables by using `RequestMotionSensor` to ask for notification.
 
 - order
   - Definition : [instruction priority](sys_cube.md#4-send-command)
   - Type : Weak, Strong
-  
+
 <br>
+
+### ConfigIDNotification
+
+```c#
+public UniTask ConfigIDNotification(
+    int intervalMs,
+    IDNotificationType notificationType = IDNotificationType.Balanced,
+    Balanced, float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Set the notification frequency for the Position ID and Standard ID from the identification sensor. Notifications are sent when both the [Minimum Notification Interval] and [Notification Conditions] are met. <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#identification-sensor-id-notification-settings)
+
+- intervalMs
+  - Definition : Minimum notification interval (in milliseconds)
+  - Range : 0~2550, precision is 10ms, ones place is omitted.
+- notificationType
+  - Definition : Notification condition
+  - Type : Always, OnChanged, Balanced
+- timeOutSec
+  - Definition: timeout (in seconds)
+  - Range : 0.5~
+- callback
+  - Definition : end callback (set success flag, cube)
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type : Weak, Strong
+
+<br>
+
+### ConfigIDMissedNotification
+
+```c#
+public UniTask ConfigIDMissedNotification(
+    int sensitivityMs,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Set the Position ID missed and Standard ID missed notification sensitivity of the identification sensor. <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#identification-sensor-id-missed-notification-settings)
+
+- sensitivityMs
+  - Definition : Minimum notification interval (in milliseconds)
+  - Range : 0~2550, precision is 10ms, ones place is omitted
+- timeOutSec
+  - Definition : Timeout (sec)
+  - Range : 0.5~
+- callback
+  - Definition : end callback (set success flag, cube)
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type : Weak, Strong
+
+<br>
+
+### ConfigMagneticSensor
+
+```c#
+public UniTask ConfigMagneticSensor(
+    MagneticMode mode,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Sets the mode of the cube's magnetic sensor. It is disabled by default. (Supported since v2.2.0) <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#magnetic-sensor-settings-)
+
+- mode
+  - Definition : Function setting
+  - Type :
+    - [ver2.2.0] Off, MagnetState (enable magnet state detection)
+    - [ver2.3.0] Off, MagnetState (enable magnet state detection), MagneticForce (enable magnetic force detection)
+- timeOutSec
+  - Definition: timeout (sec)
+  - Range : 0.5~
+- callback
+  - Definition : end callback (set success flag, cube)
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type : Weak, Strong
+
+
+```c#
+public UniTask ConfigMagneticSensor(
+    MagneticMode mode,
+    int intervalMs,
+    MagneticNotificationType notificationType,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Sets the mode of the cube's magnetic sensor. It is disabled by default. (Supported since v2.3.0) <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#magnetic-sensor-settings-)
+
+- intervalMs
+  - Definition : Notification interval (in milliseconds)
+  - Range : 0~2550, precision is 20ms, the part less than 20ms is omitted.
+- notificationType
+  - Definition : notification condition
+  - Type : Always, OnChanged
+
+<br>
+
+### ConfigAttitudeSensor
+
+```c#
+public UniTask ConfigAttitudeSensor(
+    AttitudeFormat format,
+    int intervalMs,
+    AttitudeNotificationType notificationType,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Enables or disables the cube's attitude angle detection feature. It is disabled by default. (Supported since v2.3.0) <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#posture-angle-detection-settings-)
+
+- format
+  - Definition : Type of notification content
+  - Type : Eulers, Quaternion
+- intervalMs
+  - Definition : Minimum notification interval (in milliseconds)
+  - Range : 0~2550, precision is 10ms, ones place is omitted.
+- notificationType
+  - Definition : Notification condition
+  - Type : Always, OnChanged
+- timeOutSec
+  - Definition: timeout (in seconds)
+  - Range : 0.5~
+- callback
+  - Definition : end callback (set success flag, cube)
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type : Weak, Strong
+
+<br>
+
+### RequestMagneticSensor
+
+```C#
+public void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Requests the cube to notify the magnetic sensor information once. <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor#requests-for-magnetic-sensor-information)
+
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type : Weak, Strong
+
+<br>
+
+### RequestAttitudeSensor
+
+```C#
+public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong);
+````
+
+Requests that the cube be notified once of the specified type of attitude angle detection information. <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#requesting-posture-angle-detection)
+
+- format
+  - Definition : Type of notification content
+  - Type : Eulers, Quaternion
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type : Weak, Strong
+
+<br>
+
 
 # 4. Cube connection settings
 
