@@ -51,7 +51,7 @@ namespace toio
         //      CoreCube API
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        public override async UniTask ConfigMagneticSensor(MagneticMode mode, int interval, MagneticNotificationType notificationType,
+        public override async UniTask ConfigMagneticSensor(MagneticMode mode, int intervalMs, MagneticNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.magneticSensorRequest == null) this.magneticSensorRequest = new RequestInfo(this);
@@ -77,14 +77,14 @@ namespace toio
                 buff[0] = 0x1b;
                 buff[1] = 0;
                 buff[2] = (byte) mode;
-                buff[3] = (byte) interval;
+                buff[3] = (byte) BitConverter.GetBytes(Mathf.Clamp(intervalMs/20, 0, 255))[0];
                 buff[4] = (byte) notificationType;
-                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMagneticSensor", mode, interval, notificationType, timeOutSec, callback, order);
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigMagneticSensor", mode, intervalMs, notificationType, timeOutSec, callback, order);
             };
             await this.magneticSensorRequest.Run();
         }
 
-        public override async UniTask ConfigAttitudeSensor(AttitudeFormat format, int interval, AttitudeNotificationType notificationType,
+        public override async UniTask ConfigAttitudeSensor(AttitudeFormat format, int intervalMs, AttitudeNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.attitudeSensorRequest == null) this.attitudeSensorRequest = new RequestInfo(this);
@@ -110,9 +110,9 @@ namespace toio
                 buff[0] = 0x1d;
                 buff[1] = 0;
                 buff[2] = (byte) format;
-                buff[3] = (byte) interval;
+                buff[3] = (byte) BitConverter.GetBytes(Mathf.Clamp(intervalMs/10, 0, 255))[0];
                 buff[4] = (byte) notificationType;
-                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigAttitudeSensor", format, interval, notificationType, timeOutSec, callback, order);
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigAttitudeSensor", format, intervalMs, notificationType, timeOutSec, callback, order);
             };
             await this.attitudeSensorRequest.Run();
         }

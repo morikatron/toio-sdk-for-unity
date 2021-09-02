@@ -16,10 +16,10 @@ namespace toio.Simulator
         protected Cube.MagneticNotificationType magneticNotificationType = Cube.MagneticNotificationType.OnChanged;
         protected int magneticNotificationInterval = 1;   // x20ms
 
-        public override void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
+        public override void ConfigMagneticSensor(Cube.MagneticMode mode, int intervalMs, Cube.MagneticNotificationType notificationType)
         {
             this.magneticMode = mode;
-            this.magneticNotificationInterval = Mathf.Clamp(interval, 0, 255);
+            this.magneticNotificationInterval = Mathf.Clamp(intervalMs/20, 0, 255);
             this.magneticNotificationType = notificationType;
             this.configMagneticSensorCallback?.Invoke(true);
         }
@@ -125,10 +125,10 @@ namespace toio.Simulator
             this.configAttitudeSensorCallback = action;
         }
 
-        public override void ConfigAttitudeSensor(Cube.AttitudeFormat format, int interval, Cube.AttitudeNotificationType notificationType)
+        public override void ConfigAttitudeSensor(Cube.AttitudeFormat format, int intervalMs, Cube.AttitudeNotificationType notificationType)
         {
             this.attitudeFormat = format;
-            this.attitudeNotificationInterval = Mathf.Clamp(interval, 0, 255);
+            this.attitudeNotificationInterval = Mathf.Clamp(intervalMs/10, 0, 255);
             this.attitudeNotificationType = notificationType;
             this.configAttitudeSensorCallback?.Invoke(true);
         }
@@ -190,7 +190,7 @@ namespace toio.Simulator
         protected virtual void _SetAttitude(Vector3 eulers, Quaternion quat)
         {
             bool isToNotify_Interval = this.attitudeNotificationInterval > 0
-                && Time.time - this.attitudeNotificationLastTime > this.attitudeNotificationInterval *0.02f;
+                && Time.time - this.attitudeNotificationLastTime > this.attitudeNotificationInterval / 100f;
 
             bool isToNotify_Type = false;
             if (this.attitudeNotificationType == Cube.AttitudeNotificationType.Always)

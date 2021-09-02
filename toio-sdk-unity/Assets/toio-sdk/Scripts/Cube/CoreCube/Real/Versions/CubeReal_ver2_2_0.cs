@@ -141,10 +141,10 @@ namespace toio
         /// 読み取りセンサーの Position ID および Standard ID の通知頻度を設定します。「最小通知間隔」と「通知条件」の両方を満たした場合に通知が行われます。
         /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-通知設定
         /// </summary>
-        /// <param name="interval">最小通知間隔</param>
-        /// <param name="notificationType">通知条件(10 ミリ秒単位)</param>
+        /// <param name="intervalMs">最小通知間隔(ミリ秒)</param>
+        /// <param name="notificationType">通知条件</param>
         /// <param name="order">命令の優先度</param>
-        public override async UniTask ConfigIDNotification(int interval, IDNotificationType notificationType,
+        public override async UniTask ConfigIDNotification(int intervalMs, IDNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.idNotificationRequest == null) this.idNotificationRequest = new RequestInfo(this);
@@ -167,9 +167,9 @@ namespace toio
                 byte[] buff = new byte[4];
                 buff[0] = 0x18;
                 buff[1] = 0;
-                buff[2] = BitConverter.GetBytes(Mathf.Clamp(interval, 0, 255))[0];
+                buff[2] = BitConverter.GetBytes(Mathf.Clamp(intervalMs/10, 0, 255))[0];
                 buff[3] = (byte)notificationType;
-                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDNotification", interval, notificationType, timeOutSec, callback, order);
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDNotification", intervalMs, notificationType, timeOutSec, callback, order);
             };
             await this.idNotificationRequest.Run();
         }
@@ -179,9 +179,9 @@ namespace toio
         /// 読み取りセンサーの Position ID missed および Standard ID missed の通知感度を設定します。
         /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-missed-通知設定
         /// </summary>
-        /// <param name="sensitivity">通知感度(10 ミリ秒単位)</param>
+        /// <param name="sensitivityMs">通知感度(ミリ秒)</param>
         /// <param name="order">命令の優先度</param>
-        public override async UniTask ConfigIDMissedNotification(int sensitivity,
+        public override async UniTask ConfigIDMissedNotification(int sensitivityMs,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
             if (this.idMissedNotificationRequest == null) this.idMissedNotificationRequest = new RequestInfo(this);
@@ -204,8 +204,8 @@ namespace toio
                 byte[] buff = new byte[3];
                 buff[0] = 0x19;
                 buff[1] = 0;
-                buff[2] = BitConverter.GetBytes(Mathf.Clamp(sensitivity, 0, 255))[0];
-                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDMissedNotification", sensitivity, timeOutSec, callback, order);
+                buff[2] = BitConverter.GetBytes(Mathf.Clamp(sensitivityMs/10, 0, 255))[0];
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigIDMissedNotification", sensitivityMs, timeOutSec, callback, order);
             };
             await this.idMissedNotificationRequest.Run();
         }

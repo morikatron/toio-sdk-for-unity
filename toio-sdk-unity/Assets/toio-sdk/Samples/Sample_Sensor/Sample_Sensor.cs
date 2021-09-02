@@ -60,8 +60,8 @@ public class Sample_Sensor : MonoBehaviour
         cube.magneticForceCallback.AddListener("Sample_Sensor", OnMagForce);       // Magnetic Force
         cube.attitudeCallback.AddListener("Sample_Sensor", OnAttitude);            // Attitude
 
-        await cube.ConfigIDNotification(10);        // 100ms interval
-        await cube.ConfigIDMissedNotification(10);  // 100ms interval
+        await cube.ConfigIDNotification(500);       // 精度10ms
+        await cube.ConfigIDMissedNotification(500); // 精度10ms
     }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
@@ -76,7 +76,7 @@ public class Sample_Sensor : MonoBehaviour
         this.magMode = (Cube.MagneticMode)(((int)this.magMode + 1) % 3);
         await cube.ConfigMagneticSensor(
             this.magMode,
-            interval: 10,                            // 200ms interval
+            intervalMs: 500,    // 精度20msなの注意
             notificationType: Cube.MagneticNotificationType.OnChanged
         );
         if (this.magMode == Cube.MagneticMode.Off)
@@ -91,7 +91,7 @@ public class Sample_Sensor : MonoBehaviour
         {
             // The only way to Disable attitude notifications is to set interval to 0
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeFormat.Eulers, interval: 0,
+                Cube.AttitudeFormat.Eulers, intervalMs: 0,
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
             this.textAttitude.text = "AttitudeSensor Off";
@@ -99,7 +99,7 @@ public class Sample_Sensor : MonoBehaviour
         else if (attitudeMode == 1)
         {
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeFormat.Eulers, interval: 10,
+                Cube.AttitudeFormat.Eulers, intervalMs: 500,                // 精度10ms
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
             cube.RequestAttitudeSensor(Cube.AttitudeFormat.Eulers);
@@ -107,7 +107,7 @@ public class Sample_Sensor : MonoBehaviour
         else if (attitudeMode == 2)
         {
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeFormat.Quaternion, interval: 10,
+                Cube.AttitudeFormat.Quaternion, intervalMs: 500,            // 精度10ms
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
             cube.RequestAttitudeSensor(Cube.AttitudeFormat.Quaternion);

@@ -36,16 +36,16 @@ namespace toio.Simulator
             this.configIDMissedNotificationCallback = action;
         }
 
-        public override void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
+        public override void ConfigIDNotification(int intervalMs, Cube.IDNotificationType notificationType)
         {
-            idNotificationInterval = (byte) Mathf.Clamp(interval, 0, 255);
+            idNotificationInterval = (byte) Mathf.Clamp(intervalMs/10, 0, 255);
             idNotificationType = notificationType;
             this.configIDNotificationCallback?.Invoke(true);
         }
 
-        public override void ConfigIDMissedNotification(int sensitivity)
+        public override void ConfigIDMissedNotification(int sensitivityMs)
         {
-            idMissedNotificationSensitivity = (byte) Mathf.Clamp(sensitivity, 0, 255);
+            idMissedNotificationSensitivity = (byte) Mathf.Clamp(sensitivityMs/10, 0, 255);
             this.configIDMissedNotificationCallback?.Invoke(true);
         }
 

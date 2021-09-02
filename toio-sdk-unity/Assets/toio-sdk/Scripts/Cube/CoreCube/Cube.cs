@@ -20,6 +20,7 @@ namespace toio
         public abstract string id { get; protected set; }
         // コアキューブのアドレス
         public abstract string addr { get; }
+        // Complete local name
         public abstract string localName { get; }
         // コアキューブの接続状態
         public abstract bool isConnected { get; }
@@ -283,23 +284,23 @@ namespace toio
         /// 読み取りセンサーの Position ID および Standard ID の通知頻度を設定します。「最小通知間隔」と「通知条件」の両方を満たした場合に通知が行われます。
         /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-通知設定
         /// </summary>
-        /// <param name="interval">最小通知間隔(10 ミリ秒単位)</param>
+        /// <param name="intervalMs">最小通知間隔(ミリ秒) 精度10ms</param>
         /// <param name="notificationType">通知条件</param>
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigIDNotification(int interval, IDNotificationType notificationType = IDNotificationType.Balanced,
+        public virtual UniTask ConfigIDNotification(int intervalMs, IDNotificationType notificationType = IDNotificationType.Balanced,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
         /// 読み取りセンサーの Position ID missed および Standard ID missed の通知感度を設定します。
         /// https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-missed-通知設定
         /// </summary>
-        /// <param name="sensitivity">通知感度(10 ミリ秒単位)</param>
+        /// <param name="sensitivityMs">通知感度(ミリ秒) 精度10ms</param>
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigIDMissedNotification(int sensitivity,
+        public virtual UniTask ConfigIDMissedNotification(int sensitivityMs,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
@@ -317,12 +318,12 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定
         /// </summary>
         /// <param name="mode">モード</param>
-        /// <param name="interval">通知間隔(20 ミリ秒単位) (v2.3.0以上対応)</param>
+        /// <param name="intervalMs">通知間隔(ミリ秒) 精度20ms (v2.3.0以上対応)</param>
         /// <param name="notificationType">通知条件 (v2.3.0以上対応)</param>
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigMagneticSensor(MagneticMode mode, int interval, MagneticNotificationType notificationType,
+        public virtual UniTask ConfigMagneticSensor(MagneticMode mode, int intervalMs, MagneticNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
@@ -330,12 +331,12 @@ namespace toio
         /// https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定
         /// </summary>
         /// <param name="mode">モード</param>
-        /// <param name="interval">通知間隔(20 ミリ秒単位) (v2.3.0以上対応)</param>
+        /// <param name="intervalMs">通知間隔(ミリ秒) 精度10ms (v2.3.0以上対応)</param>
         /// <param name="notificationType">通知条件 (v2.3.0以上対応)</param>
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigAttitudeSensor(AttitudeFormat format, int interval, AttitudeNotificationType notificationType,
+        public virtual UniTask ConfigAttitudeSensor(AttitudeFormat format, int intervalMs, AttitudeNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
