@@ -23,9 +23,9 @@ Unity システム上で動くキューブ(以下シミュレータ) と 現実�
 
 ### Real/Sim 機能表
 
-現在(2020/12/15)、キューブのファームウェアバージョンは 3 つです。
+現在(2021/09/01)、キューブのファームウェアバージョンは 4 つです。
 
-`2.0.0`　`2.1.0`　`2.2.0`
+`2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`
 
 toio SDK for Unity では、現実に動作するキューブクラス(Real 対応)、シミュレータで動作するキューブクラス(Sim 対応)の 2 つの内部実装が用意されています。それぞれ内部実装が異なっているため、対応状況に違いがあります。<br>
 以下に実装対応表を示します。
@@ -76,17 +76,29 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
 | モーションセンサー   | [モーションセンサー情報の要求](https://toio.github.io/toio-spec/docs/2.2.0/ble_sensor#モーションセンサー情報の要求)                        | o             | o            |
 |                    | [シェイク検出](https://toio.github.io/toio-spec/docs/2.2.0/ble_sensor#シェイク検出-)                                                    | o             | o            |
-| 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor#磁気センサー情報の要求)                          | x             | x            |
-|                    | [磁気センサー情報の取得](https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor#磁気センサー情報の取得)                          | x             | x            |
+| 磁気センサー        | [磁気センサー情報の要求](https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor#磁気センサー情報の要求)                          | o             | o            |
+|                    | [磁石の状態](https://toio.github.io/toio-spec/docs/2.2.0/ble_magnetic_sensor#磁石の状態)                                                | o             | o            |
 | モーター            | [モーターの速度情報の取得](https://toio.github.io/toio-spec/docs/2.2.0/ble_motor#モーターの速度情報の取得-)                               | o             | o            |
-| 設定               | [読み取りセンサーの ID 通知設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-通知設定-)            | x             | x            |
-|                    | [読み取りセンサーの ID missed 通知設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-missed-通知設定-)| x           | x            |
-|                    | [読み取りセンサーの ID 通知設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-通知設定の応答-) | x             | x            |
-|                    | [読み取りセンサーの ID missed 通知設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-missed-通知設定の応答-)| x | x           |
-|                    | [磁気センサーの設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#磁気センサーの設定-)                                  | x             | x            |
-|                    | [磁気センサーの設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#磁気センサーの設定の応答-)                       | x             | x            |
+| 設定               | [読み取りセンサーの ID 通知設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-通知設定-)            | o             | o            |
+|                    | [読み取りセンサーの ID missed 通知設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-missed-通知設定-)| o           | o            |
+|                    | [読み取りセンサーの ID 通知設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-通知設定の応答-) | o             | o            |
+|                    | [読み取りセンサーの ID missed 通知設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#読み取りセンサーの-id-missed-通知設定の応答-)| o | o           |
+|                    | [磁気センサーの設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#磁気センサーの設定-)                                  | o             | o            |
+|                    | [磁気センサーの設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#磁気センサーの設定の応答-)                       | o             | o            |
 |                    | [モーターの速度情報の取得の設定](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#モーターの速度情報の取得の設定-)            | o             | o            |
 |                    | [モーターの速度情報の取得の設定の応答](https://toio.github.io/toio-spec/docs/2.2.0/ble_configuration#モーターの速度情報の取得の設定の応答-) | o             | o            |
+
+#### ファームウェアバージョン 2.3.0
+
+| 機能タイプ          | 機能                                                                                                                                   | Real 対応状況 | Sim 対応状況 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| 磁気センサー        | [磁力の検出](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁力の検出-)                                                     | o             | o            |
+| 姿勢角検出          | [姿勢角検出の要求](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角検出の要求)                                | o             | o            |
+|                    | [姿勢角情報の取得（オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得オイラー角での通知) | o        | o            |
+|                    | [姿勢角情報の取得（クォータニオンでの通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得クォータニオンでの通知) | o | o            |
+| 設定               | [磁気センサーの設定 (updated)](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定-)                               | o             | o            |
+|                    | [姿勢角検出の設定](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定-)                                            | o             | o            |
+|                    | [姿勢角検出の設定の応答](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定の応答-)                                 | o             | o            |
 
 <br>
 
@@ -159,6 +171,9 @@ public string id { get; protected set; }
 
 // キューブのアドレス
 public string addr { get; }
+
+// Complete Local Name
+public abstract string localName { get; }
 
 // キューブの接続状態
 public bool isConnected { get; }
@@ -255,6 +270,26 @@ public int leftSpeed { get; protected set; }
 // キューブのモーター ID 2（右）の速度
 // コールバック機能：motorSpeedCallback
 public int rightSpeed { get; protected set; }
+
+// コアキューブの磁石状態
+// コールバック機能：magnetStateCallback
+public virtual MagnetState magnetState { get; protected set; }
+
+// ver2.3.0
+// コアキューブの磁力
+// コールバック機能：magneticForceCallback
+public virtual Vector3 magneticForce { get; protected set; }
+
+// コアキューブのオイラー
+// コールバック機能：attitudeCallback
+public virtual Vector3 eulers { get; protected set; }
+
+// コアキューブのクォータニオン
+// コールバック機能：attitudeCallback
+// 現時点(2021.09.01)では、コアキューブから取得したクォータニオンは、オイラーと違う座標系のものになっていますので、ご注意ください。
+// （オイラーの方が仕様書通りの座標系になっています。）
+// また、仕様書に規定された座標系は Unity と違いますので、ご注意ください。
+public virtual Quaternion quaternion { get; protected set; }
 ```
 
 <br>
@@ -303,6 +338,14 @@ public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCall
 public virtual CallbackProvider<Cube> shakeCallback { get; }
 // モータースピードコールバック
 public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
+// 磁石状態コールバック
+public virtual CallbackProvider<Cube> magnetStateCallback { get; }
+
+// ver2.3.0
+// 磁力検出コールバック
+public virtual CallbackProvider<Cube> magneticForceCallback { get; }
+// 姿勢角検出コールバック
+public virtual CallbackProvider<Cube> attitudeCallback { get; }
 ```
 
 ## 3.3. メソッド
@@ -674,20 +717,206 @@ public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cu
 
 ### RequestSensor
 
+非推奨になりました。
+`RequestMotionSensor` を使ってください。
+
+<br>
+
+### RequestMotionSensor
+
 ```C#
-public void RequestSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
+public void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
 キューブにモーションセンサー情報の通知を一回要求します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sensor#モーション検出情報の要求)
 
-> ※ 衝突検出とダブルタップ検出は、発生時のみ通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
+> ※ 衝突検出とダブルタップ検出は、発生時のみ通知されるため、変数 `Cube.isCollisionDetected` `Cube.isDoubleTap` は他のモーションセンサーによって通知が来ない限り、 `True` 状態から `False` に戻るのが不可能です。そのため、`RequestMotionSensor` を利用して通知を求めることで、この２つの変数を更新させることが可能です。
 
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
 
 <br>
+
+### ConfigIDNotification
+
+```c#
+public UniTask ConfigIDNotification(
+    int intervalMs,
+    IDNotificationType notificationType = IDNotificationType.Balanced,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+読み取りセンサーの Position ID および Standard ID の通知頻度を設定します。
+「最小通知間隔」と「通知条件」の両方を満たした場合に通知が行われます。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-通知設定)
+
+- intervalMs
+  - 定義 : 最小通知間隔(ミリ秒)
+  - 範囲 : 0~2550、精度は 10ms、1 位が省略される
+- notificationType
+  - 定義 : 通知条件
+  - 種類 : Always, OnChanged, Balanced
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### ConfigIDMissedNotification
+
+```c#
+public UniTask ConfigIDMissedNotification(
+    int sensitivityMs,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+読み取りセンサーの Position ID missed および Standard ID missed の通知感度を設定します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#読み取りセンサーの-id-missed-通知設定)
+
+- sensitivityMs
+  - 定義 : 最小通知間隔(ミリ秒)
+  - 範囲 : 0~2550、精度は 10ms、1 位が省略される
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### ConfigMagneticSensor
+
+```c#
+public UniTask ConfigMagneticSensor(
+    MagneticMode mode,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブの磁気センサーの機能のモードを設定します。デフォルトでは無効化されています。(v2.2.0から対応)<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)
+
+- mode
+  - 定義 : 機能設定
+  - 範囲 :
+    - [ver2.2.0] Off, MagnetState(磁石状態検出の有効化)
+    - [ver2.3.0] Off, MagnetState(磁石状態検出の有効化), MagneticForce(磁力検出の有効化)
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+
+```c#
+public UniTask ConfigMagneticSensor(
+    MagneticMode mode,
+    int intervalMs,
+    MagneticNotificationType notificationType,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブの磁気センサーの機能のモードを設定します。デフォルトでは無効化されています。(v2.3.0から対応)<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)
+
+- intervalMs
+  - 定義 : 通知間隔(ミリ秒)
+  - 範囲 : 0~2550、精度は 20ms、20ms未満の部分が省略される
+- notificationType
+  - 定義 : 通知条件
+  - 種類 : Always, OnChanged
+
+<br>
+
+### ConfigAttitudeSensor
+
+```c#
+public UniTask ConfigAttitudeSensor(
+    AttitudeFormat format,
+    int intervalMs,
+    AttitudeNotificationType notificationType,
+    float timeOutSec = 0.5f,
+    Action<bool,Cube> callback = null,
+    ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブの姿勢角検出機能の有効化・無効化を設定します。デフォルトでは無効化されています。(v2.3.0から対応)<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定)
+
+- format
+  - 定義 : 通知内容の種類
+  - 種類 : Eulers, Quaternion
+- intervalMs
+  - 定義 : 最小通知間隔(ミリ秒)
+  - 範囲 : 0~2550、精度は 10ms、1 位が省略される
+- notificationType
+  - 定義 : 通知条件
+  - 種類 : Always, OnChanged
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### RequestMagneticSensor
+
+```C#
+public void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブに磁気センサー情報の通知を一回要求します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁気センサー情報の要求)
+
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### RequestAttitudeSensor
+
+```C#
+public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+キューブに指定種類の姿勢角検出情報の通知を一回要求します。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角検出の要求)
+
+- format
+  - 定義 : 通知内容の種類
+  - 種類 : Eulers, Quaternion
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+
 
 # 4. Cubeの接続設定
 
