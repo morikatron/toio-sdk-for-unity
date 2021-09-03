@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+### Added
+
+- [Cube Real/Simulator] Implement rest features of BLE protocol v2.2.0.
+  - [ID] Identification sensor ID notification settings, Identification sensor ID missed notification settings, Responses to identification sensor ID notification settings, Responses to identification sensor ID missed notification settings
+  - [Magnetic Sensor] Magnetic sensor settings, Requests for magnetic sensor information, Magnet state, Responses to magnetic sensor settings
+- [Cube Real/Simulator] Implement all features of BLE protocol v2.3.0.
+  - [Magnetic Sensor] Magnetic sensor settings(updated), Magnetic force
+  - [Posture Angle detection] Requesting posture angle detection, Obtaining posture angle information, Posture angle detection settings, Responses to posture angle detection settings
+- [Simulator] Implement Magnet prefab.
+- [Simulator] Mat prefab includes a new mat type `Gesundroid`.
+
+### Changed
+
+- [General] Unity tags used by toio SDK for unity are changed to `t4u_Cube`, `t4u_Mat`, `t4u_StandardID` and `t4u_Magnet`, to avoid potential conflits with users' codes.
+- [Sample] Sample_Sensor updated with new Cube features.
+- [Simulator] Optimize command processing logic.
+- [Simulator] Change the shape of "LED" on the Cube prefab.
+- [Cube] Method `RequestSensor` is deprecated. Please use `RequestMotionSensor` instead.
+
 ### Removed
 
 - [CubeHandle] Remove deprecated members (`CenterX`, `CenterY`, `SizeX`, `SizeY`, `RangeX`, `RangeY`). Please use `borderRect` or `SetBorderRect` instead.
