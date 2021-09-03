@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using toio;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public class Sample_Sensor : MonoBehaviour
 {
@@ -38,6 +39,15 @@ public class Sample_Sensor : MonoBehaviour
         this.textMag = GameObject.Find("TextMag").GetComponent<Text>();
         this.textAttitude = GameObject.Find("TextAttitude").GetComponent<Text>();
 
+#if UNITY_EDITOR || !UNITY_WEBGL
+        var btn = GameObject.Find("ButtonConnect").GetComponent<Button>();
+        btn.gameObject.SetActive(false);
+        await Connect();
+#endif
+    }
+
+    private async UniTask Connect()
+    {
         // Cube の接続
         var peripheral = await new NearestScanner().Scan();
         cube = await new CubeConnecter().Connect(peripheral);
@@ -63,6 +73,8 @@ public class Sample_Sensor : MonoBehaviour
         await cube.ConfigIDNotification(500);       // 精度10ms
         await cube.ConfigIDMissedNotification(500); // 精度10ms
     }
+
+    public async void OnBtnConnect() { await Connect(); }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Backward() { cube.Move(-40, -40, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
