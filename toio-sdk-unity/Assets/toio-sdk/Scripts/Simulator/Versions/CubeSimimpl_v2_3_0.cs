@@ -172,7 +172,6 @@ namespace toio.Simulator
             }
         }
 
-        private float attitudeInitialYaw = 0;
         protected virtual void SimulateAttitudeSensor()
         {
             var e = cube._GetIMU();
