@@ -147,11 +147,9 @@ namespace toio
                 force.Normalize();
                 force *= magnitude;
 
-                if (force != this._magneticForce)
-                {
-                    this._magneticForce = force;
+                this._magneticForce = force;
+                if (this.magneticMode == MagneticMode.MagneticForce)
                     this.magneticForceCallback.Notify(this);
-                }
             }
             // Attitude Sensor
             else if (3 == type)

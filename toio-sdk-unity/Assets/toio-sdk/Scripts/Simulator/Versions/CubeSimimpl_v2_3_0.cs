@@ -36,8 +36,10 @@ namespace toio.Simulator
         public override void RequestMagneticSensor()
         {
             SimulateMagneticSensor();
-            this.magnetStateCallback?.Invoke(this.magnetState);
-            this.magneticForceCallback?.Invoke(this.magneticForce);
+            if (this.magneticMode == Cube.MagneticMode.MagnetState)
+                this.magnetStateCallback?.Invoke(this.magnetState);
+            else if (this.magneticMode == Cube.MagneticMode.MagneticForce)
+                this.magneticForceCallback?.Invoke(this.magneticForce);
         }
 
         protected override void _SetMagnetState(Cube.MagnetState state)
