@@ -93,6 +93,8 @@ public class Sample_Sensor : MonoBehaviour
         );
         if (this.magMode == Cube.MagneticMode.Off)
             this.textMag.text = "MagneticSensor Off";
+        else
+            cube.RequestMagneticSensor();
     }
 
     int attitudeMode = 0;
