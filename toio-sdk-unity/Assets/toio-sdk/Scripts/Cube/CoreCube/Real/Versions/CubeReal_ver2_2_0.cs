@@ -334,11 +334,9 @@ namespace toio
                 if (this.magneticSensorRequest != null)
                     this.magneticSensorRequest.hasReceivedData = true;
 
-                if (_magnetState != this._magnetState)
-                {
-                    this._magnetState = _magnetState;
+                this._magnetState = _magnetState;
+                if (this.magneticMode == MagneticMode.MagnetState)
                     this.magnetStateCallback.Notify(this);
-                }
             }
         }
 

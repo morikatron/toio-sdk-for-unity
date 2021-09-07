@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using toio;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 public class Sample_Sensor : MonoBehaviour
@@ -38,6 +37,7 @@ public class Sample_Sensor : MonoBehaviour
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
         this.textMag = GameObject.Find("TextMag").GetComponent<Text>();
         this.textAttitude = GameObject.Find("TextAttitude").GetComponent<Text>();
+        await UniTask.Delay(0); // Avoid warning
 
 #if UNITY_EDITOR || !UNITY_WEBGL
         var btn = GameObject.Find("ButtonConnect").GetComponent<Button>();
@@ -93,6 +93,8 @@ public class Sample_Sensor : MonoBehaviour
         );
         if (this.magMode == Cube.MagneticMode.Off)
             this.textMag.text = "MagneticSensor Off";
+        else
+            cube.RequestMagneticSensor();
     }
 
     int attitudeMode = 0;
