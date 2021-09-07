@@ -1,14 +1,16 @@
 ## Sample_Sensor
 
-> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/sensor2_2_0/)です。
+> ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/sensor/)です。
 
 <div align="center">
-<img src="/docs/res/samples/sensor.gif">
+<img width=600 src="/docs/res/samples/sensor1.gif">
+<img width=600 src="/docs/res/samples/sensor2.gif">
+<img width=600 src="/docs/res/samples/sensor3.gif">
 </div>
 
 <br>
 
-このサンプルは、キューブの各センサ値を検出し、UIに表示するサンプルです。
+このサンプルは、キューブの各センサー値を検出し、UIに表示するサンプルです。
 
 コールバック関数により、キューブの複数状態を同時に検出することができます。
 

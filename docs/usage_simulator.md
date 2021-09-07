@@ -16,9 +16,13 @@
   - [4.3. CubeSimulator のプロパティ](usage_simulator.md#43-CubeSimulator-のプロパティ)
   - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-CubeSimulator-のメソッド)
   - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction)
-- [5. Stage-Prefab](usage_simulator.md#5-Stage-Prefab)
+- [5. Stage Prefab](usage_simulator.md#5-Stage-Prefab)
   - [5.1. ターゲットポール](usage_simulator.md#51-ターゲットポール)
   - [5.2. キューブをフォーカス](usage_simulator.md#52-キューブをフォーカス)
+- [6. Magnet Prefab](#6-Magnet-Prefab)
+  - [6.1. インスペクターでのパラメーター](#61-インスペクターでのパラメーター)
+  - [6.2. メソッド](#62-メソッド)
+  - [6.3. 磁石を自作](#63-磁石を自作)
 
 # 1. 概説
 
@@ -281,6 +285,9 @@ Cube Prefab はシーンの中に複数台配置することが出来ます。 �
 - `Trigger DoubleTap`： ダブルタップを発生させるボタンです。（現在、ゲームエンジンで物理なダブルタップ・シミュレーションは実装されていません）
 - `pose`： キューブの姿勢を表示・変更できます。
 - `shake level`： シェイクの強さを示します。（現在、シミュレータにはキューブがシェイクされたことを検出する機能は実装されていません）
+- `【Change Magnetic Sensor Manually】`： チェックすると、`magnet state`と`magnetic force` が表示され設定を変更できるようになります。この場合、シーンの中に存在する Magnet Prefab からの磁力は受けません。
+  - `magnet state`： いずれかの状態を選択すると、相応な磁力がキューブに与えられます。通知タイプが `Magnet State` でない場合、与えられる磁力は変更されますが、表示される `magnet state` は `None` のままになります。
+  - `magnetic force`： 入力した磁力をキューブの磁気センサーに与えます。`Cube.magneticForce` には等しくありません。
 
 ## 4.2. CubeSimulator の定数
 
@@ -428,4 +435,64 @@ public void SetNoFocus();
 ```
 
 フォーカスをキャンセルします。
+
+<br>
+
+# 6. Magnet Prefab
+
+Magnet Prefab は[仕様書](https://toio.github.io/toio-spec/docs/hardware_magnet#磁石の仕様)に規定された標準の磁石を模したゲームオブジェクトです。
+
+Magnet Prefab を Cube Prefab の付近に置くことで、磁気センサーをリアルのように作動させることが出来ます。
+
+<div align="center"><img src="res/usage_simulator/magnet.png"></div>
+
+## 6.1. インスペクターでのパラメーター
+
+<div align="center"><img src="res/usage_simulator/magnet_inspector.png"></div>
+
+- `Maxwell`：スクリプトがアタッチされたオブジェクトの位置に置く磁荷
+- `Relative Permeability`：相対透磁率
+- `Max Distance`：磁場を計算する範囲
+
+Magnet Prefab 自身（一番上の親オブジェクト）には磁荷が定義されておらず、複数の子オブジェクトに Magnet.cs がアタッチされ磁荷が定義されています。それらの磁荷によって、四角い磁石の磁場が擬似されています。
+
+## 6.2. メソッド
+
+### GetSelfH
+
+```c#
+public Vector3 GetSelfH(Vector3 pos);
+```
+
+定義された磁荷が指定位置に生成した磁場ベクトルを計算します。
+自オブジェクトとの距離が `Max Distance` より大きい場合、直接に 0 を戻します。
+
+- pos
+  - 定義：位置
+  - 範囲：任意
+- 戻り値
+  - 定義：磁場ベクトル
+
+### SumUpH
+
+```c#
+public Vector3 SumUpH(Vector3 pos);
+```
+
+自オブジェクト及び子オブジェクトに含まれるすべての磁荷が指定位置に生成した合成磁場ベクトルを計算します。
+自オブジェクトとの距離が `Max Distance` より大きい場合、直接に 0 を戻します。
+
+- pos
+  - 定義：位置
+  - 範囲：任意
+- 戻り値
+  - 定義：磁場ベクトル
+
+## 6.3. 磁石を自作
+
+以下の手順で Magnet Prefab を自作できます。
+
+- 親オブジェクトに Magnet.cs をアタッチします。磁荷は 0 にするのをおすすめします。
+- 子オブジェクトを作成し、Magnet.cs をアタッチし、磁荷を設定します。すべての磁荷の和が 0 であるようにしてください。
+- 親オブジェクトのタグを `t4u_Magnet` に変更します。これで CubeSimulator に認識されるようになります。子オブジェクトのタグは設定しないでください。
 

@@ -16,6 +16,7 @@
 - [5. Stage Prefab](sys_simulator.md#5-Stage-Prefab)
   - [5.1 ターゲットポール](sys_simulator.md#51-ターゲットポール)
   - [5.2 キューブをフォーカス](sys_simulator.md#52-キューブをフォーカス)
+- [6. Stage Prefab](sys_simulator.md#6-Magnet-Prefab)
 
 # 1. 概説
 
@@ -593,6 +594,152 @@ protected void _SetMotorSpeed(int left, int right)
 }
 ```
 
+### 磁石状態検出
+
+> 2.2.0 の機能です。
+
+CubeSimulator がシーンにある [Magnet Prefab](#6-Magnet-Prefab) を検索し、磁気センサーの位置での合成磁場ベクトルを求めます。
+
+```c#
+internal Vector3 _GetMagneticField()
+{
+    if (isSimulateMagneticSensor)
+    {
+        var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+        var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
+
+        Vector3 magSensor = transform.Find("MagneticSensor").position;
+
+        Vector3 h = Vector3.zero;
+        foreach (var magnet in magnets)
+        {
+            h += magnet.SumUpH(magSensor);
+        }
+
+        this._magneticField = new Vector3(h.z, h.x, -h.y);
+    }
+    return this._magneticField;
+}
+```
+
+磁場ベクトルの長さと方向によって、磁石状態が遷移します。
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected virtual void SimulateMagnetState(Vector3 force)
+{
+    if (this.magneticMode != Cube.MagneticMode.MagnetState)
+    {
+        this.magnetState = Cube.MagnetState.None;
+        return;
+    }
+
+    var e = force.normalized;
+    var m = force.magnitude;
+    const float orientThreshold = 0.95f;
+    Cube.MagnetState state = this.magnetState;
+
+    if (m > 9000 && Vector3.Dot(e, Vector3.forward) > orientThreshold)
+        state = Cube.MagnetState.N_Center;
+    else if (m > 9000 && Vector3.Dot(e, Vector3.back) > orientThreshold)
+        state = Cube.MagnetState.S_Center;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, -1, 1).normalized) > orientThreshold)
+        state = Cube.MagnetState.N_Right;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, 1, 1).normalized) > orientThreshold)
+        state = Cube.MagnetState.N_Left;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, 1, -1).normalized) > orientThreshold)
+        state = Cube.MagnetState.S_Right;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, -1, -1).normalized) > orientThreshold)
+        state = Cube.MagnetState.S_Left;
+    else if (m < 200)
+        state = Cube.MagnetState.None;
+
+    _SetMagnetState(state);
+}
+```
+
+### 磁力の検出
+
+> 2.3.0 の機能です。
+
+磁場ベクトルをキューブ用の単位に変換します。
+
+```c#
+// CubeSimImpl_v2_3_0.cs
+protected virtual void SimulateMagneticForce(Vector3 force)
+{
+    if (this.magneticMode != Cube.MagneticMode.MagneticForce)
+    {
+        this.magneticForce = Vector3.zero;
+        return;
+    }
+
+    force /= 450;
+    var orient = force.normalized * 10;
+    int ox = Mathf.RoundToInt(orient.x);
+    int oy = Mathf.RoundToInt(orient.y);
+    int oz = Mathf.RoundToInt(orient.z);
+    int mag = Mathf.RoundToInt(force.magnitude);
+    Vector3 f = new Vector3(ox, oy, oz);
+    f.Normalize();
+    f *= mag;
+    _SetMagneticForce(f);
+}
+```
+
+### 姿勢角検出
+
+> 2.3.0 の機能です。
+
+Cube Prefab の Unity 座標系でのオイラー角から、仕様書で定義された座標系のオイラー角に変換します。<br>
+また、起動時に Yaw 基準値の設定と、Yaw の誤差累積も実装されています。
+
+```c#
+// CubeSimulator.cs
+private void _InitIMU()
+{
+    this._attitudeYawBias = transform.eulerAngles.y;
+}
+private void _SimulateIMU()
+{
+    this._attitudeYawBiasD += (UnityEngine.Random.value-0.5f) * 0.1f;
+    this._attitudeYawBiasD = Mathf.Clamp(this._attitudeYawBiasD, -1, 1);
+    this._attitudeYawBias += (this._attitudeYawBiasD + UnityEngine.Random.value-0.5f) * 0.01f;
+}
+internal Vector3 _GetIMU()
+{
+    var e = transform.eulerAngles;
+    float roll = e.z;
+    float pitch = e.x;
+    float yaw = e.y - this._attitudeYawBias;
+
+    return new Vector3(roll, pitch, yaw);
+}
+```
+
+仕様書座標系のオイラー角によって、CubeUnity クラスに送信するオイラー角とクォータニオンを作成します。<br>
+現時点（2021.09.01）では、リアルのコアキューブのクォータニオンがオイラーと別々の座標系のものになっていますので、シミュレーターでも同じく再現しています。（仕様書座標系に一致しているのはオイラーの方です。）
+
+```c#
+// CubeSimImpl_v2_3_0.cs
+private float attitudeInitialYaw = 0;
+protected virtual void SimulateAttitudeSensor()
+{
+    var e = cube._GetIMU();
+    int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
+    var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
+
+    // NOTE Reproducing real firmware's BUG
+    var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
+    quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
+                            Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
+
+    _SetAttitude(eulers, quat);
+}
+```
+
+<br>
+
 ## 4.3. コマンドの実行
 
 ### 命令処理の流れ
@@ -600,14 +747,13 @@ protected void _SetMotorSpeed(int left, int right)
 シミュレータは以下のようなロジックで [CubeUnity](sys_cube.md#2-cube-クラスの構造) から渡された命令を処理しています。
 
 - CubeUnity が CubeSimulator のメソッドを呼び出すと
-  - 遅延後に実装メソッドを呼び出すコルーチンを開始する
-  - 実装メソッドは、命令と受け取りの時間をキューに入れる
+  - 遅延 (Delay) 後に実装メソッドを呼び出すコルーチンを開始する
+  - 実装メソッドでは、受け取った命令をメンバー変数の「実行中命令」に保持する
 - 毎フレーム実行される FixedUpdate() の中で以下のように処理する
-  - キューから `受け取った時間 ＞ 現在時間` を満たす命令をポップし、「実行中命令」とする
-  - 「実行中命令」の継続時間が終わったかを判断し、是の場合「実行中命令」をクリアする
   - 「実行中命令」を実行する
+  - 「実行中命令」が終了した場合はクリアする
 
-> Cube Prefab のラグ (Delay) は実環境で実測した値を設定しています。デバイス、環境等によってかわる可能性があります。
+> Cube Prefab の遅延 (Delay) パラメータは実環境で実測した値を設定しています。デバイス、環境等によってかわる可能性があります。
 
 ### モーター
 
@@ -918,3 +1064,42 @@ private void OnLeftDown()
 
 プロパティ `focusName` でフォーカスの対象のキューブの名前を取得することが出来ます。<br>
 多数のキューブを使った処理のデバッグをする際、個々のキューブの動作をチェックするのに役立ちます。
+
+<br>
+
+# 6. Magnet Prefab
+
+Magnet Prefab には、スクリプト Magnet.cs がアタッチされています。
+
+また、Magnet Prefab が内包した磁荷を表す子オブジェクト達にもスクリプト Magnet.cs がアタッチされていますが、
+親オブジェクト Magnet だけのタグが `t4u_Magnet` であるため、CubeSimulator は親オブジェクトだけを一個の磁石として認識します。
+
+Magnet.cs は自身で定義した磁場が指定位置におくベクトルを計算できます。
+
+```c#
+public Vector3 GetSelfH(Vector3 pos)
+{
+    var src = transform.position;
+    var dpos = pos - src;
+    var r = dpos.magnitude;
+    if (r > maxDistance) return Vector3.zero;
+    return maxwell * 10e-8f / (4 * Mathf.PI * mu * r * r * r) * dpos;
+}
+```
+
+Magnet Prefab の親オブジェクトとすべての子オブジェクトにアタッチされる Magnet.cs が定義した合成磁場を再帰的に求められます。
+
+```c#
+public Vector3 SumUpH(Vector3 pos)
+{
+    if (Vector3.Distance(pos, transform.position) > maxDistance) return Vector3.zero;
+
+    var magnets = GetComponentsInChildren<Magnet>();
+    Vector3 h = Vector3.zero;
+    foreach (var magnet in magnets)
+    {
+        h += magnet.GetSelfH(pos);
+    }
+    return h;
+}
+```

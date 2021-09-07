@@ -590,22 +590,167 @@ protected void _SetMotorSpeed(int left, int right)
 }
 ```
 
+### Magnet state detection
+
+> This is a feature of 2.2.0.
+
+CubeSimulator searches for the [Magnet Prefab](#6-Magnet-Prefab) in the scene and calculates the composite magnetic field vector at the location of the magnetic sensor.
+
+```c#
+internal Vector3 _GetMagneticField()
+{
+    if (isSimulateMagneticSensor)
+    {
+        var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+        var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
+
+        Vector3 magSensor = transform.Find("MagneticSensor").position;
+
+        Vector3 h = Vector3.zero;
+        foreach (var magnet in magnets)
+        {
+            h += magnet.SumUpH(magSensor);
+        }
+
+        this._magneticField = new Vector3(h.z, h.x, -h.y);
+    }
+    return this._magneticField;
+}
+```
+
+Depending on the length and direction of the magnetic field vector, the magnet state transitions.
+
+
+```c#
+// CubeSimImpl_v2_2_0.cs
+protected virtual void SimulateMagnetState(Vector3 force)
+{
+    if (this.magneticMode != Cube.MagneticMode.MagnetState)
+    {
+        this.magnetState = Cube.MagnetState.None;
+        return;
+    }
+
+    var e = force.normalized;
+    var m = force.magnitude;
+    const float orientThreshold = 0.95f;
+    Cube.MagnetState state = this.magnetState;
+
+    if (m > 9000 && Vector3.Dot(e, Vector3.forward) > orientThreshold)
+        state = Cube.MagnetState.N_Center;
+    else if (m > 9000 && Vector3.Dot(e, Vector3.back) > orientThreshold)
+        state = Cube.MagnetState.S_Center;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, -1, 1).normalized) > orientThreshold)
+        state = Cube.MagnetState.N_Right;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, 1, 1).normalized) > orientThreshold)
+        state = Cube.MagnetState.N_Left;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, 1, -1).normalized) > orientThreshold)
+        state = Cube.MagnetState.S_Right;
+    else if (m > 6000 && Vector3.Dot(e, new Vector3(0, -1, -1).normalized) > orientThreshold)
+        state = Cube.MagnetState.S_Left;
+    else if (m < 200)
+        state = Cube.MagnetState.None;
+
+    _SetMagnetState(state);
+}
+```
+
+### Magnetic force detection
+
+> This is a feature of 2.3.0.
+
+Convert the magnetic field vector to units for the cube.
+
+```c#
+// CubeSimImpl_v2_3_0.cs
+protected virtual void SimulateMagneticForce(Vector3 force)
+{
+    if (this.magneticMode != Cube.MagneticMode.MagneticForce)
+    {
+        this.magneticForce = Vector3.zero;
+        return;
+    }
+
+    force /= 450;
+    var orient = force.normalized * 10;
+    int ox = Mathf.RoundToInt(orient.x);
+    int oy = Mathf.RoundToInt(orient.y);
+    int oz = Mathf.RoundToInt(orient.z);
+    int mag = Mathf.RoundToInt(force.magnitude);
+    Vector3 f = new Vector3(ox, oy, oz);
+    f.Normalize();
+    f *= mag;
+    _SetMagneticForce(f);
+}
+```
+
+### Attitude detection
+
+> This is a feature of 2.3.0.
+
+Converts a Cube Prefab from Euler angles in the Unity coordinate system to Euler angles in the coordinate system defined in the specification. <br>
+It also sets the Yaw reference value at startup and implements Yaw error accumulation.
+
+```c#
+// CubeSimulator.cs
+private void _InitIMU()
+{
+    this._attitudeYawBias = transform.eulerAngles.y;
+}
+private void _SimulateIMU()
+{
+    this._attitudeYawBiasD += (UnityEngine.Random.value-0.5f) * 0.1f;
+    this._attitudeYawBiasD = Mathf.Clamp(this._attitudeYawBiasD, -1, 1);
+    this._attitudeYawBias += (this._attitudeYawBiasD + UnityEngine.Random.value-0.5f) * 0.01f;
+}
+internal Vector3 _GetIMU()
+{
+    var e = transform.eulerAngles;
+    float roll = e.z;
+    float pitch = e.x;
+    float yaw = e.y - this._attitudeYawBias;
+
+    return new Vector3(roll, pitch, yaw);
+}
+```
+
+The Euler angles and quaternions to be sent to the CubeUnity class are created by the Euler angles of the specification coordinate system. <br>
+At the moment (2021.09.01), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
+
+```c#
+// CubeSimImpl_v2_3_0.cs
+private float attitudeInitialYaw = 0;
+protected virtual void SimulateAttitudeSensor()
+{
+    var e = cube._GetIMU();
+    int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
+    var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
+
+    // NOTE Reproducing real firmware's BUG
+    var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
+    quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
+                            Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
+
+    _SetAttitude(eulers, quat);
+}
+```
+
+<br>
+
 ## 4.3. Executing commands
 
 ### Command processing flow
 
 Simulator uses the following logic to process instructions passed from [CubeUnity](sys_cube.md#2-structure-of-cube-class).
 
-- When CubeUnity calls a method of CubeSimulator
-  - Start a coroutine that calls the implementation method after the delay
-  - The implementation method queues up the instruction and the time to receive it
-- In FixedUpdate(), which is executed every frame, do the following
-  - Pops an instruction from the queue that satisfies `received time > current time` and designates it as an "executing instruction".
-  - "Determine if the duration of the "command in progress" has expired, and if so, clear the "command in progress".
-  - Execute the "command in progress".
+- When CubeUnity calls a method in CubeSimulator
+  - It starts a coroutine that calls the implementation method after a delay
+  - In the implementation method, the received instruction is held in the member variable "running instruction
+- In FixedUpdate(), which is executed every frame, the following process is performed
+  - Execute the "instruction being executed.
+  - Clear the "executing instruction" when it finishes.
 
-> The lag (Delay) of Cube Prefab is set based on actual measurements in a real environment. It may vary depending on the device, environment, etc.
-
+> The delay parameter of Cube Prefab is set to the value actually measured in a real environment. It may vary depending on the device, environment, etc.
 
 ### Motor
 
@@ -912,3 +1057,42 @@ private void OnLeftDown()
 
 The property `focusName` allows you to get the name of Cube to focus on.<br>
 When debugging a process with a large number of Cubes, it is useful to check the behavior of each individual Cube.
+
+<br>
+
+# 6. Magnet Prefab
+
+he Magnet Prefab has the script Magnet.cs attached to it.
+
+The script Magnet.cs is also attached to the child objects that represent the magnetic load contained in the Magnet Prefab, but
+However, only the parent object Magnet has the tag `t4u_Magnet`, so CubeSimulator recognizes only the parent object as a single magnet.
+
+Magnet.cs can calculate the vector that the magnetic field defined by itself will place at a given position.
+
+```c#
+public Vector3 GetSelfH(Vector3 pos)
+{
+    var src = transform.position;
+    var dpos = pos - src;
+    var r = dpos.magnitude;
+    if (r > maxDistance) return Vector3.zero;
+    return maxwell * 10e-8f / (4 * Mathf.PI * mu * r * r * r) * dpos;
+}
+```
+
+The synthetic magnetic field defined by Magnet.cs, which is attached to the Magnet Prefab parent object and all child objects, is recursively sought.
+
+```c#
+public Vector3 SumUpH(Vector3 pos)
+{
+    if (Vector3.Distance(pos, transform.position) > maxDistance) return Vector3.zero;
+
+    var magnets = GetComponentsInChildren<Magnet>();
+    Vector3 h = Vector3.zero;
+    foreach (var magnet in magnets)
+    {
+        h += magnet.GetSelfH(pos);
+    }
+    return h;
+}
+```

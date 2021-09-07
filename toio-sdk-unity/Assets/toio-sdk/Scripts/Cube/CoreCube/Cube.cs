@@ -82,7 +82,7 @@ namespace toio
             protected set{NotSupportedWarning();}}
 
         // ver2.3.0
-        // コアキューブの磁石状態
+        // コアキューブの磁力
         public virtual Vector3 magneticForce {
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
@@ -330,9 +330,9 @@ namespace toio
         /// キューブの姿勢角検出機能の有効化・無効化を設定します。デフォルトでは無効化されています。(v2.3.0から対応)
         /// https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定
         /// </summary>
-        /// <param name="mode">モード</param>
-        /// <param name="intervalMs">通知間隔(ミリ秒) 精度10ms (v2.3.0以上対応)</param>
-        /// <param name="notificationType">通知条件 (v2.3.0以上対応)</param>
+        /// <param name="format">通知内容の種類</param>
+        /// <param name="intervalMs">通知間隔(ミリ秒) 精度10ms</param>
+        /// <param name="notificationType">通知条件</param>
         /// <param name="timeOutSec">タイムアウト(秒)</param>
         /// <param name="callback">終了コールバック(設定成功フラグ, キューブ)</param>
         /// <param name="order">命令の優先度</param>
