@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace toio
 {
@@ -26,6 +28,7 @@ namespace toio
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      内部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
+        protected bool isInitialized = false;
         public BLEPeripheralInterface peripheral { get; private set; }
         public Dictionary<string, BLECharacteristicInterface> characteristicTable { get; private set; }
         public bool isCharacteristicReady { get; private set; }
@@ -49,6 +52,7 @@ namespace toio
             peripheral.AddConnectionListener(key, peri =>
                 {
                     if (!peri.isConnected) {
+                        isInitialized = false;
                         SetCharacteristicTable(null);
                         peripheral.RemoveConnectionListener(key);
                     }
@@ -56,6 +60,7 @@ namespace toio
             );
             SetCharacteristicTable(characteristicTable);
             await UniTask.Delay(0);
+            isInitialized = true;
         }
 
         private void SetCharacteristicTable(Dictionary<string, BLECharacteristicInterface> characteristicTable)
@@ -84,5 +89,6 @@ namespace toio
             CubeOrderBalancer.Instance.DEBUG_AddOrder(this, () => this.characteristicTable[characteristicName].WriteValue(buff, withResponse), order, DEBUG_name, DEBUG_plist);
 #endif
         }
+
     }
 }

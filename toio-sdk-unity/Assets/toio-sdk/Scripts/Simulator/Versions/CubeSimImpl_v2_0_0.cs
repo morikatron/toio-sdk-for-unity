@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -37,7 +36,7 @@ namespace toio.Simulator
             ResetSound();
         }
 
-        // ============ toio ID ============
+        #region ============ toio ID ============
         protected System.Action<uint, int> standardIDCallback = null;
         public override void StartNotification_StandardID(System.Action<uint, int> action)
         {
@@ -60,7 +59,7 @@ namespace toio.Simulator
         {
             this.positionIDMissedCallback= action;
         }
-        protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
+        protected virtual void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
         {
             deg = (deg%360+360)%360;
             if (this.x != x || this.y != y || this.deg != deg || !this.onMat)
@@ -70,7 +69,7 @@ namespace toio.Simulator
             this.onMat = true;
             this.onStandardID = false;
         }
-        protected void _SetSandardID(uint stdID, int deg)
+        protected virtual void _SetStandardID(uint stdID, int deg)
         {
             deg = (deg%360+360)%360;
             if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
@@ -80,7 +79,7 @@ namespace toio.Simulator
             this.onStandardID = true;
             this.onMat = false;
         }
-        protected void _SetOffGround()
+        protected virtual void _SetOffGround()
         {
             if (this.onMat)
                 this.positionIDMissedCallback?.Invoke();
@@ -95,29 +94,29 @@ namespace toio.Simulator
         /// </summary>
         protected virtual void SimulateIDSensor()
         {
-            // 読み取りセンサーを模擬
-            // Simuate Position ID & Standard ID Sensor
-            RaycastHit hit;
-            Vector3 gposSensor = cube.transform.Find("sensor").position;
-            Ray ray = new Ray(gposSensor, -cube.transform.up);
-            if (Physics.Raycast(ray, out hit)) {
-                if (hit.transform.gameObject.tag == "Mat" && hit.distance < 0.005f){
-                    var mat = hit.transform.gameObject.GetComponent<Mat>();
-                    var coord = mat.UnityCoord2MatCoord(cube.transform.position);
-                    var deg = mat.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-                    var coordSensor = mat.UnityCoord2MatCoord(gposSensor);
-                    var xSensor = coordSensor.x; var ySensor = coordSensor.y;
-                    _SetXYDeg(coord.x, coord.y, deg, xSensor, ySensor);
-                }
-                else if (hit.transform.gameObject.tag == "StandardID" && hit.distance < 0.005f)
-                {
-                    var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
-                    var deg = stdID.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-                    _SetSandardID(stdID.id, deg);
-                }
-                else _SetOffGround();
+            (var coordSensor, var stdID, var deg) = cube._GetIDSensor();
+            if (coordSensor != Vector2.zero)
+            {
+                // Calc. Cube position from Sensor position
+                const float dx = 0.0149f * Mat.DotPerM;
+                const float dy = 0.0094f * Mat.DotPerM;
+                var rad = deg * Mathf.PI/180;
+                var dx2 = dx * Mathf.Cos(rad) - dy * Mathf.Sin(rad);
+                var dy2 = dx * Mathf.Sin(rad) + dy * Mathf.Cos(rad);
+                var cx = coordSensor.x + dx2;
+                var cy = coordSensor.y + dy2;
+                _SetXYDeg(
+                    Mathf.RoundToInt(cx),
+                    Mathf.RoundToInt(cy),
+                    Mathf.RoundToInt(deg),
+                    Mathf.RoundToInt(coordSensor.x),
+                    Mathf.RoundToInt(coordSensor.y)
+                );
             }
-            else _SetOffGround();
+            else if (stdID != 0)
+                _SetStandardID(stdID, Mathf.RoundToInt(deg));
+            else
+                _SetOffGround();
         }
         protected virtual void ResetIDSensor()
         {
@@ -132,7 +131,10 @@ namespace toio.Simulator
             onMat = false; onStandardID = false;
         }
 
-        // ============ Button ============
+        #endregion
+
+
+        #region ============ Button ============
         protected bool _button;
         public override bool button
         {
@@ -158,7 +160,10 @@ namespace toio.Simulator
             _button = false;
         }
 
-        // ============ Motion Sensor ============
+        #endregion
+
+
+        #region ============ Motion Sensor ============
         protected System.Action<object[]> motionSensorCallback = null;
         public override void StartNotification_MotionSensor(System.Action<object[]> action)
         {
@@ -178,11 +183,12 @@ namespace toio.Simulator
             motionSensorCallback = null;
 
             _sloped = false;
-            slopeThreshold = 45; // TODO need check
+            slopeThreshold = 45;
             _collisonDetected = false;
         }
 
         // ----------- Sloped -----------
+        protected int slopeThreshold = 45;
         protected bool _sloped;
         public override bool sloped
         {
@@ -218,33 +224,34 @@ namespace toio.Simulator
             // 未実装
         }
 
+        #endregion
 
-        // ============ Motor ============
+
+        #region ============ Motor ============
         protected struct MotorTimeCmd
         {
             public int left, right, duration;
             public float tRecv;
         }
-        protected Queue<MotorTimeCmd> motorTimeCmdQ = new Queue<MotorTimeCmd>(); // command queue
-        protected MotorTimeCmd currMotorTimeCmd = default;  // current command
-
+        protected MotorTimeCmd motorTimeCmd = default;  // current command
 
         protected virtual void MotorScheduler(float t)
         {
-            while (motorTimeCmdQ.Count>0 && t > motorTimeCmdQ.Peek().tRecv)
+            // Excute MotorTimeCmd
+            if (motorCmdType == MotorCmdType.MotorTimeCmd)
             {
-                currMotorTimeCmd = motorTimeCmdQ.Dequeue();
+                var elipsed = t - motorTimeCmd.tRecv;
+                if (motorTimeCmd.duration==0 || elipsed < motorTimeCmd.duration/1000f)
+                {
+                    motorCmdL = motorTimeCmd.left;
+                    motorCmdR = motorTimeCmd.right;
+                }
+                else
+                    motorCmdType = MotorCmdType.None;
             }
-            var elipsed = t - currMotorTimeCmd.tRecv;
 
-            // ----- Excute Order -----
-            if (currMotorTimeCmd.duration==0
-                || elipsed < currMotorTimeCmd.duration/1000f)
-            {
-                motorCmdL = currMotorTimeCmd.left;
-                motorCmdR = currMotorTimeCmd.right;
-            }
-            else
+            // Order Over
+            if (motorCmdType == MotorCmdType.None)
             {
                 motorCmdL = 0; motorCmdR = 0;
             }
@@ -253,19 +260,21 @@ namespace toio.Simulator
         {
             base.ResetMotor();
 
-            motorTimeCmdQ.Clear();
-            currMotorTimeCmd = default;
+            motorCmdType = MotorCmdType.None;
+            motorTimeCmd = default;
         }
 
-        // ============ Light ============
+        #endregion
+
+
+        #region ============ Light ============
         protected struct LightCmd
         {
             public byte r, g, b;
             public short duration;    // ms
             public float tRecv;
         }
-        protected Queue<LightCmd> lightCmdQ = new Queue<LightCmd>();
-        protected LightCmd currLightCmd = default;
+        protected LightCmd lightCmd = default;
 
         protected struct LightSenarioCmd
         {
@@ -274,41 +283,35 @@ namespace toio.Simulator
             public float tRecv;
             public float period;    // s
         }
-        protected Queue<LightSenarioCmd> lightSenarioCmdQ = new Queue<LightSenarioCmd>();
-        protected LightSenarioCmd currLightSenarioCmd = default;
+        protected LightSenarioCmd lightSenarioCmd = default;
 
         protected void LightScheduler(float t)
         {
-            // ----- Simulate Lag -----
-            while (lightCmdQ.Count > 0 && t > lightCmdQ.Peek().tRecv){
-                currLightCmd = lightCmdQ.Dequeue();
-            }
-            while (lightSenarioCmdQ.Count > 0 && t > lightSenarioCmdQ.Peek().tRecv){
-                currLightSenarioCmd = lightSenarioCmdQ.Dequeue();
-            }
-
-            // ----- Excute Order -----
-            if (currLightCmd.tRecv >= currLightSenarioCmd.tRecv)    // light cmd
+            // ----- Excute LightCmd -----
+            if (lightCmdType == LightCmdType.LightCmd)
             {
-                float elipsed = t - currLightCmd.tRecv;
-                if (currLightCmd.duration==0 || elipsed < currLightCmd.duration/1000f)
-                    cube._SetLight(currLightCmd.r, currLightCmd.g, currLightCmd.b);
-                else cube._StopLight();
+                float elipsed = t - lightCmd.tRecv;
+                if (lightCmd.duration==0 || elipsed < lightCmd.duration/1000f)
+                    cube._SetLight(lightCmd.r, lightCmd.g, lightCmd.b);
+                else
+                    lightCmdType = LightCmdType.None;
             }
-            else    // light senario cmd
+            // ----- Excute LightSenarioCmd -----
+            else if (lightCmdType == LightCmdType.LightSenarioCmd)
             {
-                float elipsed = t - currLightSenarioCmd.tRecv;
-                if (currLightSenarioCmd.period==0
-                    || currLightSenarioCmd.repeat>0 && currLightSenarioCmd.period*currLightSenarioCmd.repeat <= elipsed){
-                    cube._StopLight();
+                float elipsed = t - lightSenarioCmd.tRecv;
+                if (lightSenarioCmd.period==0 || lightSenarioCmd.repeat>0
+                    && lightSenarioCmd.period*lightSenarioCmd.repeat <= elipsed
+                ){
+                    lightCmdType = LightCmdType.None;
                 }
                 else
                 {
                     // Index of current operation
-                    float sum = 0; int index=0; var lights = currLightSenarioCmd.lights;
+                    float sum = 0; int index=0; var lights = lightSenarioCmd.lights;
                     for (int i=0; i<lights.Length; ++i){
                         sum += lights[i].durationMs/1000f;
-                        if (elipsed % currLightSenarioCmd.period < sum){
+                        if (elipsed % lightSenarioCmd.period < sum){
                             index = i;
                             break;
                         }
@@ -316,18 +319,23 @@ namespace toio.Simulator
                     cube._SetLight(lights[index].red, lights[index].green, lights[index].blue);
                 }
             }
+
+            // Order Over
+            if (lightCmdType == LightCmdType.None)
+                cube._StopLight();
         }
 
         protected virtual void ResetLight()
         {
-            lightCmdQ.Clear();
-            lightSenarioCmdQ.Clear();
-            currLightCmd = default;
-            currLightSenarioCmd = default;
+            lightCmd = default;
+            lightSenarioCmd = default;
+            lightCmdType = LightCmdType.None;
         }
 
+        #endregion
 
-        // ============ Sound ============
+
+        #region ============ Sound ============
         protected struct SoundSenarioCmd
         {
             public byte repeat;
@@ -335,44 +343,48 @@ namespace toio.Simulator
             public float tRecv;
             public float period;
         }
-        protected Queue<SoundSenarioCmd> soundSenarioCmdQ = new Queue<SoundSenarioCmd>();
-        protected SoundSenarioCmd currSoundSenarioCmd = default;
+        protected SoundSenarioCmd soundSenarioCmd = default;
 
         protected void SoundScheduler(float t)
         {
-            // ----- Simulate Lag -----
-            while (soundSenarioCmdQ.Count > 0 && t > soundSenarioCmdQ.Peek().tRecv){
-                currSoundSenarioCmd = soundSenarioCmdQ.Dequeue();
-            }
-            var elipsed = t - currSoundSenarioCmd.tRecv;
-
             // ----- Excute Order -----
-            if (currSoundSenarioCmd.period==0
-                || currSoundSenarioCmd.repeat>0 && currSoundSenarioCmd.period*currSoundSenarioCmd.repeat <= elipsed)
-                cube._StopSound();
-            else
+            if (soundCmdType == SoundCmdType.SoundSenarioCmd)
             {
-                // Index of current operation
-                float sum = 0; int index=0; var sounds = currSoundSenarioCmd.sounds;
-                for (int i=0; i<sounds.Length; ++i){
-                    sum += sounds[i].durationMs/1000f;
-                    if (elipsed%currSoundSenarioCmd.period < sum){
-                        index = i;
-                        break;
+                var elipsed = t - soundSenarioCmd.tRecv;
+                if (soundSenarioCmd.period==0 || soundSenarioCmd.repeat>0
+                    && soundSenarioCmd.period*soundSenarioCmd.repeat <= elipsed
+                )
+                    soundCmdType = SoundCmdType.None;
+                else
+                {
+                    // Index of current operation
+                    float sum = 0; int index=0; var sounds = soundSenarioCmd.sounds;
+                    for (int i=0; i<sounds.Length; ++i){
+                        sum += sounds[i].durationMs/1000f;
+                        if (elipsed%soundSenarioCmd.period < sum){
+                            index = i;
+                            break;
+                        }
                     }
+                    cube._PlaySound(sounds[index].note_number, sounds[index].volume);
                 }
-                cube._PlaySound(sounds[index].note_number, sounds[index].volume);
             }
+
+            // Order Over
+            if (soundCmdType == SoundCmdType.None)
+                cube._StopSound();
         }
 
         protected virtual void ResetSound()
         {
-            soundSenarioCmdQ.Clear();
-            currSoundSenarioCmd = default;
+            soundCmdType = SoundCmdType.None;
+            soundSenarioCmd = default;
         }
 
+        #endregion
 
-        // ============ Commands ============
+
+        #region ============ Commands ============
         public override void Move(int left, int right, int durationMS)
         {
             MotorTimeCmd cmd = new MotorTimeCmd();
@@ -382,11 +394,13 @@ namespace toio.Simulator
             if (Mathf.Abs(cmd.right) < this.deadzone) cmd.right = 0;
             cmd.duration = Mathf.Clamp(durationMS, 0, 2550);
             cmd.tRecv = Time.time;
-            motorTimeCmdQ.Enqueue(cmd);
+
+            motorTimeCmd = cmd;
+            motorCmdType = MotorCmdType.MotorTimeCmd;
         }
         public override void StopLight()
         {
-            SetLight(0, 0, 0, 100);
+            lightCmdType = LightCmdType.None;
         }
         public override void SetLight(int r, int g, int b, int durationMS)
         {
@@ -394,7 +408,9 @@ namespace toio.Simulator
             cmd.r = (byte)r; cmd.g = (byte)g; cmd.b = (byte)b;
             cmd.duration = (short)durationMS;
             cmd.tRecv = Time.time;
-            lightCmdQ.Enqueue(cmd);
+
+            lightCmd = cmd;
+            lightCmdType = LightCmdType.LightCmd;
         }
         public override void SetLights(int repeatCount, Cube.LightOperation[] operations)
         {
@@ -410,7 +426,9 @@ namespace toio.Simulator
                 cmd.period += cmd.lights[i].durationMs/1000f;
             }
             cmd.tRecv = Time.time;
-            lightSenarioCmdQ.Enqueue(cmd);
+
+            lightSenarioCmd = cmd;
+            lightCmdType = LightCmdType.LightSenarioCmd;
         }
         public override void PlaySound(int repeatCount, Cube.SoundOperation[] operations)
         {
@@ -426,7 +444,9 @@ namespace toio.Simulator
                 cmd.period += cmd.sounds[i].durationMs/1000f;
             }
             cmd.tRecv = Time.time;
-            soundSenarioCmdQ.Enqueue(cmd);
+
+            soundSenarioCmd = cmd;
+            soundCmdType = SoundCmdType.SoundSenarioCmd;
         }
         public override void PlayPresetSound(int soundId, int volume)
         {
@@ -437,10 +457,16 @@ namespace toio.Simulator
         }
         public override void StopSound()
         {
-            Cube.SoundOperation[] ops = new Cube.SoundOperation[1];
-            ops[0] = new Cube.SoundOperation(100, 0, 128);
-            PlaySound(1, ops);
+            soundCmdType = SoundCmdType.None;
         }
+
+        public override void ConfigSlopeThreshold(int degree)
+        {
+            slopeThreshold = degree;
+        }
+        #endregion
+
+
         internal override void PlaySound_Connect()
         {
             Cube.SoundOperation[] ops = new Cube.SoundOperation[5];
@@ -481,11 +507,5 @@ namespace toio.Simulator
             PlaySound(1, ops);
         }
 
-        // 水平検出の閾値
-        protected int slopeThreshold = 45;
-        public override void ConfigSlopeThreshold(int degree)
-        {
-            slopeThreshold = degree;
-        }
     }
 }

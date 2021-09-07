@@ -26,6 +26,7 @@ namespace toio
         public override string version { get { return "2.0.0"; } }
         public override string id { get; protected set; }
         public override string addr { get { return this.peripheral.device_address; } }
+        public override string localName { get { return this.peripheral.device_name; } }
         public override int battery { get; protected set; }
         public override int x { get; protected set; }
         public override int y { get; protected set; }
@@ -331,6 +332,7 @@ namespace toio
         public override async UniTask Initialize(Dictionary<string, BLECharacteristicInterface> characteristicTable)
         {
             await base.Initialize(characteristicTable);
+            isInitialized = false;
 
             characteristicTable[CHARACTERISTIC_BATTERY].StartNotifications(this.Recv_battery);
 #if !UNITY_EDITOR && UNITY_ANDROID
@@ -350,6 +352,7 @@ namespace toio
 #if !UNITY_EDITOR && UNITY_ANDROID
             await UniTask.Delay(500);
 #endif
+            isInitialized = true;
         }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -417,8 +420,9 @@ namespace toio
 
         protected virtual void Recv_sensor(byte[] data)
         {
-            // https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor
             int type = data[0];
+
+            // Motion Sensor https://toio.github.io/toio-spec/docs/2.0.0/ble_sensor
             if (1 == type)
             {
                 var _isSloped = data[1] == 0 ? true : false;

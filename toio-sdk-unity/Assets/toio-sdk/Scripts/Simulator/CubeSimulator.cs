@@ -16,13 +16,14 @@ namespace toio.Simulator
 
         // ======== Physical Constants ========
         // from https://toio.github.io/toio-spec/
-        public static readonly float TireWidthM = 0.0266f;
-        public static readonly float TireWidthDot= 0.0266f * Mat.DotPerM;
-        public static readonly float WidthM= 0.0318f;
+        public const float TireWidthM = 0.0266f;
+        public const float TireWidthDot= 0.0266f * Mat.DotPerM;
+        public const float WidthM= 0.0318f;
         // ratio of Speed(Dot/s) and order ( 2.04f in real test )
         // theorically, 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
-        public static readonly float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
-        public static readonly float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
+        public const float VMeterOverU = 4.3f*Mathf.PI*0.0125f/60;
+        public const float VDotOverU =  VMeterOverU * Mat.DotPerM; // about 2.06
+        public const float MagneticFieldScale = 450;
 
 
         // ======== Simulator Settings ========
@@ -30,10 +31,11 @@ namespace toio.Simulator
         {
             v2_0_0,
             v2_1_0,
-            v2_2_0
+            v2_2_0,
+            v2_3_0
         }
         [SerializeField]
-        public Version version = Version.v2_2_0;
+        public Version version = Version.v2_3_0;
         [SerializeField]
         public bool powerStart = true;
         [SerializeField]
@@ -135,7 +137,7 @@ namespace toio.Simulator
         /// 水平検出をシミュレータがシミュレーションするか
         /// </summary>
         [HideInInspector]
-        public bool isSimulateSloped = true;
+        internal bool isSimulateSloped = true;
 
         /// <summary>
         /// 傾斜であるか
@@ -165,6 +167,13 @@ namespace toio.Simulator
         /// コアキューブのモーター ID 2（右）の速度
         /// </summary>
         public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
+
+        // ----- Magnetic Sensor -----
+
+        [HideInInspector]
+        internal bool isSimulateMagneticSensor = true;
+        public Cube.MagnetState magnetState { get {return impl.magnetState;} }
+        public Vector3 magneticForce { get {return impl.magneticForce;} }
 
 
         // ======== Objects ========
@@ -196,7 +205,8 @@ namespace toio.Simulator
                 case Version.v2_0_0 : this.impl = new CubeSimImpl_v2_0_0(this);break;
                 case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
                 case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
-                default : this.impl = new CubeSimImpl_v2_2_0(this);break;
+                case Version.v2_3_0 : this.impl = new CubeSimImpl_v2_3_0(this);break;
+                default : this.impl = new CubeSimImpl_v2_3_0(this);break;
             }
             this._InitPresetSounds();
         }
@@ -211,6 +221,10 @@ namespace toio.Simulator
 
             if (power)
             {
+                // Hardware Simulation
+                _SimulateIMU();
+
+                // Firmware Simulation
                 impl.Simulate();
 
                 // Connection
@@ -239,10 +253,21 @@ namespace toio.Simulator
             StopAllCoroutines();
         }
 
+        private void Init()
+        {
+            // Hardware
+            _InitIMU();
+
+            // Firmware
+            this.impl.Init();
+        }
+
         private void Reset()
         {
+            // Firmware
             this.impl.Reset();
 
+            // Hardware
             _StopLight();
             _StopSound();
             playingSoundId = -1;
@@ -253,6 +278,7 @@ namespace toio.Simulator
         {
             if (isPowerChanging) return;
             isPowerChanging = true;
+            Init();
 
             IEnumerator _PowerOn(){
                 _power = true;
@@ -319,7 +345,7 @@ namespace toio.Simulator
         }
 
 
-        // ======== Physics Simulation ========
+        // ======== Hardware Simulation ========
         internal bool offGroundL = true;
         internal bool offGroundR = true;
         protected float speedL = 0;  // (m/s)
@@ -369,7 +395,7 @@ namespace toio.Simulator
         }
 
 
-        // ============ Event ============
+        #region ============ Event ============
 
         // ------------ v2.0.0 ------------
 
@@ -427,7 +453,7 @@ namespace toio.Simulator
             impl.StartNotification_MotionSensor(action);
         }
 
-
+        // ------------ v2.1.0 ------------
         /// <summary>
         /// 目標指定付きモーター制御の応答コールバックを設定する
         /// </summary>
@@ -446,6 +472,7 @@ namespace toio.Simulator
             impl.StartNotification_MultiTargetMove(action);
         }
 
+        // ------------ v2.2.0 ------------
         /// <summary>
         /// モーター速度読み取りのイベントコールバックを設定する
         /// </summary>
@@ -456,7 +483,16 @@ namespace toio.Simulator
         }
 
         /// <summary>
-        /// 設定の応答の読み出しコールバックを設定する
+        /// 磁石状態読み取りのイベントコールバックを設定する
+        /// </summary>
+        public void StartNotification_MagnetState(System.Action<Cube.MagnetState> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_MagnetState(action);
+        }
+
+        /// <summary>
+        /// モーター速度設定の応答の読み出しコールバックを設定する
         /// 引数：モーター速度設定応答
         /// </summary>
         public void StartNotification_ConfigMotorRead(System.Action<bool> action)
@@ -465,8 +501,47 @@ namespace toio.Simulator
             impl.StartNotification_ConfigMotorRead(action);
         }
 
+        public void StartNotification_ConfigIDNotification(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigIDNotification(action);
+        }
 
-        // ============ コマンド ============
+        public void StartNotification_ConfigIDMissedNotification(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigIDMissedNotification(action);
+        }
+
+        public void StartNotification_ConfigMagneticSensor(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigMagneticSensor(action);
+        }
+
+        // ------------ v2.3.0 ------------
+        public void StartNotification_MagneticForce(System.Action<Vector3> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_MagneticForce(action);
+        }
+
+        public void StartNotification_Attitude(System.Action<Vector3> actionE, System.Action<Quaternion> actionQ)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_Attitude(actionE, actionQ);
+        }
+        public void StartNotification_ConfigAttitudeSensor(System.Action<bool> action)
+        {
+            if (!isConnected) return;
+            impl.StartNotification_ConfigAttitudeSensor(action);
+        }
+
+        #endregion
+
+
+
+        #region ============ コマンド ============
 
         private void DelayCommand(Action action)
         {
@@ -589,16 +664,79 @@ namespace toio.Simulator
             DelayCommand(() => impl.ConfigMotorRead(enabled));
         }
 
-        public void RequestSensor()
+        public void ConfigIDNotification(int interval, Cube.IDNotificationType notificationType)
         {
-            DelayCommand(() => impl.RequestSensor());
+            DelayCommand(() => impl.ConfigIDNotification(interval, notificationType));
         }
 
+        public void ConfigIDMissedNotification(int sensitivity)
+        {
+            DelayCommand(() => impl.ConfigIDMissedNotification(sensitivity));
+        }
 
-        // ====== 内部関数 ======
+        public void ConfigMagneticSensor(Cube.MagneticMode mode)
+        {
+            DelayCommand(() => impl.ConfigMagneticSensor(mode));
+        }
 
-        // Sensor Triggers
+        public void RequestMotionSensor()
+        {
+            DelayCommand(() => impl.RequestMotionSensor());
+        }
 
+        public void RequestMagneticSensor()
+        {
+            DelayCommand(() => impl.RequestMagneticSensor());
+        }
+
+        // --------- 2.3.0 --------
+
+        public void ConfigMagneticSensor(Cube.MagneticMode mode, int interval, Cube.MagneticNotificationType notificationType)
+        {
+            DelayCommand(() => impl.ConfigMagneticSensor(mode, interval, notificationType));
+        }
+
+        public void ConfigAttitudeSensor(Cube.AttitudeFormat format, int interval, Cube.AttitudeNotificationType notificationType)
+        {
+            DelayCommand(() => impl.ConfigAttitudeSensor(format, interval, notificationType));
+        }
+
+        public void RequestAttitudeSensor(Cube.AttitudeFormat format)
+        {
+            DelayCommand(() => impl.RequestAttitudeSensor(format));
+        }
+
+        #endregion
+
+
+        #region  ============ Internal Methods: Hardware Simulation ============
+
+        // -------- ID Sensor --------
+        internal (Vector2, uint, float) _GetIDSensor()
+        {
+            const float maxDistance = 0.005f;
+
+            RaycastHit hit;
+            Vector3 gposSensor = transform.Find("IDSensor").position;
+            Ray ray = new Ray(gposSensor, -transform.up);
+            if (Physics.Raycast(ray, out hit)) {
+                if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < maxDistance){
+                    var mat = hit.transform.gameObject.GetComponent<Mat>();
+                    var deg = mat.UnityDeg2MatDegF(transform.eulerAngles.y);
+                    var coordSensor = mat.UnityCoord2MatCoordF(gposSensor);
+                    return (coordSensor, 0, deg);
+                }
+                else if (hit.transform.gameObject.tag == "t4u_StandardID" && hit.distance < maxDistance)
+                {
+                    var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
+                    var deg = stdID.UnityDeg2MatDegF(transform.eulerAngles.y);
+                    return (Vector2.zero, stdID.id, deg);
+                }
+            }
+            return (Vector2.zero, 0, 0);
+        }
+
+        // -------- Motion Sensor Triggers --------
         internal void _TriggerCollision()
         {
             if (!isConnected) return;
@@ -611,7 +749,7 @@ namespace toio.Simulator
             this.impl.TriggerDoubleTap();
         }
 
-        // 速度変化によって力を与え、位置と角度を更新
+        // -------- Motor --------
         internal void _SetSpeed(float speedL, float speedR)
         {
             this.rb.angularVelocity = transform.up * (float)((speedL - speedR) / TireWidthM);
@@ -619,6 +757,8 @@ namespace toio.Simulator
             var dv = vel - this.rb.velocity;
             this.rb.AddForce(dv, ForceMode.VelocityChange);
         }
+
+        // -------- LED --------
         internal void _SetLight(int r, int g, int b){
             r = Mathf.Clamp(r, 0, 255);
             g = Mathf.Clamp(g, 0, 255);
@@ -630,6 +770,7 @@ namespace toio.Simulator
             LED.GetComponent<Renderer>().material.color = Color.black;
         }
 
+        // -------- Sound --------
         private int playingSoundId = -1;
         internal void _PlaySound(int soundId, int volume){
             if (soundId >= 128) { _StopSound(); return; }
@@ -652,7 +793,6 @@ namespace toio.Simulator
             audioSource.Stop();
         }
 
-        // Sound Preset を設定
         internal void _InitPresetSounds(){
             impl.presetSounds.Add( new Cube.SoundOperation[2]
             {
@@ -719,12 +859,83 @@ namespace toio.Simulator
             });
         }
 
+        // -------- Button --------
         internal void _SetPressed(bool pressed)
         {
             this.cubeModel.transform.localEulerAngles
                     = pressed? new Vector3(-93,0,0) : new Vector3(-90,0,0);
         }
 
+        // -------- Magnetic Sensor --------
+        private Vector3 _magneticField = default;
+        internal Vector3 _GetMagneticField()
+        {
+            if (isSimulateMagneticSensor)
+            {
+                var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+                var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
+
+                Vector3 magSensor = transform.Find("MagneticSensor").position;
+
+                Vector3 h = Vector3.zero;
+                foreach (var magnet in magnets)
+                {
+                    h += magnet.SumUpH(magSensor);
+                }
+
+                this._magneticField = new Vector3(h.z, h.x, -h.y);
+            }
+            return this._magneticField;
+        }
+        internal void _SetMagneticField(Cube.MagnetState state)
+        {
+            Vector3 field = default;
+            switch (state){
+                case Cube.MagnetState.S_Center: field = Vector3.back * MagneticFieldScale * 24; break;
+                case Cube.MagnetState.N_Center: field = Vector3.forward * MagneticFieldScale * 24; break;
+                case Cube.MagnetState.N_Right: field = new Vector3(0, -1, 1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.N_Left: field = new Vector3(0, 1, 1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.S_Right: field = new Vector3(0, 1, -1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.S_Left: field = new Vector3(0, -1, -1) * MagneticFieldScale * 13; break;
+                case Cube.MagnetState.None: field = Vector3.zero; break;
+            }
+            this._magneticField = field;
+        }
+        internal Vector3 _GetScaledMagneticField()
+        {
+            return _GetMagneticField() / MagneticFieldScale;
+        }
+        internal void _SetMagneticField(Vector3 scaledField)
+        {
+            this._magneticField = scaledField * MagneticFieldScale;
+        }
+
+        // -------- Magnetic Sensor --------
+
+        private float _attitudeYawBias;
+        private float _attitudeYawBiasD;
+        private void _InitIMU()
+        {
+            this._attitudeYawBias = transform.eulerAngles.y;
+        }
+        private void _SimulateIMU()
+        {
+            this._attitudeYawBiasD += (UnityEngine.Random.value-0.5f) * 0.1f;
+            this._attitudeYawBiasD = Mathf.Clamp(this._attitudeYawBiasD, -1, 1);
+            this._attitudeYawBias += (this._attitudeYawBiasD + UnityEngine.Random.value-0.5f) * 0.01f;
+        }
+        internal Vector3 _GetIMU()
+        {
+            var e = transform.eulerAngles;
+            float roll = e.z;
+            float pitch = e.x;
+            float yaw = e.y - this._attitudeYawBias;
+
+            // https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor/#姿勢角情報の取得オイラー角での通知
+            return new Vector3(roll, pitch, yaw);
+        }
+
+        #endregion
 
 
     }

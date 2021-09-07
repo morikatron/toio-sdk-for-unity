@@ -61,12 +61,6 @@ public int maxSpd { get; }                      // Maximum speed indication valu
 public static double dt = 1.0 / 60 * 3;     // Control cycle 50ms
 public static double lag = 0.130;           // Lag
 
-public int CenterX = 250;   // !!! Deprecated !!!  x-coordinate of the center of the mat
-public int CenterY = 250;   // !!! Deprecated !!!  y-coordinate of the center of the mat
-public int SizeX = 410;     // !!! Deprecated !!!  Size of the mat in the x-axis direction
-public int SizeY = 410;     // !!! Deprecated !!!  Size of the mat in the y-axis direction
-public int RangeX = 370;    // !!! Deprecated !!!  Matt's x-axis action range (for Move's border restriction)
-public int RangeY = 370;    // !!! Deprecated !!!  Matt's action range in the y-axis direction (for Move's border restriction)
 public RectInt borderRect   // Indicates the border range RectInt
 ```
 

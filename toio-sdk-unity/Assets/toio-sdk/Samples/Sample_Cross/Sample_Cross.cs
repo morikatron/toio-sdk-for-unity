@@ -35,7 +35,7 @@ public class Sample_Cross : MonoBehaviour
 
             // this is only intended for use of ConnectType.Auto
             if (
-                CubeScanner.actualTypeOfAuto == ConnectType.Simulator && (navi.cube as CubeUnity).objName[5] == '1' ||
+                CubeScanner.actualTypeOfAuto == ConnectType.Simulator && navi.cube.localName[5] == '1' ||
                 CubeScanner.actualTypeOfAuto == ConnectType.Real      && i < cm.cubes.Count/2
             ){
                 if (phases[i] == 0){
