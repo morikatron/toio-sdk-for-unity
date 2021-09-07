@@ -177,7 +177,7 @@ public string id { get; protected set; }
 public string addr { get; }
 
 // Complete Local Name
-public abstract string localName { get; }
+public string localName { get; }
 
 // Connection status of Cube
 public bool isConnected { get; }
@@ -277,21 +277,21 @@ public int rightSpeed { get; protected set; }
 
 // Magnet state of Cube
 // Callback function: magnetStateCallback
-public virtual MagnetState magnetState { get; protected set; }
+public MagnetState magnetState { get; protected set; }
 
 // ver2.3.0
 // Magnetic force of Cube
 // Callback function: magneticForceCallback
-public virtual Vector3 magneticForce { get; protected set; }
+public Vector3 magneticForce { get; protected set; }
 
 // Attitude of Cube in eulers
 // Callback function: attitudeCallback
-public virtual Vector3 eulers { get; protected set; }
+public Vector3 eulers { get; protected set; }
 
 // Attitude of Cube in quaternion
 // Callback function: attitudeCallback
 // Currently (2021.09.01), the coordinates of quaternion is different from euler's. The euler's is correct to the specification.
-public virtual Quaternion quaternion { get; protected set; }
+public Quaternion quaternion { get; protected set; }
 ```
 
 <br>
@@ -313,41 +313,41 @@ public class CallbackProvider<T...>
 }
 
 // Button callback
-public virtual CallbackProvider<Cube> buttonCallback { get; }
+public CallbackProvider<Cube> buttonCallback { get; }
 // Tilt callback
-public virtual CallbackProvider<Cube> slopeCallback { get; }
+public CallbackProvider<Cube> slopeCallback { get; }
 // Collision callback
-public virtual CallbackProvider<Cube> collisionCallback { get; }
+public CallbackProvider<Cube> collisionCallback { get; }
 // Coordinate angle callback
-public virtual CallbackProvider<Cube> idCallback { get; }
+public CallbackProvider<Cube> idCallback { get; }
 // Coordinate angle Missed callback
-public virtual CallbackProvider<Cube> idMissedCallback { get; }
+public CallbackProvider<Cube> idMissedCallback { get; }
 // StandardID callback
-public virtual CallbackProvider<Cube> standardIdCallback { get; }
+public CallbackProvider<Cube> standardIdCallback { get; }
 // StandardID missed callback
-public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
+public CallbackProvider<Cube> standardIdMissedCallback { get; }
 
 // ver2.1.0
 // Double tap callback
-public virtual CallbackProvider<Cube> doubleTapCallback { get; }
+public CallbackProvider<Cube> doubleTapCallback { get; }
 // Attitude detection callback
-public virtual CallbackProvider<Cube> poseCallback { get; }
+public CallbackProvider<Cube> poseCallback { get; }
 // Response callback for motor control with target specification
-public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
+public CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
 
 // ver2.2.0
 // Shake callback
-public virtual CallbackProvider<Cube> shakeCallback { get; }
+public CallbackProvider<Cube> shakeCallback { get; }
 // Motor speed callback
-public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
+public CallbackProvider<Cube> motorSpeedCallback { get; }
 // Magnet state callback
-public virtual CallbackProvider<Cube> magnetStateCallback { get; }
+public CallbackProvider<Cube> magnetStateCallback { get; }
 
 // ver2.3.0
 // Magnetic force detection callback
-public virtual CallbackProvider<Cube> magneticForceCallback { get; }
+public CallbackProvider<Cube> magneticForceCallback { get; }
 // Attitude callback
-public virtual CallbackProvider<Cube> attitudeCallback { get; }
+public CallbackProvider<Cube> attitudeCallback { get; }
 ```
 
 ## 3.3. Method

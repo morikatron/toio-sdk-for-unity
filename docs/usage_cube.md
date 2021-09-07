@@ -173,7 +173,7 @@ public string id { get; protected set; }
 public string addr { get; }
 
 // Complete Local Name
-public abstract string localName { get; }
+public string localName { get; }
 
 // キューブの接続状態
 public bool isConnected { get; }
@@ -273,23 +273,23 @@ public int rightSpeed { get; protected set; }
 
 // コアキューブの磁石状態
 // コールバック機能：magnetStateCallback
-public virtual MagnetState magnetState { get; protected set; }
+public MagnetState magnetState { get; protected set; }
 
 // ver2.3.0
 // コアキューブの磁力
 // コールバック機能：magneticForceCallback
-public virtual Vector3 magneticForce { get; protected set; }
+public Vector3 magneticForce { get; protected set; }
 
 // コアキューブのオイラー
 // コールバック機能：attitudeCallback
-public virtual Vector3 eulers { get; protected set; }
+public Vector3 eulers { get; protected set; }
 
 // コアキューブのクォータニオン
 // コールバック機能：attitudeCallback
 // 現時点(2021.09.01)では、コアキューブから取得したクォータニオンは、オイラーと違う座標系のものになっていますので、ご注意ください。
 // （オイラーの方が仕様書通りの座標系になっています。）
 // また、仕様書に規定された座標系は Unity と違いますので、ご注意ください。
-public virtual Quaternion quaternion { get; protected set; }
+public Quaternion quaternion { get; protected set; }
 ```
 
 <br>
@@ -311,41 +311,41 @@ public class CallbackProvider<T...>
 }
 
 // ボタンコールバック
-public virtual CallbackProvider<Cube> buttonCallback { get; }
+public CallbackProvider<Cube> buttonCallback { get; }
 // 傾きコールバック
-public virtual CallbackProvider<Cube> slopeCallback { get; }
+public CallbackProvider<Cube> slopeCallback { get; }
 // 衝突コールバック
-public virtual CallbackProvider<Cube> collisionCallback { get; }
+public CallbackProvider<Cube> collisionCallback { get; }
 // 座標角度コールバック
-public virtual CallbackProvider<Cube> idCallback { get; }
+public CallbackProvider<Cube> idCallback { get; }
 // 座標角度 Missed コールバック
-public virtual CallbackProvider<Cube> idMissedCallback { get; }
+public CallbackProvider<Cube> idMissedCallback { get; }
 // StandardID コールバック
-public virtual CallbackProvider<Cube> standardIdCallback { get; }
+public CallbackProvider<Cube> standardIdCallback { get; }
 // StandardID Missed コールバック
-public virtual CallbackProvider<Cube> standardIdMissedCallback { get; }
+public CallbackProvider<Cube> standardIdMissedCallback { get; }
 
 // ver2.1.0
 // ダブルタップコールバック
-public virtual CallbackProvider<Cube> doubleTapCallback { get; }
+public CallbackProvider<Cube> doubleTapCallback { get; }
 // 姿勢検出コールバック
-public virtual CallbackProvider<Cube> poseCallback { get; }
+public CallbackProvider<Cube> poseCallback { get; }
 // 目標指定付きモーター制御の応答コールバック
-public virtual CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
+public CallbackProvider<Cube, int, TargetMoveRespondType> targetMoveCallback { get; }
 
 // ver2.2.0
 // シェイクコールバック
-public virtual CallbackProvider<Cube> shakeCallback { get; }
+public CallbackProvider<Cube> shakeCallback { get; }
 // モータースピードコールバック
-public virtual CallbackProvider<Cube> motorSpeedCallback { get; }
+public CallbackProvider<Cube> motorSpeedCallback { get; }
 // 磁石状態コールバック
-public virtual CallbackProvider<Cube> magnetStateCallback { get; }
+public CallbackProvider<Cube> magnetStateCallback { get; }
 
 // ver2.3.0
 // 磁力検出コールバック
-public virtual CallbackProvider<Cube> magneticForceCallback { get; }
+public CallbackProvider<Cube> magneticForceCallback { get; }
 // 姿勢角検出コールバック
-public virtual CallbackProvider<Cube> attitudeCallback { get; }
+public CallbackProvider<Cube> attitudeCallback { get; }
 ```
 
 ## 3.3. メソッド
@@ -809,7 +809,7 @@ public UniTask ConfigMagneticSensor(
 ```
 
 キューブの磁気センサーの機能のモードを設定します。デフォルトでは無効化されています。(v2.2.0から対応)<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定-)
 
 - mode
   - 定義 : 機能設定
@@ -837,7 +837,7 @@ public UniTask ConfigMagneticSensor(
 ```
 
 キューブの磁気センサーの機能のモードを設定します。デフォルトでは無効化されています。(v2.3.0から対応)<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定-)
 
 - intervalMs
   - 定義 : 通知間隔(ミリ秒)
@@ -861,7 +861,7 @@ public UniTask ConfigAttitudeSensor(
 ```
 
 キューブの姿勢角検出機能の有効化・無効化を設定します。デフォルトでは無効化されています。(v2.3.0から対応)<br>
-[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定)
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定-)
 
 - format
   - 定義 : 通知内容の種類
