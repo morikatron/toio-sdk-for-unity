@@ -920,14 +920,19 @@ import numpy as np
 import wave
 import struct
 
-nsamples = 32
-audio_array = [int(-np.cos(2*np.pi*i/nsamples)*127) for i in range(nsamples)]
+nsamples = 32  # samples in 1 period
+sin_array = [int(-np.cos(2*np.pi*i/nsamples)*127) for i in range(nsamples)]
 
 f_A0 = 440/16
-audio = struct.pack("b" * len(audio_array), *audio_array)
+
+duration = 0.0233   # Since Unity 2020, audio shorter than this will not be imported correctly
 
 for i in range(11):
     f = f_A0 * 2**i
+    T = 1/f
+
+    audio_array = sin_array * np.ceil(duration/T).astype(int)
+    audio = struct.pack("b" * len(audio_array), *audio_array)
 
     w = wave.Wave_write(str(12*i+9) + '.wav')
     p = (1, 1, nsamples*f, len(audio), 'NONE', 'not compressed')
