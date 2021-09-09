@@ -21,7 +21,7 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15.7 | MacOS Catalina 10.15 以上 |
 | Bluetooth®            | 4.2             | 4.2 以上             |
-| Unity                | 2019.4.0f1             | 2019.3 以上             |
+| Unity                | 2020.3.17f1             | 2020.3 以上             |
 
 > Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
 
@@ -42,7 +42,7 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 
 [toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
 
-> 本SDKがv1.3.0時点では、v1.0.0リリースを対象にしています。
+> 本SDKが v1.4.0 時点では、v1.0.0 リリースを対象にしています。
 
 #### 2. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
 

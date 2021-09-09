@@ -20,8 +20,8 @@ We have confirmed that it works in the following environment. You don't necessar
 | Tools and Software | Confirmed version         | Recommended version          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15.7 | MacOS Catalina 10.15 以上 |
-| Bluetooth®            | 4.2             | 4.2 Above             |
-| Unity                | 2019.4.0f1             | 2019.3 Above             |
+| Bluetooth®            | 4.2             | 4.2 or higher             |
+| Unity                | 2020.3.17f1             | 2020.3 or higher         |
 
 > To check the version of BlueTooth®, go to [About This Mac] > [System Report] > [Bluetooth] > [LMP Version] from Apple menu.
 
@@ -40,7 +40,7 @@ For other OS versions, please refer to [How to build the bundle file on your own
 
 Open [toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) and click on `bleplugin_10.bundle.zip` if your OS version is <b>10.x</b> or `bleplugin_11.bundle.zip` if your OS version is <b>11.x</b>. If your OS version is <b>10.x</b>, click on `bleplugin_10.bundle.zip`, and if your OS version is <b>11.x</b>, click on `bleplugin_11.bundle.zip` to download.
 
-> As of v1.3.1, this SDK targets the v1.0.0 release.
+> As of v1.4.0, this SDK targets the v1.0.0 release.
 
 #### 2. Drag and drop bundle file into your Unity project
 

@@ -9,7 +9,7 @@ The following environments have been tested. You don't necessarily have to match
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Winidows 10 | Winidows 10 or higher |
-| Unity | 2019.4.0f1 | 2019.3 or higher |
+| Unity | 2020.3.17f1 | 2020.3 or higher |
 
 Mobile Phone
 | Model Name | OS|
@@ -22,8 +22,6 @@ Mobile Phone
 ## Check Android Build Support in Unity
 
 If you didn't add the Android Build Support module when you installed Unity, open Unity Hub, go to the [Installs] tab, and add Android Build Support from the [Add Modules] menu in the upper right corner of the appropriate version.
-
-<img width=500 src="res/build_android/1.png">
 
 <br>
 
@@ -41,7 +39,7 @@ Wait a few seconds, and when Unity icon appears to the right of Android, the swi
 
 ## Smart Phone Settings
 
-There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2019.4/Documentation/Manual/android-sdksetup.html).
+There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2020.3/Documentation/Manual/android-sdksetup.html).
 
 ### Enable Developer Options
 
@@ -55,7 +53,7 @@ Note: On Android versions prior to 4.2 (Jelly Bean), the Developer options are e
 
 Go to Settings > Developer options (or, if this does not work, on some devices the path is Settings > System > Developer options), and check the USB debugging checkbox. Android now enters debug mode when it is connected to a computer via USB.
 
-(When connecting to a PC, the smartphone may display a dialog box asking "Do you want to allow USB debugging? dialog may appear. Tap "OK" when the dialog is displayed.)
+(When connecting to a PC, the smartphone may display a dialog box asking "Do you want to allow USB debugging dialog may appear. Tap "OK" when the dialog is displayed.)
 
 ### Check the connection
 
@@ -144,7 +142,7 @@ Under [SDK Platforms], check the version you need.
 Next, switch to the [SDK Tools] tab.<br>
 Check [Show Package Details] in the lower right corner.<br>
 Check the appropriate version under [NDK (Side by Side)].<br>
-(For Unity version 2019.4, select NDK 19. [Refer to here](https://docs.unity3d.com/2019.3/Documentation/Manual/android-sdksetup.html))
+(For Unity version 2020.3, select NDK 19. [Refer to here](https://docs.unity3d.com/2020.3/Documentation/Manual/android-sdksetup.html))
 <br>
 Press "OK" to proceed and the installation will begin.
 

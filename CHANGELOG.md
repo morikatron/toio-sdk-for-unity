@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+★ **Upgraded to Unity 2020.3.17f1 LTS.**
+
 ### Added
 
 - [Cube Real/Simulator] Implement rest features of BLE protocol v2.2.0.
@@ -20,10 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- [WebGL] Update WebGL template for Unity 2020.
 - [General] Unity tags used by toio SDK for unity are changed to `t4u_Cube`, `t4u_Mat`, `t4u_StandardID` and `t4u_Magnet`, to avoid potential conflits with users' codes.
 - [Sample] Sample_Sensor updated with new Cube features.
 - [Simulator] Optimize command processing logic.
 - [Simulator] Change the shape of "LED" on the Cube prefab.
+- [Simulator] Regenerate octave audio clips for Unity 2020.
 - [Cube] Method `RequestSensor` is deprecated. Please use `RequestMotionSensor` instead.
 
 ### Removed
