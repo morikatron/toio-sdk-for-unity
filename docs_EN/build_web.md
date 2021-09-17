@@ -86,9 +86,9 @@ In order to use the provided WebGL plugin, we will modify Unity's Javascript tem
 
 <img width=600 src="res/build_webgl/7.png">
 
-2. In WebGL Settings window, open Resolution and Presentation, and click [webble] in WebGL Template.
+2. In WebGL Settings window, open Resolution and Presentation, and click [webble] for Unity 2020 or later, or [webble.unity2019] for Unity 2019 in WebGL Template.
 
-<img width=600 src="res/build_webgl/8.png">
+<img width=400 src="res/build_webgl/8.png">
 
 WebGL plugin is now ready to use.
 

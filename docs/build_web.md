@@ -85,9 +85,9 @@ Unity のメニュー【ファイル】→【ビルド設定...】を選択し�
 
 <img width=600 src="res/build_webgl/7.png">
 
-2. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。
+2. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目で、Unity 2020 以降をお使いの場合は【webble】をクリックします、Unity 2019 をお使いの場合は【webble.unity2019】をクリックします。
 
-<img width=600 src="res/build_webgl/8.png">
+<img width=400 src="res/build_webgl/8.png">
 
 以上の操作で WebGL プラグインが使用出来るようになりました。
 

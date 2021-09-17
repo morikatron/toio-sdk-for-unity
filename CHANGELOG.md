@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- [WebGL] Update WebGL template for Unity 2020.
+- [WebGL] Update WebGL template `webble` for Unity 2020. The old template is renamed as `webble.unity2019`.
 - [General] Unity tags used by toio SDK for unity are changed to `t4u_Cube`, `t4u_Mat`, `t4u_StandardID` and `t4u_Magnet`, to avoid potential conflits with users' codes.
 - [Sample] Sample_Sensor updated with new Cube features.
 - [Simulator] Optimize command processing logic.
