@@ -7,6 +7,8 @@ namespace toio
         public string deviceAddress { get; private set; }
         public string serviceUUID { get; private set; }
         public string characteristicUUID { get; }
+        public TCallbackProvider<string, byte[]> readDataCallback { get; private set; }
+        public TCallbackProvider<string, byte[], bool> writeDataCallback { get; private set; }
 
         private int serviceID;
         private int characteristicID;
@@ -18,6 +20,8 @@ namespace toio
             this.serviceUUID = serviceUUID.ToUpper();
             this.characteristicID = characteristicID;
             this.characteristicUUID = characteristicUUID.ToUpper();
+            this.readDataCallback = new TCallbackProvider<string, byte[]>();
+            this.writeDataCallback = new TCallbackProvider<string, byte[], bool>();
         }
 
         public void ReadValue(Action<string, byte[]> action)
@@ -25,6 +29,7 @@ namespace toio
 #if UNITY_WEBGL
             WebBluetoothScript.Instance.ReadValue(this.characteristicID, (id, bytes) => {
                 action(this.characteristicUUID, bytes);
+                this.readDataCallback.Notify(this.characteristicUUID, bytes);
             });
 #endif
         }
@@ -39,7 +44,7 @@ namespace toio
         public void StartNotifications(Action<byte[]> action)
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.StartNotifications(this.characteristicID, action);
+            WebBluetoothScript.Instance.StartNotifications(this.characteristicID, (data)=> { action?.Invoke(data); this.readDataCallback.Notify(this.characteristicUUID, data); });
 #endif
         }
 

@@ -44,7 +44,9 @@ namespace toio
 
         public virtual void AddListener(string key, Action<T1, T2> listener)
         {
-            this.listenerTable.Add(key, listener);
+            if (this.listenerTable.ContainsKey(key))
+                this.listenerList.Remove(this.listenerTable[key]);
+            this.listenerTable[key] = listener;
             this.listenerList.Add(listener);
         }
         public virtual void RemoveListener(string key)
@@ -65,6 +67,40 @@ namespace toio
             for (int i = this.listenerList.Count-1; i >= 0; i--)
             {
                 this.listenerList[i].Invoke(p1, p2);
+            }
+        }
+    }
+
+    public class TCallbackProvider<T1, T2, T3>
+    {
+        protected Dictionary<string, Action<T1, T2, T3>> listenerTable = new Dictionary<string, Action<T1, T2, T3>>();
+        protected List<Action<T1, T2, T3>> listenerList = new List<Action<T1, T2, T3>>();
+
+        public virtual void AddListener(string key, Action<T1, T2, T3> listener)
+        {
+            if (this.listenerTable.ContainsKey(key))
+                this.listenerList.Remove(this.listenerTable[key]);
+            this.listenerTable[key] = listener;
+            this.listenerList.Add(listener);
+        }
+        public virtual void RemoveListener(string key)
+        {
+            if (this.listenerTable.ContainsKey(key))
+            {
+                this.listenerList.Remove(this.listenerTable[key]);
+                this.listenerTable.Remove(key);
+            }
+        }
+        public virtual void ClearListener()
+        {
+            listenerTable.Clear();
+            listenerList.Clear();
+        }
+        public virtual void Notify(T1 p1, T2 p2, T3 p3)
+        {
+            for (int i = this.listenerList.Count-1; i >= 0; i--)
+            {
+                this.listenerList[i].Invoke(p1, p2, p3);
             }
         }
     }
