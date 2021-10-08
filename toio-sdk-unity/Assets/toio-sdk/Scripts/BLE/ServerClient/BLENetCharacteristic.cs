@@ -34,6 +34,7 @@ public class BLENetCharacteristic : BLECharacteristicInterface
 
     public void StartNotifications(Action<byte[]> action)
     {
+        // リアルキューブに講読命令は送らず、クライアントから勝手に送られてくるデータを受け取る
         this.peripheral.server.RegisterRecvSubscribeCallback(this.peripheral, this.characteristicUUID, (data)=> { action?.Invoke(data); this.readDataCallback.Notify(this.characteristicUUID, data); });
     }
     public void StopNotifications()

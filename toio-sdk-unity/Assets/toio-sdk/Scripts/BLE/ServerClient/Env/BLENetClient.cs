@@ -18,6 +18,8 @@ public class BLENetClient : MonoBehaviour
     private byte[] workbuff = new byte[BLENetServer.STATIC_BUFFER_SIZE];
     private bool started = false;
 
+    private List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)> recvDataList = new List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)>();
+
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -56,6 +58,16 @@ public class BLENetClient : MonoBehaviour
             List<CubeReal> reals = new List<CubeReal>();
             foreach(var c in cubeManager.cubes) { reals.Add(c as CubeReal); }
             SendJoinCubes(reals);
+
+            //////// Characteristic Recv Data Table
+            for(int i = 0; i < reals.Count; i++)
+            {
+                var r = reals[i];
+                foreach(var c in r.characteristicTable)
+                {
+                    c.Value.readDataCallback.AddListener("BLENetClient", (chraID, data) => { this.recvDataList.Add((i, c.Value, data)); });
+                }
+            }
         }
         started = true;
     }
@@ -147,7 +159,7 @@ public class BLENetClient : MonoBehaviour
     {
         if (0 == cubeManager.cubes.Count) { return ; }
 
-        var data = Position2Bytes();
+        var data = BLENetProtocol.Encode_C2S_SUBSCRIBE(this.recvDataList);
         this.client.SendData(data);
     }
 
@@ -167,43 +179,6 @@ public class BLENetClient : MonoBehaviour
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //      static functions
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
-    private byte[] Position2Bytes()
-    {
-        var cubes = cubeManager.cubes;
-
-        int head = 3;
-        int cubebody = 3 + 13;
-        int body = 1 + (cubes.Count * cubebody);
-
-        Cube c;
-        byte[] buff = new byte[head+body];
-#if !RELEASE
-        if (UInt16.MaxValue < buff.Length) { Debug.LogErrorFormat("最大バッファサイズを超えました. プロトコルを変更して下さい."); }
-#endif
-        BLENetProtocol.WriteBytesU16(buff, 0, Convert.ToUInt16(buff.Length));
-        buff[2] = BLENetProtocol.C2S_SUBSCRIBE;
-        buff[3] = (byte)cubes.Count;
-        int offset, suboffset;
-        for (int i = 0; i < cubes.Count; i++)
-        {
-            c = cubes[i];
-
-            offset = head + 1 + (i * cubebody);
-            buff[offset] = (byte)i;
-            buff[offset+1] = BLENetProtocol.Characteristic2ShortID(CubeReal.CHARACTERISTIC_ID);
-            buff[offset+2] = 13;
-            suboffset = 3;
-            buff[offset+suboffset] = 1;
-            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+1, (Int16)c.pos.x);
-            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+3, (Int16)c.pos.y);
-            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+5, (Int16)c.angle);
-            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+7, (Int16)c.sensorPos.x);
-            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+9, (Int16)c.sensorPos.y);
-            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+11, (Int16)c.sensorAngle);
-        }
-        return buff;
-    }
 
     private static string GetIPAddress()
     {

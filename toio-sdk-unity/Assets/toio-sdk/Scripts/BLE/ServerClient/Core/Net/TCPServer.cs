@@ -120,20 +120,12 @@ public class TCPServer
         }
     }
 
-    protected virtual void OnConnected(ulong hostid, IPEndPoint endpoint)
-    {
+    protected virtual void OnConnected(ulong hostid, IPEndPoint endpoint) { }
 
-    }
-
-    protected virtual void OnDisconnected(IPEndPoint endpoint)
-    {
-
-    }
+    protected virtual void OnDisconnected(IPEndPoint endpoint) { }
 
     // メッセージ受信
-    protected virtual void OnRecvData(ulong hostid, byte[] recvbuffer, int size)
-    {
-    }
+    protected virtual void OnRecvData(ulong hostid, byte[] recvbuffer, int size) { }
 
     // クライアントにメッセージ送信
     public void SendMessageToClient(TcpClient client, byte[] data)

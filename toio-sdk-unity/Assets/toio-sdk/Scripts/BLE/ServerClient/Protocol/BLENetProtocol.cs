@@ -14,7 +14,6 @@ public static class BLENetProtocol
     // s2c
     public const int S_PORT = 50006;
     public const byte S2C_WRITE = 150;
-    public const byte S2C_START_SUBSCRIBE = 151;
 
     public const byte SERVICE_ID = 255;
     public const byte CHARACTERISTIC_CONFIG = 101;
@@ -159,6 +158,35 @@ public static class BLENetProtocol
         return results;
     }
 
+
+    public static byte[] Encode_C2S_SUBSCRIBE(List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)> recvDataList)
+    {
+        int head = 3;
+        int body = 1;
+        foreach(var d in recvDataList)
+        {
+            body += 3 + d.data.Length;
+        }
+        byte[] buff = new byte[head+body];
+#if !RELEASE
+        if (UInt16.MaxValue < buff.Length) { Debug.LogErrorFormat("最大バッファサイズを超えました. プロトコルを変更して下さい."); }
+#endif
+        // head
+        BLENetProtocol.WriteBytesU16(buff, 0, Convert.ToUInt16(buff.Length));
+        buff[2] = BLENetProtocol.C2S_SUBSCRIBE;
+        // body
+        buff[3] = (byte)recvDataList.Count;
+        int offset = head+1;
+        for (int i = 0; i < recvDataList.Count; i++)
+        {
+            buff[offset] = (byte)recvDataList[i].localCubeIndex;
+            buff[offset+1] = BLENetProtocol.Characteristic2ShortID(recvDataList[i].chara.characteristicUUID);
+            buff[offset+2] = (byte)recvDataList[i].data.Length;
+            Buffer.BlockCopy(recvDataList[i].data, 0, buff, offset+3, recvDataList[i].data.Length);
+            offset += 3 + recvDataList[i].data.Length;
+        }
+        return buff;
+    }
     public static (int localCubeIndex, string charaID, byte[] buffer)[] Decode_C2S_SUBSCRIBE(byte[] data)
     {
         var chara_len = data[1];
