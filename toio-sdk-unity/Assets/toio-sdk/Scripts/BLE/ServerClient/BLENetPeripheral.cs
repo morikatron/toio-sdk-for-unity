@@ -14,21 +14,24 @@ public class BLENetPeripheral : BLEPeripheralInterface
     public BLENetServer server { get; private set; }
     public BLENetRemoteHost remoteHost { get; private set; }
     public int localIndex { get; private set; }
-    public string[] charaNames { get; private set; }
     private Dictionary<string, BLENetCharacteristic> characteristicTable = new Dictionary<string, BLENetCharacteristic>();
+    private TCallbackProvider<BLEPeripheralInterface> callback = new TCallbackProvider<BLEPeripheralInterface>();
 
-    public BLENetPeripheral(BLENetServer server, BLENetRemoteHost remoteHost, int localIndex, string device_address, string[] charaNames)
+    public BLENetPeripheral(string[] serviceUUIDs, string device_address, string device_name, BLENetServer server, BLENetRemoteHost remoteHost, int localIndex, string[] charaNames)
     {
+        this.serviceUUIDs = serviceUUIDs;
+        this.device_address = device_address.ToUpper();
+        this.device_name = device_name;
+        this.rssi = 1.0f;
+        this.isConnected = true;
+
         this.server = server;
         this.remoteHost = remoteHost;
         this.localIndex = localIndex;
-        this.device_address = device_address;
-        this.charaNames = charaNames;
-        this.isConnected = true;
 
-        foreach(var chara in this.charaNames)
+        foreach(var chara in charaNames)
         {
-            var c = new BLENetCharacteristic(this, chara, BLENetProtocol.Characteristic2ShortID(chara));
+            var c = new BLENetCharacteristic(device_address, serviceUUIDs[0], chara, BLENetProtocol.Characteristic2ShortID(chara), this);
             this.characteristicTable.Add(chara, c);
         }
     }
@@ -39,6 +42,7 @@ public class BLENetPeripheral : BLEPeripheralInterface
     /// </summary>
     public void Connect(Action<BLECharacteristicInterface> characteristicAction)
     {
+        this.OnConnected(this.device_address);
         foreach(var chara in this.characteristicTable)
         {
             characteristicAction(chara.Value);
@@ -58,6 +62,7 @@ public class BLENetPeripheral : BLEPeripheralInterface
     /// </summary>
     public void AddConnectionListener(string key, Action<BLEPeripheralInterface> action)
     {
+        this.callback.AddListener(key, action);
     }
 
     /// <summary>
@@ -65,6 +70,7 @@ public class BLENetPeripheral : BLEPeripheralInterface
     /// </summary>
     public void RemoveConnectionListener(string key)
     {
+        this.callback.RemoveListener(key);
     }
 
     /// <summary>
@@ -72,19 +78,30 @@ public class BLENetPeripheral : BLEPeripheralInterface
     /// </summary>
     public void ConnectionNotify(BLEPeripheralInterface peri)
     {
+        this.callback.Notify(peri);
     }
 
     /// <summary>
     /// 通信コールバック(接続時)
     /// </summary>
-    private static void OnConnected(string device_address)
+    private void OnConnected(string device_address)
     {
+        if (!this.isConnected)
+        {
+            this.isConnected = true;
+            this.ConnectionNotify(this);
+        }
     }
 
     /// <summary>
     /// 通信コールバック(切断時)
     /// </summary>
-    private static void OnDisconnected(string device_address)
+    private void OnDisconnected(string device_address)
     {
+        if (this.isConnected)
+        {
+            this.isConnected = false;
+            this.ConnectionNotify(this);
+        }
     }
 }

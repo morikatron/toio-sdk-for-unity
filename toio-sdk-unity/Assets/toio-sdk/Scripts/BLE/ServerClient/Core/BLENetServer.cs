@@ -51,12 +51,21 @@ public partial class BLENetServer
 
     public void SendMessageToClient(string hostid, byte[] data)
     {
-        this.safeHostTable[hostid].udpClient.SendData(data);
+        this.safeHostTable[hostid].udpClient?.SendData(data);
     }
 
     public void SendMessageToClient(BLENetRemoteHost remoteHost, byte[] data)
     {
-        remoteHost.udpClient.SendData(data);
+        remoteHost.udpClient?.SendData(data);
+    }
+
+    public void Close()
+    {
+        this.serverComp?.udpClient?.Close();
+        foreach(var remote in this.safeHostTable)
+        {
+            remote.Value.udpClient?.udpClient?.Close();
+        }
     }
 
     private void UDP_OnRecvData(IPEndPoint remoteEP, byte[] recvbuffer, int size)
@@ -103,6 +112,7 @@ public partial class BLENetServer
             UInt16 buffsize = 0;
             int read;
             int recvSize = 0;
+            byte order;
             foreach(var d in this.owner.safeMemoryBook)
             {
                 lock(memLock)
@@ -124,10 +134,12 @@ public partial class BLENetServer
                         memory.Read(workbuff, 2);
                         if (recvSize <= memory.readSize) { break; }
                         buffsize = BitConverter.ToUInt16(workbuff, 0);
-                        read = memory.Read(workbuff, buffsize-2);
-                        if (read != buffsize-2) { Debug.Log("error"); break; }
-                        //Debug.Log(Server.Bytes2String(workbuff, buffsize-2));
-                        this.protocolTable[workbuff[0]].Invoke(remoteHost, workbuff);
+                        memory.Read(workbuff, 1);
+                        order = workbuff[0];
+                        read = memory.Read(workbuff, buffsize-3);
+                        if (read != buffsize-3) { Debug.Log("error"); break; }
+                        //Debug.Log(BLENetProtocol.Bytes2String(workbuff, buffsize-3));
+                        this.protocolTable[order].Invoke(remoteHost, workbuff);
                     }
                 }
             }
@@ -135,11 +147,7 @@ public partial class BLENetServer
 
         void OnApplicationQuit()
         {
-            this.owner.serverComp.udpClient.Close();
-            foreach(var remote in this.owner.safeHostTable)
-            {
-                remote.Value.udpClient.udpClient.Close();
-            }
+            this.owner.Close();
         }
     }
 }

@@ -27,12 +27,12 @@ public class BLENetService : BLEServiceInterface
 
     public UniTask Enable(bool enable, Action action)
     {
-        Debug.LogError("未実装");
+        if (!enable) this.server.Close();
         return UniTask.FromResult<object>(null);
     }
 
     public void DisconnectAll()
     {
-        //this.server.Close();
+        this.server.Close();
     }
 }

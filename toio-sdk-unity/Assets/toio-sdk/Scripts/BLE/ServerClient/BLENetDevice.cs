@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using toio;
 
 public class BLENetDevice : BLEDeviceInterface
@@ -7,19 +8,21 @@ public class BLENetDevice : BLEDeviceInterface
     public BLENetService service { get; private set; }
     public BLENetServer server { get; private set; }
 
-    private Action<BLEPeripheralInterface> scanAction;
-
     public BLENetDevice(BLENetService _service, BLENetServer _server)
     {
         this.service = _service;
         this.server = _server;
-        this.server.RegisterJoinPeripheralCallback("device", OnJoinPeripheral);
     }
 
     public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action)
     {
         this.server.Start();
-        this.scanAction = action;
+        this.server.RegisterJoinPeripheralCallback("device", (remoteHost, localIndex, deviceAddr, deviceName, charaList) =>
+        {
+            var peripheral = new BLENetPeripheral(serviceUUIDs, deviceAddr, deviceName, this.server, remoteHost, localIndex, charaList);
+            remoteHost.AddPeripheral(localIndex, peripheral);
+            action(peripheral);
+        });
     }
 
     public void StopScan()
@@ -29,19 +32,13 @@ public class BLENetDevice : BLEDeviceInterface
 
     public UniTask Disconnect(Action action)
     {
+        this.server.Close();
         return UniTask.FromResult<object>(null);
     }
 
     public UniTask Enable(bool enable, Action action)
     {
+        if (!enable) this.server.Close();
         return UniTask.FromResult<object>(null);
-    }
-
-    private void OnJoinPeripheral(BLENetServer _, BLEPeripheralInterface peripheral)
-    {
-        if (null != this.scanAction)
-        {
-            this.scanAction.Invoke(peripheral);
-        }
     }
 }

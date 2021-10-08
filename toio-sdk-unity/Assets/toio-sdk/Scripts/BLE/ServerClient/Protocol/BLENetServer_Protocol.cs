@@ -16,8 +16,8 @@ public partial class BLENetServer
     //      コールバック
     ///////////////////////////////////////////////////
 
-    private TCallbackProvider<BLENetServer, BLEPeripheralInterface> joinPeripheralCallback = new TCallbackProvider<BLENetServer, BLEPeripheralInterface>();
-    public void RegisterJoinPeripheralCallback(string key, Action<BLENetServer, BLEPeripheralInterface> callback)
+    private TCallbackProvider<BLENetRemoteHost, int, string, string, string[]> joinPeripheralCallback = new TCallbackProvider<BLENetRemoteHost, int, string, string, string[]>();
+    public void RegisterJoinPeripheralCallback(string key, Action<BLENetRemoteHost, int, string, string, string[]> callback)
     {
         this.joinPeripheralCallback.AddListener(key, callback);
     }
@@ -29,6 +29,13 @@ public partial class BLENetServer
         this.recvSubscribeCallbackTable[keyPeripheral][keyCharacteristicUUID] = callback;
     }
 
+    private Dictionary<BLEPeripheralInterface, Dictionary<string, Action<string, byte[]>>> recvReadValueCallbackTable = new Dictionary<BLEPeripheralInterface, Dictionary<string, Action<string, byte[]>>>();
+    public void RegisterRecvReadCallback(BLEPeripheralInterface keyPeripheral, string keyCharacteristicUUID, Action<string, byte[]> callback)
+    {
+        if (!this.recvReadValueCallbackTable.ContainsKey(keyPeripheral)) { this.recvReadValueCallbackTable[keyPeripheral] = new Dictionary<string, Action<string, byte[]>>(); }
+        this.recvReadValueCallbackTable[keyPeripheral][keyCharacteristicUUID] = callback;
+    }
+
     ///////////////////////////////////////////////////
     //      プロトコル
     ///////////////////////////////////////////////////
@@ -36,34 +43,29 @@ public partial class BLENetServer
     private Dictionary<byte, Action<BLENetRemoteHost, byte[]>> MakeProtocolTable()
     {
         var protocolTable = new Dictionary<byte, Action<BLENetRemoteHost, byte[]>>();
-        protocolTable.Add(BLENetProtocol.C2S_JOIN, OnJoinPeripheral);
-        protocolTable.Add(BLENetProtocol.C2S_JOINS, OnJoinPeripherals);
-        protocolTable.Add(BLENetProtocol.C2S_SUBSCRIBE, OnRecvSubscribe);
+        protocolTable.Add(BLENetProtocol.C2S_JOIN, OnJoin_Peripheral);
+        protocolTable.Add(BLENetProtocol.C2S_JOINS, OnJoin_Peripherals);
+        protocolTable.Add(BLENetProtocol.C2S_SUBSCRIBE, OnRecv_Subscribe);
+        protocolTable.Add(BLENetProtocol.C2S_READ_CALLBACK, OnRecv_ReadValue_Callback);
         return protocolTable;
     }
 
-    private void OnJoinPeripheral(BLENetRemoteHost remoteHost, byte[] data)
+    private void OnJoin_Peripheral(BLENetRemoteHost remoteHost, byte[] data)
     {
-        //Debug.Log("join");
         var (localIndex, deviceAddr, charaList) = BLENetProtocol.Decode_C2S_JOIN(data);
-        var peripheral = new BLENetPeripheral(this, remoteHost, localIndex, deviceAddr, charaList);
-        remoteHost.AddPeripheral(localIndex, peripheral);
-        this.joinPeripheralCallback.Notify(this, peripheral);
+        this.joinPeripheralCallback.Notify(remoteHost, localIndex, deviceAddr, "hoge", charaList);
     }
 
-    private void OnJoinPeripherals(BLENetRemoteHost remoteHost, byte[] data)
+    private void OnJoin_Peripherals(BLENetRemoteHost remoteHost, byte[] data)
     {
         var readdata = BLENetProtocol.Decode_C2S_JOINS(data);
         foreach(var (localIndex, deviceAddr, charaList) in readdata)
         {
-            var peripheral = new BLENetPeripheral(this, remoteHost, localIndex, deviceAddr, charaList);
-            remoteHost.AddPeripheral(localIndex, peripheral);
-            //Debug.Log("join");
-            this.joinPeripheralCallback.Notify(this, peripheral);
+            this.joinPeripheralCallback.Notify(remoteHost, localIndex, deviceAddr, "hoge", charaList);
         }
     }
 
-    private void OnRecvSubscribe(BLENetRemoteHost remoteHost, byte[] data)
+    private void OnRecv_Subscribe(BLENetRemoteHost remoteHost, byte[] data)
     {
         var readdata = BLENetProtocol.Decode_C2S_SUBSCRIBE(data);
         foreach(var (localIndex, charaID, buffer) in readdata)
@@ -76,5 +78,12 @@ public partial class BLENetServer
                 this.recvSubscribeCallbackTable[peri][charaID].Invoke(buffer);
             }
         }
+    }
+
+    private void OnRecv_ReadValue_Callback(BLENetRemoteHost remoteHost, byte[] netdata)
+    {
+        var (localCubeIndex, charaID, bledata) = BLENetProtocol.Decode_C2S_READ_CALLBACK(netdata);
+        var peri = remoteHost.GetPeripheral(localCubeIndex);
+        this.recvReadValueCallbackTable[peri][charaID].Invoke(charaID, bledata);
     }
 }

@@ -19,6 +19,7 @@ public class BLENetClient : MonoBehaviour
     private bool started = false;
 
     private List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)> recvDataList = new List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)>();
+    private float previousTIme = 0;
 
     void Awake()
     {
@@ -47,7 +48,8 @@ public class BLENetClient : MonoBehaviour
         this.client = new UDPClient();
         this.client.Connect(addr, port);
 
-        this.protocolTable.Add(BLENetProtocol.S2C_WRITE, this.OnRecv_CubeWrite);
+        this.protocolTable.Add(BLENetProtocol.S2C_WRITE, this.OnRecv_WriteValue);
+        this.protocolTable.Add(BLENetProtocol.S2C_READ, this.OnRecv_ReadValue);
         if (false)
         {
             cubeManager.MultiConnectAsync(4, this, this.OnConnected);
@@ -78,11 +80,14 @@ public class BLENetClient : MonoBehaviour
         gameObject.SetActive(false);
         return;
 #endif
-        if (started && 0 <= cnt++)
+        if (!started) return;
+
+        if (CubeOrderBalancer.intervalSec < Time.time - previousTIme)
         {
-            cnt = 0;
+            previousTIme = Time.time;
             this.SendCubeStatus();
         }
+
     }
 
     private void OnRecvData(IPEndPoint remoteEP, byte[] recvbuffer, int size)
@@ -92,15 +97,18 @@ public class BLENetClient : MonoBehaviour
         {
             UInt16 buffsize = 0;
             int read;
+            byte order;
             while(true)
             {
                 memory.Read(this.workbuff, 2);
                 if (recvSize <= memory.readSize) { break; }
                 buffsize = BitConverter.ToUInt16(this.workbuff, 0);
-                read = memory.Read(this.workbuff, buffsize-2);
-                if (read != buffsize-2) { Debug.Log("error"); break; }
-                //Debug.Log(BLENet.Server.Bytes2String(this.workbuff, buffsize-2));
-                this.protocolTable[this.workbuff[0]](this.workbuff);
+                memory.Read(this.workbuff, 1);
+                order = this.workbuff[0];
+                read = memory.Read(this.workbuff, buffsize-3);
+                if (read != buffsize-3) { Debug.Log("error"); break; }
+                //Debug.Log(BLENetProtocol.Bytes2String(this.workbuff, buffsize-3));
+                this.protocolTable[order](this.workbuff);
             }
         }
     }
@@ -130,9 +138,9 @@ public class BLENetClient : MonoBehaviour
     //      RPC API < recv >
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-    private void OnRecv_CubeWrite(byte[] data)
+    private void OnRecv_WriteValue(byte[] data)
     {
-        try
+        //try
         {
             var readdata = BLENetProtocol.Decode_S2C_WRITE(data);
             foreach(var (idx, charaID, buffer, withResponse) in readdata)
@@ -145,7 +153,31 @@ public class BLENetClient : MonoBehaviour
                 });
             }
         }
-        catch
+        //catch
+        {
+            // 握りつぶす…
+        }
+    }
+
+    private void OnRecv_ReadValue(byte[] data)
+    {
+        //try
+        {
+            var (localCubeIndex, charaID) = BLENetProtocol.Decode_S2C_READ(data);
+            var cube = (this.cubeManager.cubes[localCubeIndex] as CubeReal);
+            // メインスレッドから呼び出し
+            this.mainthreadFuncWorker.EnqueueFunc(() =>
+            {
+                cube.characteristicTable[charaID].ReadValue((_, retData) =>
+                {
+                    this.mainthreadFuncWorker.EnqueueFunc(() =>
+                    {
+                        SendReadCallback(localCubeIndex, charaID, retData);
+                    });
+                });
+            });
+        }
+        //catch
         {
             // 握りつぶす…
         }
@@ -159,7 +191,10 @@ public class BLENetClient : MonoBehaviour
     {
         if (0 == cubeManager.cubes.Count) { return ; }
 
-        var data = BLENetProtocol.Encode_C2S_SUBSCRIBE(this.recvDataList);
+        //var data = BLENetProtocol.Encode_C2S_SUBSCRIBE(this.recvDataList);
+        //this.client.SendData(data);
+
+        var data = Position2Bytes();
         this.client.SendData(data);
     }
 
@@ -175,10 +210,52 @@ public class BLENetClient : MonoBehaviour
         this.client.SendData(buff);
     }
 
+    private void SendReadCallback(int localCubeIndex, string characteristicUUID, byte[] data)
+    {
+        var buff = BLENetProtocol.Encode_C2S_READ_CALLBACK(localCubeIndex, characteristicUUID, data);
+        this.client.SendData(buff);
+    }
 
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     //      static functions
     //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+    private byte[] Position2Bytes()
+    {
+        var cubes = cubeManager.cubes;
+
+        int head = 3;
+        int cubebody = 3 + 13;
+        int body = 1 + (cubes.Count * cubebody);
+
+        Cube c;
+        byte[] buff = new byte[head+body];
+#if !RELEASE
+        if (UInt16.MaxValue < buff.Length) { Debug.LogErrorFormat("最大バッファサイズを超えました. プロトコルを変更して下さい."); }
+#endif
+        BLENetProtocol.WriteBytesU16(buff, 0, Convert.ToUInt16(buff.Length));
+        buff[2] = BLENetProtocol.C2S_SUBSCRIBE;
+        buff[3] = (byte)cubes.Count;
+        int offset, suboffset;
+        for (int i = 0; i < cubes.Count; i++)
+        {
+            c = cubes[i];
+
+            offset = head + 1 + (i * cubebody);
+            buff[offset] = (byte)i;
+            buff[offset+1] = BLENetProtocol.Characteristic2ShortID(CubeReal.CHARACTERISTIC_ID);
+            buff[offset+2] = 13;
+            suboffset = 3;
+            buff[offset+suboffset] = 1;
+            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+1, (Int16)c.pos.x);
+            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+3, (Int16)c.pos.y);
+            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+5, (Int16)c.angle);
+            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+7, (Int16)c.sensorPos.x);
+            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+9, (Int16)c.sensorPos.y);
+            BLENetProtocol.WriteBytesS16(buff, offset+suboffset+11, (Int16)c.sensorAngle);
+        }
+        return buff;
+    }
 
     private static string GetIPAddress()
     {

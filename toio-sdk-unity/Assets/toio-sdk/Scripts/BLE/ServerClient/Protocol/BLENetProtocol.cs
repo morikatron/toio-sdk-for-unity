@@ -8,12 +8,14 @@ public static class BLENetProtocol
     // c2s
     public const int C_UDP_PORT = 50007;
     public const byte C2S_JOIN = 100;
-    public const byte C2S_JOINS = 102;
-    public const byte C2S_SUBSCRIBE = 101;
+    public const byte C2S_JOINS = 101;
+    public const byte C2S_SUBSCRIBE = 102;
+    public const byte C2S_READ_CALLBACK = 103;
 
     // s2c
     public const int S_PORT = 50006;
     public const byte S2C_WRITE = 150;
+    public const byte S2C_READ = 151;
 
     public const byte SERVICE_ID = 255;
     public const byte CHARACTERISTIC_CONFIG = 101;
@@ -83,15 +85,15 @@ public static class BLENetProtocol
     }
     public static (int localCubeIndex, string deviceAddr, string[] charaList) Decode_C2S_JOIN(byte[] data)
     {
-        var localCubeIndex = data[1];
-        var addr_len = data[2];
-        var chara_len = data[3];
-        var deviceAddr = System.Text.Encoding.UTF8.GetString(data, 4, addr_len);
+        var localCubeIndex = data[0];
+        var addr_len = data[1];
+        var chara_len = data[2];
+        var deviceAddr = System.Text.Encoding.UTF8.GetString(data, 3, addr_len);
         int offset;
         var charaList = new string[chara_len];
         for (int i = 0; i < chara_len; i++)
         {
-            offset = 4 + addr_len + i;
+            offset = 3 + addr_len + i;
             charaList[i] = BLENetProtocol.Characteristic2UUID(data[offset]);
         }
         return (localCubeIndex, deviceAddr, charaList);
@@ -137,9 +139,9 @@ public static class BLENetProtocol
     }
     public static (int localCubeIndex, string deviceAddr, string[] charaList)[] Decode_C2S_JOINS(byte[] data)
     {
-        var peri_len = data[1];
+        var peri_len = data[0];
         var results = new ValueTuple<int, string, string[]>[peri_len];
-        int offset = 2;
+        int offset = 1;
         for (int i = 0; i < peri_len; i++)
         {
             var localCubeIndex = data[offset];
@@ -189,9 +191,9 @@ public static class BLENetProtocol
     }
     public static (int localCubeIndex, string charaID, byte[] buffer)[] Decode_C2S_SUBSCRIBE(byte[] data)
     {
-        var chara_len = data[1];
+        var chara_len = data[0];
         var results = new ValueTuple<int, string, byte[]>[chara_len];
-        int offset = 2;
+        int offset = 1;
         for (int i = 0; i < chara_len; i++)
         {
             var localCubeIndex = data[offset];
@@ -203,6 +205,29 @@ public static class BLENetProtocol
             results[i] = new ValueTuple<int, string, byte[]>(localCubeIndex, charaID, buff);
         }
         return results;
+    }
+
+    public static byte[] Encode_C2S_READ_CALLBACK(int localCubeIndex, string characteristicUUID, byte[] data)
+    {
+        // head
+        var buff = new byte[6+data.Length];
+        WriteBytesU16(buff, 0, Convert.ToUInt16(buff.Length));
+        buff[2] = BLENetProtocol.C2S_READ_CALLBACK;
+        // body
+        buff[3] = (byte)localCubeIndex;
+        buff[4] = BLENetProtocol.Characteristic2ShortID(characteristicUUID);
+        buff[5] = (byte)data.Length;
+        Buffer.BlockCopy(data, 0, buff, 6, data.Length);
+        return buff;
+    }
+    public static (int localCubeIndex, string characteristicUUID, byte[] data) Decode_C2S_READ_CALLBACK(byte[] data)
+    {
+        var localCubeIndex = data[0];
+        var charaID = BLENetProtocol.Characteristic2UUID(data[1]);
+        var buffsize = data[2];
+        var buff = new byte[buffsize];
+        Buffer.BlockCopy(data, 3, buff, 0, buffsize);
+        return (localCubeIndex, charaID, buff);
     }
 
     ///////////////////////////////////////////////////
@@ -226,9 +251,9 @@ public static class BLENetProtocol
     }
     public static (int localCubeIndex, string charaID, byte[] buffer, bool withResponse)[] Decode_S2C_WRITE(byte[] data)
     {
-        var len = data[1];
+        var len = data[0];
         var results = new ValueTuple<int, string, byte[], bool>[len];
-        int offset = 2;
+        int offset = 1;
         for (int i = 0; i < len; i++)
         {
             var idx = data[offset];
@@ -243,6 +268,24 @@ public static class BLENetProtocol
         return results;
     }
 
+    public static byte[] Encode_S2C_READ(int localCubeIndex, string characteristicUUID)
+    {
+        // head
+        var buff = new byte[5];
+        WriteBytesU16(buff, 0, Convert.ToUInt16(buff.Length));
+        buff[2] = BLENetProtocol.S2C_READ;
+        // body
+        buff[3] = (byte)localCubeIndex;
+        buff[4] = BLENetProtocol.Characteristic2ShortID(characteristicUUID);
+        return buff;
+    }
+    public static (int localCubeIndex, string charaID) Decode_S2C_READ(byte[] data)
+    {
+        var localCubeIndex = data[0];
+        var charaID = BLENetProtocol.Characteristic2UUID(data[1]);
+        return (localCubeIndex, charaID);
+    }
+
     ///////////////////////////////////////////////////
     //      Useful Funcitons
     ///////////////////////////////////////////////////
@@ -253,6 +296,7 @@ public static class BLENetProtocol
         buff[offset+0] = b[0];
         buff[offset+1] = b[1];
     }
+
     public static void WriteBytesU16(byte[] buff, int offset, UInt16 val)
     {
         var b = BitConverter.GetBytes(val);
