@@ -6,7 +6,6 @@ using toio.MathUtils;
 public class SVScene3 : MonoBehaviour
 {
     CubeManager cm;
-    int N = 16;
 
     public Navigator.Mode naviMode = Navigator.Mode.BOIDS;
 

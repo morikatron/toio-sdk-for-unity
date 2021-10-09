@@ -6,15 +6,13 @@ using System.Net;
 
 public class BLENetClient : MonoBehaviour
 {
-#if UNITY_IOS
-    private CubeManager cubeManager;
-    int cnt = 0;
+    private CubeManager cubeManager = null;
     private List<Cube> joinedCubeList = new List<Cube>();
 
-    private UDPServer listener;
-    private UDPClient client;
+    private UDPServer listener = new UDPServer();
+    private UDPClient client = null;
     private Dictionary<byte, Action<byte[]>> protocolTable = new Dictionary<byte, Action<byte[]>>();
-    private FunctionWorker mainthreadFuncWorker;
+    private FunctionWorker mainthreadFuncWorker = null;
     private byte[] workbuff = new byte[BLENetServer.STATIC_BUFFER_SIZE];
     private bool started = false;
 
@@ -24,6 +22,10 @@ public class BLENetClient : MonoBehaviour
 
     void Awake()
     {
+#if UNITY_EDITOR
+        gameObject.SetActive(false);
+        return;
+#else
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 120;
 
@@ -32,17 +34,12 @@ public class BLENetClient : MonoBehaviour
 
     async void Start()
     {
-#if UNITY_EDITOR
-        gameObject.SetActive(false);
-        return;
-#endif
         cubeManager = new CubeManager();
 
         // サーバー起動
         var addr = GetIPAddress();
         var port = BLENetProtocol.C_UDP_PORT;
-        listener = new UDPServer();
-        listener.Listen(addr, port,　OnRecvData);
+        this.listener.Listen(addr, port,　OnRecvData);
         // クライアント
         addr = "192.168.0.9";
         port = BLENetProtocol.S_PORT;
@@ -78,14 +75,11 @@ public class BLENetClient : MonoBehaviour
             }
         }
         started = true;
+#endif
     }
 
     void Update()
     {
-#if UNITY_EDITOR
-        gameObject.SetActive(false);
-        return;
-#endif
         if (!started) return;
 
         if (CubeOrderBalancer.intervalSec < Time.time - previousTIme)
@@ -291,5 +285,4 @@ public class BLENetClient : MonoBehaviour
         }
         return ipaddress;
     }
-#endif
 }
