@@ -33,10 +33,12 @@
 // body
 - 3 : (byte)-端末内ID
 - 4 : (byte)-addr_size
-- 5 : (byte)-chara_count
-- 6 : (byte[])-device_addr
+- 5 : (byte)-name_size
+- 6 : (byte)-chara_count
+- 7 : (byte[])-device_addr
+- N : (byte[])-device_name
 - for (; Characteristic.len; ++) :
-    - +0 : (byte)-characteristicID
+  - +0 : (byte)-characteristicID
 ```
 
 ### C2S_JOINS
@@ -47,12 +49,14 @@
 // body
 - 3 : (byte)-台数
 - for (; 台数; ++) :
-- 1 : (byte)-端末内ID
-- 2 : (byte)-addr_size
-- 3 : (byte)-chara_size
-- 4 : (bytes[])-device_addr
-- for (; Characteristic.len; ++) :
-    - +0 : (byte)-characteristicID
+  - +0 : (byte)-端末内ID
+  - +1 : (byte)-addr_size
+  - +2 : (byte)-name_size
+  - +3 : (byte)-chara_size
+  - +4 : (bytes[])-device_addr
+  - +N : (bytes[])-device_name
+  - for (; Characteristic.len; ++) :
+    - ++0 : (byte)-characteristicID
 ```
 
 ### C2S_SUBSCRIBE

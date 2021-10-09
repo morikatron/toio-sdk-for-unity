@@ -15,7 +15,7 @@ public class SVScene2 : MonoBehaviour
         // CubeManagerからモジュールを間接利用した場合:
         cubeManager = new CubeManager(ConnectType.Real);
         // 任意のタイミングで非同期接続
-        cubeManager.MultiConnectAsync(cubeNum:20, coroutineObject:this);
+        cubeManager.MultiConnectAsync(cubeNum:20, coroutineObject:this, OnConnected);
     }
 
     void Update()
@@ -30,6 +30,7 @@ public class SVScene2 : MonoBehaviour
 
     void OnConnected(Cube cube, CONNECTION_STATUS status)
     {
+        Debug.Log(cube.localName);
         if (status.IsNewConnected)
         {
             Debug.Log("new-connected!!");

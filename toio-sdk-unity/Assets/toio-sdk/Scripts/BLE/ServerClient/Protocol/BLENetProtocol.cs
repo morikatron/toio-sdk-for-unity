@@ -116,7 +116,7 @@ public static class BLENetProtocol
         // 合計バイト計算
         int head = 3;
         int body = 1;
-        for (int i = 0; i < allCubes.Count; i++) { body += (3 + addrList[i].Length + charaLenList[i]); }
+        for (int i = 0; i < allCubes.Count; i++) { body += (4 + addrList[i].Length + nameList[i].Length + charaLenList[i]); }
         byte[] buff = new byte[head+body];
 
         // 入力
