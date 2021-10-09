@@ -139,6 +139,7 @@ namespace toio
                             read = memory.Read(workbuff, buffsize-3);
                             if (read != buffsize-3) { Debug.Log("error"); break; }
                             //Debug.Log(BLENetProtocol.Bytes2String(workbuff, buffsize-3));
+                            // workbuff is only body field
                             this.protocolTable[order].Invoke(remoteHost, workbuff);
                         }
                     }

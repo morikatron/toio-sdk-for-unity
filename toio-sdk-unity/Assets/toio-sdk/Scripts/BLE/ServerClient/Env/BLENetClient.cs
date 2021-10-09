@@ -66,7 +66,7 @@ public class BLENetClient : MonoBehaviour
                 var idx = i;
                 foreach(var c in r.characteristicTable)
                 {
-                    c.Value.readDataCallback.AddListener("BLENetClient", (chraID, data) =>
+                    c.Value.notifiedCallback.AddListener("BLENetClient", (chraID, data) =>
                     {
                         if (!this.recvDataTable.ContainsKey(idx)) { this.recvDataTable[idx] = new Dictionary<BLECharacteristicInterface, byte[]>(); }
                         this.recvDataTable[idx][c.Value] = data;
