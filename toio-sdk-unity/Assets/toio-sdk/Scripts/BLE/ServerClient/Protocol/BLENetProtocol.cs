@@ -131,7 +131,6 @@ public static class BLENetProtocol
             offset = offset + 3 + addrList[i].Length;
             foreach(var chara in _c.characteristicTable)
             {
-                Debug.LogFormat("offset: {0}, key: {1}", offset, BLENetProtocol.Characteristic2ShortID(chara.Key));
                 buff[offset++] = BLENetProtocol.Characteristic2ShortID(chara.Key);
             }
         }
@@ -152,7 +151,6 @@ public static class BLENetProtocol
             offset = offset + 3 + addr_len;
             for (int j = 0; j < chara_len; j++)
             {
-                //Debug.LogFormat("offset: {0}, key: {1}", offset, data[offset]);
                 charaList[j] = BLENetProtocol.Characteristic2UUID(data[offset++]);
             }
             results[i] = new ValueTuple<int, string, string[]>(localCubeIndex, deviceAddr, charaList);
