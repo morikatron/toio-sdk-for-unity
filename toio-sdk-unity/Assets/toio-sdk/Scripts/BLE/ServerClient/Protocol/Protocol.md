@@ -33,7 +33,7 @@
 // body
 - 3 : (byte)-端末内ID
 - 4 : (byte)-addr_size
-- 5 : (byte)-chara_size
+- 5 : (byte)-chara_count
 - 6 : (byte[])-device_addr
 - for (; Characteristic.len; ++) :
     - +0 : (byte)-characteristicID

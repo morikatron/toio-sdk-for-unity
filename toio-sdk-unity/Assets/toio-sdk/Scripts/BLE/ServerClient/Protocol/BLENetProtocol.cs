@@ -61,10 +61,11 @@ public static class BLENetProtocol
 
     public static byte[] Encode_C2S_JOIN(int localCubeIndex, CubeReal cube)
     {
-        var addrBytes = System.Text.Encoding.UTF8.GetBytes(cube.addr);
+        var addrBytes = System.Text.Encoding.UTF8.GetBytes(cube.peripheral.device_address);
+        var nameBytes = System.Text.Encoding.UTF8.GetBytes(cube.peripheral.device_name);
 
         int head = 3;
-        int body = 3 + addrBytes.Length + cube.characteristicTable.Count;
+        int body = 4 + addrBytes.Length + nameBytes.Length + cube.characteristicTable.Count;
 
         byte[] buff = new byte[head+body];
 #if !RELEASE
@@ -74,35 +75,41 @@ public static class BLENetProtocol
         buff[2] = BLENetProtocol.C2S_JOIN;
         buff[3] = (byte)localCubeIndex;
         buff[4] = (byte)addrBytes.Length;
-        buff[5] = (byte)cube.characteristicTable.Count;
-        Buffer.BlockCopy(addrBytes, 0, buff, 6, addrBytes.Length);
-        int offset = 6 + addrBytes.Length;
+        buff[5] = (byte)nameBytes.Length;
+        buff[6] = (byte)cube.characteristicTable.Count;
+        Buffer.BlockCopy(addrBytes, 0, buff, 7, addrBytes.Length);
+        Buffer.BlockCopy(nameBytes, 0, buff, 7+addrBytes.Length, nameBytes.Length);
+        int offset = 7 + addrBytes.Length + nameBytes.Length;
         foreach(var chara in cube.characteristicTable)
         {
             buff[offset++] = BLENetProtocol.Characteristic2ShortID(chara.Key);
         }
         return buff;
     }
-    public static (int localCubeIndex, string deviceAddr, string[] charaList) Decode_C2S_JOIN(byte[] data)
+    public static (int localCubeIndex, string deviceAddr, string deviceName, string[] charaList) Decode_C2S_JOIN(byte[] data)
     {
         var localCubeIndex = data[0];
         var addr_len = data[1];
-        var chara_len = data[2];
-        var deviceAddr = System.Text.Encoding.UTF8.GetString(data, 3, addr_len);
+        var name_len = data[2];
+        var chara_len = data[3];
+        var deviceAddr = System.Text.Encoding.UTF8.GetString(data, 4, addr_len);
+        var deviceName = System.Text.Encoding.UTF8.GetString(data, 4+addr_len, name_len);
         int offset;
         var charaList = new string[chara_len];
         for (int i = 0; i < chara_len; i++)
         {
-            offset = 3 + addr_len + i;
+            offset = 4 + addr_len + name_len + i;
             charaList[i] = BLENetProtocol.Characteristic2UUID(data[offset]);
         }
-        return (localCubeIndex, deviceAddr, charaList);
+        return (localCubeIndex, deviceAddr, deviceName, charaList);
     }
 
     public static byte[] Encode_C2S_JOINS(List<CubeReal> allCubes)
     {
         List<byte[]> addrList = new List<byte[]>();
-        foreach(var c in allCubes) { addrList.Add(System.Text.Encoding.UTF8.GetBytes(c.addr)); }
+        foreach(var c in allCubes) { addrList.Add(System.Text.Encoding.UTF8.GetBytes(c.peripheral.device_address)); }
+        List<byte[]> nameList = new List<byte[]>();
+        foreach(var c in allCubes) { nameList.Add(System.Text.Encoding.UTF8.GetBytes(c.peripheral.device_name)); }
         List<int> charaLenList = new List<int>();
         foreach(var c in allCubes) { charaLenList.Add(c.characteristicTable.Count); }
 
@@ -126,9 +133,11 @@ public static class BLENetProtocol
             _c = allCubes[i];
             buff[offset] = (byte)i;
             buff[offset+1] = (byte)addrList[i].Length;
-            buff[offset+2] = (byte)_c.characteristicTable.Count;
-            Buffer.BlockCopy(addrList[i], 0, buff, offset+3, addrList[i].Length);
-            offset = offset + 3 + addrList[i].Length;
+            buff[offset+2] = (byte)nameList[i].Length;
+            buff[offset+3] = (byte)_c.characteristicTable.Count;
+            Buffer.BlockCopy(addrList[i], 0, buff, offset+4, addrList[i].Length);
+            Buffer.BlockCopy(nameList[i], 0, buff, offset+4+addrList[i].Length, nameList[i].Length);
+            offset = offset + 4 + addrList[i].Length + nameList[i].Length;
             foreach(var chara in _c.characteristicTable)
             {
                 buff[offset++] = BLENetProtocol.Characteristic2ShortID(chara.Key);
@@ -136,24 +145,26 @@ public static class BLENetProtocol
         }
         return buff;
     }
-    public static (int localCubeIndex, string deviceAddr, string[] charaList)[] Decode_C2S_JOINS(byte[] data)
+    public static (int localCubeIndex, string deviceAddr, string deviceName, string[] charaList)[] Decode_C2S_JOINS(byte[] data)
     {
         var peri_len = data[0];
-        var results = new ValueTuple<int, string, string[]>[peri_len];
+        var results = new ValueTuple<int, string, string, string[]>[peri_len];
         int offset = 1;
         for (int i = 0; i < peri_len; i++)
         {
             var localCubeIndex = data[offset];
             var addr_len = data[offset + 1];
-            var chara_len = data[offset + 2];
-            var deviceAddr = System.Text.Encoding.UTF8.GetString(data, offset + 3, addr_len);
+            var name_len = data[offset + 2];
+            var chara_len = data[offset + 3];
+            var deviceAddr = System.Text.Encoding.UTF8.GetString(data, offset + 4, addr_len);
+            var deviceName = System.Text.Encoding.UTF8.GetString(data, offset + 4 + addr_len, name_len);
             string[] charaList = new string[chara_len];
-            offset = offset + 3 + addr_len;
+            offset = offset + 4 + addr_len + name_len;
             for (int j = 0; j < chara_len; j++)
             {
                 charaList[j] = BLENetProtocol.Characteristic2UUID(data[offset++]);
             }
-            results[i] = new ValueTuple<int, string, string[]>(localCubeIndex, deviceAddr, charaList);
+            results[i] = new ValueTuple<int, string, string, string[]>(localCubeIndex, deviceAddr, deviceName, charaList);
         }
         return results;
     }

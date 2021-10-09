@@ -52,16 +52,16 @@ public partial class BLENetServer
 
     private void OnJoin_Peripheral(BLENetRemoteHost remoteHost, byte[] data)
     {
-        var (localIndex, deviceAddr, charaList) = BLENetProtocol.Decode_C2S_JOIN(data);
-        this.joinPeripheralCallback.Notify(remoteHost, localIndex, deviceAddr, "hoge", charaList);
+        var (localIndex, deviceAddr, deviceName, charaList) = BLENetProtocol.Decode_C2S_JOIN(data);
+        this.joinPeripheralCallback.Notify(remoteHost, localIndex, deviceAddr, deviceName, charaList);
     }
 
     private void OnJoin_Peripherals(BLENetRemoteHost remoteHost, byte[] data)
     {
         var readdata = BLENetProtocol.Decode_C2S_JOINS(data);
-        foreach(var (localIndex, deviceAddr, charaList) in readdata)
+        foreach(var (localIndex, deviceAddr, deviceName, charaList) in readdata)
         {
-            this.joinPeripheralCallback.Notify(remoteHost, localIndex, deviceAddr, "hoge", charaList);
+            this.joinPeripheralCallback.Notify(remoteHost, localIndex, deviceAddr, deviceName, charaList);
         }
     }
 
