@@ -2,29 +2,32 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FunctionWorker : MonoBehaviour
+namespace toio
 {
-    private static object _lock = new object();
-    private Queue<Action> backFuncQueue = new Queue<Action>();
-    private Queue<Action> forwardFuncQueue = new Queue<Action>();
-
-    public void EnqueueFunc(Action func)
+    public class FunctionWorker : MonoBehaviour
     {
-        this.backFuncQueue.Enqueue(func);
-    }
+        private static object _lock = new object();
+        private Queue<Action> backFuncQueue = new Queue<Action>();
+        private Queue<Action> forwardFuncQueue = new Queue<Action>();
 
-    void Update()
-    {
-        lock (_lock)
+        public void EnqueueFunc(Action func)
         {
-            while(0 < this.backFuncQueue.Count)
-            {
-                this.forwardFuncQueue.Enqueue(this.backFuncQueue.Dequeue());
-            }
+            this.backFuncQueue.Enqueue(func);
         }
-        while(0 < this.forwardFuncQueue.Count)
+
+        void Update()
         {
-            this.forwardFuncQueue.Dequeue().Invoke();
+            lock (_lock)
+            {
+                while(0 < this.backFuncQueue.Count)
+                {
+                    this.forwardFuncQueue.Enqueue(this.backFuncQueue.Dequeue());
+                }
+            }
+            while(0 < this.forwardFuncQueue.Count)
+            {
+                this.forwardFuncQueue.Dequeue().Invoke();
+            }
         }
     }
 }
