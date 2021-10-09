@@ -25,7 +25,6 @@ namespace toio
             Ble.ReadCharacteristic(this.deviceAddress, this.serviceUUID, this.characteristicUUID, (address, characteristicUUID, bytes) =>
             {
                 action(characteristicUUID, bytes);
-                this.readDataCallback.Notify(characteristicUUID, bytes);
             });
         }
         public void WriteValue(byte[] data, bool withResponse)

@@ -29,7 +29,6 @@ namespace toio
 #if UNITY_WEBGL
             WebBluetoothScript.Instance.ReadValue(this.characteristicID, (id, bytes) => {
                 action(this.characteristicUUID, bytes);
-                this.readDataCallback.Notify(this.characteristicUUID, bytes);
             });
 #endif
         }

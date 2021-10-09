@@ -31,7 +31,7 @@ public class BLENetCharacteristic : BLECharacteristicInterface
         var buff = BLENetProtocol.Encode_S2C_READ(this.peripheral.localIndex, this.characteristicUUID);
         this.peripheral.remoteHost.udpClient.SendData(buff);
         // 返信データを受信した場合のコールバック設定
-        this.peripheral.server.RegisterRecvReadCallback(this.peripheral, this.characteristicUUID, (charaID, data)=> { action?.Invoke(charaID, data); this.readDataCallback.Notify(charaID, data); });
+        this.peripheral.server.RegisterRecvReadCallback(this.peripheral, this.characteristicUUID, (charaID, data)=> { action?.Invoke(charaID, data); });
     }
 
     public void WriteValue(byte[] data, bool withResponse)

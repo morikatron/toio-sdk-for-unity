@@ -18,7 +18,8 @@ public class BLENetClient : MonoBehaviour
     private byte[] workbuff = new byte[BLENetServer.STATIC_BUFFER_SIZE];
     private bool started = false;
 
-    private List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)> recvDataList = new List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)>();
+    //private List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)> recvDataList = new List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)>();
+    private Dictionary<int, Dictionary<BLECharacteristicInterface, byte[]>> recvDataTable = new Dictionary<int, Dictionary<BLECharacteristicInterface, byte[]>>();
     private float previousTIme = 0;
 
     void Awake()
@@ -65,9 +66,14 @@ public class BLENetClient : MonoBehaviour
             for(int i = 0; i < reals.Count; i++)
             {
                 var r = reals[i];
+                var idx = i;
                 foreach(var c in r.characteristicTable)
                 {
-                    c.Value.readDataCallback.AddListener("BLENetClient", (chraID, data) => { this.recvDataList.Add((i, c.Value, data)); });
+                    c.Value.readDataCallback.AddListener("BLENetClient", (chraID, data) =>
+                    {
+                        if (!this.recvDataTable.ContainsKey(idx)) { this.recvDataTable[idx] = new Dictionary<BLECharacteristicInterface, byte[]>(); }
+                        this.recvDataTable[idx][c.Value] = data;
+                    });
                 }
             }
         }
@@ -85,8 +91,8 @@ public class BLENetClient : MonoBehaviour
         if (CubeOrderBalancer.intervalSec < Time.time - previousTIme)
         {
             previousTIme = Time.time;
-            this.SendCubeStatus();
         }
+        this.SendCubeStatus();
 
     }
 
@@ -140,7 +146,7 @@ public class BLENetClient : MonoBehaviour
 
     private void OnRecv_WriteValue(byte[] data)
     {
-        //try
+        try
         {
             var readdata = BLENetProtocol.Decode_S2C_WRITE(data);
             foreach(var (idx, charaID, buffer, withResponse) in readdata)
@@ -153,7 +159,7 @@ public class BLENetClient : MonoBehaviour
                 });
             }
         }
-        //catch
+        catch
         {
             // 握りつぶす…
         }
@@ -161,7 +167,7 @@ public class BLENetClient : MonoBehaviour
 
     private void OnRecv_ReadValue(byte[] data)
     {
-        //try
+        try
         {
             var (localCubeIndex, charaID) = BLENetProtocol.Decode_S2C_READ(data);
             var cube = (this.cubeManager.cubes[localCubeIndex] as CubeReal);
@@ -177,7 +183,7 @@ public class BLENetClient : MonoBehaviour
                 });
             });
         }
-        //catch
+        catch
         {
             // 握りつぶす…
         }
@@ -191,11 +197,20 @@ public class BLENetClient : MonoBehaviour
     {
         if (0 == cubeManager.cubes.Count) { return ; }
 
-        //var data = BLENetProtocol.Encode_C2S_SUBSCRIBE(this.recvDataList);
-        //this.client.SendData(data);
-
-        var data = Position2Bytes();
-        this.client.SendData(data);
+        var list = new List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)>();
+        foreach(var d in this.recvDataTable)
+        {
+            foreach(var c in d.Value)
+            {
+                list.Add((d.Key, c.Key, c.Value));
+            }
+            d.Value.Clear();
+        }
+        if (0 < list.Count)
+        {
+            var data = BLENetProtocol.Encode_C2S_SUBSCRIBE(list);
+            this.client.SendData(data);
+        }
     }
 
     private void SendJoinCube(int index, CubeReal c)
