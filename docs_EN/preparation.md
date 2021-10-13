@@ -3,7 +3,7 @@
 This section introduces what you need to use toio SDK for Unity. Specifically, you will need the following three pieces of software
 
 - Unity (2019.4.0f1 LTS)
-- Xcode (11 or later)
+- Xcode (11 or 12) (13 does not work)
 - git
 
 ## Install Unity
