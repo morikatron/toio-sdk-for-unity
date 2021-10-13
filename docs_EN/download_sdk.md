@@ -20,16 +20,16 @@ Make sure that Unity is up and running.
 
 ## Install UniTask
 
-toio SDK for Unity uses Unity-optimized asynchronous processing library [UniTask](https://github.com/Cysharp/UniTask) . Therefore, you need to install UniTask (2.0.0 or later) in this Unity project.<br>
+toio SDK for Unity uses Unity-optimized asynchronous processing library [UniTask](https://github.com/Cysharp/UniTask) . Therefore, you need to install UniTask (2.1.0 or later) in this Unity project.<br>
 
-To install UniTask, follow the steps below (as of September 24, 2020; Unity 2019.4 LTS).
+To install UniTask, follow the steps below (as of September 1, 2021; Unity 2020.3 LTS).
 1. In Unity, go to the [Window] menu and select [Package Manager] to open the Package Manager.
 1. Click the [+] icon and select [Add package from git URL...]
 1. Add https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask
 
 The following document contains installation instructions and screenshots of UniTask for your reference.
 * [Description of the UniTask Github repository](https://github.com/Cysharp/UniTask#install-via-git-url)
-* You can also refer to Unity manual ["Installing from a Git URL"](https://docs.unity3d.com/2019.4/Documentation/Manual/upm-ui-giturl.html).
+* You can also refer to Unity manual ["Installing from a Git URL"](https://docs.unity3d.com/2020.3/Documentation/Manual/upm-ui-giturl.html).
 
 ## Adding the SDK
 

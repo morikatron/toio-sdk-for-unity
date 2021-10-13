@@ -9,12 +9,12 @@
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Winidows 10            | Winidows 10 以上        |
-| Unity                | 2019.4.0f1             | 2019.3 以上             |
+| Unity                | 2020.3.17f1            | 2020.3 以上             |
 
 スマホ
 | 機種名 | OS|
 | -- | -- |
-| HUAWEI nova 5T　  | Android 9|
+| HUAWEI nova 5T        | Android 9|
 | Xiaomi Mi Note 10 Lite| Android 10|
 
 <br>
@@ -22,8 +22,6 @@
 ## UnityのAndroid Build Supportをチェック
 
 Unity をインストールする時に Android Build Support モジュールを追加しなかった場合は、 Unity Hub を開いて［インストール］タブで、相応のバージョンの右上のメニューの［モジュールを加える］から Android Build Support を加えてください。
-
-<img width=500 src="res/build_android/1.png">
 
 <br>
 
@@ -150,7 +148,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2019.4 だと、NDK 19 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2019.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 2020.3 だと、NDK 19 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2020.3/Manual/android-sdksetup.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 

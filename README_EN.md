@@ -85,7 +85,7 @@ public class Hello_Toio : MonoBehaviour
 - Windows 10 (64 bit version only)
 - iOS devices (iOS ver. 12 or higher)
 - Android device (Android OS 9.0 or higher)
-- Unity (2019.4.0f1 LTS)
+- Unity（2020.3.17f1 LTS）
 
 
 ## Documentation
