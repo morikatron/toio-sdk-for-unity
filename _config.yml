@@ -1,0 +1,6 @@
+theme: Cayman theme
+title: toio SDK for Unity
+description: toio SDK for Unity document pages.
+plugins:
+  - jekyll-seo-tag
+google_analytics: UA-179680488-2
