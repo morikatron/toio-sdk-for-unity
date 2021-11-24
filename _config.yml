@@ -1,6 +1,7 @@
-theme: Cayman theme
+theme: jekyll-theme-cayman
 title: toio SDK for Unity
 description: toio SDK for Unity document pages.
+url: https://ma2bara.github.io/toio-sdk-for-unity/
 plugins:
   - jekyll-seo-tag
 google_analytics: UA-179680488-2
