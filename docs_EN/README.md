@@ -34,7 +34,7 @@
 - [4. Make a sound](tutorials_basic.md#4-make-a-sound)
 - [5. Light up LED](tutorials_basic.md#5-light-up-led)
 - [6. Read toio ID(Position ID & Standard ID)](tutorials_basic.md#6-read-toio-idposition-id--standard-id)
-- [7. Detect events (button, tilt, collision, coordinate and angle, Standard ID)](tutorials_basic.md#7-detect-events-button-tilt-collision-coordinate-and-angle-standard-id)
+- [7. Detect sensors' events](tutorials_basic.md#7-Detect-sensors-events)
 - [8. Move multiple Cubes](tutorials_basic.md#8-move-multiple-cubes)
 - [9. Simplifying the source code using CubeManager class](tutorials_basic.md#9-simplifying-the-source-code-using-cubemanager-class)
 - [10. Connection/disconnection on the way](tutorials_basic.md#10-connectiondisconnection-on-the-way)
