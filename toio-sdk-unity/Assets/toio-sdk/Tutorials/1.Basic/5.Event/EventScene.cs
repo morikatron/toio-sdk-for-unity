@@ -20,6 +20,24 @@ namespace toio.tutorial
             cube.standardIdCallback.AddListener("EventScene", OnUpdateStandardID);
             cube.idMissedCallback.AddListener("EventScene", OnMissedID);
             cube.standardIdMissedCallback.AddListener("EventScene", OnMissedStandardID);
+
+            // 2.1.0
+            cube.poseCallback.AddListener("EventScene", OnPose);
+            cube.doubleTapCallback.AddListener("EventScene", OnDoubleTap);
+
+            // 2.2.0
+            cube.shakeCallback.AddListener("EventScene", OnShake);
+            cube.motorSpeedCallback.AddListener("EventScene", OnMotorSpeed);
+            cube.magnetStateCallback.AddListener("EventScene", OnMagnetState);
+
+            // 2.3.0
+            cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
+            cube.attitudeCallback.AddListener("EventScene", OnAttitude);
+
+            // Enable Sensors
+            await cube.ConfigMotorRead(true);
+            await cube.ConfigAttitudeSensor(Cube.AttitudeFormat.Eulers, 100, Cube.AttitudeNotificationType.OnChanged);
+            await cube.ConfigMagneticSensor(Cube.MagneticMode.MagnetState);
         }
 
         void OnCollision(Cube c)
@@ -36,7 +54,7 @@ namespace toio.tutorial
 
         void OnSlope(Cube c)
         {
-            cube.PlayPresetSound(8);
+            cube.PlayPresetSound(1);
         }
 
         void OnPressButton(Cube c)
@@ -74,5 +92,40 @@ namespace toio.tutorial
             Debug.LogFormat("Standard ID Missed.");
         }
 
+        void OnPose(Cube c)
+        {
+            Debug.Log($"pose = {c.pose.ToString()}");
+        }
+
+        void OnDoubleTap(Cube c)
+        {
+            c.PlayPresetSound(3);
+        }
+
+        void OnShake(Cube c)
+        {
+            if (c.shakeLevel > 5)
+                c.PlayPresetSound(4);
+        }
+
+        void OnMotorSpeed(Cube c)
+        {
+            Debug.Log($"motor speed: left={c.leftSpeed}, right={c.rightSpeed}");
+        }
+
+        void OnMagnetState(Cube c)
+        {
+            Debug.Log($"magnet state: {c.magnetState.ToString()}");
+        }
+
+        void OnMagneticForce(Cube c)
+        {
+            Debug.Log($"magnetic force = {c.magneticForce}");
+        }
+
+        void OnAttitude(Cube c)
+        {
+            Debug.Log($"attitude = {c.eulers}");
+        }
     }
 }
