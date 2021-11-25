@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [BLE] Add Windows BLE plugin. Support for Windows 10 64bit (version 20H2 or later). (Thanks to contribution of [Yusuke Kurokawa](https://github.com/wotakuro))
 - [Cube Real/Simulator] Implement rest features of BLE protocol v2.2.0.
   - [ID] Identification sensor ID notification settings, Identification sensor ID missed notification settings, Responses to identification sensor ID notification settings, Responses to identification sensor ID missed notification settings
   - [Magnetic Sensor] Magnetic sensor settings, Requests for magnetic sensor information, Magnet state, Responses to magnetic sensor settings
