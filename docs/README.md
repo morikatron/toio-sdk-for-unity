@@ -14,13 +14,17 @@
 1. 開発前に確認する [→「シミュレータの操作方法」](development_simulator.md)
 2. Assets フォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
 3. 新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
-4. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく ★A
+4. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく `★A`
+5. Unity Editor で Play して実機と接続して動作確認 `★B` <br>
+（Macの場合は[BLEプラグインの導入](usage_macble.md)が必要）（実機と接続する方法はサンプル [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)を参照）
 <br><br>
 
 ### 【 3 】ビルド
 
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 [→「 iOS ビルド」](build_ios.md) |[「 Android ビルド」](build_android.md) |[「 WebGL ビルド」](build_web.md)　★B
-2. ★`A` ★`B` を繰り返してプログラムを仕上げていく
+1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 `★C`
+    - [「 iOS ビルド」](build_ios.md) | [「 Android ビルド」](build_android.md) | [「 WebGL ビルド」](build_web.md)
+    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2020.3/Manual/PublishingBuilds.html)を参照してください
+2. `★A` `★B` `★C` を繰り返してプログラムを仕上げていく
 
 <br>
 
@@ -67,6 +71,10 @@
 ## サンプル
 
 ### 基礎
+
+- [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)
+
+  接続設定の違いによって、シミュレータとリアルで接続設定が変わるか確認するサンプルです。
 
 - [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/)
 
