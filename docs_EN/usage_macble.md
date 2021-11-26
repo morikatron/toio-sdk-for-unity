@@ -25,7 +25,7 @@ We have confirmed that it works in the following environment. You don't necessar
 
 <br>
 
-| Tools and Software | | Recommended version          |
+| Tools and Software | Recommended version          |
 | -------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15 or higher |
 | Unity                | 2020.3 or higher         |
