@@ -1,12 +1,12 @@
 {
-    "name": "ble-plugin-unity",
-    "rootNamespace": "",
-    "references": [
-        "GUID:37c867e08014dc241a81d134efb0e6ef"
+    "name": "bleplugin-x86_64",
+    "references": [],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone64"
     ],
-    "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
