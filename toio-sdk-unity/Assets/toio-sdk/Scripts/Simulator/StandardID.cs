@@ -213,6 +213,10 @@ namespace toio.Simulator
         {
             return Mathf.RoundToInt(deg-this.transform.eulerAngles.y-90)%360;
         }
+        internal float UnityDeg2MatDegF(float deg)
+        {
+            return (deg-this.transform.eulerAngles.y-90)%360;
+        }
         /// <summary>
         /// Unity上の角度をStandard ID上の角度に変換
         /// </summary>

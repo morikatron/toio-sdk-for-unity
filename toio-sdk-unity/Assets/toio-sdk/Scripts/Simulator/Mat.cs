@@ -14,7 +14,8 @@ namespace toio.Simulator
             toio_collection_back = 1,
             simple_playmat = 2,
             developer = 3,
-            custom = 4  // 座標範囲をカスタマイズ
+            gesundroid = 4,
+            custom = 99  // 座標範囲をカスタマイズ
         }
 
         public static readonly string[] MatTypeNames = new string[]
@@ -23,7 +24,8 @@ namespace toio.Simulator
             "トイコレ付属マット（色タイル面）",     //1
             "簡易マット・開発用マット（表面）1~6",        //2
             "開発用マット（裏面）",        //3
-            "カスタマイズ",           //4
+            "ゲズンロイド",                 //4
+            "カスタマイズ",           //99
         };
 
         public enum DeveloperMatType
@@ -33,7 +35,7 @@ namespace toio.Simulator
         public static readonly string[] DeveloperMatTypeNames = new string[]
         { "#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8", "#9", "#10", "#11", "#12" };
 
-        public static readonly float DotPerM = 411f/0.560f; // 411/0.560 dot/m
+        public const float DotPerM = 411f/0.560f; // 411/0.560 dot/m
 
         [SerializeField]
         public MatType matType;
@@ -82,6 +84,9 @@ namespace toio.Simulator
                 case MatType.developer:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
                     break;
+                case MatType.gesundroid:
+                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/gesundroid");
+                    break;
                 case MatType.custom:
                     GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
                     break;
@@ -113,6 +118,8 @@ namespace toio.Simulator
                         case DeveloperMatType._12: return new RectInt(645, 683, 304, 215);
                     }
                     throw new System.Exception("devMatType out of range.");
+                case MatType.gesundroid:
+                    return new RectInt(1050, 45, 410, 410);
                 case MatType.custom:
                     Debug.LogError("Custom MatType not supported in this method.");
                     return new RectInt(0, 0, 0, 0);
@@ -129,6 +136,10 @@ namespace toio.Simulator
         public int UnityDeg2MatDeg(float deg)
         {
             return Mathf.RoundToInt((deg-this.transform.eulerAngles.y-90)%360+360)%360;
+        }
+        internal float UnityDeg2MatDegF(float deg)
+        {
+            return ((deg-this.transform.eulerAngles.y-90)%360+360)%360;
         }
         /// <summary>
         /// Unity上の角度をマットmat上の角度に変換
@@ -163,6 +174,17 @@ namespace toio.Simulator
         /// </summary>
         public Vector2Int UnityCoord2MatCoord(Vector3 unityCoord)
         {
+            var coord = UnityCoord2MatCoordF(unityCoord);
+
+            // マット単位に変換
+            return new Vector2Int(
+                Mathf.RoundToInt(coord.x),
+                Mathf.RoundToInt(coord.y)
+            );
+        }
+
+        internal Vector2 UnityCoord2MatCoordF(Vector3 unityCoord)
+        {
             var matPos = this.transform.position;
             var drad = - this.transform.eulerAngles.y * Mathf.Deg2Rad;
             var _cos = Mathf.Cos(drad);
@@ -176,9 +198,9 @@ namespace toio.Simulator
             Vector2 coord = new Vector2(dx*_cos-dy*_sin, dx*_sin+dy*_cos);
 
             // マット単位に変換
-            return new Vector2Int(
-                Mathf.RoundToInt(coord.x*DotPerM + this.xCenter),
-                Mathf.RoundToInt(coord.y*DotPerM + this.yCenter)
+            return new Vector2(
+                coord.x*DotPerM + this.xCenter,
+                coord.y*DotPerM + this.yCenter
             );
         }
 

@@ -294,9 +294,9 @@ namespace toio
         protected override void Recv_sensor(byte[] data)
         {
             base.Recv_sensor(data);
-
-            // https://toio.github.io/toio-spec/docs/2.1.0/ble_sensor
             int type = data[0];
+
+            // Motion Sensor https://toio.github.io/toio-spec/docs/2.1.0/ble_sensor
             if (1 == type)
             {
                 var _isDoubleTap = data[3] == 1 ? true : false;

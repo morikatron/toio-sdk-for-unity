@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6385651707215231317}
   m_Layer: 0
   m_Name: Mat
-  m_TagString: Mat
+  m_TagString: t4u_Mat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

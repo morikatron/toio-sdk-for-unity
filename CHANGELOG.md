@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+★ **Upgraded to Unity 2020.3.17f1 LTS.**
+
+### Added
+
+- [BLE] Add Windows BLE plugin. Support for Windows 10 64bit (version 20H2 or later). (Thanks to contribution of [Yusuke Kurokawa](https://github.com/wotakuro))
+- [Cube Real/Simulator] Implement rest features of BLE protocol v2.2.0.
+  - [ID] Identification sensor ID notification settings, Identification sensor ID missed notification settings, Responses to identification sensor ID notification settings, Responses to identification sensor ID missed notification settings
+  - [Magnetic Sensor] Magnetic sensor settings, Requests for magnetic sensor information, Magnet state, Responses to magnetic sensor settings
+- [Cube Real/Simulator] Implement all features of BLE protocol v2.3.0.
+  - [Magnetic Sensor] Magnetic sensor settings(updated), Magnetic force
+  - [Posture Angle detection] Requesting posture angle detection, Obtaining posture angle information, Posture angle detection settings, Responses to posture angle detection settings
+- [Simulator] Implement Magnet prefab.
+- [Simulator] Mat prefab includes a new mat type `Gesundroid`.
+
+### Changed
+
+- [WebGL] Update WebGL template `webble` for Unity 2020. The old template is renamed as `webble.unity2019`.
+- [General] Unity tags used by toio SDK for unity are changed to `t4u_Cube`, `t4u_Mat`, `t4u_StandardID` and `t4u_Magnet`, to avoid potential conflits with users' codes.
+- [Sample] Sample_Sensor updated with new Cube features.
+- [Simulator] Optimize command processing logic.
+- [Simulator] Change the shape of "LED" on the Cube prefab.
+- [Simulator] Regenerate octave audio clips for Unity 2020.
+- [Cube] Method `RequestSensor` is deprecated. Please use `RequestMotionSensor` instead.
+
+### Removed
+
+- [CubeHandle] Remove deprecated members (`CenterX`, `CenterY`, `SizeX`, `SizeY`, `RangeX`, `RangeY`). Please use `borderRect` or `SetBorderRect` instead.
+
 ## [1.3.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.3.1) - 2021-08-24
 
 ### Added

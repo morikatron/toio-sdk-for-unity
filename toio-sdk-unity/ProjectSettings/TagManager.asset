@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Mat
-  - Cube
-  - StandardID
+  - t4u_Cube
+  - t4u_Mat
+  - t4u_StandardID
+  - t4u_Magnet
   layers:
   - Default
   - TransparentFX

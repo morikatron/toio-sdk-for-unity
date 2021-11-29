@@ -19,7 +19,7 @@ namespace toio.tutorial
 
             if (CubeScanner.actualTypeOfAuto == ConnectType.Simulator)
                 foreach (var navigator in cubeManager.navigators)
-                    if ((navigator.cube as CubeUnity).objName == "Cube Not Boids")
+                    if (navigator.cube.localName == "Cube Not Boids")
                         navigatorNotBoids = navigator;
 
             // Use LED color to distinguish cubes
