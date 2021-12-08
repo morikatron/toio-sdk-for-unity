@@ -10,7 +10,8 @@ namespace toio.Simulator
     {
 
         string[] poseNames = new string[6]{"up", "down", "front", "back", "right", "left"};
-        string[] versionNames = new string[3]{"2.0.0", "2.1.0", "2.2.0"};
+        string[] magnetStateNames = new string[7]{"None", "S Center", "N Center", "S Right", "N Right", "S Left", "N Left"};
+        string[] versionNames = new string[4]{"2.0.0", "2.1.0", "2.2.0", "2.3.0"};
 
         public override void OnInspectorGUI()
         {
@@ -33,9 +34,10 @@ namespace toio.Simulator
                 // );
                 EditorGUILayout.EndVertical();
             }
+            // Runtime
             else
             {
-                // ==== Information】 ====
+                // ==== 【Cube Information】 ====
                 EditorGUILayout.LabelField("【Cube Information】");
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 EditorGUILayout.LabelField("Version", versionNames[version.intValue]);
@@ -46,9 +48,7 @@ namespace toio.Simulator
                 EditorGUILayout.EndVertical();
 
 
-
-                // ==== 【手動でキューブの状態を変更】 ====
-                // 実行時のみに表示
+                // ==== 【Change states manually】 ====
                 if (cube.isConnected)
                 {
                     EditorGUILayout.Space();
@@ -65,7 +65,7 @@ namespace toio.Simulator
                     cube.isSimulateSloped = !GUILayout.Toggle(!cube.isSimulateSloped, "【Change sloped manually】");
                     if (!cube.isSimulateSloped)
                     {
-                        var sloped_new = GUILayout.Toggle(cube.sloped, "└ sloped");
+                        var sloped_new = GUILayout.Toggle(cube.sloped, " └ sloped");
                         if (cube.sloped!=sloped_new){
                             cube.sloped = sloped_new;
                         }
@@ -117,6 +117,32 @@ namespace toio.Simulator
                         var shake_new = EditorGUILayout.IntSlider("shake level", cube.shakeLevel, 0, 10);
                         if (cube.shakeLevel!=shake_new){
                             cube.shakeLevel = shake_new;
+                        }
+                        EditorGUILayout.Space();
+
+                        // magnet
+                        cube.isSimulateMagneticSensor = !GUILayout.Toggle(!cube.isSimulateMagneticSensor, "【Change Magnetic Sensor manually】");
+                        if (!cube.isSimulateMagneticSensor)
+                        {
+                            var magnetState_new = (int)EditorGUILayout.Popup(" └ magnet state", (int)cube.magnetState, magnetStateNames);
+                            if ((int)cube.magnetState != magnetState_new){
+                                cube._SetMagneticField((Cube.MagnetState)magnetState_new);
+                            }
+                        }
+                    }
+
+                    // v2.3.0
+                    if (version.intValue > 2)
+                    {
+                        // magnetic force
+                        if (!cube.isSimulateMagneticSensor)
+                        {
+                            var scaledMagneticField = cube._GetScaledMagneticField();
+                            var field_new = EditorGUILayout.Vector3Field(" └ magnetic force", scaledMagneticField);
+                            if (field_new.magnitude > 255) field_new *= 255f/field_new.magnitude;
+                            if (scaledMagneticField != field_new){
+                                cube._SetMagneticField(field_new);
+                            }
                         }
                         EditorGUILayout.Space();
                     }

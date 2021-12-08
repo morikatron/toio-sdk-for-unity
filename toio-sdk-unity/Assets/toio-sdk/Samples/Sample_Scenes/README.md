@@ -26,7 +26,7 @@ void Start(){
     // ...
 #if UNITY_EDITOR
     // Keep Cubes across scenes
-    foreach (var c in GameObject.FindGameObjectsWithTag("Cube"))
+    foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
         DontDestroyOnLoad(c);
 #endif
     // ...

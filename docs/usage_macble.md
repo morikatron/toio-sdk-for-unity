@@ -17,13 +17,18 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 
 以下の環境で動作確認しています。必ずしも合わせる必要はありませんが、自分の環境でうまく行かない場合は参考にしてください。
 
-| ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
-| -------------------- | ---------------------- | ----------------------- |
-| OS                   | MacOS Catalina 10.15.7 | MacOS Catalina 10.15 以上 |
-| Bluetooth®            | 4.2             | 4.2 以上             |
-| Unity                | 2019.4.0f1             | 2019.3 以上             |
+| ツール・ソフトウェア | 確認バージョン1         | 確認バージョン2          | 確認バージョン3          |
+| -------------------- | ---------------------- | ----------------------- | ----------------------- |
+| OS                   | MacOS Catalina 10.15.7 | MacOS Big Sur 11.6.1 | MacOS Monterey 12.0.1 |
+| Unity                | 2020.3.17f1             | 2020.3.0f1             | 2020.3.23f1             |
+| PC            | iMac 2017 | iMac 2019 | MacBook Pro 2017 |
 
-> Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
+<br>
+
+| ツール・ソフトウェア |  推奨バージョン          |
+| -------------------- |  ----------------------- |
+| OS                   |  MacOS Catalina 10.15 以上 |
+| Unity                |  2020.3 以上             |
 
 <br>
 
@@ -31,7 +36,7 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 
 事前作業として、画面の左上にあるAppleメニューから「この Mac について」をクリックし、OSバージョンを確認してください。
 
-確認したOSバージョンが <b>10.x</b> もしくは <b>11.x</b> の場合は、[ビルド済みのbundleファイルをダウンロードする方法](usage_macble.md#ビルド済みのbundleファイルをダウンロードする方法)を参考に作業を進めてください。
+確認したOSバージョンが <b>10.x</b> <b>11.x</b> <b>12.x</b> の場合は、[ビルド済みのbundleファイルをダウンロードする方法](usage_macble.md#ビルド済みのbundleファイルをダウンロードする方法)を参考に作業を進めてください。
 それら以外のOSバージョンの場合は、[自分のPCでbundleファイルをビルドする方法](usage_macble.md#自分のpcでbundleファイルをビルドする方法)を参考に作業を進めてください。
 
 <br>
@@ -40,9 +45,9 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 
 #### 1. bundleファイル のダウンロード
 
-[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
+[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> または <b>12.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
 
-> 本SDKがv1.3.0時点では、v1.0.0リリースを対象にしています。
+> 本SDKが v1.4.0 時点では、toio/ble-plugin-unity v1.0.0 リリースを対象にしています。
 
 #### 2. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
 
@@ -92,3 +97,5 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 [Cubeの接続設定](usage_cube.md#4-cubeの接続設定) をご参照ください。
 
 手軽に動作確認したい場合は、サンプルプロジェクトの [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/) を動かしてみてください。
+
+もし[ビルド済みのbundleファイルをダウンロードする方法](usage_macble.md#ビルド済みのbundleファイルをダウンロードする方法)に従ってもうまく動作しなかった場合は、[自分のPCでbundleファイルをビルドする方法](usage_macble.md#自分のpcでbundleファイルをビルドする方法)を試してください。

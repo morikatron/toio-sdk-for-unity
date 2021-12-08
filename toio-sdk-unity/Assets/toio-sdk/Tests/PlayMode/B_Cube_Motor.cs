@@ -26,135 +26,121 @@ namespace toio.Tests
         [UnityTest, Order(0)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _00_targetMove_speed_8() // speed -> 10未満
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
+            Debug.Log("正しい動き：cube動かず、応答がNonSupport");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
             cube.TargetMove(100,250,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             8,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(1)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _01_targetMove_timeout() // timeout test
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
+            Debug.Log("正しい動き：2秒で timemout 応答し停止");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
             cube.TargetMove(100,400,270,0,2,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            20,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(4);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(2)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _02_targetMove_timeout_0() // timeout -> 0は10s
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
-            cube.TargetMove(250,250,270,0,0,
+            Debug.Log("正しい動き：10秒で timemout 応答し停止");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
+            cube.TargetMove(100,400,270,0,0,
                             Cube.TargetMoveType.RotatingMove,
-                            20,
+                            10,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(12);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(3)] // テストの実行の優先度を指定する(昇順)
-        public static IEnumerator _03_targetMove_x_noChanged() // x座標 ->　0xffff
+        public static IEnumerator _03_targetMove_x_noChange() // x座標 ->　0xffff
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
-            cube.TargetMove(-1,400,90,0,255,
+            Debug.Log("正しい動き：真下へ移動");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
+            cube.TargetMove(-1,300,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            50,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(4)] // テストの実行の優先度を指定する(昇順)
-        public static IEnumerator _04_targetMove_xy_noChanged() // x座標y座標 ->　0xffff
+        public static IEnumerator _04_targetMove_xy_noChange() // x座標y座標 ->　0xffff
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
-            cube.TargetMove(-1,-1,90,0,255,
+            Debug.Log("正しい動き：その場右へ回転");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
+            cube.TargetMove(-1,-1,0,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(2);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(5)] // テストの実行の優先度を指定する(昇順)
-        public static IEnumerator _05_targetMove_angle_noChanged() // RotationType ->　NotRotate
+        public static IEnumerator _05_targetMove_notRotate() // RotationType ->　NotRotate
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
-            cube.TargetMove(250,350,75,0,255,
+            Debug.Log("正しい動き：移動後に回転せず");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
+            cube.TargetMove(250,250,75,0,255,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            50,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.NotRotate,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(10);
+
+            yield return new WaitForSeconds(4);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(6)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _06_targetMove_parameterError_1() // x座標y座標 ->　0xffff RotationType ->Original
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
+            Debug.Log("正しい動き：目標と現在状態が同じな為、ParameterError");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
             cube.TargetMove(-1,-1,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
@@ -162,81 +148,73 @@ namespace toio.Tests
                             Cube.TargetRotationType.Original,
                             Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(7)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _07_targetMove_parameterError_2() // x座標y座標 ->　0xffff RotationType ->Original
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
+            Debug.Log("正しい動き：目標と現在状態が同じな為、ParameterError");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
             cube.TargetMove(-1,-1,90,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.NotRotate,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(2);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(8)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _08_targetMove_otherWrite() //
         {
-            var cube = cubeManager.cubes[0];
-            cube.targetMoveCallback.AddListener("Test",
-                (c, configID, res) =>
-                {
-                    Debug.Log(res);
-                }
-            );
-            cube.TargetMove(100,400,90,0,255,
+            Debug.Log("正しい動き：下へ1秒移動してから、右へ中央まで移動してから下へ回転。応答は OtherWrite");
+            var cube = GetCubeFromHomeIdxs(0);
+            cube.targetMoveCallback.AddListener("Test", (c, configID, res) => Debug.Log("応答： " + res) );
+
+            cube.TargetMove(-1,400,90,0,0,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            50,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(1);
-            cube.TargetMove(250,250,90,0,255,
+            cube.TargetMove(250,-1,90,0,0,
                             Cube.TargetMoveType.RotatingMove,
-                            30,
+                            50,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
+            cube.targetMoveCallback.ClearListener();
             yield return null;
         }
 
         [UnityTest, Order(9)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _09_AccMove_forward() //
         {
-            var cube = cubeManager.cubes[0];
-            cube.TargetMove(100,400,90,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            30,
-                            Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteLeastAngle,
-                            Cube.ORDER_TYPE.Strong);
+            Debug.Log("正しい動き：下へ加速しながら移動");
+            var cube = GetCubeFromHomeIdxs(0);
+
             cube.AccelerationMove(100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(3);
             cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(5);
-
-
+            yield return new WaitForSeconds(1);
             yield return null;
         }
 
         [UnityTest, Order(10)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _10_AccMove_backward() //
         {
-            var cube = cubeManager.cubes[0];
+            Debug.Log("正しい動き：上に向いてから、後退で下へ加速しながら移動");
+            var cube = GetCubeFromHomeIdxs(0);
             cube.TargetMove(-1,-1,270,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             30,
@@ -247,82 +225,80 @@ namespace toio.Tests
             cube.AccelerationMove(-100,2,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(3);
             cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(1);
             yield return null;
         }
 
         [UnityTest, Order(11)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _11_AccMove_left() //
         {
-            var cube = cubeManager.cubes[0];
-            cube.TargetMove(250,250,90,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            80,
-                            Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteLeastAngle,
-                            Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(3);
-            cube.AccelerationMove(20,2,-20,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            Debug.Log("正しい動き：左へ曲がりながら加速");
+            var cube = GetCubeFromHomeIdxs(0);
 
-            yield return new WaitForSeconds(5);
+            cube.AccelerationMove(80,3,-25,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(2);
             yield return null;
         }
 
         [UnityTest, Order(12)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _12_AccMove_right() //
         {
-            var cube = cubeManager.cubes[0];
-            cube.TargetMove(250,250,90,0,255,
+            Debug.Log("正しい動き：右へ曲がりながら加速（後退）");
+            var cube = GetCubeFromHomeIdxs(0);
+
+            cube.TargetMove(-1,-1,270,0,255,
                             Cube.TargetMoveType.RotatingMove,
                             80,
                             Cube.TargetSpeedType.UniformSpeed,
                             Cube.TargetRotationType.AbsoluteLeastAngle,
                             Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(3);
-            cube.AccelerationMove(-20,2,-20,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(1);
+            cube.AccelerationMove(-80,3,-25,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(2);
             yield return null;
         }
 
         [UnityTest, Order(13)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _13_AccMove_time() //
         {
-            var cube = cubeManager.cubes[0];
-            cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,200,Cube.ORDER_TYPE.Strong);
+            Debug.Log("正しい動き：2秒間加速しながら前進");
+            var cube = GetCubeFromHomeIdxs(0);
 
-            yield return new WaitForSeconds(5);
+            cube.AccelerationMove(80,4,0,Cube.AccPriorityType.Translation,200,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(3);
             yield return null;
         }
 
         [UnityTest, Order(14)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _14_AccMove_time_0()
         {
-            var cube = cubeManager.cubes[0];
-            cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(3);
-            cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
+            Debug.Log("正しい動き：0制御時間が無限を意味する（5秒で強制終了）");
+            var cube = GetCubeFromHomeIdxs(0);
+
+            cube.AccelerationMove(80,1,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(5);
+            Debug.Log("強制終了");
+            cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(1);
             yield return null;
         }
 
         [UnityTest, Order(15)] // テストの実行の優先度を指定する(昇順)
         public static IEnumerator _15_AccMove_AccToAcc() //
         {
-            var cube = cubeManager.cubes[0];
-            cube.TargetMove(250,100,90,0,255,
-                            Cube.TargetMoveType.RotatingMove,
-                            80,
-                            Cube.TargetSpeedType.UniformSpeed,
-                            Cube.TargetRotationType.AbsoluteLeastAngle,
-                            Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(3);
+            Debug.Log("正しい動き：連続する加速命令はスムーズに繋がる");
+            var cube = GetCubeFromHomeIdxs(0);
+
+            cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(2);
+            cube.AccelerationMove(-50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
+            yield return new WaitForSeconds(2);
             cube.AccelerationMove(50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(2);
             cube.AccelerationMove(-50,10,0,Cube.AccPriorityType.Translation,0,Cube.ORDER_TYPE.Strong);
             yield return new WaitForSeconds(2);
             cube.Move(0,0,0,Cube.ORDER_TYPE.Strong);
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(1);
             yield return null;
         }
     }

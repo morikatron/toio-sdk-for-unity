@@ -1,23 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using toio;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public class Sample_Sensor : MonoBehaviour
 {
     Cube cube;
 
-    UnityEngine.UI.Text textBattery;
-    UnityEngine.UI.Text textFlat;
-    UnityEngine.UI.Text textCollision;
-    UnityEngine.UI.Text textButton;
-    UnityEngine.UI.Text textPositionID;
-    UnityEngine.UI.Text textStandardID;
-    UnityEngine.UI.Text textAngle;
-    UnityEngine.UI.Text textDoubleTap;
-    UnityEngine.UI.Text textPose;
-    UnityEngine.UI.Text textShake;
-    UnityEngine.UI.Text textSpeed;
+    Text textBattery;
+    Text textFlat;
+    Text textCollision;
+    Text textButton;
+    Text textPositionID;
+    Text textStandardID;
+    Text textAngle;
+    Text textDoubleTap;
+    Text textPose;
+    Text textShake;
+    Text textSpeed;
+    Text textMag;
+    Text textAttitude;
 
     async void Start()
     {
@@ -33,7 +35,19 @@ public class Sample_Sensor : MonoBehaviour
         this.textPose = GameObject.Find("TextPose").GetComponent<Text>();
         this.textShake = GameObject.Find("TextShake").GetComponent<Text>();
         this.textSpeed = GameObject.Find("TextSpeed").GetComponent<Text>();
+        this.textMag = GameObject.Find("TextMag").GetComponent<Text>();
+        this.textAttitude = GameObject.Find("TextAttitude").GetComponent<Text>();
+        await UniTask.Delay(0); // Avoid warning
 
+#if UNITY_EDITOR || !UNITY_WEBGL
+        var btn = GameObject.Find("ButtonConnect").GetComponent<Button>();
+        btn.gameObject.SetActive(false);
+        await Connect();
+#endif
+    }
+
+    private async UniTask Connect()
+    {
         // Cube の接続
         var peripheral = await new NearestScanner().Scan();
         cube = await new CubeConnecter().Connect(peripheral);
@@ -47,18 +61,72 @@ public class Sample_Sensor : MonoBehaviour
         cube.idCallback.AddListener("Sample_Sensor", OnUpdateID);                  // 座標角度イベント
         cube.standardIdCallback.AddListener("Sample_Sensor", OnUpdateStandardId);  // standardIdイベント
         cube.idMissedCallback.AddListener("Sample_Sensor", OnMissedID);            // 座標角度 missedイベント
-        cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedID);    // standardId missedイベント
+        cube.standardIdMissedCallback.AddListener("Sample_Sensor", OnMissedStandardID);    // standardId missedイベント
         cube.poseCallback.AddListener("Sample_Sensor", OnPose);                    // 姿勢イベント
         cube.doubleTapCallback.AddListener("Sample_Sensor", OnDoubleTap);          // ダブルタップイベント
-        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  //
-        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             //
+        cube.shakeCallback.AddListener("Sample_Sensor", OnShake);                  // Shake
+        cube.motorSpeedCallback.AddListener("Sample_Sensor", OnSpeed);             // Motor Speed
+        cube.magnetStateCallback.AddListener("Sample_Sensor", OnMagnetState);      // Magnet State
+        cube.magneticForceCallback.AddListener("Sample_Sensor", OnMagForce);       // Magnetic Force
+        cube.attitudeCallback.AddListener("Sample_Sensor", OnAttitude);            // Attitude
+
+        await cube.ConfigIDNotification(500);       // 精度10ms
+        await cube.ConfigIDMissedNotification(500); // 精度10ms
     }
+
+    public async void OnBtnConnect() { await Connect(); }
 
     public void Forward() { cube.Move(60, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Backward() { cube.Move(-40, -40, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void TurnRight() { cube.Move(60, 30, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void TurnLeft() { cube.Move(30, 60, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
     public void Stop() { cube.Move(0, 0, durationMs:0, order:Cube.ORDER_TYPE.Strong); }
+
+    Cube.MagneticMode magMode = Cube.MagneticMode.Off;
+    public async void OnSwitchMag()
+    {
+        this.magMode = (Cube.MagneticMode)(((int)this.magMode + 1) % 3);
+        await cube.ConfigMagneticSensor(
+            this.magMode,
+            intervalMs: 500,    // 精度20msなの注意
+            notificationType: Cube.MagneticNotificationType.OnChanged
+        );
+        if (this.magMode == Cube.MagneticMode.Off)
+            this.textMag.text = "MagneticSensor Off";
+        else
+            cube.RequestMagneticSensor();
+    }
+
+    int attitudeMode = 0;
+    public async void OnSwitchAttitude()
+    {
+        this.attitudeMode = (((int)this.attitudeMode + 1) % 3);
+        if (attitudeMode == 0)
+        {
+            // The only way to Disable attitude notifications is to set interval to 0
+            await cube.ConfigAttitudeSensor(
+                Cube.AttitudeFormat.Eulers, intervalMs: 0,
+                notificationType: Cube.AttitudeNotificationType.OnChanged
+            );
+            this.textAttitude.text = "AttitudeSensor Off";
+        }
+        else if (attitudeMode == 1)
+        {
+            await cube.ConfigAttitudeSensor(
+                Cube.AttitudeFormat.Eulers, intervalMs: 500,                // 精度10ms
+                notificationType: Cube.AttitudeNotificationType.OnChanged
+            );
+            cube.RequestAttitudeSensor(Cube.AttitudeFormat.Eulers);
+        }
+        else if (attitudeMode == 2)
+        {
+            await cube.ConfigAttitudeSensor(
+                Cube.AttitudeFormat.Quaternion, intervalMs: 500,            // 精度10ms
+                notificationType: Cube.AttitudeNotificationType.OnChanged
+            );
+            cube.RequestAttitudeSensor(Cube.AttitudeFormat.Quaternion);
+        }
+    }
 
     public void Update()
     {
@@ -151,7 +219,7 @@ public class Sample_Sensor : MonoBehaviour
 
     public void OnUpdateID(Cube c)
     {
-        this.textPositionID.text = "PositionID:" + " X=" + c.pos.x.ToString() + " Y=" + c.pos.y.ToString();
+        this.textPositionID.text = "PosID:" + " X=" + c.pos.x.ToString() + " Y=" + c.pos.y.ToString();
         this.textAngle.text = " Angle: " + c.angle.ToString();
     }
 
@@ -164,6 +232,10 @@ public class Sample_Sensor : MonoBehaviour
     public void OnMissedID(Cube c)
     {
         this.textPositionID.text = "PositionID Missed";
+        this.textAngle.text = "Angle Missed";
+    }
+    public void OnMissedStandardID(Cube c)
+    {
         this.textStandardID.text = "StandardID Missed";
         this.textAngle.text = "Angle Missed";
     }
@@ -177,4 +249,33 @@ public class Sample_Sensor : MonoBehaviour
     {
         this.textShake.text = "Shake: " + c.shakeLevel.ToString();
     }
+
+    public void OnMagnetState(Cube c)
+    {
+        this.textMag.text = "MagnetState: " + c.magnetState.ToString();
+    }
+
+    public void OnMagForce(Cube c)
+    {
+        this.textMag.text = "MagForce=" + c.magneticForce.ToString("F0");
+    }
+
+    public void OnAttitude(Cube c)
+    {
+        var eulers = c.eulers;
+        var q = c.quaternion;
+        if (this.attitudeMode == 0)
+        {
+            this.textAttitude.text = "AttitudeSensor Off";
+        }
+        else if (this.attitudeMode == 1)
+        {
+            this.textAttitude.text = "Eulers=" + eulers.ToString("F0");
+        }
+        else
+        {
+            this.textAttitude.text = "Quat=" + q.ToString("F2");
+        }
+    }
+
 }

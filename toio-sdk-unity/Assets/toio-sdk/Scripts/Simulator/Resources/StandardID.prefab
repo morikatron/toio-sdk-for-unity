@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5358535314239086414}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: StandardID
+  m_TagString: t4u_StandardID
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 5492798670434744364}
   m_Layer: 0
   m_Name: StandardID
-  m_TagString: StandardID
+  m_TagString: t4u_StandardID
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

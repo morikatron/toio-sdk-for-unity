@@ -197,7 +197,7 @@ public class MySimUI : MonoBehaviour
 ```
 
 The above script implements the following three things.
-    1. Since this is a process that we want to execute only in Simulator, we have written the entire implementation of the class in "#if [UNITY_EDITOR](https://docs.unity3d.com/2019.4/Documentation/Manual/PlatformDependentCompilation.html)".
+    1. Since this is a process that we want to execute only in Simulator, we have written the entire implementation of the class in "#if [UNITY_EDITOR](https://docs.unity3d.com/2020.3/Documentation/Manual/PlatformDependentCompilation.html)".
     2. The camera has been moved to the left because we want Simulator screen to be slightly to the right.
     3. Set the parent of [UI]-[Canvas] to [SimCanvas], and then move it to the left edge.(Using [Transform.SetParent](https://docs.unity3d.com/ScriptReference/Transform.SetParent.html))
 

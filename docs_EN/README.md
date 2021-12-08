@@ -15,12 +15,16 @@
 2. Create a development folder under the Assets folder ["Script Dependencies"](development_basics.md#1-script-dependencies).
 3. Create a new scene and load Simulator's Prefab ["Creating Scenes"](tutorials_basic.md#2-creating-scenes).
 4. Create a program by playing it in Unity Editor and checking how it works in Simulator. (A)
+5. Connect to real cubes from Unity Editor to check how programs work on real cubes. (B) <br>
+([Set up Mac BLE](usage_macble.md) first if using Mac) (Learn how to connect to real cubes from Unity Editor with sample [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md))
 <br><br>
 
 ### [3] Build
 
-1. Build an app for a smart device and verify that it works on the device ["iOS Build"](build_ios.md). |["Android Build"](build_android.md) |["WebGL Build"](build_web.md) (B)
-2. Repeat `(A)` `(B)` to brush up the program.
+1. Build an app for a smart device and verify that it works on the device. (C)
+    - ["iOS Build"](build_ios.md) | ["Android Build"](build_android.md) | ["WebGL Build"](build_web.md)
+    - For Mac or Windows 10 build, please refer to [Unity's official document](https://docs.unity3d.com/ja/2020.3/Manual/PublishingBuilds.html).
+2. Repeat `(A)` `(B)` `(C)` to brush up the program.
 
 <br>
 
@@ -34,7 +38,7 @@
 - [4. Make a sound](tutorials_basic.md#4-make-a-sound)
 - [5. Light up LED](tutorials_basic.md#5-light-up-led)
 - [6. Read toio ID(Position ID & Standard ID)](tutorials_basic.md#6-read-toio-idposition-id--standard-id)
-- [7. Detect events (button, tilt, collision, coordinate and angle, Standard ID)](tutorials_basic.md#7-detect-events-button-tilt-collision-coordinate-and-angle-standard-id)
+- [7. Detect sensors' events](tutorials_basic.md#7-Detect-sensors-events)
 - [8. Move multiple Cubes](tutorials_basic.md#8-move-multiple-cubes)
 - [9. Simplifying the source code using CubeManager class](tutorials_basic.md#9-simplifying-the-source-code-using-cubemanager-class)
 - [10. Connection/disconnection on the way](tutorials_basic.md#10-connectiondisconnection-on-the-way)
@@ -67,6 +71,10 @@
 ## Sample
 
 ### Basics
+
+- [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md)
+
+  This sample is to check if the connection settings are different between Simulator and the real environment.
 
 - [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/README_EN.md)
 
