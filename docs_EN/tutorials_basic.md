@@ -109,8 +109,7 @@ Move method of Cube class can be used to control the motors of Cube.
 cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
 ```C#
 // The file name and class name must match.
@@ -179,8 +178,6 @@ public class MoveScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 4. Make a sound
@@ -224,8 +221,7 @@ cube.PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order=OR
 
 If you run Simulator in Unity, you will hear a sound.
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
 ```C#
 // The file name and class name must match.
@@ -281,8 +277,6 @@ public class SoundScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 5. Light up LED
@@ -326,8 +320,7 @@ new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte b
 cube.TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong)
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
 ```C#
 // The file name and class name must match.
@@ -374,8 +367,6 @@ public class LEDScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 6. Read toio ID(Position ID & Standard ID)
@@ -399,8 +390,7 @@ public uint standardId { get; protected set; } // Standard ID
 ```
 > There is other information that can be read directly, please refer to [Cube Class API](usage_cube.md#3-cube-class-api) in the documentation.
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
 ```c#
 public class toioIDScene : MonoBehaviour
@@ -446,8 +436,6 @@ public class toioIDScene : MonoBehaviour
     }
 }
 ```
-
-</details>
 
 <br>
 
@@ -507,8 +495,7 @@ cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
 cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
 ```C#
 // The file name and class name must match.
@@ -629,8 +616,6 @@ public class EventScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 8. Move multiple Cubes
@@ -650,8 +635,7 @@ var peripherals = await new NearScanner(12).Scan();
 cubes = await new CubeConnecter().Connect(peripherals);
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
 ```C#
 // The file name and class name must match.
@@ -685,8 +669,6 @@ public class MultiCubeScene : MonoBehaviour
     }
 }
 ```
-
-</details>
 
 <br>
 

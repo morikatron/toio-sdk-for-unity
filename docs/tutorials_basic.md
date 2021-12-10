@@ -109,8 +109,7 @@ Cube クラスの Move メソッドでキューブのモーターを制御する
 cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
 ```C#
 // ファイル名とクラス名は一致させる必要があります
@@ -179,8 +178,6 @@ public class MoveScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 4. 音を鳴らす
@@ -224,8 +221,7 @@ cube.PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order=OR
 
 ※ Unity でシミューレータ実行すると音が鳴ります。
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
 ```C#
 // ファイル名とクラス名は一致させる必要があります
@@ -281,8 +277,6 @@ public class SoundScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 5. LED を発光する
@@ -326,8 +320,7 @@ new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte b
 cube.TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong)
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
 ```C#
 // ファイル名とクラス名は一致させる必要があります
@@ -374,8 +367,6 @@ public class LEDScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 6. toio IDの読み取り(Position ID & Standard ID)
@@ -399,8 +390,7 @@ public uint standardId { get; protected set; } // Standard ID
 ```
 > ※ 他にも直接読み取れる情報がありますので、ドキュメントの[CubeクラスAPI](usage_cube.md#3-Cube-クラス-API)を参照してください。
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
 ```c#
 public class toioIDScene : MonoBehaviour
@@ -446,8 +436,6 @@ public class toioIDScene : MonoBehaviour
     }
 }
 ```
-
-</details>
 
 <br>
 
@@ -507,8 +495,7 @@ cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
 cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
 ```C#
 // ファイル名とクラス名は一致させる必要があります
@@ -628,8 +615,6 @@ public class EventScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 8. 複数のキューブを動かす
@@ -649,8 +634,7 @@ var peripherals = await new NearScanner(12).Scan();
 cubes = await new CubeConnecter().Connect(peripherals);
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
 ```C#
 // ファイル名とクラス名は一致させる必要があります
@@ -684,8 +668,6 @@ public class MultiCubeScene : MonoBehaviour
     }
 }
 ```
-
-</details>
 
 <br>
 
