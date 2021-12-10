@@ -4,16 +4,16 @@
 
 - [1. 概説](sys_navigator.md#1-概説)
   - [1.1. クラスダイアグラム](sys_navigator.md#11-クラスダイアグラム)
-- [2. Navigator クラス](sys_navigator.md#2-Navigator-クラス)
+- [2. Navigator クラス](sys_navigator.md#2-navigator-クラス)
   - [2.1. 制御ブロック図](sys_navigator.md#21-制御ブロック図)
   - [2.2. モード](sys_navigator.md#22-モード)
-- [3. CubeNavigator クラス](sys_navigator.md#3-CubeNavigator-クラス)
+- [3. CubeNavigator クラス](sys_navigator.md#3-cubenavigator-クラス)
   - [3.1. 制御ブロック図](sys_navigator.md#31-制御ブロック図)
   - [3.2. 内部処理の解説](sys_navigator.md#32-内部処理の解説)
   - [3.3. 拡張について](sys_navigator.md#33-拡張について)
 - [4. アルゴリズムの詳細](sys_navigator.md#4-アルゴリズムの詳細)
-  - [4.1. ヒューマンライク衝突回避 HLAvoid](sys_navigator.md#41-ヒューマンライク衝突回避-HLAvoid)
-  - [4.2. ボイド Boids](sys_navigator.md#42-ボイド-Boids)
+  - [4.1. ヒューマンライク衝突回避 HLAvoid](sys_navigator.md#41-ヒューマンライク衝突回避-hlavoid)
+  - [4.2. ボイド Boids](sys_navigator.md#42-ボイド-boids)
 
 # 1. 概説
 
@@ -295,8 +295,7 @@ private ScanResult CombineScanRes(List<ScanResult> results, bool isCol, double[]
 元論文　[Guzzi, Jérôme, et al. "Human-friendly robot navigation in dynamic environments." 2013 IEEE International Conference on Robotics and Automation. IEEE, 2013.](https://ieeexplore.ieee.org/abstract/document/6630610) <br>
 及び [改良版手法の解説ブログ](https://tech.morikatron.ai/entry/2020/03/04/100000)（Morikatron Engineer Blog）を参照してください。
 
-<details>
-<summary>_ScanEntity 実装コード</summary>
+_ScanEntity 実装コード
 
 ```c#
 private ScanResult _ScanEntity(Navigator other, double[] rads){
@@ -355,13 +354,9 @@ private ScanResult _ScanEntity(Navigator other, double[] rads){
     return res;
 }
 ```
-
-</details>
-
 <br>
 
-<details>
-<summary>RunTowards 実装コード</summary>
+RunTowards 実装コード
 
 ```c#
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls){
@@ -442,8 +437,6 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
     return (waypoint, resCol.isCollision, speedLimit);
 }
 ```
-
-</details>
 
 <br>
 

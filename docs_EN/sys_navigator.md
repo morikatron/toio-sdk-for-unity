@@ -291,8 +291,7 @@ Merge multiple ScanResult as follows.
 See orignal thesis [Guzzi, Jérôme, et al. "Human-friendly robot navigation in dynamic environments." 2013 IEEE International Conference on Robotics and Automation. IEEE, 2013.](https://ieeexplore.ieee.org/abstract/document/6630610) <br>
 and see [Blog explaining the improved method](https://tech.morikatron.ai/entry/2020/03/04/100000).
 
-<details>
-<summary>_ScanEntity Implementation Code</summary>
+_ScanEntity Implementation Code
 
 ```c#
 private ScanResult _ScanEntity(Navigator other, double[] rads){
@@ -352,12 +351,9 @@ private ScanResult _ScanEntity(Navigator other, double[] rads){
 }
 ```
 
-</details>
-
 <br>
 
-<details>
-<summary>RunTowards Implementation Code</summary>
+RunTowards Implementation Code
 
 ```c#
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls){
@@ -438,8 +434,6 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
     return (waypoint, resCol.isCollision, speedLimit);
 }
 ```
-
-</details>
 
 <br>
 
