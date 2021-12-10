@@ -74,8 +74,7 @@ BLE 機能の最初の窓口となるシングルトンクラス<br>
 <u>BLEService.Instance.SetImplement()</u>関数で実装インタンスを入れる事で<br>
 内部実装クラスを設定する
 
-<details>
-<summary>実装コード：（クリック展開）</summary>
+実装コード
 
 ```C#
 public class BLEService : GenericSingleton<BLEService>
@@ -110,8 +109,6 @@ public class BLEService : GenericSingleton<BLEService>
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEServiceInterface
@@ -119,8 +116,7 @@ public class BLEService : GenericSingleton<BLEService>
 BLE 処理の最初の窓口となるインタフェース<br>
 動作端末の BLE 機能を提供する Device インタフェースを取得する機能を提供する
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
 ```C#
 public interface BLEServiceInterface
@@ -131,16 +127,13 @@ public interface BLEServiceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEDeviceInterface
 
 動作端末の BLE 機能インタフェース<br>主な役目は BLE 機能にアクセスしてスキャン処理を実行すること
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
 ```C#
 public interface BLEDeviceInterface
@@ -152,16 +145,13 @@ public interface BLEDeviceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEPeripheralInterface
 
 スキャンされた BLE デバイスのインタフェース<br>主な役目はスキャンされた BLE デバイスへの接続処理を実行すること
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
 ```C#
 public interface BLEPeripheralInterface
@@ -179,16 +169,13 @@ public interface BLEPeripheralInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLECharacteristicInterface
 
 スキャンされた BLE デバイスの機能ごとのインタフェース<br>主な役目は BLE デバイスそれぞれの機能に対して書き込み/読み込み処理を実行すること
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
 ```C#
 public interface BLECharacteristicInterface
@@ -203,8 +190,6 @@ public interface BLECharacteristicInterface
     void StopNotifications();
 }
 ```
-
-</details>
 
 # 3. 通信の仕組み
 

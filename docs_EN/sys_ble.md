@@ -73,8 +73,7 @@ BLE  +---------------------------------+ BLE root directory
 Singleton class as the first window for BLE functionality<br>
 <u>BLEService.Instance.SetImplement()</u>Set the internal implementation class by putting the implementation instance in the function.
 
-<details>
-<summary>Implementation code: (Click to expand)</summary>
+Implementation code
 
 ```C#
 public class BLEService : GenericSingleton<BLEService>
@@ -109,8 +108,6 @@ public class BLEService : GenericSingleton<BLEService>
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEServiceInterface
@@ -118,8 +115,7 @@ public class BLEService : GenericSingleton<BLEService>
 Interface that serves as the first window for BLE processing<br>
 It provides a function to acquire the Device interface that provides BLE function of the operating terminal.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
 ```C#
 public interface BLEServiceInterface
@@ -130,8 +126,6 @@ public interface BLEServiceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEDeviceInterface
@@ -139,8 +133,7 @@ public interface BLEServiceInterface
 BLE function interface of the operating terminal<br>
 Its main role is to access BLE functions and perform scanning operations.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
 ```C#
 public interface BLEDeviceInterface
@@ -152,16 +145,13 @@ public interface BLEDeviceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEPeripheralInterface
 
 Interface for scanned BLE devices<br>Its main role is to perform the connection process to the scanned BLE device.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
 ```C#
 public interface BLEPeripheralInterface
@@ -179,16 +169,13 @@ public interface BLEPeripheralInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLECharacteristicInterface
 
 Interface for each function of the scanned BLE device<br>The main role is to perform write/read operations for each function of BLE device.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
 ```C#
 public interface BLECharacteristicInterface
@@ -203,8 +190,6 @@ public interface BLECharacteristicInterface
     void StopNotifications();
 }
 ```
-
-</details>
 
 # 3. How Communication Works
 
