@@ -65,8 +65,7 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 インスペクターから matType を変更すると、 Mat.cs の ApplyMatType メソッドが実行され、 座標範囲の変更とマテリアルの切り替えが行われます。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
 ```c#
 public enum MatType
@@ -113,16 +112,13 @@ internal void ApplyMatType()
 }
 ```
 
-</details>
-
 ## 2.3. マット上の座標と Unity 上の座標との変換
 
 Unity 上の座標/角度とマット上の座標/角度との相互変換メソッドを用意しています。
 
 > Mat Prefab が水平に配置されている場合にのみ正しく変換可能です。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
 ```c#
 // Unity上の角度を本マット上の角度に変換
@@ -180,8 +176,6 @@ public Vector3 MatCoord2UnityCoord(double x, double y)
 }
 ```
 
-</details>
-
 <br>
 
 # 3. StandardID Prefab
@@ -199,8 +193,7 @@ StandardID Prefab には、スクリプト StandardID.cs がアタッチされ�
 </div>
 <br>
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード（クリック展開）
 
 ```c#
 internal void ApplyStandardIDType()
@@ -263,7 +256,6 @@ private Mesh SpriteToMesh(Sprite sprite)
 }
 ```
 
-</details>
 <br>
 
 # 4. Cube Prefab
@@ -912,8 +904,7 @@ Unity の AudioSource コンポーネントを利用して MIDI ノートナン�
 
 音声は以下の python スクリプトで、1 周期の正弦波をサンプリングした wav ファイルを生成しています。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
 ```python
 import numpy as np
@@ -941,7 +932,6 @@ for i in range(11):
     w.close()
 ```
 
-</details>
 <br>
 
 この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-と-note-name) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
@@ -1002,8 +992,7 @@ Stage Prefab は、
 マウスの右クリックまたはドラッグすることで ターゲットポールを設置・移動することができ、
 開発者はターゲットポールの位置を取得してキューブの制御に利用することが出来ます。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
 ```c#
 void Update(){
@@ -1022,8 +1011,6 @@ void Update(){
 }
 ```
 
-</details>
-
 <br>
 
 プロパティ `tarPoleCoord` でターゲットポールのマット上の座標を取得すると、キューブを動かす時に便利に使えます。
@@ -1033,8 +1020,8 @@ void Update(){
 
 左クリックした際、マウスカーソル位置からレイを飛ばし、レイが衝突したキューブにスポットライトの焦点を合わせて追従します。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+
+実装コード
 
 ```c#
 void Update(){
@@ -1062,8 +1049,6 @@ private void OnLeftDown()
     else SetNoFocus();
 }
 ```
-
-</details>
 
 <br>
 
