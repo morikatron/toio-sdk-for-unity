@@ -9,7 +9,7 @@
   - [3.2. 接続(Connecter)](sys_cube.md#32-接続connecter)
 - [4. 命令送信](sys_cube.md#4-命令送信)
 - [5. 機能拡張の方法](sys_cube.md#5-機能拡張の方法)
-  - [5.1. Cube クラスに関数を追加するには](sys_cube.md#51-Cube-クラスに関数を追加するには)
+  - [5.1. Cube クラスに関数を追加するには](sys_cube.md#51-cube-クラスに関数を追加するには)
   - [5.2. ファームウェアバージョンを追加するには](sys_cube.md#52-ファームウェアバージョンを追加するには)
   - [5.3. 通信プログラムを変更する場合](sys_cube.md#53-通信プログラムを変更する場合)
 
@@ -255,8 +255,7 @@ CubeScanner クラス：
 
 - Bluetooth デバイスを検索
 
-<details>
-<summary>概要コード：（クリック展開）</summary>
+概要コード
 
 ```C#
 public interface CubeScannerInterface
@@ -347,9 +346,6 @@ public class RealImpl : CubeScannerInterface
 }
 
 ```
-
-</details>
-
 <br>
 
 ### <u>NearestScanner</u>
@@ -407,8 +403,7 @@ CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファーム
 
 <br>
 
-<details>
-<summary>概要コード：（クリック展開）</summary>
+概要コード
 
 ```C#
 public interface CubeConnecterInterface
@@ -473,8 +468,6 @@ public class CubeConnecter : CubeConnecterInterface
 #endif
 }
 ```
-
-</details>
 <br>
 
 実装コード：

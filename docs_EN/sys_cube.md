@@ -255,8 +255,7 @@ Real Implementation:
 
 - Search for Bluetooth devices
 
-<details>
-<summary>Summary Code: (click to expand)</summary>
+Summary Code
 
 ```C#
 public interface CubeScannerInterface
@@ -348,8 +347,6 @@ public class RealImpl : CubeScannerInterface
 
 ```
 
-</details>
-
 <br>
 
 ### <u>NearestScanner</u>
@@ -407,8 +404,7 @@ Real implementation:
 
 <br>
 
-<details>
-<summary>Summary Code: (Click to expand)</summary>
+Summary Code
 
 ```C#
 public interface CubeConnecterInterface
@@ -474,7 +470,6 @@ public class CubeConnecter : CubeConnecterInterface
 }
 ```
 
-</details>
 <br>
 
 Implementation Code:
