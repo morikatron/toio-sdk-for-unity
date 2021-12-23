@@ -44,7 +44,7 @@
 
 ### サンプルコード
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -96,7 +96,7 @@ public class BasicScene : MonoBehaviour
 
 Cube クラスの Move メソッドでキューブのモーターを制御することが出来ます。
 
-```C#
+```csharp
 //--------------------------------------------------------
 // 時間指定付きモーター制御
 // https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御
@@ -111,7 +111,7 @@ cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak)
 
 実行コード
 
-```C#
+```csharp
 // ファイル名とクラス名は一致させる必要があります
 public class MoveScene : MonoBehaviour
 {
