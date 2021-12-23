@@ -15,7 +15,7 @@ toio SDK for Unity を使用することでキューブを使ったアプリを�
 
 toio SDK for Unity の一つ大きな特徴は、このような一つのソースコードでシミュレータとリアルのキューブの両方を動かすことが出来ることです。
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
