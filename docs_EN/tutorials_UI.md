@@ -49,7 +49,7 @@ You can also move Cube object with the mouse in the scene.
 8. Rewrite the script you have created with the sample code below. (The class name must be the same as the script file)
 
 ### Sample Code
-```C#
+```csharp
 using System.Collections.Generic;
 using UnityEngine;
 using toio;
@@ -163,7 +163,7 @@ To achieve this, we will create a mechanism to move UI to the left side so that 
 4. Rewrite the script you have created with the sample code below. (The class name must be the same as the script file)
 
 ### Sample Code
-```C#
+```csharp
 using UnityEngine;
 
 public class MySimUI : MonoBehaviour

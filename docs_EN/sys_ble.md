@@ -75,7 +75,7 @@ Singleton class as the first window for BLE functionality<br>
 
 Implementation code
 
-```C#
+```csharp
 public class BLEService : GenericSingleton<BLEService>
 {
     public bool hasImplement { get; private set; }
@@ -117,7 +117,7 @@ It provides a function to acquire the Device interface that provides BLE functio
 
 Interface code
 
-```C#
+```csharp
 public interface BLEServiceInterface
 {
     void RequestDevice(Action<BLEDeviceInterface> action);
@@ -135,7 +135,7 @@ Its main role is to access BLE functions and perform scanning operations.
 
 Interface code
 
-```C#
+```csharp
 public interface BLEDeviceInterface
 {
     void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action);
@@ -153,7 +153,7 @@ Interface for scanned BLE devices<br>Its main role is to perform the connection 
 
 Interface code
 
-```C#
+```csharp
 public interface BLEPeripheralInterface
 {
     string[] serviceUUIDs { get; }
@@ -177,7 +177,7 @@ Interface for each function of the scanned BLE device<br>The main role is to per
 
 Interface code
 
-```C#
+```csharp
 public interface BLECharacteristicInterface
 {
     string deviceAddress { get; }

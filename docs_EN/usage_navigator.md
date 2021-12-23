@@ -55,7 +55,7 @@ When the user uses the navigation functions, it is CubeNavigator class, which in
 
 ## 2.1. Enumerated types
 
-```c#
+```csharp
 // Mode of navigator
 public enum Mode : byte
 {
@@ -74,7 +74,7 @@ public enum Relation : byte
 
 ## 2.2. Parameters
 
-```c#
+```csharp
 // CubeNavigator
 public bool usePred = false;    // Whether to use CubeHandle predictions.
 
@@ -89,7 +89,7 @@ public double p_speedratio_boids = 1;       // Effect factor of Boids on velocit
 
 ## 2.3. Properties
 
-```c#
+```csharp
 public Cube cube{ get; }
 public CubeHandle handle{ get; }
 public NaviResult result{ get; }    // Save the calculation results
@@ -105,7 +105,7 @@ public HLAvoid avoid { get; }   // Avoidance algorithm
 A structure with the results of the navigator's calculations.<br>
 It has the following properties
 
-```c#
+```csharp
 public Vector waypoint { get; }     // Waypoint
 public double speedRatio { get; }   // Velocity coefficient (from Boids) (default value is 1)
 public double speedLimit { get; }   // Upper speed limit (from avoidance) (default value is the maximum value of Double)
@@ -124,7 +124,7 @@ public Vector boidsVector { get; }  // Boids result vector (backup information)
 
 #### Walls
 
-```c#
+```csharp
 public System.Collections.Generic.IEnumerable<Wall> Walls();
 ```
 
@@ -132,7 +132,7 @@ Get the iterator of the wall.
 
 #### AddWall
 
-```c#
+```csharp
 public void AddWall(Wall wall);
 ```
 
@@ -141,7 +141,7 @@ Add a wall.
 - wall
   - Definition: Wall
 
-```c#
+```csharp
 public void AddWall(List<Wall> walls);
 ```
 
@@ -152,7 +152,7 @@ Add multiple walls.
 
 #### RemoveWall
 
-```c#
+```csharp
 public void RemoveWall(Wall wall);
 ```
 
@@ -163,7 +163,7 @@ Remove the wall.
 
 #### ClearWall
 
-```c#
+```csharp
 public void ClearWall();
 ```
 
@@ -171,7 +171,7 @@ Remove all walls.
 
 #### AddBorder
 
-```c#
+```csharp
 public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500);
 ```
 
@@ -196,7 +196,7 @@ When CubeNavigator is instantiated, `AddBorder(70);` is automatically called.
 
 Using the default values as an example, the x-coordinates -60 ~ 60, 440 ~ 560 and y-coordinates -60 ~ 60, 440 ~ 560 will be walled off and avoided by the navigator.
 
-```c#
+```csharp
 public void AddBorder(int width, RectInt rect);
 ```
 
@@ -209,7 +209,7 @@ public void AddBorder(int width, RectInt rect);
 
 #### AddOther
 
-```c#
+```csharp
 public void AddOther(Navigator other, Relation relation=Relation.BOIDS);
 ```
 
@@ -221,7 +221,7 @@ Make it possible to recognize other navigators.
   - Definition: void or not void
   - Default value: [Relation.BOIDS](usage_navigator.md#21-enumerated-types)
 
-```c#
+```csharp
 public void AddOther(List<CubeNavigator> others, Relation relation=Relation.BOIDS);
 public void AddOther(List<Navigator> others, Relation relation=Relation.BOIDS);
 ```
@@ -233,7 +233,7 @@ Allows multiple other navigators to be recognized.
 
 #### RemoveOther
 
-```c#
+```csharp
 public void RemoveOther(Navigator other);
 ```
 
@@ -244,7 +244,7 @@ Makes it impossible to recognize other navigators.
 
 #### ClearOther
 
-```c#
+```csharp
 public void ClearOther();
 ```
 
@@ -252,7 +252,7 @@ Deletes all recognizable targets.
 
 #### ClearGNavigators
 
-```c#
+```csharp
 public static void ClearGNavigators();
 ```
 
@@ -266,7 +266,7 @@ When CubeNavigator instance is recreated, either call this method to clear it, o
 
 #### SetRelation
 
-```c#
+```csharp
 public void SetRelation(Navigator other, Relation relation);
 ```
 
@@ -277,7 +277,7 @@ Set whether other navigators should be Boids or not.
 - relation
   - Definition: Boids or not BoidS [(Relation)](usage_navigator.md#21-enumerated-types)
 
-```c#
+```csharp
 public void SetRelation(List<CubeNavigator> others, Relation relation);
 public void SetRelation(List<Navigator> others, Relation relation);
 ```
@@ -289,7 +289,7 @@ Set whether multiple other navigators should be Boids or not.
 
 ### Updating state
 
-```c#
+```csharp
 public void Update();
 ```
 
@@ -297,7 +297,7 @@ Update the state of Cube used for the calculation.
 
 In the frame where the navigation is to be calculated, run it once before the calculation.
 
-```c#
+```csharp
 public void Update(bool usePred);
 ```
 
@@ -310,7 +310,7 @@ Update the state of Cube used for the calculation, with or without state predict
 
 #### GetWaypointTo
 
-```c#
+```csharp
 public NaviResult GetWaypointTo(double x, double y);
 ```
 
@@ -325,7 +325,7 @@ Calculates the waypoints to be moved to the target coordinates.
 - Return value
   - Definition: navigation calculation result [(NaviResult)]((usage_navigator.md#24-naviresult-structure)
 
-```c#
+```csharp
 public NaviResult GetWaypointTo(Vector pos);
 public NaviResult GetWaypointTo(Vector2 pos);
 public NaviResult GetWaypointTo(Vector2Int pos);
@@ -336,7 +336,7 @@ Calculates the waypoints to be moved to the target coordinates.
 - pos
   -Target coordinate
 
-```c#
+```csharp
 public NaviResult GetWaypointTo(Entity target);
 public NaviResult GetWaypointTo(Navigator target);
 ```
@@ -348,7 +348,7 @@ Calculate the waypoints to move to the target individual.
 
 #### GetWaypointAway
 
-```c#
+```csharp
 public NaviResult GetWaypointAway(double x, double y);
 ```
 
@@ -363,7 +363,7 @@ Calculates the waypoints away from the target coordinates.
 - Return value
   - Definition: navigation calculation result [(NaviResult)]((usage_navigator.md#24-naviresult-structure)
 
-```c#
+```csharp
 public NaviResult GetWaypointAway(Vector pos);
 public NaviResult GetWaypointAway(Vector2 pos);
 public NaviResult GetWaypointAway(Vector2Int pos);
@@ -374,7 +374,7 @@ Calculates the waypoints away from the target coordinates.
 - pos
   - Target coordinate
 
-```c#
+```csharp
 public NaviResult GetWaypointAway(Entity target);
 public NaviResult GetWaypointAway(Navigator target);
 ```
@@ -388,7 +388,7 @@ Calculate the waypoints away from the target individual.
 
 Sample Code
 
-```c#
+```csharp
 // Calculate waypoints
 NaviResult res = cubeNavigator.GetWaypointTo(x, y);
 // Adjust target speed targetSpd to spd
@@ -409,7 +409,7 @@ If you do not want to customize the calculation process, please use this method 
 
 #### Navi2Target
 
-```c#
+```csharp
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20);
 ```
 
@@ -441,7 +441,7 @@ Calculates the Movement to navigate to the target coordinates.
 - Return value
   - Definition: Move command [(Movement)](usage_cubehandle.md#22-Movement-movement-structure)
 
-```c#
+```csharp
 public virtual Movement Navi2Target(Vector pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
 public virtual Movement Navi2Target(Vector2 pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
 public virtual Movement Navi2Target(Vector2Int pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
@@ -454,7 +454,7 @@ Calculates the Movement to navigate to the target coordinates.
 
 #### NaviAwayTarget
 
-```c#
+```csharp
 public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int rotateTime=250);
 ```
 
@@ -485,7 +485,7 @@ Calculates the Movement to navigate away from the target coordinates.
 
 The Movement.reached returned by Navi2Target is judged by the distance to the target, but since there is no clear definition of "reached" in the case of NaviAwayTarget, it returns the Movement of Move2Target that moves to the waypoint.
 
-```c#
+```csharp
 public virtual Movement NaviAwayTarget(Vector pos, int maxSpd=70, int rotateTime=250);
 public virtual Movement NaviAwayTarget(Vector2 pos, int maxSpd=70, int rotateTime=250);
 public virtual Movement NaviAwayTarget(Vector2Int pos, int maxSpd=70, int rotateTime=250);
@@ -500,7 +500,7 @@ Calculates the Movement to navigate away from the target coordinates.
 
 Simplified sample code
 
-```c#
+```csharp
 // Calculate the Movement to navigate to the target.
 Movement mv = cubeNavigator.Navi2Target(x, y);
 // Execution
@@ -509,7 +509,7 @@ mv.Exec();
 
 Or
 
-```c#
+```csharp
 // Calculate and execute the Movement to navigate to the target.
 Movement mv = cubeNavigator.Navi2Target(x, y).Exec();
 ```
@@ -522,7 +522,7 @@ This class implements a collision avoidance algorithm.
 
 Since CubeNavigator class has an instance of HLAvoid To change the parameters of HLAvoid or to get information from CubeNavigator class, do the following
 
-```c#
+```csharp
 CubeNavigator navigator = ...
 // As an example, change the parameter range
 navigator.avoid.range = 220;
@@ -530,7 +530,7 @@ navigator.avoid.range = 220;
 
 ## 3.1. Scan result structure ScanResult
 
-```c#
+```csharp
 public struct ScanResult
 {
     public bool isCollision;    // Collision condition
@@ -550,7 +550,7 @@ public struct ScanResult
 
 ## 3.2. Parameters
 
-```c#
+```csharp
 public double range = 200;  // Visible distance
 public int nsample = 19;    // Number of angles when scanning the perimeter, recommend an odd number.
 public double margin = 22;  // Own margin for evasion
@@ -569,7 +569,7 @@ public double p_runaway_range = 250;            // Enlarge the scan result by p_
 
 This is useful for debugging.
 
-```c#
+```csharp
 // The latest calculation results saved.
 public ScanResult scanResult;   // Scan Results
 public int waypointIndex = 0;   // Index of the selected waypoint.
@@ -583,7 +583,7 @@ There is no need to call it directly.
 
 ### RunTowards
 
-```c#
+```csharp
 public virtual (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls);
 ```
 
@@ -599,7 +599,7 @@ Navigate to the target individual.
 
 ### RunAway
 
-```c#
+```csharp
 public virtual (Vector, bool, double) RunAway(List<Navigator> others, Entity target, List<Wall> walls);
 ```
 
@@ -621,7 +621,7 @@ This class implements Boids algorithm.
 
 Since CubeNavigator class has an instance of Boids, you can change the parameters of Boids and get information about them from CubeNavigator class as follows
 
-```c#
+```csharp
 CubeNavigator navigator = ...
 // As an example, change the parameter range
 navigator.boids.range = 180;
@@ -629,7 +629,7 @@ navigator.boids.range = 180;
 
 ## 4.1. Parameters
 
-```c#
+```csharp
 public double fov = Deg2Rad(120);       // Field of vision
 public double range = 150;              // Visible distance
 public double margin = 25;              // Margin for Boids
@@ -648,7 +648,7 @@ public double p_max_all = 100;          // upper limit of the resultant vector
 
 ### Run
 
-```c#
+```csharp
 public Vector Run(List<Navigator> others, Vector tarPos);
 ```
 
@@ -660,7 +660,7 @@ Include the vector to the goal and calculate resultant vector.
   - Definition: Target coordinates
 - Return value: Resultant vector
 
-```c#
+```csharp
 // Compute resultant vector, no target
 public Vector Run(List<Navigator> others);
 ```

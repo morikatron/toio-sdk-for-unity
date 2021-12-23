@@ -15,7 +15,7 @@ toio SDK for Unity makes it easy to develop applications that use Cubes. In addi
 
 One of the key features of toio SDK for Unity is that it allows you to run both the simulator and the real Cube with a single source code, as shown below.
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 

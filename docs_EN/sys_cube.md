@@ -111,7 +111,7 @@ Implementation Code:[CubeReal.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube
 
 As an example, here is a simple Cube move code.<br>When this code is executed, the move function will be called after connecting to Cube.
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -155,7 +155,7 @@ public class SimpleScene : MonoBehaviour
 
 In this chapter, we will discuss the search connection program part.
 
-```C#
+```csharp
 async void Start()
 {
   // Search for Bluetooth devices (3.1. Search)
@@ -257,7 +257,7 @@ Real Implementation:
 
 Summary Code
 
-```C#
+```csharp
 public interface CubeScannerInterface
 {
     bool isScanning { get; }
@@ -406,7 +406,7 @@ Real implementation:
 
 Summary Code
 
-```C#
+```csharp
 public interface CubeConnecterInterface
 {
     Task<Cube> Connect(BLEPeripheralInterface peripheral);

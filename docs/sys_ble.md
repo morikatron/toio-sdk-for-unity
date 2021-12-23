@@ -76,7 +76,7 @@ BLE 機能の最初の窓口となるシングルトンクラス<br>
 
 実装コード
 
-```C#
+```csharp
 public class BLEService : GenericSingleton<BLEService>
 {
     public bool hasImplement { get; private set; }
@@ -118,7 +118,7 @@ BLE 処理の最初の窓口となるインタフェース<br>
 
 インタフェースコード
 
-```C#
+```csharp
 public interface BLEServiceInterface
 {
     void RequestDevice(Action<BLEDeviceInterface> action);
@@ -135,7 +135,7 @@ public interface BLEServiceInterface
 
 インタフェースコード
 
-```C#
+```csharp
 public interface BLEDeviceInterface
 {
     void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action);
@@ -153,7 +153,7 @@ public interface BLEDeviceInterface
 
 インタフェースコード
 
-```C#
+```csharp
 public interface BLEPeripheralInterface
 {
     string[] serviceUUIDs { get; }
@@ -177,7 +177,7 @@ public interface BLEPeripheralInterface
 
 インタフェースコード
 
-```C#
+```csharp
 public interface BLECharacteristicInterface
 {
     string deviceAddress { get; }

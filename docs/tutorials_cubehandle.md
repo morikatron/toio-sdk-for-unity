@@ -24,7 +24,7 @@
 CubeManager は自動的に、接続した Cube から CubeHandle を作成して、メンバー変数のリストに入れています。<br>
 下記のサンプルコードでは、 Update の中で CubeManager が保持している CubeHandle の制御可能状態を確認してから、制御を行っています。
 
-```c#
+```csharp
 public class HandleBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -55,7 +55,7 @@ public class HandleBasic : MonoBehaviour
 
 以下のようにすると、すべての handle が、50ms ごとの同じフレームで制御されます。
 
-```c#
+```csharp
 public class HandleBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -82,7 +82,7 @@ public class HandleBasic : MonoBehaviour
 
 すべての handle を一斉に動かす場合は、syncHandles を使うと便利です。
 
-```c#
+```csharp
 public class HandleBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -131,7 +131,7 @@ Cube クラスの Move 関数では左右のモーターの出力を指定する
 
 といった機能もあります。
 
-```c#
+```csharp
 public Movement Move(
     double translate,           // 前進指示値
     double rotate,              // 回転指示値
@@ -152,7 +152,7 @@ public Movement Move(Movement mv, int durationMs, Cube.ORDER_TYPE order, bool bo
 
 また、Cube クラスの Move 関数に相当する関数として MoveRaw も用意しています。
 
-```c#
+```csharp
 // uL 左モーターの指示値、uR 右モーターの指示値、durationMs 継続時間（ms）、order 指示の優先度
 public void MoveRaw(double uL, double uR, int durationMs = 1000, Cube.ORDER_TYPE order = Cube.ORDER_TYPE.Weak);
 ```
@@ -161,7 +161,7 @@ public void MoveRaw(double uL, double uR, int durationMs = 1000, Cube.ORDER_TYPE
 
 <div align="center"><img width=256 src="res/tutorial_cubehandle/move.gif"></div>
 
-```c#
+```csharp
 void Update()
 {
     elapsedTime += Time.deltaTime;
@@ -220,7 +220,7 @@ void Update()
 CubeHandle クラスの Move 関数および MoveRaw 関数が呼び出される度に、キューブに通信で移動するよう指令を送り、受信したキューブが指令に沿って移動します。<br>
 CubeHandle では、そのほかに 移動の指令を扱う Movement クラスを一回出力し、それに対して Exec 関数を実行することでも同様の処理が行われます。
 
-```c#
+```csharp
 // Movement を使った移動
 Movement mv = handle.HogeMethod(...);
 mv.Exec();
@@ -246,7 +246,7 @@ One-shot メソッドは、この問題を解決するための機能で、 目�
 - RotateByDeg(Deg, rotate) … 回転指令で、指定角度（度）を回転する
 - RotateByRad(Rad, rotate) … 回転指令で、指定角度（弧度）を回転する
 
-```c#
+```csharp
 // dist 距離、translate 前進指示値
 public Movement TranslateByDist(double dist, double translate);
 // drad 角度（弧度）、rotate 回転指示値
@@ -261,7 +261,7 @@ One-Shot メソッドは Movement インスタンスを返すので、Movement �
 
 <div align="center"><img width=256 src="res/tutorial_cubehandle/oneshot.gif"></div>
 
-```c#
+```csharp
 private float elapsedTime = 1.5f;
 private int phase = 0;
 
@@ -307,7 +307,7 @@ void Update()
 
 この種類のメソッドは目標に達するまで、毎フレーム呼び出し続ける必要があります。
 
-```c#
+```csharp
 public Movement Move2Target(
     double tarX,            // 目標座標ｘ
     double tarY,            // 目標座標ｙ
@@ -329,7 +329,7 @@ Closed-Loop メソッドは Movement インスタンスを返すので、Movemen
 
 単純に目標座標に移動するなら、すごくシンプルにできます。
 
-```c#
+```csharp
 void Update()
 {
     foreach (var handle in cubeManager.syncHandles)
@@ -348,7 +348,7 @@ Movement クラスの Exec 関数は、実際に実行された Movement イン�
 
 <div align="center"><img width=256 src="res/tutorial_cubehandle/toTarget.gif"></div>
 
-```c#
+```csharp
 void Update()
 {
     foreach (var handle in cubeManager.syncHandles)
@@ -380,7 +380,7 @@ void Update()
 
 まず Stage を取得します。
 
-```c#
+```csharp
 Stage stage;
 void Start()
 {
@@ -391,7 +391,7 @@ void Start()
 
 次に、 TargetPole のマット座標を取得して、 CubeHandle クラスの Move2Target 関数にセットします。
 
-```c#
+```csharp
 void Update()
 {
     foreach (var handle in cubeManager.syncHandles)

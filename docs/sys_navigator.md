@@ -132,7 +132,7 @@ CubeNavigator では、 Navigator と CubeHandle を組み合わせて
 
 `CubeHandle.Update` メソッドを呼び出し、予測結果と元情報を CubeEntity にセットします。
 
-```c#
+```csharp
 // CubeNavigator.Update
 public class CubeNavigator : Navigator
 {
@@ -182,7 +182,7 @@ public class CubeEntity : Entity
 
 入力された目標値から Navigator に実装されているアルゴリズムでウェイポイントなどを計算し、その結果を `CubeHandle.Move2Target` に渡します。
 
-```c#
+```csharp
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20)
 {
     // Navigator のウェイポイント計算
@@ -236,7 +236,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
 
 toio SDK for Unity の HLAvoid クラスは機能としてのメソッドを 2 つ持っています。
 
-```c#
+```csharp
 // 目標にナビゲーションする（ウェイポイント、衝突状態、速度上限）を計算
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls);
 // 目標から逃げる（ウェイポイント、衝突状態、速度上限）を計算
@@ -261,7 +261,7 @@ RunTowards / RunAway
 
 ### 4.1.1. スキャンの結果を表す ScanResult 構造体
 
-```c#
+```csharp
 public struct ScanResult
 {
     public bool isCollision;    // 衝突状態
@@ -281,7 +281,7 @@ public struct ScanResult
 
 ### 4.1.2. スキャンの結果を統合する CombineScanRes メソッド
 
-```c#
+```csharp
 private ScanResult CombineScanRes(List<ScanResult> results, bool isCol, double[] rads);
 ```
 
@@ -297,7 +297,7 @@ private ScanResult CombineScanRes(List<ScanResult> results, bool isCol, double[]
 
 _ScanEntity 実装コード
 
-```c#
+```csharp
 private ScanResult _ScanEntity(Navigator other, double[] rads){
     ScanResult res = ScanResult.init(rads, maxRange);
     var o = other.entity;
@@ -358,7 +358,7 @@ private ScanResult _ScanEntity(Navigator other, double[] rads){
 
 RunTowards 実装コード
 
-```c#
+```csharp
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls){
 
     var rads = SampleRads(target);
@@ -455,7 +455,7 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
 
 toio SDK for Unity の Boids クラスは機能としてのメソッドを 2 つ持っています。
 
-```c#
+```csharp
 // 目標への「引力」を含めて、ボイドの力ベクトルを計算
 public Vector Run(List<Navigator> others, Vector tarPos);
 // 目標への「引力」なしで、ボイドの力ベクトルを計算

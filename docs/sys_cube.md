@@ -111,7 +111,7 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 
 例として、シンプルな Cube 移動コードを示します。<br>このコードを実行すると、Cube へ接続後に移動関数が呼ばれます。Cube はクルクルと回転します。
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -155,7 +155,7 @@ public class SimpleScene : MonoBehaviour
 
 この章では、検索接続プログラム部分について解説します。
 
-```C#
+```csharp
 async void Start()
 {
   // Bluetoothデバイスを検索 (3.1. 検索)
@@ -257,7 +257,7 @@ CubeScanner クラス：
 
 概要コード
 
-```C#
+```csharp
 public interface CubeScannerInterface
 {
     bool isScanning { get; }
@@ -405,7 +405,7 @@ CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファーム
 
 概要コード
 
-```C#
+```csharp
 public interface CubeConnecterInterface
 {
     Task<Cube> Connect(BLEPeripheralInterface peripheral);

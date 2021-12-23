@@ -30,7 +30,7 @@ CubeNavigator は CubeManager がキューブ接続時に自動的に作成し�
 
 下記のサンプルコードでは、 Update の中で、CubeNavigator の制御可能状態を確認してから、制御を行っています。
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -61,7 +61,7 @@ public class NavigatorBasic : MonoBehaviour
 
 以下のようにすると、すべての navigator が、50ms ごとの同じフレームで制御されます。
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -88,7 +88,7 @@ public class NavigatorBasic : MonoBehaviour
 
 すべての navigator を一斉に動かす場合は、syncNavigators を使うと便利です。
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -114,7 +114,7 @@ public class NavigatorBasic : MonoBehaviour
 
 CubeManager を使わない場合には、以下のように Cube クラスを使って CubeNavigator インスタンスを作成してください。
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -168,7 +168,7 @@ public class NavigatorBasic : MonoBehaviour
 衝突を回避しつつキューブを目標に移動させるには Navi2Target 関数を利用します。<br>
 この関数は CubeHandle クラスの Move2Target 関数に相当します。
 
-```c#
+```csharp
 // x,ｙ 目標座標、maxSpd 最大速度、rotateTime 希望回転時間（CubeHandle使い方に参考）、tolerance 到達判定閾値（目標との距離）
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20);
 ```
@@ -179,7 +179,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_basic.gif"></div>
 
-```c#
+```csharp
 public class NavigatorHLAvoid : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -226,7 +226,7 @@ public class NavigatorHLAvoid : MonoBehaviour
 
 初期化設定を変更することで、特定のキューブは衝突回避をしないようにすることも可能です。
 
-```c#
+```csharp
 // CubeNavigator のメソッド
 // すべての認識できる対象を削除する
 public void ClearOther();
@@ -236,7 +236,7 @@ public void ClearOther();
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_priority.gif"></div>
 
-```c#
+```csharp
 async void Start()
 {
     cubeManager = new CubeManager();
@@ -254,7 +254,7 @@ async void Start()
 
 さらに、初期化設定を変更することで、キューブの移動を予測してラグの影響を軽減させ より自然に衝突回避を行うことが出来ます。<br>
 
-```c#
+```csharp
 // CubeNavigator のメンバー変数
 public bool usePred = false;    // CubeHandle の予測値を使うか
 ```
@@ -263,7 +263,7 @@ public bool usePred = false;    // CubeHandle の予測値を使うか
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_pred.gif"></div>
 
-```c#
+```csharp
 async void Start()
 {
     cubeManager = new CubeManager();
@@ -284,7 +284,7 @@ async void Start()
 NaviAwayTarget 関数を使うと、 Navi2Target 関数とは逆にキューブが目標から離れます。<br>
 (キューブの視野内に一番離れるところに移動します。)
 
-```c#
+```csharp
 public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int rotateTime=250);
 ```
 
@@ -297,7 +297,7 @@ public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int ro
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_oni.gif"></div>
 
-```c#
+```csharp
 public class NaviAwayTargetTutorial : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -345,7 +345,7 @@ CubeNavigator クラスはデフォルトで衝突回避のみを行う設定に
 
 CubeNavigator クラスの mode メンバ変数を規定値 (AVOID： 衝突回避のみ) から BOIDS に変更してください。
 
-```c#
+```csharp
 // Navigator のモード
 public enum Mode : byte
 {
@@ -361,7 +361,7 @@ public Mode mode = Mode.AVOID;
 
 <div align="center"><img width=256 src="res/tutorial_navigator/boids.gif"></div>
 
-```c#
+```csharp
 public class BoidsTutorial : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -395,7 +395,7 @@ public class BoidsTutorial : MonoBehaviour
 既定設定では全てのキューブが互いに同じボイドの同士 (一つの群れ) と認識していますので、
 CubeNavigator クラスの SetRelation 関数を使って特定の個体をボイドから排除する必要があります。
 
-```c#
+```csharp
 // CubeNavigator のメソッド
 // 他者（達）への認識を設定する
 public void SetRelation(List<CubeNavigator> others, Relation relation);
@@ -408,7 +408,7 @@ public void SetRelation(Navigator other, Relation relation);
 
 <div align="center"><img width=256 src="res/tutorial_navigator/boids_relation.gif"></div>
 
-```c#
+```csharp
 async void Start()
 {
     cubeManager = new CubeManager();
@@ -464,7 +464,7 @@ async void Start()
 
 <div align="center"><img width=256 src="res/tutorial_navigator/boids_avoid.gif"></div>
 
-```c#
+```csharp
 public class BoidsAvoidTutorial : MonoBehaviour
 {
     CubeManager cubeManager;

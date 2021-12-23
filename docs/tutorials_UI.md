@@ -49,7 +49,7 @@ Unity Editor で実行した場合はUIとシミュレータが並列表示さ�
 8. 作成したスクリプトを下記サンプルコードに書き換えます。(クラス名はスクリプトファイルと同じ名前にする必要があります)
 
 ### サンプルコード
-```C#
+```csharp
 using System.Collections.Generic;
 using UnityEngine;
 using toio;
@@ -164,7 +164,7 @@ public class MyUIScript : MonoBehaviour
 4. 作成したスクリプトを下記サンプルコードに書き換えます。(クラス名はスクリプトファイルと同じ名前にする必要があります)
 
 ### サンプルコード
-```C#
+```csharp
 using UnityEngine;
 
 public class MySimUI : MonoBehaviour
