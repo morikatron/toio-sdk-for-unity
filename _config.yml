@@ -1,12 +1,12 @@
-# theme: jekyll-theme-cayman
+theme: jekyll-theme-cayman
 title: toio SDK for Unity
 description: toio SDK for Unity document pages.
 url: https://ma2bara.github.io/toio-sdk-for-unity/
 plugins:
   - jekyll-seo-tag
 google_analytics: UA-133660753-6
-#markdown: kramdown
 
+markdown: kramdown
 # Jekyll 3 now only supports Kramdown for Markdown
 kramdown:
   # Use GitHub flavored markdown, including triple backtick fenced code blocks
@@ -16,3 +16,6 @@ kramdown:
   syntax_highlighter_opts:
     # Use existing pygments syntax highlighting css
     css_class: 'highlight'
+
+exclude:
+  - LICENSE
