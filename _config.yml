@@ -6,3 +6,4 @@ plugins:
   - jekyll-seo-tag
 google_analytics: UA-133660753-6
 # markdown: kramdown
+highlighter: rouge
