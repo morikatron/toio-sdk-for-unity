@@ -45,8 +45,8 @@ Navigation  +----------------------+ Navigator 関連ディレクトリ
 
 ## 1.1. クラスダイアグラム
 
-toio SDK for Unity の Navigator モジュール群は、 toio™ 関連とは独立して実装されている [Navigator](sys_navigator.md#2-Navigator-クラス) クラス(図の 「Cube-independent Navigator」)と、
-Navigator と CubeHandle とをつなげるインターフェイスである [CubeNavigator](sys_navigator.md#3-CubeNavigator-クラス) クラス および CubeEntity クラス (図の 「Interfavce for Cube」) とで構成されています。
+toio SDK for Unity の Navigator モジュール群は、 toio™ 関連とは独立して実装されている [Navigator](sys_navigator.md#2-navigator-クラス) クラス(図の 「Cube-independent Navigator」)と、
+Navigator と CubeHandle とをつなげるインターフェイスである [CubeNavigator](sys_navigator.md#3-cubenavigator-クラス) クラス および CubeEntity クラス (図の 「Interfavce for Cube」) とで構成されています。
 
 <div align="center"><img width=600 src="res/navigator/arch.png"></div>
 

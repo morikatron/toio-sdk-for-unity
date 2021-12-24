@@ -36,8 +36,8 @@ We have confirmed that it works in the following environment. You don't necessar
 
 As a preliminary step, go to Apple menu in the upper left corner of the screen and click "About this Mac" to check your OS version.
 
-If your OS version is <b>10.x</b> , <b>11.x</b> or <b>12.x</b>, please refer to [How to download a pre-built bundle file](usage_macble.md#How-to-download-a-pre-built-bundle-file).
-For other OS versions, please refer to [How to build the bundle file on your own PC](usage_macble.md#How-to-build-the-bundle-file-on-your-own-PC).
+If your OS version is <b>10.x</b> , <b>11.x</b> or <b>12.x</b>, please refer to [How to download a pre-built bundle file](usage_macble.md#how-to-download-a-pre-built-bundle-file).
+For other OS versions, please refer to [How to build the bundle file on your own PC](usage_macble.md#how-to-build-the-bundle-file-on-your-own-pc).
 
 <br>
 
@@ -100,4 +100,4 @@ Please refer to [Cube Connection Settings](usage_cube.md#4-cube-connection-setti
 If you want to check the operation easily, try running the sample project [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md).
 
 
-If following [How to download a pre-built bundle file](usage_macble.md#How-to-download-a-pre-built-bundle-file) does not work, try [How to build the bundle file on your own PC](usage_macble.md#How-to-build-the-bundle-file-on-your-own-PC).
+If following [How to download a pre-built bundle file](usage_macble.md#How-to-download-a-pre-built-bundle-file) does not work, try [How to build the bundle file on your own PC](usage_macble.md#how-to-build-the-bundle-file-on-your-own-pc).

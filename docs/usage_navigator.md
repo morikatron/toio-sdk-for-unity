@@ -3,18 +3,18 @@
 ## 目次
 
 - [1. 概説](usage_navigator.md#1-概説)
-- [2. CubeNavigator クラス API](usage_navigator.md#2-CubeNavigator-クラス-API)
+- [2. CubeNavigator クラス API](usage_navigator.md#2-cubenavigator-クラス-API)
   - [2.1. 列挙型](usage_navigator.md#21-列挙型)
   - [2.2. パラメーター](usage_navigator.md#22-パラメーター)
   - [2.3. プロパティ](usage_navigator.md#23-プロパティ)
-  - [2.4. NaviResult 構造体](usage_navigator.md#24-NaviResult-構造体)
+  - [2.4. NaviResult 構造体](usage_navigator.md#24-naviresult-構造体)
   - [2.5. メソッド](usage_navigator.md#25-メソッド)
-- [3. HLAvoid クラス API](usage_navigator.md#3-HLAvoid-クラス-API)
-  - [3.1. スキャン結果構造体 ScanResult](usage_navigator.md#31-スキャン結果構造体-ScanResult)
+- [3. HLAvoid クラス API](usage_navigator.md#3-hlavoid-クラス-api)
+  - [3.1. スキャン結果構造体 ScanResult](usage_navigator.md#31-スキャン結果構造体-scanresult)
   - [3.2. パラメーター](usage_navigator.md#32-パラメーター)
   - [3.3. 取得できる情報](usage_navigator.md#33-取得できる情報)
   - [3.4. メソッド](usage_navigator.md#34-メソッド)
-- [4. Boids クラス API](usage_navigator.md#4-Boids-クラス-API)
+- [4. Boids クラス API](usage_navigator.md#4-boids-クラス-api)
   - [4.1. パラメーター](usage_navigator.md#41-パラメーター)
   - [4.2. メソッド](usage_navigator.md#42-メソッド)
 
@@ -327,7 +327,7 @@ public NaviResult GetWaypointTo(double x, double y);
   - 定義：目標ｙ座標
   - 範囲：任意
 - 戻り値
-  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-NaviResult-構造体)
+  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-naviresult-構造体)
 
 ```csharp
 public NaviResult GetWaypointTo(Vector pos);
@@ -365,7 +365,7 @@ public NaviResult GetWaypointAway(double x, double y);
   - 定義：目標ｙ座標
   - 範囲：任意
 - 戻り値
-  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-NaviResult-構造体)
+  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-naviresult-構造体)
 
 ```csharp
 public NaviResult GetWaypointAway(Vector pos);
@@ -443,7 +443,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
   - 既定値：20
   - 説明：目標との距離が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ```csharp
 public virtual Movement Navi2Target(Vector pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
@@ -484,7 +484,7 @@ public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int ro
     小さい値を入れると早く回転し、大きな値を入れるとゆっくりと回転します。正確な回転時間ではなく、だいたいの目安です。<br>
     200 以下になると不安定になる可能性があります。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
   - 説明：
 
 Navi2Target が返す Movement.reached は目標への距離で判定していますが、<br>

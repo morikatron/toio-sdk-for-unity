@@ -12,7 +12,7 @@
 
 - [Web application related](FAQ.md#web-application-related)
     - [Web apps do not work well on Windows PC](FAQ.md#web-apps-do-not-work-well-on-windows-pc)
-    - [Can't start or load apps made with Unity 2020](FAQ.md#Cant-start-or-load-apps-made-with-Unity-2020)
+    - [Can't start or load apps made with Unity 2020](FAQ.md#cant-start-or-load-apps-made-with-unity-2020)
 
 ## Basics
 

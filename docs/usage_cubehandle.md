@@ -3,12 +3,12 @@
 ## 目次
 
 - [1. 概説](usage_cubehandle.md#1-概説)
-- [2. CubeHandle クラス API](usage_cubehandle.md#2-CubeHandle-クラス-API)
+- [2. CubeHandle クラス API](usage_cubehandle.md#2-cubehandle-クラス-API)
   - [2.1. 変数](usage_cubehandle.md#21-変数)
-  - [2.2. Movement 構造体](usage_cubehandle.md#22-Movement-構造体)
+  - [2.2. Movement 構造体](usage_cubehandle.md#22-movement-構造体)
   - [2.3. 基本メソッド](usage_cubehandle.md#23-基本メソッド)
-  - [2.4. One-Shot メソッド](usage_cubehandle.md#24-One-Shot-メソッド)
-  - [2.5. Closed-Loop メソッド](usage_cubehandle.md#25-Closed-Loop-メソッド)
+  - [2.4. One-Shot メソッド](usage_cubehandle.md#24-one-shot-メソッド)
+  - [2.5. Closed-Loop メソッド](usage_cubehandle.md#25-closed-loop-メソッド)
 
 # 1. 概説
 
@@ -228,7 +228,7 @@ public Movement Move(
   - 種類 : Weak, Strong
   - 既定値：Weak
 - 戻り値
-  - 定義：実際に実行された [Movement](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：実際に実行された [Movement](usage_cubehandle.md#22-movement-構造体)
 
 #### Overloads
 
@@ -240,7 +240,7 @@ public Movement Move(
   );
 ```
 
-[Movement](usage_cubehandle.md#22-Movement-構造体) を実行します。
+[Movement](usage_cubehandle.md#22-movement-構造体) を実行します。
 
 - mv
   - 定義：移動命令
@@ -260,7 +260,7 @@ public Movement Move(
 );
 ```
 
-[Movement](usage_cubehandle.md#22-Movement-構造体) の継続時間を書き換えて実行します。
+[Movement](usage_cubehandle.md#22-movement-構造体) の継続時間を書き換えて実行します。
 
 - mv
   - 定義：移動命令
@@ -309,7 +309,7 @@ public Movement TranslateByDist(double dist, double translate);
     - [Version 2.0.0] -100~-10； 10~100
     - [Version 2.1.0, 2.2.0] -115~-8； 8~115
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### RotateByRad
 
@@ -328,7 +328,7 @@ public Movement RotateByRad(double drad, double rotate);
     - [Version 2.0.0] -200~-20； 20~200
     - [Version 2.1.0, 2.2.0] -230~-16； 16~230
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### RotateByDeg
 
@@ -348,7 +348,7 @@ public Movement RotateByDeg(double ddeg, double rotate)
     - [Version 2.0.0] -200~-20； 20~200
     - [Version 2.1.0, 2.2.0] -230~-16； 16~230
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 <br>
 
@@ -397,7 +397,7 @@ public Movement Move2Target(
   - 既定値：8
   - 説明：目標との距離が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 #### Overloads
 
@@ -430,7 +430,7 @@ public Movement Rotate2Rad(double tarRad, int rotateTime = 400, double tolerance
   - 既定値：0.1
   - 説明：目標角度（弧度）と差が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### Rotate2Deg
 
@@ -452,7 +452,7 @@ public Movement Rotate2Deg(double tarDeg, int rotateTime = 400, double tolerance
   - 既定値：5
   - 説明：目標角度（度）と差が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### Rotate2Target
 
@@ -478,4 +478,4 @@ public Movement Rotate2Target(double tarX, double tarY, int rotateTime = 400, do
   - 既定値：0.1
   - 説明：目標角度（弧度）と差が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)

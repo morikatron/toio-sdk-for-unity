@@ -2,12 +2,12 @@
 
 ## 目次
 
-- [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-CubeManager-を使ったキューブの同期制御)
-- [2. CubeHandle](tutorials_cubehandle.md#2-CubeHandle)
-  - [2.1. CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#21-CubeHandle-の-Move-関数と-MoveRaw-関数)
-  - [2.2. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#22-キューブとの通信量を抑える-One-shot-メソッド)
-  - [2.3. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#23-指定した座標方向に到達する-Closed-Loop-メソッド)
-- [3. Follow TargetPole デモ](tutorials_cubehandle.md#3-Follow-TargetPole-デモ)
+- [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-cubemanager-を使ったキューブの同期制御)
+- [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
+  - [2.1. CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#21-cubehandle-の-move-関数と-moveraw-関数)
+  - [2.2. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#22-キューブとの通信量を抑える-one-shot-メソッド)
+  - [2.3. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#23-指定した座標方向に到達する-closed-loop-メソッド)
+- [3. Follow TargetPole デモ](tutorials_cubehandle.md#3-follow-targetpole-デモ)
 
 ## 1. CubeManager を使ったキューブの同期制御
 

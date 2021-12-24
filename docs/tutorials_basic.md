@@ -6,8 +6,8 @@
 - [2. シーン作成](tutorials_basic.md#2-シーン作成)
 - [3. 移動する](tutorials_basic.md#3-移動する)
 - [4. 音を鳴らす](tutorials_basic.md#4-音を鳴らす)
-- [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
-- [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
+- [5. LED を発光する](tutorials_basic.md#5-led-を発光する)
+- [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-idの読み取りposition-id--standard-id)
 - [7. センサーのイベントを検知](tutorials_basic.md#7-センサーのイベントを検知)
 - [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
 - [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
@@ -388,7 +388,7 @@ public int y { get; }   // Position ID の y 座標
 public Vector2 pos { get; } // 2Dベクトルに変換済みの Position ID
 public uint standardId { get; protected set; } // Standard ID
 ```
-> ※ 他にも直接読み取れる情報がありますので、ドキュメントの[CubeクラスAPI](usage_cube.md#3-Cube-クラス-API)を参照してください。
+> ※ 他にも直接読み取れる情報がありますので、ドキュメントの[CubeクラスAPI](usage_cube.md#3-cube-クラス-api)を参照してください。
 
 実行コード
 

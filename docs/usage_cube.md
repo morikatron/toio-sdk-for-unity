@@ -4,7 +4,7 @@
 
 - [1. 概説](usage_cube.md#1-概説)
 - [2. 既存 toio™ ライブラリ(toio.js)との比較](usage_cube.md#2-既存-toio-ライブラリtoiojsとの比較)
-- [3. Cube クラス API](usage_cube.md#3-Cube-クラス-API)
+- [3. Cube クラス API](usage_cube.md#3-cube-クラス-API)
   - [3.1. 変数](usage_cube.md#31-変数)
   - [3.2. コールバック](usage_cube.md#32-コールバック)
   - [3.3. メソッド](usage_cube.md#33-メソッド)
@@ -54,7 +54,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [衝突検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#衝突検出のしきい値設定)                   | o             | x            |
 |                    | [BLE プロトコルバージョンの取得](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの取得)    | o             | x            |
 
-> ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-CubeSimulator-のインスペクター)をご確認ください。
+> ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-cubesimulator-のインスペクター)をご確認ください。
 
 #### ファームウェアバージョン 2.1.0
 

@@ -237,7 +237,7 @@ The following points should be added to BLE process.
 
 ### Send
 
-The sending call itself is made from a derived class of CubeReal, see [cube documentation](sys_cube.md#4-send-command)).<br>
+The sending call itself is made from a derived class of CubeReal, see [cube documentation](sys_cube.md#4-send-command).<br>
 
 ### Receive
 

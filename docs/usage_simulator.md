@@ -3,20 +3,20 @@
 ## 目次
 
 - [1. 概説](usage_simulator.md#1-概説)
-- [2. Mat Prefab](usage_simulator.md#2-Mat-Prefab)
+- [2. Mat Prefab](usage_simulator.md#2-mat-prefab)
   - [2.1. インスペクターでのパラメーター](usage_simulator.md#21-インスペクターでのパラメーター)
   - [2.2. 定数](usage_simulator.md#22-定数)
   - [2.3. 列挙型](usage_simulator.md#23-列挙型)
   - [2.4. メソッド](usage_simulator.md#24-メソッド)
-- [3. StandardID Prefab](usage_simulator.md#3-StandardID-Prefab)
+- [3. StandardID Prefab](usage_simulator.md#3-standardid-prefab)
   - [ 3.1. インスペクターでのパラメーター](usage_simulator.md#31-インスペクターでのパラメーター)
-- [4. Cube Prefab](usage_simulator.md#4-Cube-Prefab)
-  - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-CubeSimulator-のインスペクター)
-  - [4.2. CubeSimulator の定数](usage_simulator.md#42-CubeSimulator-の定数)
-  - [4.3. CubeSimulator のプロパティ](usage_simulator.md#43-CubeSimulator-のプロパティ)
-  - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-CubeSimulator-のメソッド)
-  - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction)
-- [5. Stage Prefab](usage_simulator.md#5-Stage-Prefab)
+- [4. Cube Prefab](usage_simulator.md#4-cube-prefab)
+  - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-cubesimulator-のインスペクター)
+  - [4.2. CubeSimulator の定数](usage_simulator.md#42-cubesimulator-の定数)
+  - [4.3. CubeSimulator のプロパティ](usage_simulator.md#43-cubesimulator-のプロパティ)
+  - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-cubesimulator-のメソッド)
+  - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-cube-オブジェクトの操作-cubeinteraction)
+- [5. Stage Prefab](usage_simulator.md#5-stage-prefab)
   - [5.1. ターゲットポール](usage_simulator.md#51-ターゲットポール)
   - [5.2. キューブをフォーカス](usage_simulator.md#52-キューブをフォーカス)
 - [6. Magnet Prefab](#6-Magnet-Prefab)
@@ -241,7 +241,7 @@ Cube Prefab は二つのスクリプトを持っています。
 - `CubeInteraction`：シミュレータ上で、Cubeオブジェクトを押したりつかんだりする操作を実装したもの
 
 > 実際のキューブとは一部機能差があります。<br>
-> 詳細については、[機能の対応状況](usage_cube.md#RealSim-機能表)をご確認下さい。
+> 詳細については、[機能の対応状況](usage_cube.md#realsim-機能表)をご確認下さい。
 
 Cube Prefab はシーンの中に複数台配置することが出来ます。 （ Cube Prefab が他のオブジェクトと重ならないように配置してください。）
 
@@ -399,7 +399,7 @@ public bool targetPoleActive { get; }      // ターゲットポールが設置�
 public Vector2Int targetPoleCoord { get; } // ターゲットポールのマット座標を取得
 ```
 
-ターゲットポールを使ってキューブを操作する具体的な方法については [チュートリアル](tutorials_cubehandle.md#Follow-TargetPole-デモ) で紹介しています。
+ターゲットポールを使ってキューブを操作する具体的な方法については [チュートリアル](tutorials_cubehandle.md#follow-targetpole-デモ) で紹介しています。
 
 ## 5.2. キューブをフォーカス
 

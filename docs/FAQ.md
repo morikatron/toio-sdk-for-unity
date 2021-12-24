@@ -3,16 +3,16 @@
 ## 目次
 
 - [基本](FAQ.md#基本)
-    - [toio SDK for Unity をダウンロードしましたがサンプルが動きません](FAQ.md#toio-SDK-for-Unity-をダウンロードしましたがサンプルが動きません)
+    - [toio SDK for Unity をダウンロードしましたがサンプルが動きません](FAQ.md#toio-sdk-for-unity-をダウンロードしましたがサンプルが動きません)
 
 - [シミュレータ関連](FAQ.md#シミュレータ関連)
     - [どのマットを使えば自分の開発に合うのかがよくわかりません](FAQ.md#どのマットを使えば自分の開発に合うのかがよくわかりません)
-    - [Stage Prefab は必須ですか](FAQ.md#Stage-Prefab-は必須ですか)
-    - [Stage Prefab を使わない場合に注意することはありますか](FAQ.md#Stage-Prefab-を使わない場合に注意することはありますか)
+    - [Stage Prefab は必須ですか](FAQ.md#stage-prefab-は必須ですか)
+    - [Stage Prefab を使わない場合に注意することはありますか](FAQ.md#stage-prefab-を使わない場合に注意することはありますか)
 
 - [ウェブアプリ関連](FAQ.md#ウェブアプリ関連)
     - [WindowsPC でウェブアプリがうまく動きません](FAQ.md#windowspc-でウェブアプリがうまく動きません)
-    - [Unity 2020で作られたアプリが起動しません・読み込めません](FAQ.md##unity-2020で作られたアプリが起動しません読み込めません)
+    - [Unity 2020で作られたアプリが起動しません・読み込めません](FAQ.md#unity-2020で作られたアプリが起動しません読み込めません)
 
 ## 基本
 
@@ -24,7 +24,7 @@
 Assets\toio-sdk-unity\Assets\toio-sdk\Scripts\Cube\Scanner\NearScanner.cs(54,22): error CS0246: The type or namespace name 'UniTask<>' could not be found (are you missing a using directive or an assembly reference?)
 ```
 
-toio SDK for Unity を動作させるには UniTask のインストールが必須ですので、[【コチラ】](download_sdk.md#UniTask-のインストール)を参考にインストールしてください。
+toio SDK for Unity を動作させるには UniTask のインストールが必須ですので、[【コチラ】](download_sdk.md#unitask-のインストール)を参考にインストールしてください。
 
 ## シミュレータ関連
 
@@ -36,21 +36,21 @@ toio SDK for Unity を動作させるには UniTask のインストールが必�
 単にシミュレータで動かしたい場合は、どちらを使っても問題ありません。<br>
 シミュレータだけで完結せず、実際にキューブを動かすアプリを開発したい場合は、実際に使うマットと同じタイプを使ったほうが良いです。
 
-また、Mat クラスは選択したマットタイプに応じて、座標範囲、中央座標、座標変換関数などを用意していますので、[ドキュメント](usage_simulator.md#2-Mat-Prefab) を参考にしてください。
+また、Mat クラスは選択したマットタイプに応じて、座標範囲、中央座標、座標変換関数などを用意していますので、[ドキュメント](usage_simulator.md#2-mat-prefab) を参考にしてください。
 
 ### Stage Prefab は必須ですか
 > Keywords: Stage
 
 必須ではありません。
 
-[ドキュメント](usage_simulator.md#5-Stage-Prefab) で紹介したように、マット、カメラ、操作に必要なコンポネント等をセットにしたものです。Stage Prefab と Cube Prefab をシーンに入れれば、迅速に基本の開発環境を整えることができます。
+[ドキュメント](usage_simulator.md#5-stage-prefab) で紹介したように、マット、カメラ、操作に必要なコンポネント等をセットにしたものです。Stage Prefab と Cube Prefab をシーンに入れれば、迅速に基本の開発環境を整えることができます。
 
 ### Stage Prefab を使わない場合に注意することはありますか
 > Keywords: Stage
 
 Stage 専用のフォーカスやターゲットポール機能は勿論使えなくなります。
 
-キューブの操作に必要な EventSystem などを、自力で追加する必要があります。具体的には [ドキュメント](usage_simulator.md#45-Cube-の操作-CubeInteraction) を参考にしてください。
+キューブの操作に必要な EventSystem などを、自力で追加する必要があります。具体的には [ドキュメント](usage_simulator.md#45-cube-の操作-cubeinteraction) を参考にしてください。
 
 ## ウェブアプリ関連
 
