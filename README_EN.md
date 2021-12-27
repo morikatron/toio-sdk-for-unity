@@ -93,6 +93,6 @@ For details on installation, tutorials, sample introductions, and feature explan
 
 ## License
 
-- [LICENSE](LICENSE)
+- [LICENSE](https://github.com/morikatron/toio-sdk-for-unity/blob/main/LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
 - [Intellectual Property Notice](Trademark-Notices_EN.md)

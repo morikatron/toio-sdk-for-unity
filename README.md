@@ -97,6 +97,6 @@ public class Hello_Toio : MonoBehaviour
 
 ## ライセンス
 
-- [LICENSE]({% link LICENSE %})
+- [LICENSE](https://github.com/morikatron/toio-sdk-for-unity/blob/main/LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
 - [知的財産権表記 / Trademark Notice](Trademark-Notices.md)
