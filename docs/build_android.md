@@ -12,10 +12,10 @@
 | Unity                | 2020.3.17f1            | 2020.3 以上             |
 
 スマホ
-| 機種名 | OS|
+| 機種名 | OS |
 | -- | -- |
-| HUAWEI nova 5T        | Android 9|
-| Xiaomi Mi Note 10 Lite| Android 10|
+| HUAWEI nova 5T         | Android 9 |
+| Xiaomi Mi Note 10 Lite | Android 10 |
 
 <br>
 
