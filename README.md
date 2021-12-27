@@ -97,6 +97,6 @@ public class Hello_Toio : MonoBehaviour
 
 ## ライセンス
 
-- [LICENSE]({{ site.baseurl }}{% link LICENSE %})
+- [LICENSE](LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
 - [知的財産権表記 / Trademark Notice](Trademark-Notices.md)
