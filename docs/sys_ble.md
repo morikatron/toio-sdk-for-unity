@@ -222,7 +222,7 @@ public interface BLECharacteristicInterface
 
 BLE 処理として追記するべき点は以下です。
 
-1. Cube 変数の生成直後に[自動通知の購読(cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)を呼び、座標やボタン等の自動通知の購読を開始します。
+1. Cube 変数の生成直後に[自動通知の購読(cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)を呼び、座標やボタン等の自動通知の購読を開始します。
 
 <br>
 
@@ -241,4 +241,4 @@ BLE 処理として追記するべき点は以下です。
 
 ### 受信
 
-接続処理直後に行った[自動通知の購読(cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)により、購読している情報が自動通知されます。
+接続処理直後に行った[自動通知の購読(cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)により、購読している情報が自動通知されます。

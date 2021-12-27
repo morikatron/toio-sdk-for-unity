@@ -6,6 +6,3 @@ url: https://ma2bara.github.io/toio-sdk-for-unity/
 plugins:
   - jekyll-seo-tag
 google_analytics: UA-133660753-6
-keep_files:
-  - LICENSE
-  - .cs

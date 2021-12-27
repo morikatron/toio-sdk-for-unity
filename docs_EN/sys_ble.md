@@ -222,7 +222,7 @@ The Connector class is used for the connection. Please refer to the [cube docume
 
 The following points should be added to BLE process.
 
-1. Immediately after Cube variable is created, it calls [Subscribe to automatic notifications (cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) to start subscribing to automatic notifications such as coordinates and buttons.
+1. Immediately after Cube variable is created, it calls [Subscribe to automatic notifications (cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) to start subscribing to automatic notifications such as coordinates and buttons.
 
 <br>
 
@@ -241,4 +241,4 @@ The sending call itself is made from a derived class of CubeReal, see [cube docu
 
 ### Receive
 
-The subscribed information will be automatically notified by [Subscribe to automatic notifications (cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) done immediately after the connection process.
+The subscribed information will be automatically notified by [Subscribe to automatic notifications (cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) done immediately after the connection process.
