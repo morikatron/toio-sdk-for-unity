@@ -34,8 +34,8 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15.2 | macOS Mojave 10.14 以上 |
-| Bluetooth®            | 4.2             | 4.2 以上             |
-| Unity                | 2019.4.9f1             | 2019.3 以上             |
+| Bluetooth®           | 4.2                    | 4.2 以上             |
+| Unity                | 2020.3.17f1             | 2020.3 以上           |
 | ブラウザ(Chrome)       | 85.0.4183.102         | 56 以上             |
 
 > Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
@@ -46,7 +46,7 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Windows 10 Pro 64bit 1903 | Windows 10 |
 | Bluetooth®            | 5.0(LMP 9.256)         | 4.2 以上             |
-| Unity                | 2019.4.9f1             | 2019.3 以上             |
+| Unity                | 2020.3.17f1             | 2020.3 以上             |
 | ブラウザ(Edge)       | 85.0.564.51         | 79 以上             |
 | ブラウザ(Chrome)       | 85.0.4183.102         | 56 以上             |
 
@@ -54,7 +54,7 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 その他ブラウザでのウェブアプリ動作環境ついては、依存モジュールとなる [WebGL](https://developer.mozilla.org/ja/docs/Web/API/WebGL_API) および [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) のサポート対象をご確認ください。
 - WebGL
-  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2019.4/Manual/webgl-browsercompatibility.html)
+  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2020.3/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
@@ -85,9 +85,9 @@ Unity のメニュー【ファイル】→【ビルド設定...】を選択し�
 
 <img width=600 src="res/build_webgl/7.png">
 
-2. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目の【webble】をクリックします。
+2. WebGL の設定ウィンドウより、解像度とプレゼンテーションを開きます。WebGL テンプレート項目で、Unity 2020 以降をお使いの場合は【webble】をクリックします、Unity 2019 をお使いの場合は【webble.unity2019】をクリックします。
 
-<img width=600 src="res/build_webgl/8.png">
+<img width=400 src="res/build_webgl/8.png">
 
 以上の操作で WebGL プラグインが使用出来るようになりました。
 
@@ -106,24 +106,22 @@ Unity のメニュー【ファイル】→【ビルド設定...】を選択し�
 ```
 sample_ui
 ├── Build
-│   ├── sample_ui.data.unityweb
-│   ├── sample_ui.json
-│   ├── sample_ui.wasm.code.unityweb
-│   ├── sample_ui.wasm.framework.unityweb
-│   └── UnityLoader.js
+│   ├── web.data.br
+│   ├── web.framework.js.br
+│   ├── web.loader.js
+│   └── web.wasm.br
 ├── TemplateData
-│   ├── UnityProgress.js
 │   ├── favicon.ico
-│   ├── fullscreen.png
-│   ├── progressEmpty.Dark.png
-│   ├── progressEmpty.Light.png
-│   ├── progressFull.Dark.png
-│   ├── progressFull.Light.png
-│   ├── progressLogo.Dark.png
-│   ├── progressLogo.Light.png
+│   ├── fullscreen-button.png
+│   ├── progress-bar-empty-dark.png
+│   ├── progress-bar-empty-light.png
+│   ├── progress-bar-full-dark.png
+│   ├── progress-bar-full-light.png
 │   ├── style.css
 │   ├── webble.js
-│   └── webgl-logo.png
+│   ├── webgl-logo.png
+│   ├── unity-logo-dark.png
+│   └── unity-logo-light.png
 └── index.html
 ```
 

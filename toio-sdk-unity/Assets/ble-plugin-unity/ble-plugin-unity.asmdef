@@ -1,6 +1,9 @@
 {
     "name": "ble-plugin-unity",
-    "references": [],
+    "rootNamespace": "",
+    "references": [
+        "GUID:37c867e08014dc241a81d134efb0e6ef"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -8,7 +8,7 @@
 - [4. Make a sound](tutorials_basic.md#4-make-a-sound)
 - [5. Light up LED](tutorials_basic.md#5-light-up-led)
 - [6. Read toio ID(Position ID & Standard ID)](tutorials_basic.md#6-read-toio-idposition-id--standard-id)
-- [7. Detect events (button, tilt, collision, coordinate and angle, Standard ID)](tutorials_basic.md#7-detect-events-button-tilt-collision-coordinate-and-angle-standard-id)
+- [7. Detect sensors' events](tutorials_basic.md#7-Detect-sensors-events)
 - [8. Move multiple Cubes](tutorials_basic.md#8-move-multiple-cubes)
 - [9. Simplifying the source code using CubeManager class](tutorials_basic.md#9-simplifying-the-source-code-using-cubemanager-class)
 - [10. Connection/disconnection on the way](tutorials_basic.md#10-connectiondisconnection-on-the-way)
@@ -451,7 +451,7 @@ public class toioIDScene : MonoBehaviour
 
 <br>
 
-# 7. Detect events (button, tilt, collision, coordinate and angle, Standard ID)
+# 7. Detect sensors' events
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/1.Basic/5.Event/"<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/basic/event/).
@@ -460,9 +460,11 @@ In the following callbacks, you can describe what happens when a change occurs i
 Each event conforms to toio™ Core Cube Technical Specification, so please refer to that for details.
 
 - Button event: https://toio.github.io/toio-spec/en/docs/ble_button
-- Tilt, collision event: https://toio.github.io/toio-spec/en/docs/ble_sensor
+- Tilt, collision, double-tap, posture, shake event: https://toio.github.io/toio-spec/en/docs/ble_sensor
 - Coordinate angle, Standard ID event: https://toio.github.io/toio-spec/en/docs/ble_id
   - To detect this event, you need to move Cube on the mat or Standard ID.
+- Motor speed event: https://toio.github.io/toio-spec/en/docs/ble_motor#obtaining-motor-speed-information
+- Magnetic sensor events: https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor
 
 ```C#
 // Button event
@@ -482,9 +484,28 @@ cube.idMissedCallback.AddListener("EventScene", OnMissedID);  // Lost
 // https://toio.github.io/toio-spec/en/docs/ble_id#standard-id
 cube.standardIdCallback.AddListener("EventScene", OnUpdateStandardID);       // Update
 cube.standardIdMissedCallback.AddListener("EventScene", OnMissedStandardID); // Lost
+// Posture event
+// https://toio.github.io/toio-spec/docs/ble_sensor#posture-detection
+cube.poseCallback.AddListener("EventScene", OnPose);
+// Double tap event
+// https://toio.github.io/toio-spec/docs/ble_sensor#double-tap-detection
+cube.doubleTapCallback.AddListener("EventScene", OnDoubleTap);
+// Shake event
+// https://toio.github.io/toio-spec/docs/ble_sensor#shake-detection
+cube.shakeCallback.AddListener("EventScene", OnShake);
+// Motor speed event
+// https://toio.github.io/toio-spec/docs/ble_motor#obtaining-motor-speed-information
+cube.motorSpeedCallback.AddListener("EventScene", OnMotorSpeed);
+// Magnet state event
+// https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#magnet-state
+cube.magnetStateCallback.AddListener("EventScene", OnMagnetState);
+// Magnetic force event
+// https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#magnetic-force-detection-
+cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
+// Attitude event
+// https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor
+cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 ```
-
-Tilt and collision events cannot be detected in Simulator. It only works when you use real cubes.
 
 <details>
 <summary>Execution code: (Click to expand)</summary>
@@ -510,12 +531,20 @@ public class EventScene : MonoBehaviour
         cube.standardIdCallback.AddListener("EventScene", OnUpdateStandardID);
         cube.idMissedCallback.AddListener("EventScene", OnMissedID);
         cube.standardIdMissedCallback.AddListener("EventScene", OnMissedStandardID);
+        cube.poseCallback.AddListener("EventScene", OnPose);
+        cube.doubleTapCallback.AddListener("EventScene", OnDoubleTap);
+        cube.shakeCallback.AddListener("EventScene", OnShake);
+        cube.motorSpeedCallback.AddListener("EventScene", OnMotorSpeed);
+        cube.magnetStateCallback.AddListener("EventScene", OnMagnetState);
+        cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
+        cube.attitudeCallback.AddListener("EventScene", OnAttitude);
+
+        // Enable sensors
+        await cube.ConfigMotorRead(true);
+        await cube.ConfigAttitudeSensor(Cube.AttitudeFormat.Eulers, 100, Cube.AttitudeNotificationType.OnChanged);
+        await cube.ConfigMagneticSensor(Cube.MagneticMode.MagnetState);
     }
 
-    void Update()
-    {
-
-    }
 
     void OnCollision(Cube c)
     {
@@ -524,7 +553,7 @@ public class EventScene : MonoBehaviour
 
     void OnSlope(Cube c)
     {
-        cube.PlayPresetSound(8);
+        cube.PlayPresetSound(1);
     }
 
     void OnPressButton(Cube c)
@@ -560,6 +589,42 @@ public class EventScene : MonoBehaviour
     void OnMissedStandardID(Cube c)
     {
         Debug.LogFormat("Standard ID Missed.");
+    }
+
+    void OnPose(Cube c)
+    {
+        Debug.Log($"pose = {c.pose.ToString()}");
+    }
+
+    void OnDoubleTap(Cube c)
+    {
+        c.PlayPresetSound(3);
+    }
+
+    void OnShake(Cube c)
+    {
+        if (c.shakeLevel > 5)
+            c.PlayPresetSound(4);
+    }
+
+    void OnMotorSpeed(Cube c)
+    {
+        Debug.Log($"motor speed: left={c.leftSpeed}, right={c.rightSpeed}");
+    }
+
+    void OnMagnetState(Cube c)
+    {
+        Debug.Log($"magnet state: {c.magnetState.ToString()}");
+    }
+
+    void OnMagneticForce(Cube c)
+    {
+        Debug.Log($"magnetic force = {c.magneticForce}");
+    }
+
+    void OnAttitude(Cube c)
+    {
+        Debug.Log($"attitude = {c.eulers}");
     }
 }
 ```

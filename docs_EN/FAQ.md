@@ -12,6 +12,7 @@
 
 - [Web application related](FAQ.md#web-application-related)
     - [Web apps do not work well on Windows PC](FAQ.md#web-apps-do-not-work-well-on-windows-pc)
+    - [Can't start or load apps made with Unity 2020](FAQ.md#Cant-start-or-load-apps-made-with-Unity-2020)
 
 ## Basics
 
@@ -57,3 +58,10 @@ You will need to add the EventSystem, etc. needed to operate Cube on your own. F
 > Keywords： Windows Bluetooth BLE
 
 On Windows PCs, problems have been confirmed with multiple-unit connections. Please check [[here]](build_web.md#unstable-multi-unit-connection-using-windows-pc).
+
+### Can't start or load apps made with Unity 2020
+> Keywords: Build Startup
+
+Go to [Edit] -> [Project Settings...] -> [Player] -> [Publishing Settings] and try setting the `Compression Format` to `Disabled` or checking the `Decompression Fallback`. Note that the file size will increase in the former case.
+
+※Reference: [[SOLVED] Unity 2020 WebGL Doesn't work Uncaught SyntaxError: Invalid or unexpected token](https://forum.unity.com/threads/solved-unity-2020-webgl-doesnt-work-uncaught-syntaxerror-invalid-or-unexpected-token.872581/#post-6480523)

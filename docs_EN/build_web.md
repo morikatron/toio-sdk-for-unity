@@ -35,7 +35,7 @@ The following environments have been tested. You don't necessarily have to match
 | -------------------- | ---------------------- | ----------------------- |
 | OS | MacOS Catalina 10.15.2 | macOS Mojave 10.14 or higher
 | Bluetooth® | 4.2 | 4.2 or higher | | Unity
-| Unity | 2019.4.9f1 | 2019.3 or higher
+| Unity | 2020.3.17f1 | 2020.3 or higher
 | Browser (Chrome) | 85.0.4183.102 | 56 or higher
 
 To check the version of BlueTooth®, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
@@ -46,7 +46,7 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Windows 10 Pro 64bit 1903 | Windows 10 | BluetoothR
 | Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher
-| Unity | 2019.4.9f1 | 2019.3 or higher
+| Unity | 2020.3.17f1 | 2020.3 or higher
 | Browser (Edge) | 85.0.564.51 | 79 or higher
 | Browser (Chrome) | 85.0.4183.102 | 56 or higher
 
@@ -54,7 +54,7 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 
 For other browsers, please refer to [WebGL](https://developer.mozilla.org/docs/Web/API/WebGL_API) and [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/).
 - WebGL
-  - [WebGL Browser Compatibility](https://docs.unity3d.com/2019.4/Documentation/Manual/webgl-browsercompatibility.html)
+  - [WebGL Browser Compatibility](https://docs.unity3d.com/2020.3/Documentation/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
@@ -86,9 +86,9 @@ In order to use the provided WebGL plugin, we will modify Unity's Javascript tem
 
 <img width=600 src="res/build_webgl/7.png">
 
-2. In WebGL Settings window, open Resolution and Presentation, and click [webble] in WebGL Template.
+2. In WebGL Settings window, open Resolution and Presentation, and click [webble] for Unity 2020 or later, or [webble.unity2019] for Unity 2019 in WebGL Template.
 
-<img width=600 src="res/build_webgl/8.png">
+<img width=400 src="res/build_webgl/8.png">
 
 WebGL plugin is now ready to use.
 
@@ -107,24 +107,22 @@ If the app has been built correctly, the generated directory structure will look
 ```
 sample_ui
 ├── Build
-│   ├── sample_ui.data.unityweb
-│   ├── sample_ui.json
-│   ├── sample_ui.wasm.code.unityweb
-│   ├── sample_ui.wasm.framework.unityweb
-│   └── UnityLoader.js
+│   ├── web.data.br
+│   ├── web.framework.js.br
+│   ├── web.loader.js
+│   └── web.wasm.br
 ├── TemplateData
-│   ├── UnityProgress.js
 │   ├── favicon.ico
-│   ├── fullscreen.png
-│   ├── progressEmpty.Dark.png
-│   ├── progressEmpty.Light.png
-│   ├── progressFull.Dark.png
-│   ├── progressFull.Light.png
-│   ├── progressLogo.Dark.png
-│   ├── progressLogo.Light.png
+│   ├── fullscreen-button.png
+│   ├── progress-bar-empty-dark.png
+│   ├── progress-bar-empty-light.png
+│   ├── progress-bar-full-dark.png
+│   ├── progress-bar-full-light.png
 │   ├── style.css
 │   ├── webble.js
-│   └── webgl-logo.png
+│   ├── webgl-logo.png
+│   ├── unity-logo-dark.png
+│   └── unity-logo-light.png
 └── index.html
 ```
 

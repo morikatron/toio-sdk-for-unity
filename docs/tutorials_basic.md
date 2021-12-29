@@ -8,7 +8,7 @@
 - [4. 音を鳴らす](tutorials_basic.md#4-音を鳴らす)
 - [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
 - [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
-- [7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)](tutorials_basic.md#7-イベントを検知ボタン-傾き-衝突-座標と角度-Standard-ID)
+- [7. センサーのイベントを検知](tutorials_basic.md#7-センサーのイベントを検知)
 - [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
 - [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
 - [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
@@ -451,7 +451,7 @@ public class toioIDScene : MonoBehaviour
 
 <br>
 
-# 7. イベントを検知(ボタン, 傾き, 衝突, 座標と角度, Standard ID)
+# 7. センサーのイベントを検知
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/1.Basic/5.Event/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/basic/event/)です。
@@ -460,9 +460,11 @@ public class toioIDScene : MonoBehaviour
 各イベントについては toio™コア キューブ技術仕様に準拠していますので、詳しくはそちらを参照してください。
 
 - ボタンイベント: https://toio.github.io/toio-spec/docs/ble_button
-- 傾き、衝突イベント: https://toio.github.io/toio-spec/docs/ble_sensor
+- 傾き、衝突、ダブルタップ、姿勢、シェイクイベント: https://toio.github.io/toio-spec/docs/ble_sensor
 - 座標角度、Standard ID イベント: https://toio.github.io/toio-spec/docs/ble_id
   - このイベントを検知するには、マットや Standard ID 上でキューブを動かす必要があります。
+- モーター速度検出イベント：https://toio.github.io/toio-spec/docs/ble_motor
+- 磁気センサーイベント：https://toio.github.io/toio-spec/docs/ble_magnetic_sensor
 
 ```C#
 // ボタンイベント
@@ -477,14 +479,33 @@ cube.collisionCallback.AddListener("EventScene", OnCollision);
 // 座標角度イベント
 // https://toio.github.io/toio-spec/docs/ble_id#position-id
 cube.idCallback.AddListener("EventScene", OnUpdateID);        // 更新
-cube.idMissedCallback.AddListener("EventScene", OnMissedID);　// ロスト
+cube.idMissedCallback.AddListener("EventScene", OnMissedID);  // ロスト
 // Standard IDイベント
 // https://toio.github.io/toio-spec/docs/ble_id#standard-id
 cube.standardIdCallback.AddListener("EventScene", OnUpdateStandardID);       // 更新
 cube.standardIdMissedCallback.AddListener("EventScene", OnMissedStandardID); // ロスト
+// 姿勢イベント
+// https://toio.github.io/toio-spec/docs/ble_sensor#姿勢検出
+cube.poseCallback.AddListener("EventScene", OnPose);
+// ダブルタップイベント
+// https://toio.github.io/toio-spec/docs/ble_sensor#ダブルタップ検出
+cube.doubleTapCallback.AddListener("EventScene", OnDoubleTap);
+// シェイクイベント
+// https://toio.github.io/toio-spec/docs/ble_sensor#シェイク検出
+cube.shakeCallback.AddListener("EventScene", OnShake);
+// モーター速度イベント
+// https://toio.github.io/toio-spec/docs/ble_motor#モーターの速度情報の取得
+cube.motorSpeedCallback.AddListener("EventScene", OnMotorSpeed);
+// 磁石状態イベント
+// https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁石の状態
+cube.magnetStateCallback.AddListener("EventScene", OnMagnetState);
+// 磁力イベント
+// https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁力の検出-
+cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
+// 姿勢角イベント
+// https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor
+cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 ```
-
-※傾き、衝突のイベントの検知はシミュレータ上では出来ません。 現実のキューブを使った場合にのみ動作します。
 
 <details>
 <summary>実行コード：（クリック展開）</summary>
@@ -510,11 +531,18 @@ public class EventScene : MonoBehaviour
         cube.standardIdCallback.AddListener("EventScene", OnUpdateStandardID);
         cube.idMissedCallback.AddListener("EventScene", OnMissedID);
         cube.standardIdMissedCallback.AddListener("EventScene", OnMissedStandardID);
-    }
+        cube.poseCallback.AddListener("EventScene", OnPose);
+        cube.doubleTapCallback.AddListener("EventScene", OnDoubleTap);
+        cube.shakeCallback.AddListener("EventScene", OnShake);
+        cube.motorSpeedCallback.AddListener("EventScene", OnMotorSpeed);
+        cube.magnetStateCallback.AddListener("EventScene", OnMagnetState);
+        cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
+        cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 
-    void Update()
-    {
-
+        // デフォルト状態がオフのセンサーを有効化
+        await cube.ConfigMotorRead(true);
+        await cube.ConfigAttitudeSensor(Cube.AttitudeFormat.Eulers, 100, Cube.AttitudeNotificationType.OnChanged);
+        await cube.ConfigMagneticSensor(Cube.MagneticMode.MagnetState);
     }
 
     void OnCollision(Cube c)
@@ -524,7 +552,7 @@ public class EventScene : MonoBehaviour
 
     void OnSlope(Cube c)
     {
-        cube.PlayPresetSound(8);
+        cube.PlayPresetSound(1);
     }
 
     void OnPressButton(Cube c)
@@ -560,6 +588,42 @@ public class EventScene : MonoBehaviour
     void OnMissedStandardID(Cube c)
     {
         Debug.LogFormat("Standard ID Missed.");
+    }
+
+    void OnPose(Cube c)
+    {
+        Debug.Log($"pose = {c.pose.ToString()}");
+    }
+
+    void OnDoubleTap(Cube c)
+    {
+        c.PlayPresetSound(3);
+    }
+
+    void OnShake(Cube c)
+    {
+        if (c.shakeLevel > 5)
+            c.PlayPresetSound(4);
+    }
+
+    void OnMotorSpeed(Cube c)
+    {
+        Debug.Log($"motor speed: left={c.leftSpeed}, right={c.rightSpeed}");
+    }
+
+    void OnMagnetState(Cube c)
+    {
+        Debug.Log($"magnet state: {c.magnetState.ToString()}");
+    }
+
+    void OnMagneticForce(Cube c)
+    {
+        Debug.Log($"magnetic force = {c.magneticForce}");
+    }
+
+    void OnAttitude(Cube c)
+    {
+        Debug.Log($"attitude = {c.eulers}");
     }
 }
 ```
