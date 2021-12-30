@@ -32,7 +32,7 @@ namespace toio
             WebBluetoothScript.Instance.ReadValue(this.characteristicID, (id, bytes) =>
             {
                 action(this.characteristicUUID, bytes);
-                this.readDataCallback.notifiedCallback(this.characteristicUUID, bytes);
+                this.readDataCallback.Notify(this.characteristicUUID, bytes);
             });
 #endif
         }
