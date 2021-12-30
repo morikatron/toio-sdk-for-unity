@@ -6,18 +6,19 @@ namespace toio
 {
     public static class BLENetProtocol
     {
-        // c2s
+        // c2s protocol key
         public const int C_UDP_PORT = 50007;
         public const byte C2S_JOIN = 100;
         public const byte C2S_JOINS = 101;
         public const byte C2S_SUBSCRIBE = 102;
         public const byte C2S_READ_CALLBACK = 103;
 
-        // s2c
+        // s2c protocol key
         public const int S_PORT = 50006;
         public const byte S2C_WRITE = 150;
         public const byte S2C_READ = 151;
 
+        // ID
         public const byte SERVICE_ID = 255;
         public const byte CHARACTERISTIC_CONFIG = 101;
         public const byte CHARACTERISTIC_ID = 102;
@@ -60,6 +61,7 @@ namespace toio
         //      Client To Server (c2s) Convert Functions
         ///////////////////////////////////////////////////
 
+        // C2S_JOIN
         public static byte[] Encode_C2S_JOIN(int localCubeIndex, CubeReal cube)
         {
             var addrBytes = System.Text.Encoding.UTF8.GetBytes(cube.peripheral.device_address);
@@ -105,6 +107,7 @@ namespace toio
             return (localCubeIndex, deviceAddr, deviceName, charaList);
         }
 
+        // C2S_JOINS
         public static byte[] Encode_C2S_JOINS(List<CubeReal> allCubes)
         {
             List<byte[]> addrList = new List<byte[]>();
@@ -170,7 +173,7 @@ namespace toio
             return results;
         }
 
-
+        // C2S_SUBSCRIBE
         public static byte[] Encode_C2S_SUBSCRIBE(List<(int localCubeIndex, BLECharacteristicInterface chara, byte[] data)> recvDataList)
         {
             int head = 3;
@@ -217,6 +220,7 @@ namespace toio
             return results;
         }
 
+        // C2S_READ_CALLBACK
         public static byte[] Encode_C2S_READ_CALLBACK(int localCubeIndex, string characteristicUUID, byte[] data)
         {
             // head
@@ -244,6 +248,7 @@ namespace toio
         //      Server To Client (s2c)  Convert Functions
         ///////////////////////////////////////////////////
 
+        // S2C_WRITE
         public static byte[] Encode_S2C_WRITE(int localCubeIndex, byte characteristicShortID, byte[] data, bool withResponse)
         {
             byte[] buff = new byte[4 + 4 + data.Length];
@@ -278,6 +283,7 @@ namespace toio
             return results;
         }
 
+        // S2C_READ
         public static byte[] Encode_S2C_READ(int localCubeIndex, string characteristicUUID)
         {
             // head
