@@ -124,7 +124,7 @@ public class MyUIScript : MonoBehaviour
 > 「マッチ」を 1 に設定することで、UI のサイズは画面の高さによって変化してフィットします。
 
 <div  align="center">
-<img src="res/tutorial_UI/canvas.png"></img>
+<img src="res/tutorial_UI/canvas.png">
 </div>
 
 
@@ -138,7 +138,7 @@ public class MyUIScript : MonoBehaviour
 > これで、UI の基盤が作れました。
 
 <div  align="center">
-<img width=400 src="res/tutorial_UI/BG.png"></img>
+<img width=400 src="res/tutorial_UI/BG.png">
 </div>
 
 ## 11.3. シミュレータと UI の同時表示
@@ -156,7 +156,7 @@ public class MyUIScript : MonoBehaviour
     3. 「Canvas Scaler」コンポーネントの「スケールファクター」を 0.8 に設定します。
 
 <div  align="center">
-<img src="res/tutorial_UI/simcanvas.png"></img>
+<img src="res/tutorial_UI/simcanvas.png">
 </div>
 
 2. 「UI」オブジェクトを選択し、インスペクター上の「コンポーネントを追加」をクリックします。
@@ -219,7 +219,7 @@ public class MySimUI : MonoBehaviour
     5. 同様に「Pointer Up」イベントも追加し、「scene」オブジェクトを選択します。
 
 <div  align="center">
-<img src="res/tutorial_UI/event_trigger.png"></img>
+<img src="res/tutorial_UI/event_trigger.png">
 </div>
 
 
@@ -231,7 +231,7 @@ public class MySimUI : MonoBehaviour
     3. インスペクターにある「Text」コンポーネントの「テキスト」と「フォントサイズ」をそれぞれ設定します。
 
 <div  align="center">
-<img style="max-height: 300px;" src="res/tutorial_UI/function.png"></img>
+<img style="max-height: 300px;" src="res/tutorial_UI/function.png">
 </div>
 
 #### ボタンのプロパティー設定
@@ -251,7 +251,7 @@ Button7  | X:-150　Y:-350 |Sound2  | 48 | PlayPresetSound2()  | なし(No Funct
 ここまで、ボタンの作成は完了します。ヒエラルキーとゲームビューは、下のようになるなずです。
 
 <div  align="center">
-<img src="res/tutorial_UI/complete.png"></img>
+<img src="res/tutorial_UI/complete.png">
 </div>
 
 シミュレータでの実行画面とスマートデバイスでの画面は以下のようになります。

@@ -1,7 +1,7 @@
 ## Sample_ConnectType
 
 <div  align="center">
-<img width=500 src="/docs/res/cube/sample_connectType.png"></img>
+<img width=500 src="/docs/res/cube/sample_connectType.png">
 </div>
 
 このサンプルは接続設定の違いによって、シミュレータとリアルで接続設定が変わるか確認するサンプルです。
