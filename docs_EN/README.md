@@ -121,7 +121,7 @@
 ### Diagram of the entire system
 
 <p align="center">
-<img src="./res/main/arch.png" width=550></img>
+<img src="./res/main/arch.png" width=550>
 </p>
 
 Explain from low level (left) to high level (right).
