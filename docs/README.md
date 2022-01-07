@@ -121,7 +121,7 @@
 ### システム全体の構成図
 
 <p align="center">
-<img src="./res/main/arch.png" width=550></img>
+<img src="./res/main/arch.png" width=550>
 </p>
 
 ローレベル（左）からハイレベル（右）に説明して行きます。
