@@ -271,7 +271,6 @@ namespace toio
 
                 peripheral.Connect((chara) =>
                 {
-                    Debug.Log("Chara received");
                     if (chara.serviceUUID == CubeReal.SERVICE_ID)
                         characteristicTable[chara.characteristicUUID] = chara;
                 });
