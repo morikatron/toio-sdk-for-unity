@@ -3,9 +3,9 @@
 > ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/sensor/)です。
 
 <div align="center">
-<img width=600 src="/docs/res/samples/sensor1.gif">
-<img width=600 src="/docs/res/samples/sensor2.gif">
-<img width=600 src="/docs/res/samples/sensor3.gif">
+<img width=600 src="../../../../../docs/res/samples/sensor1.gif">
+<img width=600 src="../../../../../docs/res/samples/sensor2.gif">
+<img width=600 src="../../../../../docs/res/samples/sensor3.gif">
 </div>
 
 <br>

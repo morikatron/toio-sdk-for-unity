@@ -1,7 +1,7 @@
 ## Sample_ConnectType
 
 <div  align="center">
-<img width=500 src="/docs/res/cube/sample_connectType.png">
+<img src="../../../../../docs/res/cube/sample_connectType.png">
 </div>
 
 This sample is to check if the connection settings are different between Simulator and the real environment.

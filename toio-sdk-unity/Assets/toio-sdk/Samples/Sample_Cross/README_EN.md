@@ -3,7 +3,7 @@
 > The web app sample on this page is [[here](https://morikatron.github.io/t4u/sample/cross)].
 
 <div align="center">
-<img src="/docs/res/samples/cross.gif">
+<img src="../../../../../docs/res/samples/cross.gif">
 </div>
 
 <br>
