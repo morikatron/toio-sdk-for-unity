@@ -49,7 +49,7 @@ You can also move Cube object with the mouse in the scene.
 8. Rewrite the script you have created with the sample code below. (The class name must be the same as the script file)
 
 ### Sample Code
-```C#
+```csharp
 using System.Collections.Generic;
 using UnityEngine;
 using toio;
@@ -123,7 +123,7 @@ Next, let's create UI for manipulating Cube.
 > By setting "Match" to 1, the size of UI will change depending on the height of the screen to fit.
 
 <div  align="center">
-<img src="res/tutorial_UI/canvas.png"></img>
+<img src="res/tutorial_UI/canvas.png">
 </div>
 
 
@@ -137,7 +137,7 @@ Next, let's create UI for manipulating Cube.
 > Now we have the foundation for our UI.
 
 <div  align="center">
-<img width=400 src="res/tutorial_UI/BG.png"></img>
+<img width=400 src="res/tutorial_UI/BG.png">
 </div>
 
 ## 11.3. Simultaneous display of simulator and UI
@@ -155,7 +155,7 @@ To achieve this, we will create a mechanism to move UI to the left side so that 
     3. Set the "Scale Factor" of the "Canvas Scaler" component to 0.8.
 
 <div  align="center">
-<img src="res/tutorial_UI/simcanvas.png"></img>
+<img src="res/tutorial_UI/simcanvas.png">
 </div>
 
 2. Select the "UI" object and click "Add Component" in the inspector.
@@ -163,7 +163,7 @@ To achieve this, we will create a mechanism to move UI to the left side so that 
 4. Rewrite the script you have created with the sample code below. (The class name must be the same as the script file)
 
 ### Sample Code
-```C#
+```csharp
 using UnityEngine;
 
 public class MySimUI : MonoBehaviour
@@ -217,7 +217,7 @@ Finally, create each button for the control panel.
     5. Similarly, add the "Pointer Up" event and select the "scene" object.
 
 <div  align="center">
-<img src="res/tutorial_UI/event_trigger.png"></img>
+<img src="res/tutorial_UI/event_trigger.png">
 </div>
 
 
@@ -229,7 +229,7 @@ Finally, create each button for the control panel.
     3. Set the "Text" and "Font Size" of the "Text" component in the Inspector, respectively.
 
 <div  align="center">
-<img style="max-height: 300px;" src="res/tutorial_UI/function.png"></img>
+<img style="max-height: 300px;" src="res/tutorial_UI/function.png">
 </div>
 
 #### Set the properties of the button.
@@ -249,7 +249,7 @@ Button7  | X:-150　Y:-350 |Sound2  | 48 | PlayPresetSound2()  | None(No Functio
 Up to this point, the creation of the button is complete. The hierarchy and game view should look like the one below.
 
 <div  align="center">
-<img src="res/tutorial_UI/complete.png"></img>
+<img src="res/tutorial_UI/complete.png">
 </div>
 
 The execution screen on Simulator and the screen on the smart device will look like the following.

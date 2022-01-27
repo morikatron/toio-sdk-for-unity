@@ -3,12 +3,12 @@
 ## 目次
 
 - [1. 概説](usage_cubehandle.md#1-概説)
-- [2. CubeHandle クラス API](usage_cubehandle.md#2-CubeHandle-クラス-API)
+- [2. CubeHandle クラス API](usage_cubehandle.md#2-cubehandle-クラス-API)
   - [2.1. 変数](usage_cubehandle.md#21-変数)
-  - [2.2. Movement 構造体](usage_cubehandle.md#22-Movement-構造体)
+  - [2.2. Movement 構造体](usage_cubehandle.md#22-movement-構造体)
   - [2.3. 基本メソッド](usage_cubehandle.md#23-基本メソッド)
-  - [2.4. One-Shot メソッド](usage_cubehandle.md#24-One-Shot-メソッド)
-  - [2.5. Closed-Loop メソッド](usage_cubehandle.md#25-Closed-Loop-メソッド)
+  - [2.4. One-Shot メソッド](usage_cubehandle.md#24-one-shot-メソッド)
+  - [2.5. Closed-Loop メソッド](usage_cubehandle.md#25-closed-loop-メソッド)
 
 # 1. 概説
 
@@ -17,7 +17,7 @@ Cube クラスには toio™ の仕様通りに基礎機能が実装されてい
 
 CubeHandle インスタンスは Cube インスタンスと一対一対応するもので、 Cube を使ってインスタンス化されます。
 
-```c#
+```csharp
 Cube cube = ...
 CubeHandle handle = new CubeHandle(cube);
 ```
@@ -54,7 +54,7 @@ CubeHandle クラスを使ったサンプルなどは[チュートリアル](tut
 
 ### 定数
 
-```c#
+```csharp
 public static double TireWidthDot { get; }      // 左右車輪の間隔（マット座標）
 public static double VDotOverU { get; }         // 速度と指示値の比例 (dot/sec) / cmd
 public static double DotPerM { get; }           // マット単位とメートルの比例 dot / mm
@@ -65,7 +65,7 @@ public int maxSpd { get; }                      // 最大速度指示値（実�
 
 ### パラメーター
 
-```c#
+```csharp
 public static double dt = 1.0 / 60 * 3;     // 制御の周期 50ms
 public static double lag = 0.130;           // ラグ
 
@@ -74,7 +74,7 @@ public RectInt borderRect   // ボーダーの範囲を表す RectInt
 
 ### プロパティ
 
-```c#
+```csharp
 // 現在状態
 public Cube cube { get; }   // キューブ
 public Vector pos { get; }  // 座標
@@ -109,7 +109,7 @@ Movement 構造体は使いやすくするため、制御メソッドの出力�
 
 ### 変数
 
-```c#
+```csharp
 public CubeHandle handle;   // 誰の指示か
 public double translate;    // 前進速度指示値
 public double rotate;       // 回転速度指示値
@@ -122,7 +122,7 @@ public bool idle;           // この Movement が実行されるか
 
 #### Exec
 
-```c#
+```csharp
 public Movement Exec(bool border=true);
 ```
 
@@ -134,7 +134,7 @@ public Movement Exec(bool border=true);
 
 ### SetBorderRect
 
-```c#
+```csharp
 public void SetBorderRect(RectInt matRect, int margin=20)
 ```
 マットのサイズを表す RectInt と margin によって、ボーダー borderRect を設定します。
@@ -143,7 +143,7 @@ public void SetBorderRect(RectInt matRect, int margin=20)
 
 ### Update
 
-```c#
+```csharp
 public void Update();
 ```
 
@@ -153,7 +153,7 @@ public void Update();
 
 ### MoveRaw
 
-```c#
+```csharp
 public void MoveRaw(
   double uL, double uR,
   int durationMs = 1000,
@@ -187,7 +187,7 @@ public void MoveRaw(
 
 ### Move
 
-```c#
+```csharp
 public Movement Move(
     double translate,           // 前進速度の指示値
     double rotate,              // 回転速度の指示値
@@ -228,11 +228,11 @@ public Movement Move(
   - 種類 : Weak, Strong
   - 既定値：Weak
 - 戻り値
-  - 定義：実際に実行された [Movement](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：実際に実行された [Movement](usage_cubehandle.md#22-movement-構造体)
 
 #### Overloads
 
-```c#
+```csharp
 public Movement Move(
   Movement mv,
   bool border = true,
@@ -240,7 +240,7 @@ public Movement Move(
   );
 ```
 
-[Movement](usage_cubehandle.md#22-Movement-構造体) を実行します。
+[Movement](usage_cubehandle.md#22-movement-構造体) を実行します。
 
 - mv
   - 定義：移動命令
@@ -251,7 +251,7 @@ public Movement Move(
   - 種類 : Weak, Strong
   - 既定値：Weak
 
-```c#
+```csharp
 public Movement Move(
   Movement mv,
   int durationMs,
@@ -260,7 +260,7 @@ public Movement Move(
 );
 ```
 
-[Movement](usage_cubehandle.md#22-Movement-構造体) の継続時間を書き換えて実行します。
+[Movement](usage_cubehandle.md#22-movement-構造体) の継続時間を書き換えて実行します。
 
 - mv
   - 定義：移動命令
@@ -275,7 +275,7 @@ public Movement Move(
 
 ### Stop
 
-```c#
+```csharp
 public void Stop();
 ```
 
@@ -294,7 +294,7 @@ One-shot メソッドはこの問題を解決するための機能で、 目標�
 
 ### TranslateByDist
 
-```c#
+```csharp
 public Movement TranslateByDist(double dist, double translate);
 ```
 
@@ -309,11 +309,11 @@ public Movement TranslateByDist(double dist, double translate);
     - [Version 2.0.0] -100~-10； 10~100
     - [Version 2.1.0, 2.2.0] -115~-8； 8~115
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### RotateByRad
 
-```c#
+```csharp
 public Movement RotateByRad(double drad, double rotate);
 ```
 
@@ -328,11 +328,11 @@ public Movement RotateByRad(double drad, double rotate);
     - [Version 2.0.0] -200~-20； 20~200
     - [Version 2.1.0, 2.2.0] -230~-16； 16~230
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### RotateByDeg
 
-```c#
+```csharp
 public Movement RotateByDeg(double ddeg, double rotate)
 ```
 
@@ -348,7 +348,7 @@ public Movement RotateByDeg(double ddeg, double rotate)
     - [Version 2.0.0] -200~-20； 20~200
     - [Version 2.1.0, 2.2.0] -230~-16； 16~230
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 <br>
 
@@ -360,7 +360,7 @@ One-Shot メソッドと異なり 目標を追い続け、結果が保証され�
 
 ### Move2Target
 
-```c#
+```csharp
 public Movement Move2Target(
     double tarX,            // 目標ｘ座標
     double tarY,            // 目標ｙ座標
@@ -397,11 +397,11 @@ public Movement Move2Target(
   - 既定値：8
   - 説明：目標との距離が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 #### Overloads
 
-```c#
+```csharp
 public Movement Move2Target(Vector pos, double maxSpd = 50, int rotateTime = 250, double tolerance = 8);
 public Movement Move2Target(Vector2 pos, double maxSpd = 50, int rotateTime = 250, double tolerance = 8);
 public Movement Move2Target(Vector2Int pos, double maxSpd = 50, int rotateTime = 250, double tolerance = 8)
@@ -412,7 +412,7 @@ public Movement Move2Target(Vector2Int pos, double maxSpd = 50, int rotateTime =
 
 ### Rotate2Rad
 
-```c#
+```csharp
 public Movement Rotate2Rad(double tarRad, int rotateTime = 400, double tolerance = 0.1);
 ```
 
@@ -430,11 +430,11 @@ public Movement Rotate2Rad(double tarRad, int rotateTime = 400, double tolerance
   - 既定値：0.1
   - 説明：目標角度（弧度）と差が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### Rotate2Deg
 
-```c#
+```csharp
 public Movement Rotate2Deg(double tarDeg, int rotateTime = 400, double tolerance = 5);
 ```
 
@@ -452,11 +452,11 @@ public Movement Rotate2Deg(double tarDeg, int rotateTime = 400, double tolerance
   - 既定値：5
   - 説明：目標角度（度）と差が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
 ### Rotate2Target
 
-```c#
+```csharp
 // tarX, tarY 指定座標、tolerance 到達判定の閾値(弧度)、rotateTime 希望回転時間（ms）
 public Movement Rotate2Target(double tarX, double tarY, int rotateTime = 400, double tolerance = 0.1);
 ```
@@ -478,4 +478,4 @@ public Movement Rotate2Target(double tarX, double tarY, int rotateTime = 400, do
   - 既定値：0.1
   - 説明：目標角度（弧度）と差が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)

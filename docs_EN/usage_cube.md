@@ -139,7 +139,7 @@ toio SDK for Unity is designed to be easy to use for toio.js users, and uses two
 
 The following is a sample code of this program with the same behavior.
 
-```C#
+```csharp
 public class SimpleScene : MonoBehaviour
 {
     async void Start()
@@ -165,7 +165,7 @@ public class SimpleScene : MonoBehaviour
 
 ## 3.1. Variable
 
-```c#
+```csharp
 // Firmware version of the connected cube
 public string version { get; }
 
@@ -298,7 +298,7 @@ public Quaternion quaternion { get; protected set; }
 
 ## 3.2. callback
 
-```C#
+```csharp
 // CallbackProvider<T1>
 // CallbackProvider<T1, T2>
 // CallbackProvider<T1, T2, T3>
@@ -354,7 +354,7 @@ public CallbackProvider<Cube> attitudeCallback { get; }
 
 ### Move
 
-```C#
+```csharp
 public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
@@ -384,7 +384,7 @@ Controls Cube's motor.<br>
 
 ### TurnLedOn
 
-```C#
+```csharp
 public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -413,7 +413,7 @@ Controls the LEDs on the bottom of Cube.<br>
 
 ### TurnOnLightWithScenario
 
-```C#
+```csharp
 // Configuration structure per luminescence
 public struct LightOperation
 {
@@ -442,7 +442,7 @@ Continuously controls the LEDs on the bottom of Cube.<br>
 
 ### TurnLedOff
 
-```C#
+```csharp
 public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -457,7 +457,7 @@ Turn off the LED on the bottom of Cube.<br>
 
 ### PlayPresetSound
 
-```C#
+```csharp
 public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -481,7 +481,7 @@ Play the sound effects provided in Cube.<br>
 Play any sound from Cube.<br>
 [toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_sound#playing-the-midi-note-numbers)
 
-```C#
+```csharp
 // Argument version
 // A configuration structure for each pronunciation.
 public struct SoundOperation
@@ -503,7 +503,7 @@ public void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE o
   - Definition : [instruction priority](sys_cube.md#4-send-command)
   - Type : Weak, Strong
 
-```C#
+```csharp
 // Buffered version (e.g. of a file)
 public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
@@ -518,7 +518,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 
 ### StopSound
 
-```C#
+```csharp
 public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -533,7 +533,7 @@ Stops Cube from playing sound.<br>
 
 ### ConfigSlopeThreshold
 
-```C#
+```csharp
 public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -551,7 +551,7 @@ Sets the threshold for horizontal detection of Cube.<br>
 
 ### ConfigCollisionThreshold
 
-```C#
+```csharp
 public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -569,7 +569,7 @@ Sets the threshold for collision detection for Cube.<br>
 
 ### ConfigDoubleTapInterval
 
-```C#
+```csharp
 public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -587,7 +587,7 @@ Set the time interval for double-tap detection of Cube <br>
 
 ### TargetMove
 
-```C#
+```csharp
 public void TargetMove(
             int targetX,
             int targetY,
@@ -655,7 +655,7 @@ Controls Cube's motor with target designation.<br>
 
 ### AccelerationMove
 
-```C#
+```csharp
 public void AccelerationMove(
             int targetSpeed,
             int acceleration,
@@ -696,7 +696,7 @@ Performs motor control with acceleration specified for Cube.<br>
 
 ### ConfigMotorRead
 
-```C#
+```csharp
 public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -725,7 +725,7 @@ Deprecated. Please use `RequestMotionSensor` instead.
 
 ### RequestMotionSensor
 
-```C#
+```csharp
 public void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
@@ -742,7 +742,7 @@ Requests Cube to notify you of motion sensor information once.<br>
 
 ### ConfigIDNotification
 
-```c#
+```csharp
 public UniTask ConfigIDNotification(
     int intervalMs,
     IDNotificationType notificationType = IDNotificationType.Balanced,
@@ -773,7 +773,7 @@ Set the notification frequency for the Position ID and Standard ID from the iden
 
 ### ConfigIDMissedNotification
 
-```c#
+```csharp
 public UniTask ConfigIDMissedNotification(
     int sensitivityMs,
     float timeOutSec = 0.5f,
@@ -800,7 +800,7 @@ Set the Position ID missed and Standard ID missed notification sensitivity of th
 
 ### ConfigMagneticSensor
 
-```c#
+```csharp
 public UniTask ConfigMagneticSensor(
     MagneticMode mode,
     float timeOutSec = 0.5f,
@@ -826,7 +826,7 @@ Sets the mode of the cube's magnetic sensor. It is disabled by default. (Support
   - Type : Weak, Strong
 
 
-```c#
+```csharp
 public UniTask ConfigMagneticSensor(
     MagneticMode mode,
     int intervalMs,
@@ -850,7 +850,7 @@ Sets the mode of the cube's magnetic sensor. It is disabled by default. (Support
 
 ### ConfigAttitudeSensor
 
-```c#
+```csharp
 public UniTask ConfigAttitudeSensor(
     AttitudeFormat format,
     int intervalMs,
@@ -885,7 +885,7 @@ Enables or disables the cube's attitude angle detection feature. It is disabled 
 
 ### RequestMagneticSensor
 
-```C#
+```csharp
 public void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ````
 
@@ -900,7 +900,7 @@ Requests the cube to notify the magnetic sensor information once. <br>
 
 ### RequestAttitudeSensor
 
-```C#
+```csharp
 public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong);
 ````
 
@@ -927,7 +927,7 @@ The internal implementation of communication connection is divided into simulato
 
 ### Definition
 
-```C#
+```csharp
 public enum ConnectType
 {
     Auto, // The internal implementation changes automatically depending on the build target.
@@ -936,7 +936,7 @@ public enum ConnectType
 }
 ```
 
-```C#
+```csharp
 public NearestScanner(ConnectType type = ConnectType.Auto);
 
 public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto);
@@ -950,7 +950,7 @@ public CubeManager(ConnectType type = ConnectType.Auto);
 
 ### Sample Code
 
-```C#
+```csharp
 Cube[] cubes;
 async void Start()
 {
@@ -961,7 +961,7 @@ async void Start()
 }
 ```
 
-```C#
+```csharp
 CubeManager cubeManager;
 async void Start()
 {
@@ -972,7 +972,7 @@ async void Start()
 }
 ```
 
-```C#
+```csharp
 Cube[] cubes;
 async void Start()
 {
@@ -982,7 +982,7 @@ async void Start()
 }
 ```
 
-```C#
+```csharp
 CubeManager cubeManager;
 async void Start()
 {

@@ -24,7 +24,7 @@ CubeManager provides a mechanism to perform such synchronization control.
 CubeManager automatically creates CubeHandle from the connected Cube and puts it in the list of member variables.<br>
 In the following sample code, the controllable state of CubeHandle held by CubeManager is checked in Update before controlling it.
 
-```c#
+```csharp
 public class HandleBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -55,7 +55,7 @@ In this sample, everyone has their own controllable state, so it is "asynchronou
 
 If you do the following, all handles will be controlled by the same frame every 50ms.
 
-```c#
+```csharp
 public class HandleBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -82,7 +82,7 @@ The above simply synchronizes and manipulates each handle individually.
 
 If you want to move all handles at once, it is useful to use syncHandles.
 
-```c#
+```csharp
 public class HandleBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -129,7 +129,7 @@ In addition, the following functions are also available.
 - If the amount of movement is so small that Cube's motor does not rotate (this range is called the dead zone), replace the input in the dead zone with the nearest valid input
 - Predict the future trajectory and limit the duration to prevent Cube from moving out of the specified range (border).
 
-```c#
+```csharp
 public Movement Move(
     double translate,           // Advance indication value
     double rotate,              // Rotation indication value
@@ -150,7 +150,7 @@ public Movement Move(Movement mv, int durationMs, Cube.ORDER_TYPE order, bool bo
 
 MoveRaw is also provided as a function equivalent to the Move function of Cube class.
 
-```c#
+```csharp
 // uL Indicated value of left motor, uR Indicated value of right motor, durationMs Duration time (ms), order Priority of indication
 public void MoveRaw(double uL, double uR, int durationMs = 1000, Cube.ORDER_TYPE order = Cube.ORDER_TYPE.Weak);
 ```
@@ -159,7 +159,7 @@ The following is sample code using the Move function and MoveRaw function.
 
 <div align="center"><img width=256 src="res/tutorial_cubehandle/move.gif"></div>
 
-```c#
+```csharp
 void Update()
 {
     elapsedTime += Time.deltaTime;
@@ -218,7 +218,7 @@ void Update()
 Each time the Move and MoveRaw functions of CubeHandle class are called, it sends a command to Cube to move via communication, and the received Cube moves according to the command.<br>
 CubeHandle also outputs a Movement class that handles movement commands, and executes the Exec function on it.
 
-```c#
+```csharp
 // Moving with Movement
 Movement mv = handle.HogeMethod(...);
 mv.Exec();
@@ -244,7 +244,7 @@ There are three methods of this type：
 - RotateByDeg(Deg, rotate) … Rotate the specified angle (degree) with the rotation command.
 - RotateByRad(Rad, rotate) … Rotate the specified angle (arc degree) with a rotation command.
 
-```c#
+```csharp
 // dist Distance、translate Advance indication value
 public Movement TranslateByDist(double dist, double translate);
 // drad Angle (degree of arc), rotate Rotation indication value
@@ -259,7 +259,7 @@ The following is an example of using the One-Shot method to draw a square by rep
 
 <div align="center"><img width=256 src="res/tutorial_cubehandle/oneshot.gif"></div>
 
-```c#
+```csharp
 private float elapsedTime = 1.5f;
 private int phase = 0;
 
@@ -305,7 +305,7 @@ Closed-Loop method is used to reach the specified coordinates and direction of t
 
 This type of method needs to be called every frame until the target is reached.
 
-```c#
+```csharp
 public Movement Move2Target(
     double tarX,            // Target coordinate x
     double tarY,            // Target coordinate y
@@ -327,7 +327,7 @@ Closed-Loop method returns a Movement instance, so you can use the Exec function
 
 If you simply want to move to the target coordinates, it can be done very simply.
 
-```c#
+```csharp
 void Update()
 {
     foreach (var handle in cubeManager.syncHandles)
@@ -346,7 +346,7 @@ In the following example, we are heading to the first specified coordinate, and 
 
 <div align="center"><img width=256 src="res/tutorial_cubehandle/toTarget.gif"></div>
 
-```c#
+```csharp
 void Update()
 {
     foreach (var handle in cubeManager.syncHandles)
@@ -378,7 +378,7 @@ Using the features we have described so far, let's try to control Cube by using 
 
 First, get the Stage.
 
-```c#
+```csharp
 Stage stage;
 void Start()
 {
@@ -389,7 +389,7 @@ void Start()
 
 Next, get the mat coordinates of the TargetPole and set them to the Move2Target function of CubeHandle class.
 
-```c#
+```csharp
 void Update()
 {
     foreach (var handle in cubeManager.syncHandles)

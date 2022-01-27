@@ -74,10 +74,9 @@ BLE 機能の最初の窓口となるシングルトンクラス<br>
 <u>BLEService.Instance.SetImplement()</u>関数で実装インタンスを入れる事で<br>
 内部実装クラスを設定する
 
-<details>
-<summary>実装コード：（クリック展開）</summary>
+実装コード
 
-```C#
+```csharp
 public class BLEService : GenericSingleton<BLEService>
 {
     public bool hasImplement { get; private set; }
@@ -110,8 +109,6 @@ public class BLEService : GenericSingleton<BLEService>
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEServiceInterface
@@ -119,10 +116,9 @@ public class BLEService : GenericSingleton<BLEService>
 BLE 処理の最初の窓口となるインタフェース<br>
 動作端末の BLE 機能を提供する Device インタフェースを取得する機能を提供する
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
-```C#
+```csharp
 public interface BLEServiceInterface
 {
     void RequestDevice(Action<BLEDeviceInterface> action);
@@ -131,18 +127,15 @@ public interface BLEServiceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEDeviceInterface
 
 動作端末の BLE 機能インタフェース<br>主な役目は BLE 機能にアクセスしてスキャン処理を実行すること
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
-```C#
+```csharp
 public interface BLEDeviceInterface
 {
     void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action);
@@ -152,18 +145,15 @@ public interface BLEDeviceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEPeripheralInterface
 
 スキャンされた BLE デバイスのインタフェース<br>主な役目はスキャンされた BLE デバイスへの接続処理を実行すること
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
-```C#
+```csharp
 public interface BLEPeripheralInterface
 {
     string[] serviceUUIDs { get; }
@@ -179,18 +169,15 @@ public interface BLEPeripheralInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLECharacteristicInterface
 
 スキャンされた BLE デバイスの機能ごとのインタフェース<br>主な役目は BLE デバイスそれぞれの機能に対して書き込み/読み込み処理を実行すること
 
-<details>
-<summary>インタフェースコード：（クリック展開）</summary>
+インタフェースコード
 
-```C#
+```csharp
 public interface BLECharacteristicInterface
 {
     string deviceAddress { get; }
@@ -203,8 +190,6 @@ public interface BLECharacteristicInterface
     void StopNotifications();
 }
 ```
-
-</details>
 
 # 3. 通信の仕組み
 
@@ -237,7 +222,7 @@ public interface BLECharacteristicInterface
 
 BLE 処理として追記するべき点は以下です。
 
-1. Cube 変数の生成直後に[自動通知の購読(cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)を呼び、座標やボタン等の自動通知の購読を開始します。
+1. Cube 変数の生成直後に[自動通知の購読(cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)を呼び、座標やボタン等の自動通知の購読を開始します。
 
 <br>
 
@@ -256,4 +241,4 @@ BLE 処理として追記するべき点は以下です。
 
 ### 受信
 
-接続処理直後に行った[自動通知の購読(cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)により、購読している情報が自動通知されます。
+接続処理直後に行った[自動通知の購読(cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)により、購読している情報が自動通知されます。

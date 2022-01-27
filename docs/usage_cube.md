@@ -4,7 +4,7 @@
 
 - [1. 概説](usage_cube.md#1-概説)
 - [2. 既存 toio™ ライブラリ(toio.js)との比較](usage_cube.md#2-既存-toio-ライブラリtoiojsとの比較)
-- [3. Cube クラス API](usage_cube.md#3-Cube-クラス-API)
+- [3. Cube クラス API](usage_cube.md#3-cube-クラス-API)
   - [3.1. 変数](usage_cube.md#31-変数)
   - [3.2. コールバック](usage_cube.md#32-コールバック)
   - [3.3. メソッド](usage_cube.md#33-メソッド)
@@ -54,7 +54,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |                    | [衝突検出のしきい値設定](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#衝突検出のしきい値設定)                   | o             | x            |
 |                    | [BLE プロトコルバージョンの取得](https://toio.github.io/toio-spec/docs/2.0.0/ble_configuration#ble-プロトコルバージョンの取得)    | o             | x            |
 
-> ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-CubeSimulator-のインスペクター)をご確認ください。
+> ※ … シミュレータ側に検出機能は実装されていませんが、インスペクター上から手動で判定の有無を切り替えることが出来ます。 詳細は[【コチラ】](usage_simulator.md#41-cubesimulator-のインスペクター)をご確認ください。
 
 #### ファームウェアバージョン 2.1.0
 
@@ -135,7 +135,7 @@ scanner、cube の 2 つのクラスを使用してキューブを操作する�
 
 以下に、同じ挙動をする本プログラムのサンプルコードを示します。
 
-```C#
+```csharp
 public class SimpleScene : MonoBehaviour
 {
     async void Start()
@@ -161,7 +161,7 @@ public class SimpleScene : MonoBehaviour
 
 ## 3.1. 変数
 
-```c#
+```csharp
 // 接続したキューブのファームウェアバージョン
 public string version { get; }
 
@@ -296,7 +296,7 @@ public Quaternion quaternion { get; protected set; }
 
 ## 3.2. コールバック
 
-```C#
+```csharp
 // CallbackProvider<T1>
 // CallbackProvider<T1, T2>
 // CallbackProvider<T1, T2, T3>
@@ -352,7 +352,7 @@ public CallbackProvider<Cube> attitudeCallback { get; }
 
 ### Move
 
-```C#
+```csharp
 public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
@@ -382,7 +382,7 @@ public void Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYP
 
 ### TurnLedOn
 
-```C#
+```csharp
 public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -411,7 +411,7 @@ public void TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE o
 
 ### TurnOnLightWithScenario
 
-```C#
+```csharp
 // 発光ごとの設定構造体
 public struct LightOperation
 {
@@ -440,7 +440,7 @@ public void TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] opera
 
 ### TurnLedOff
 
-```C#
+```csharp
 public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -455,7 +455,7 @@ public void TurnLedOff(ORDER_TYPE order=ORDER_TYPE.Strong);
 
 ### PlayPresetSound
 
-```C#
+```csharp
 public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -479,7 +479,7 @@ public void PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_
 キューブから任意の音を再生します。<br>
 [toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生)
 
-```C#
+```csharp
 // 引数版
 // 発音ごとの設定構造体
 public struct SoundOperation
@@ -501,7 +501,7 @@ public void PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE o
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
 
-```C#
+```csharp
 // バッファ版
 public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
@@ -516,7 +516,7 @@ public void PlaySound(byte[] buff, ORDER_TYPE order=ORDER_TYPE.Strong);
 
 ### StopSound
 
-```C#
+```csharp
 public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -531,7 +531,7 @@ public void StopSound(ORDER_TYPE order=ORDER_TYPE.Strong);
 
 ### ConfigSlopeThreshold
 
-```C#
+```csharp
 public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -549,7 +549,7 @@ public void ConfigSlopeThreshold(int angle, ORDER_TYPE order=ORDER_TYPE.Strong);
 
 ### ConfigCollisionThreshold
 
-```C#
+```csharp
 public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -567,7 +567,7 @@ public void ConfigCollisionThreshold(int level, ORDER_TYPE order=ORDER_TYPE.Stro
 
 ### ConfigDoubleTapInterval
 
-```C#
+```csharp
 public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -585,7 +585,7 @@ public void ConfigDoubleTapInterval(int interval, ORDER_TYPE order=ORDER_TYPE.St
 
 ### TargetMove
 
-```C#
+```csharp
 public void TargetMove(
             int targetX,
             int targetY,
@@ -653,7 +653,7 @@ public void TargetMove(
 
 ### AccelerationMove
 
-```C#
+```csharp
 public void AccelerationMove(
             int targetSpeed,
             int acceleration,
@@ -694,7 +694,7 @@ public void AccelerationMove(
 
 ### ConfigMotorRead
 
-```C#
+```csharp
 public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cube> callback=null, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -724,7 +724,7 @@ public UniTask ConfigMotorRead(bool valid, float timeOutSec=0.5f, Action<bool,Cu
 
 ### RequestMotionSensor
 
-```C#
+```csharp
 public void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
@@ -741,7 +741,7 @@ public void RequestMotionSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 
 ### ConfigIDNotification
 
-```c#
+```csharp
 public UniTask ConfigIDNotification(
     int intervalMs,
     IDNotificationType notificationType = IDNotificationType.Balanced,
@@ -773,7 +773,7 @@ public UniTask ConfigIDNotification(
 
 ### ConfigIDMissedNotification
 
-```c#
+```csharp
 public UniTask ConfigIDMissedNotification(
     int sensitivityMs,
     float timeOutSec = 0.5f,
@@ -800,7 +800,7 @@ public UniTask ConfigIDMissedNotification(
 
 ### ConfigMagneticSensor
 
-```c#
+```csharp
 public UniTask ConfigMagneticSensor(
     MagneticMode mode,
     float timeOutSec = 0.5f,
@@ -826,7 +826,7 @@ public UniTask ConfigMagneticSensor(
   - 種類 : Weak, Strong
 
 
-```c#
+```csharp
 public UniTask ConfigMagneticSensor(
     MagneticMode mode,
     int intervalMs,
@@ -850,7 +850,7 @@ public UniTask ConfigMagneticSensor(
 
 ### ConfigAttitudeSensor
 
-```c#
+```csharp
 public UniTask ConfigAttitudeSensor(
     AttitudeFormat format,
     int intervalMs,
@@ -885,7 +885,7 @@ public UniTask ConfigAttitudeSensor(
 
 ### RequestMagneticSensor
 
-```C#
+```csharp
 public void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
@@ -900,7 +900,7 @@ public void RequestMagneticSensor(ORDER_TYPE order = ORDER_TYPE.Strong);
 
 ### RequestAttitudeSensor
 
-```C#
+```csharp
 public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong);
 ```
 
@@ -928,7 +928,7 @@ public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDE
 
 ### 定義
 
-```C#
+```csharp
 public enum ConnectType
 {
     Auto, // ビルド対象に応じて内部実装が自動的に変わる
@@ -937,7 +937,7 @@ public enum ConnectType
 }
 ```
 
-```C#
+```csharp
 public NearestScanner(ConnectType type = ConnectType.Auto);
 
 public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto);
@@ -951,7 +951,7 @@ public CubeManager(ConnectType type = ConnectType.Auto);
 
 ### サンプルコード
 
-```C#
+```csharp
 Cube[] cubes;
 async void Start()
 {
@@ -962,7 +962,7 @@ async void Start()
 }
 ```
 
-```C#
+```csharp
 CubeManager cubeManager;
 async void Start()
 {
@@ -973,7 +973,7 @@ async void Start()
 }
 ```
 
-```C#
+```csharp
 Cube[] cubes;
 async void Start()
 {
@@ -983,7 +983,7 @@ async void Start()
 }
 ```
 
-```C#
+```csharp
 CubeManager cubeManager;
 async void Start()
 {
