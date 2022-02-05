@@ -3,7 +3,7 @@
 > The web app sample on this page is [[here](https://morikatron.github.io/t4u/sample/multi_mat)].
 
 <div align="center">
-<img src="/docs/res/samples/multimat.gif">
+<img src="../../../../../docs/res/samples/multimat.gif">
 </div>
 
 <br>

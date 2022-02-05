@@ -30,7 +30,7 @@ CubeNavigator is automatically created by CubeManager when Cube is connected and
 
 In the following sample code, CubeNavigator is controlled after confirming its controllable status in Update.
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -61,7 +61,7 @@ Since everyone's controllable state is different, it is "asynchronous".
 
 If you do the following, all navigator will be controlled by the same frame every 50ms.
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -88,7 +88,7 @@ The above is simply synchronizing and operating each navigator individually.
 
 If you want to run all navigator at the same time, syncNavigators is useful.
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -114,7 +114,7 @@ public class NavigatorBasic : MonoBehaviour
 
 If you do not use CubeManager, create CubeNavigator instance using Cube class as shown below.
 
-```c#
+```csharp
 public class NavigatorBasic : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -168,7 +168,7 @@ public class NavigatorBasic : MonoBehaviour
 To move Cube to the target while avoiding collisions, use Navi2Target function.<br>
 This function corresponds to the Move2Target function of CubeHandle class.
 
-```c#
+```csharp
 // x,y Target coordinates, maxSpd Maximum speed, rotateTime Desired rotation time(Reference to CubeHandle usage), tolerance Achieved threshold(Distance to target)
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20);
 ```
@@ -179,7 +179,7 @@ In the following example, we have two Cubes moving back and forth, avoiding each
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_basic.gif"></div>
 
-```c#
+```csharp
 public class NavigatorHLAvoid : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -226,7 +226,7 @@ public class NavigatorHLAvoid : MonoBehaviour
 
 By changing the initialization settings, it is also possible to prevent certain Cubes from avoiding collisions.
 
-```c#
+```csharp
 // Methods of CubeNavigator
 // Delete all recognizable objects.
 public void ClearOther();
@@ -236,7 +236,7 @@ In the following example, we change the initialization settings in Example 1 so 
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_priority.gif"></div>
 
-```c#
+```csharp
 async void Start()
 {
     cubeManager = new CubeManager();
@@ -254,7 +254,7 @@ async void Start()
 
 In addition, by changing the initialization settings, you can predict the movement of Cube and reduce the effect of lag to make collision avoidance more natural.<br>
 
-```c#
+```csharp
 // CubeNavigator Member Variables
 public bool usePred = false;    // Whether to use CubeHandle predictions
 ```
@@ -263,7 +263,7 @@ The following example uses prediction to reduce the effect of lag by changing th
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_pred.gif"></div>
 
-```c#
+```csharp
 async void Start()
 {
     cubeManager = new CubeManager();
@@ -284,7 +284,7 @@ async void Start()
 With the NaviAwayTarget function, Cube will move away from the target in the opposite direction of the Navi2Target function。<br>
 (Move to the farthest point in Cube's field of view.)
 
-```c#
+```csharp
 public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int rotateTime=250);
 ```
 
@@ -297,7 +297,7 @@ In this example, we call the ClearOther function to avoid collision avoidance, b
 
 <div align="center"><img width=256 src="res/tutorial_navigator/avoid_oni.gif"></div>
 
-```c#
+```csharp
 public class NaviAwayTargetTutorial : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -345,7 +345,7 @@ In order to control by Boids, you need to change this setting first.
 
 Please change the mode member variable of CubeNavigator class from the specified value (AVOID: collision avoidance only) to BOIDS.
 
-```c#
+```csharp
 // Mode of Navigator
 public enum Mode : byte
 {
@@ -361,7 +361,7 @@ In the following example, multiple Cubes move together as Boids.
 
 <div align="center"><img width=256 src="res/tutorial_navigator/boids.gif"></div>
 
-```c#
+```csharp
 public class BoidsTutorial : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -394,7 +394,7 @@ By adding Cube that is not Boids as a comparison, you can represent the effect o
 
 By default, all Cubes are recognized as belonging to the same group of Boids, so we need to use the SetRelation function of CubeNavigator class to exclude certain individuals from Boids.
 
-```c#
+```csharp
 // Methods of CubeNavigator
 // Set up recognition for others.
 public void SetRelation(List<CubeNavigator> others, Relation relation);
@@ -407,7 +407,7 @@ For convenience of explanation, the LEDs of Cubes that are not Boids are lit red
 
 <div align="center"><img width=256 src="res/tutorial_navigator/boids_relation.gif"></div>
 
-```c#
+```csharp
 async void Start()
 {
     cubeManager = new CubeManager();
@@ -463,7 +463,7 @@ In the following example, a herd of five Cubes heads toward the target, avoiding
 
 <div align="center"><img width=256 src="res/tutorial_navigator/boids_avoid.gif"></div>
 
-```c#
+```csharp
 public class BoidsAvoidTutorial : MonoBehaviour
 {
     CubeManager cubeManager;

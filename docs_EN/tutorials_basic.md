@@ -44,7 +44,7 @@ After completing the above, press the Play button in the editor, and Cube should
 
 ### Sample Code
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -96,7 +96,7 @@ public class BasicScene : MonoBehaviour
 
 Move method of Cube class can be used to control the motors of Cube.
 
-```C#
+```csharp
 //--------------------------------------------------------
 // Motor control with time specification
 // https://toio.github.io/toio-spec/en/docs/ble_motor#motor-control-with-specified-duration
@@ -109,10 +109,9 @@ Move method of Cube class can be used to control the motors of Cube.
 cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
-```C#
+```csharp
 // The file name and class name must match.
 public class MoveScene : MonoBehaviour
 {
@@ -179,8 +178,6 @@ public class MoveScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 4. Make a sound
@@ -191,7 +188,7 @@ public class MoveScene : MonoBehaviour
 You can use PlayPresetSound method of Cube class to play a pre-prepared sound effect from Cube.
 For more information about the sound effects available, see [[here]](https://toio.github.io/toio-spec/en/docs/ble_sound/#sound-effect-id).
 
-```C#
+```csharp
 //--------------------------------------------------------
 // Play sound effects
 // https://toio.github.io/toio-spec/en/docs/ble_sound/#playing-sound-effects
@@ -205,7 +202,7 @@ cube.PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.St
 
 If you want to play an arbitrary sound, define the sound you want to play as an array in SoundOperation inner class of Cube class corresponding to the musical note, and play it using PlaySound method of Cube class.
 
-```C#
+```csharp
 //--------------------------------------------------------
 // Play MIDI note number
 // https://toio.github.io/toio-spec/en/docs/ble_sound/#playing-the-midi-note-numbers
@@ -224,10 +221,9 @@ cube.PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order=OR
 
 If you run Simulator in Unity, you will hear a sound.
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
-```C#
+```csharp
 // The file name and class name must match.
 public class SoundScene : MonoBehaviour
 {
@@ -281,8 +277,6 @@ public class SoundScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 5. Light up LED
@@ -294,7 +288,7 @@ public class SoundScene : MonoBehaviour
 
 The TurnLedOn method of Cube class can be used to control the LED on the bottom of Cube.
 
-```C#
+```csharp
 //--------------------------------------------------------
 // Turn on/off
 // https://toio.github.io/toio-spec/en/docs/ble_light/#turning-the-indicator-on-and-off
@@ -308,7 +302,7 @@ The TurnLedOn method of Cube class can be used to control the LED on the bottom 
 cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-```C#
+```csharp
 //--------------------------------------------------------
 // Continuous on/off
 // https://toio.github.io/toio-spec/en/docs/ble_light/#repeated-turning-on-and-off-of-indicator
@@ -326,10 +320,9 @@ new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte b
 cube.TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong)
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
-```C#
+```csharp
 // The file name and class name must match.
 public class LEDScene : MonoBehaviour
 {
@@ -374,8 +367,6 @@ public class LEDScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 6. Read toio ID(Position ID & Standard ID)
@@ -391,7 +382,7 @@ In the figure above, by placing Cube object at a different Standard ID, the LED 
 
 
 toio ID can be read directly as a member variable of Cube class.
-```c#
+```csharp
 public int x { get; }   // x-coordinate of Position ID
 public int y { get; }   // y-coordinate of Position ID
 public Vector2 pos { get; } // Position ID that has been converted to a 2D vector
@@ -399,10 +390,9 @@ public uint standardId { get; protected set; } // Standard ID
 ```
 > There is other information that can be read directly, please refer to [Cube Class API](usage_cube.md#3-cube-class-api) in the documentation.
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
-```c#
+```csharp
 public class toioIDScene : MonoBehaviour
 {
     float intervalTime = 0.1f;
@@ -447,8 +437,6 @@ public class toioIDScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 7. Detect sensors' events
@@ -466,7 +454,7 @@ Each event conforms to toio™ Core Cube Technical Specification, so please refe
 - Motor speed event: https://toio.github.io/toio-spec/en/docs/ble_motor#obtaining-motor-speed-information
 - Magnetic sensor events: https://toio.github.io/toio-spec/en/docs/ble_magnetic_sensor
 
-```C#
+```csharp
 // Button event
 // https://toio.github.io/toio-spec/en/docs/ble_button
 cube.buttonCallback.AddListener("EventScene", OnPressButton);
@@ -507,10 +495,9 @@ cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
 cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
-```C#
+```csharp
 // The file name and class name must match.
 public class EventScene : MonoBehaviour
 {
@@ -629,8 +616,6 @@ public class EventScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 8. Move multiple Cubes
@@ -643,17 +628,16 @@ public class EventScene : MonoBehaviour
 In the previous sample code, we connected to a single cube.<br>
 If you change the scanning part to the following code, you will be able to connect to multiple cubes.
 
-```C#
+```csharp
 // Search up to 12 cubes
 var peripherals = await new NearScanner(12).Scan();
 // Connect to Cube you searched.
 cubes = await new CubeConnecter().Connect(peripherals);
 ```
 
-<details>
-<summary>Execution code: (Click to expand)</summary>
+Execution code
 
-```C#
+```csharp
 // The file name and class name must match.
 public class MultiCubeScene : MonoBehaviour
 {
@@ -686,8 +670,6 @@ public class MultiCubeScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 9. Simplifying the source code using CubeManager class
@@ -711,7 +693,7 @@ CubeManager class can be used to simplify these routine processes.
 
 #### Before simplification
 
-```C#
+```csharp
 public class CubeManagerScene_RawSingle : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -741,7 +723,7 @@ public class CubeManagerScene_RawSingle : MonoBehaviour
 
 #### After simplification
 
-```C#
+```csharp
 public class CubeManagerScene_Single : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -771,7 +753,7 @@ public class CubeManagerScene_Single : MonoBehaviour
 
 #### Before simplification
 
-```C#
+```csharp
 public class CubeManagerScene_RawMulti : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -806,7 +788,7 @@ public class CubeManagerScene_RawMulti : MonoBehaviour
 
 #### After simplification
 
-```C#
+```csharp
 public class CubeManagerScene_Multi : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -836,7 +818,7 @@ public class CubeManagerScene_Multi : MonoBehaviour
 
 #### Before simplification
 
-```C#
+```csharp
 public class CubeManagerScene_RawReconnect : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -887,7 +869,7 @@ public class CubeManagerScene_RawReconnect : MonoBehaviour
 
 #### After simplification
 
-```C#
+```csharp
 public class CubeManagerScene_Reconnect : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -938,13 +920,13 @@ public class CubeManagerScene_Reconnect : MonoBehaviour
 
 Asynchronous search can be performed by calling ScanAsync method of NearScanner class.
 
-```C#
+```csharp
 nearScanner.ScanAsync(coroutineObject, callback, autoRunning);
 ```
 
 If you use NearScanner class directly, you will need to add various processes, but by executing the necessary processes inside CubeManager class, you can implement asynchronous connection/disconnection in an easy-to-understand manner.
 
-```C#
+```csharp
 public class CubeManagerScene_MultiAsync : MonoBehaviour
 {
     CubeManager cubeManager;

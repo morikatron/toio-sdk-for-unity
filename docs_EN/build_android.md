@@ -12,10 +12,11 @@ The following environments have been tested. You don't necessarily have to match
 | Unity | 2020.3.17f1 | 2020.3 or higher |
 
 Mobile Phone
-| Model Name | OS|
+
+| Model Name | OS |
 | -- | -- |
-| HUAWEI nova 5T | Android 9|
-| Xiaomi Mi Note 10 Lite| Android 10|
+| HUAWEI nova 5T | Android 9 |
+| Xiaomi Mi Note 10 Lite | Android 10 |
 
 <br>
 

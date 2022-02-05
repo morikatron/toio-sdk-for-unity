@@ -94,7 +94,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 Cube Prefab は toio™コア キューブ を模したゲームオブジェクトです。
 
 > 実際のキューブとは一部機能差があります。<br>
-> 詳細については、[機能の対応状況](usage_cube.md#RealSim-機能表)をご確認下さい。
+> 詳細については、[機能の対応状況](usage_cube.md#realsim-機能表)をご確認下さい。
 
 ## CubeSimulator のインスペクター
 
@@ -134,7 +134,7 @@ Cube Prefab は toio™コア キューブ を模したゲームオブジェク�
 | 持ち上げ中にホイール操作 | Cube の角度を変更する |
 | 右ドラッグ | Cube を力で引っ張る |
 
-詳細は技術ドキュメントの「シミュレータ」[4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction) を参照してください。
+詳細は技術ドキュメントの「シミュレータ」[4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-cube-オブジェクトの操作-cubeinteraction) を参照してください。
 
 
 # 5. Stage Prefab
@@ -160,4 +160,4 @@ Stage Prefab は、以下のオブジェクトをセットにしたものです�
 | Ctrl+左クリック | 選択した Cube を[フォーカス](usage_simulator.md#52-キューブをフォーカス)/フォーカスの取り消し |
 | Ctrl+右クリック | 指定位置に「[ターゲットポール](usage_simulator.md#51-ターゲットポール)」を設置・取消
 
-詳細は技術ドキュメントの「シミュレータ」[「5.Stage-Prefab」](usage_simulator.md#5-Stage-Prefab)を参照してください。
+詳細は技術ドキュメントの「シミュレータ」[「5.Stage-Prefab」](usage_simulator.md#5-stage-prefab)を参照してください。

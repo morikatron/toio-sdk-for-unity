@@ -10,13 +10,12 @@ toio SDK for Unity を使用することでキューブを使ったアプリを�
 
 
 <p align="center">
-<img src="./docs/res/main/overview.gif" width=720></img>
+<img src="./docs/res/main/overview.gif" width=720>
 </p>
 
-<details>
-<summary>toio SDK for Unity の一つ大きな特徴は、上図の様に、一つのソースコード（クリック展開）でシミュレータとリアルのキューブの両方を動かすことが出来ます。</summary>
+toio SDK for Unity の一つ大きな特徴は、このような一つのソースコードでシミュレータとリアルのキューブの両方を動かすことが出来ることです。
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -46,8 +45,6 @@ public class Hello_Toio : MonoBehaviour
     }
 }
 ```
-
-</details>
 
 
 ## 機能一覧
@@ -100,6 +97,6 @@ public class Hello_Toio : MonoBehaviour
 
 ## ライセンス
 
-- [LICENSE](LICENSE)
+- [LICENSE](https://github.com/morikatron/toio-sdk-for-unity/blob/main/LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
 - [知的財産権表記 / Trademark Notice](Trademark-Notices.md)
