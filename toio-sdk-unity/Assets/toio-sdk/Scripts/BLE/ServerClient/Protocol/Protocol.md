@@ -25,6 +25,15 @@
 
 <br>
 
+### C2S_CONNECT
+```
+// head
+- 0 : (U16)-buffer_size
+- 2 : (byte)-C2S_CONNECT
+// body
+- 3 : (U16)-listen_port
+```
+
 ### C2S_JOIN
 ```
 // head

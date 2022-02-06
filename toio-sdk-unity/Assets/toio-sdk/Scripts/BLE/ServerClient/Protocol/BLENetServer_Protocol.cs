@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace toio
+namespace toio.ble.net
 {
     public partial class BLENetServer
     {
@@ -39,11 +39,18 @@ namespace toio
         private Dictionary<byte, Action<BLENetRemoteHost, byte[]>> MakeProtocolTable()
         {
             var protocolTable = new Dictionary<byte, Action<BLENetRemoteHost, byte[]>>();
+            protocolTable.Add(BLENetProtocol.C2S_CONNECT, OnConnected_Client);
             protocolTable.Add(BLENetProtocol.C2S_JOIN, OnJoin_Peripheral);
             protocolTable.Add(BLENetProtocol.C2S_JOINS, OnJoin_Peripherals);
             protocolTable.Add(BLENetProtocol.C2S_SUBSCRIBE, OnRecv_Subscribe);
             protocolTable.Add(BLENetProtocol.C2S_READ_CALLBACK, OnRecv_ReadValue_Callback);
             return protocolTable;
+        }
+
+        private void OnConnected_Client(BLENetRemoteHost remoteHost, byte[] data)
+        {
+            uint listenPort = BLENetProtocol.Decode_C2S_CONNECT(data);
+            remoteHost.udpClient.Connect(remoteHost.endpoint.Address.ToString(), Convert.ToInt32(listenPort));
         }
 
         private void OnJoin_Peripheral(BLENetRemoteHost remoteHost, byte[] data)

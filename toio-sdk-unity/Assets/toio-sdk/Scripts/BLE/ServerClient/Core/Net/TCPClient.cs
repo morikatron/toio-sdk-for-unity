@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Sockets;
 using UnityEngine;
 
-namespace toio
+namespace toio.ble.net
 {
     //https://qiita.com/haminiku/items/0661568d0e311c8e8381
     //[ExecuteAlways]

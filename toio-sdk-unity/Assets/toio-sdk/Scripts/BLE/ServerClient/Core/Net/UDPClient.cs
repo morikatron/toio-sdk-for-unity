@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
-namespace toio
+namespace toio.ble.net
 {
     public class UDPClient
     {
@@ -11,6 +11,8 @@ namespace toio
         public int port { get; private set; }
         public UdpClient udpClient { get; private set; }
         public IPEndPoint endPoint { get; private set; }
+        public bool IsConnected { get { return null !=this.udpClient.Client && this.udpClient.Client.Connected; } }
+        public Action SocketExceptAction { get; set; }
 
         public bool Connect(string addr, int port)
         {
@@ -40,7 +42,8 @@ namespace toio
 
         public void SendData(byte[] buff)
         {
-            this.udpClient.BeginSend(buff, buff.Length, this.SendCallback, this.udpClient);
+            if (this.IsConnected)
+                this.udpClient.BeginSend(buff, buff.Length, this.SendCallback, this.udpClient);
         }
 
         private void SendCallback(IAsyncResult ar)
@@ -54,11 +57,15 @@ namespace toio
             catch(SocketException ex)
             {
                 Debug.LogFormat("send error. msg: {0}, code: {1}", ex.Message, ex.ErrorCode);
+                this.udpClient.Close();
+                this.udpClient = new UdpClient();
+                this.SocketExceptAction?.Invoke();
                 return;
             }
             catch(ObjectDisposedException)
             {
                 Debug.Log("既にソケットが閉じられています");
+                this.SocketExceptAction?.Invoke();
                 return;
             }
         }

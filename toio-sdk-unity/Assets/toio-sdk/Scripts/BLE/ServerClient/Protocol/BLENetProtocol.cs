@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace toio
+namespace toio.ble.net
 {
     public static class BLENetProtocol
     {
         // c2s protocol key
-        public const int C_UDP_PORT = 50007;
+        public const int C_PORT = 50007;
+        public const byte C2S_CONNECT = 99;
         public const byte C2S_JOIN = 100;
         public const byte C2S_JOINS = 101;
         public const byte C2S_SUBSCRIBE = 102;
@@ -61,11 +62,28 @@ namespace toio
         //      Client To Server (c2s) Convert Functions
         ///////////////////////////////////////////////////
 
+        // C2S_CONNECT
+        public static byte[] Encode_C2S_CONNECT(UInt16 listenPort)
+        {
+            int head = 3;
+            int body = 2;
+            byte[] buff = new byte[head+body];
+            WriteBytesU16(buff, 0, Convert.ToUInt16(buff.Length));
+            buff[2] = BLENetProtocol.C2S_CONNECT;
+            WriteBytesU16(buff, 3, listenPort);
+            return buff;
+        }
+        public static uint Decode_C2S_CONNECT(byte[] data)
+        {
+            uint listenPort = BitConverter.ToUInt16(data, 0);
+            return listenPort;
+        }
+
         // C2S_JOIN
         public static byte[] Encode_C2S_JOIN(int localCubeIndex, CubeReal cube)
         {
             var addrBytes = System.Text.Encoding.UTF8.GetBytes(cube.peripheral.device_address);
-            var nameBytes = System.Text.Encoding.UTF8.GetBytes(cube.peripheral.device_name);
+            var nameBytes = System.Text.Encoding.UTF8.GetBytes(cube.peripheral.device_name.Substring(cube.peripheral.device_name.Length-3));
 
             int head = 3;
             int body = 4 + addrBytes.Length + nameBytes.Length + cube.characteristicTable.Count;
@@ -111,9 +129,9 @@ namespace toio
         public static byte[] Encode_C2S_JOINS(List<CubeReal> allCubes)
         {
             List<byte[]> addrList = new List<byte[]>();
-            foreach(var c in allCubes) { addrList.Add(System.Text.Encoding.UTF8.GetBytes(c.peripheral.device_address)); }
+            foreach(var c in allCubes) { addrList.Add(System.Text.Encoding.UTF8.GetBytes(c.addr)); }
             List<byte[]> nameList = new List<byte[]>();
-            foreach(var c in allCubes) { nameList.Add(System.Text.Encoding.UTF8.GetBytes(c.peripheral.device_name)); }
+            foreach(var c in allCubes) { nameList.Add(System.Text.Encoding.UTF8.GetBytes(c.localName)); }
             List<int> charaLenList = new List<int>();
             foreach(var c in allCubes) { charaLenList.Add(c.characteristicTable.Count); }
 

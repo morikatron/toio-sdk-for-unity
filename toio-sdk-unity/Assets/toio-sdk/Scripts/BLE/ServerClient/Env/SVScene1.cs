@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using toio;
+using toio.ble.net;
 
 public class SVScene1 : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class SVScene1 : MonoBehaviour
     {
         // モバイル実装を注入
         Debug.Log(TCPServer.GetIPAddress());
-        BLEService.Instance.SetImplement(new BLENetService("192.168.0.9", 50006));//"192.168.0.4", 50006, "192.168.0.4", 50007));
+        BLEService.Instance.SetImplement(new BLENetService(this.gameObject, BLENetServer.GetLocalIPAddress(), BLENetProtocol.S_PORT));//"192.168.0.4", 50006, "192.168.0.4", 50007));
         // characteristicテーブルを作成
         characteristicTable = new Dictionary<string, BLECharacteristicInterface>();
         SetState(State.Scan);

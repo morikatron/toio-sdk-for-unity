@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-namespace toio
+namespace toio.ble.net
 {
     /*
     * SocketServer.cs

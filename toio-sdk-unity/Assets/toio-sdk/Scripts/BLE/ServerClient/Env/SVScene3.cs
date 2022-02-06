@@ -13,7 +13,7 @@ public class SVScene3 : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
-        BLEService.Instance.SetImplement(new BLENetService("192.168.0.9", 50006));
+        BLEService.Instance.SetImplement(new BLENetService(this.gameObject, "192.168.0.9", 50006));
 
         cm = new CubeManager(ConnectType.Real);
         //await cm.MultiConnect(N);

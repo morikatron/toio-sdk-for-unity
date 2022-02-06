@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
-namespace toio
+namespace toio.ble.net
 {
     public class UDPServer
     {
@@ -27,7 +27,7 @@ namespace toio
             }
             catch
             {
-                Debug.Log("listen fail");
+                Debug.Log("listen failed");
             }
 
             this.callback = callback;

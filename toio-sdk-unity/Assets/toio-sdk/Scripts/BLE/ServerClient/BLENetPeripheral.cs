@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using toio.ble.net;
 
 namespace toio
 {
@@ -10,7 +11,7 @@ namespace toio
         public string device_address { get; private set; }
         public string device_name { get; private set; }
         public float rssi { get; private set; }
-        public bool isConnected { get; private set; }
+        public bool isConnected { get { return this.remoteHost.udpClient.IsConnected; } }
 
         public BLENetServer server { get; private set; }
         public BLENetRemoteHost remoteHost { get; private set; }
@@ -18,17 +19,14 @@ namespace toio
         private Dictionary<string, BLENetCharacteristic> characteristicTable = new Dictionary<string, BLENetCharacteristic>();
         private TCallbackProvider<BLEPeripheralInterface> callback = new TCallbackProvider<BLEPeripheralInterface>();
 
-        public BLENetPeripheral(string[] serviceUUIDs, string device_address, string device_name, BLENetServer server, BLENetRemoteHost remoteHost, int localIndex, string[] charaNames)
+        public BLENetPeripheral(string[] serviceUUIDs, string device_address, string device_name, BLENetServer server, string[] charaNames)
         {
             this.serviceUUIDs = serviceUUIDs;
             this.device_address = device_address.ToUpper();
             this.device_name = device_name;
             this.rssi = 1.0f;
-            this.isConnected = true;
 
             this.server = server;
-            this.remoteHost = remoteHost;
-            this.localIndex = localIndex;
 
             foreach(var chara in charaNames)
             {
@@ -37,13 +35,28 @@ namespace toio
             }
         }
 
+        public void RegisterRemoteHost(BLENetRemoteHost remoteHost, int localIndex)
+        {
+            this.remoteHost = remoteHost;
+            this.localIndex = localIndex;
+            Func<bool> checkConnection = () => {
+                if (!this.remoteHost.IsConnected)
+                {
+                    this.ConnectionNotify(this);
+                    return true;
+                }
+                return false;
+             };
+            this.server.FuncTable.Add(this.GetHashCode(), checkConnection);
+        }
+
         /// <summary>
         /// peripheralに接続
         /// [peripheral:1 - characteristic:多]の関係なので、characteristicActionが複数回呼び出される
         /// </summary>
         public void Connect(Action<BLECharacteristicInterface> characteristicAction)
         {
-            this.OnConnected(this.device_address);
+            this.ConnectionNotify(this);
             foreach(var chara in this.characteristicTable)
             {
                 characteristicAction(chara.Value);
@@ -80,30 +93,6 @@ namespace toio
         public void ConnectionNotify(BLEPeripheralInterface peri)
         {
             this.callback.Notify(peri);
-        }
-
-        /// <summary>
-        /// 通信コールバック(接続時)
-        /// </summary>
-        private void OnConnected(string device_address)
-        {
-            if (!this.isConnected)
-            {
-                this.isConnected = true;
-                this.ConnectionNotify(this);
-            }
-        }
-
-        /// <summary>
-        /// 通信コールバック(切断時)
-        /// </summary>
-        private void OnDisconnected(string device_address)
-        {
-            if (this.isConnected)
-            {
-                this.isConnected = false;
-                this.ConnectionNotify(this);
-            }
         }
     }
 }

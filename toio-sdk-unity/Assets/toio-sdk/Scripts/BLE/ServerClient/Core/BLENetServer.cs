@@ -4,7 +4,7 @@ using System.Net;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace toio
+namespace toio.ble.net
 {
     public partial class BLENetServer
     {
@@ -14,7 +14,6 @@ namespace toio
         // server
         private string listenAddr;
         private int listenPort;
-        private int sendPort;
         private UDPServer serverComp;
         // リモートホスト
         private Dictionary<string, BLENetRemoteHost> safeHostTable = new Dictionary<string, BLENetRemoteHost>();
@@ -22,24 +21,22 @@ namespace toio
         private Dictionary<string, ManagedMemoryStream> safeMemoryBook { get; set; }
         // メインスレッドワーカー
         private GameObject mainthreadObject { get; set; }
-        private FunctionWorker mainthreadFuncWorker { get; set; }
-        private BLENetServer.UnityWorker mainthreadProvider { get; set; }
+        private BLENetServer.UnityWorker mainthreadWorker { get; set; }
 
-        public BLENetServer(string listenAddr, int listenPort, int sendPort)
+        public Dictionary<int, Func<bool>> FuncTable { get { return this.mainthreadWorker.FuncTable; } }
+
+        public BLENetServer(GameObject workerObject, string listenAddr, int listenPort)
         {
             this.listenAddr = listenAddr;
             this.listenPort = listenPort;
-            this.sendPort = sendPort;
 
-            this.mainthreadObject = new GameObject();
-            this.mainthreadObject.name = "~BLE.Net.Server.mainthreadObject";
-            this.mainthreadFuncWorker = this.mainthreadObject.AddComponent<FunctionWorker>();
-            this.mainthreadProvider = this.mainthreadObject.AddComponent<UnityWorker>();
+            this.mainthreadObject = workerObject;
+            this.mainthreadWorker = this.mainthreadObject.AddComponent<UnityWorker>();
             this.safeMemoryBook = new Dictionary<string, ManagedMemoryStream>();
             // udp
             this.serverComp = new UDPServer();
             // プロトコル
-            this.mainthreadProvider.Initialize(this, this.MakeProtocolTable());
+            this.mainthreadWorker.Initialize(this, this.MakeProtocolTable());
         }
 
         public void Start()
@@ -68,6 +65,24 @@ namespace toio
             }
         }
 
+        public static string GetLocalIPAddress()
+        {
+            string ipaddress = "";
+            IPHostEntry ipentry = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in ipentry.AddressList)
+            {
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    ipaddress = ip.ToString();
+                    if (ipaddress.Contains("192.168"))
+                    {
+                        break;
+                    }
+                }
+            }
+            return ipaddress;
+        }
+
         private void UDP_OnRecvData(IPEndPoint remoteEP, byte[] recvbuffer, int size)
         {
             lock (memLock)
@@ -75,7 +90,6 @@ namespace toio
                 var ip = remoteEP.Address.ToString();
                 if (!this.safeMemoryBook.ContainsKey(ip))
                 {
-                    Debug.LogFormat("<color=#00ff00><b>■</b>---  接続開始 ip={0}, port={1}  ---<b>■</b></color>", remoteEP.Address, remoteEP.Port);
                     // 静的バッファとして最初にSTATIC_BUFFER_SIZE分のメモリを確保
                     // メモリ自動拡張にした場合、メモリ増加時に内部的にディープメモリコピーが行われ、
                     // メインスレッドから参照するバイト配列の先頭アドレスが割り込み変更される可能性があるため
@@ -84,7 +98,6 @@ namespace toio
                 if (!this.safeHostTable.ContainsKey(ip))
                 {
                     var udp = new UDPClient();
-                    udp.Connect(ip, this.sendPort);
                     this.safeHostTable.Add(ip, new BLENetRemoteHost(ip, remoteEP, udp));
                 }
 
@@ -99,6 +112,7 @@ namespace toio
             private Dictionary<byte, Action<BLENetRemoteHost, byte[]>> protocolTable;
             private static byte[] workingBuffer = new byte[STATIC_BUFFER_SIZE];
             private static byte[] workbuff = new byte[STATIC_BUFFER_SIZE];
+            public Dictionary<int, Func<bool>> FuncTable = new Dictionary<int, Func<bool>>();
 
             public void Initialize(BLENetServer owner, Dictionary<byte, Action<BLENetRemoteHost, byte[]>> protocolTable)
             {
@@ -143,6 +157,17 @@ namespace toio
                             this.protocolTable[order].Invoke(remoteHost, workbuff);
                         }
                     }
+                }
+
+                List<int> deleteList = new List<int>();
+                foreach(var action in this.FuncTable)
+                {
+                    if (action.Value.Invoke())
+                        deleteList.Add(action.Key);
+                }
+                foreach(var key in deleteList)
+                {
+                    this.FuncTable.Remove(key);
                 }
             }
 
