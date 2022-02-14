@@ -205,7 +205,10 @@ namespace toio
             {
                 var cube = this.cubeTable[peripheral.device_address];
                 await this.connecter.ReConnect(cube);
-                this.connectedAction(cube, new CONNECTION_STATUS(CONNECTION_STATUS.RE_CONNECTED));
+                if (null != this.connectedAction)
+                {
+                    this.connectedAction(cube, new CONNECTION_STATUS(CONNECTION_STATUS.RE_CONNECTED));
+                }
             }
             else
             {
