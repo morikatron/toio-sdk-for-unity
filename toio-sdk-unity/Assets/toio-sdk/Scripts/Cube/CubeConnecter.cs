@@ -155,11 +155,28 @@ namespace toio
             {
                 try
                 {
+                    // Wait for previous connection
                     while(this.isConnecting) { await UniTask.Delay(100); }
 
                     this.isConnecting = true;
+
+                    // Connect Characteristics
                     var characteristicTable = await this.ConnectCharacteristics(peripheral);
-                    var version = await this.GetProtocolVersion(characteristicTable[CubeReal.CHARACTERISTIC_CONFIG]);
+                    if (characteristicTable is null)
+                    {
+                        this.isConnecting = false;
+                        return null;
+                    }
+
+                    // Get protocol version
+                    var version = await this.GetProtocolVersion(peripheral, characteristicTable[CubeReal.CHARACTERISTIC_CONFIG]);
+                    if (!peripheral.isConnected || version is null)
+                    {
+                        this.isConnecting = false;
+                        return null;
+                    }
+
+                    // Instantiate CubeReal
                     CubeReal cube = null;
                     switch(version)
                     {
@@ -258,28 +275,44 @@ namespace toio
                         characteristicTable[chara.characteristicUUID] = chara;
                 });
 
-                bool isBreak = true;
+                // Wait for peripheral connection
                 while (true)
                 {
-                    await UniTask.Delay(100);
-                    isBreak = true;
+                    if (peripheral.isConnected)
+                        break;
+                    if (waitSeconds < (Time.time - startTime))
+                        return null;
+                    await UniTask.Delay(50);
+                }
+
+                // Wait for characterisitcs connection
+                bool isAllCharaConnected = true;
+                while (true)
+                {
+                    // Success
+                    isAllCharaConnected = true;
                     foreach (var chara in characteristicTable.Values)
                     {
                         if (null == chara)
                         {
-                            isBreak = false;
+                            isAllCharaConnected = false;
                             break;
                         }
                     }
-                    if (isBreak)
-                    {
+                    if (isAllCharaConnected)
                         break;
-                    }
 
+                    // Peripheral Disconnected
+                    if (!peripheral.isConnected)
+                        return null;
+
+                    // Timeout
                     if (waitSeconds < (Time.time - startTime))
                     {
                         return null;
                     }
+
+                    await UniTask.Delay(100);
                 }
 
                 return characteristicTable;
@@ -290,27 +323,39 @@ namespace toio
             /// 必要な遅延処理は機種によって異なります, デフォルトでは安全性優先で長めの遅延時間となっています.
             /// 遅延時間を変更したい場合はoverrideを推奨.
             /// </summary>
-            protected virtual async UniTask<string> GetProtocolVersion(BLECharacteristicInterface config)
+            protected virtual async UniTask<string> GetProtocolVersion(BLEPeripheralInterface peripheral, BLECharacteristicInterface config)
             {
                 await UniTask.Delay(500);
+                if (!peripheral.isConnected) return null;
 
                 var start_time = Time.time;
                 string version = null;
-                while(null == version)
+                while(true)
                 {
+                    // Write
                     byte[] buff = new byte[2];
                     buff[0] = 1;
                     buff[1] = 0;
                     config.WriteValue(buff, true);
 
+                    // Delay
                     await UniTask.Delay(500);
+                    if (!peripheral.isConnected) return null;
 
+                    // Read
                     config.ReadValue(((chara, resultBuff) =>
                     {
                         version = System.Text.Encoding.UTF8.GetString(resultBuff, 2, resultBuff.Length-2);
                     }));
 
-                    await UniTask.Delay(500);
+                    // Wait for result
+                    for (int ms = 0; ms < 500; ms += 50)
+                    {
+                        await UniTask.Delay(50);
+                        if (!peripheral.isConnected) return null;
+                        if (version != null) break;
+                    }
+                    if (version != null) break;
                 }
 
                 return version;
