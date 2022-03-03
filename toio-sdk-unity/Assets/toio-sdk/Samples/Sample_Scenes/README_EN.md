@@ -24,11 +24,18 @@ The following methods can be used to move and hold game objects in a common spac
 // Smaple_Scenes_Preload.cs
 void Start(){
     // ...
-#if UNITY_EDITOR
+
     // Keep Cubes across scenes
-    foreach (var c in GameObject.FindGameObjectsWithTag("Cube"))
-        DontDestroyOnLoad(c);
-#endif
+    if (CubeScanner.actualTypeOfAuto == ConnectType.Simulator)
+    {
+        try
+        {
+            foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
+                DontDestroyOnLoad(c);
+        }
+        catch (UnityException){}
+    }
+
     // ...
 }
 ```
