@@ -90,9 +90,6 @@ Type Operarionに追加するクラスは必要に応じて適宜追加してく
 - [Toio]->[Visual Scripting]から
   - Converter To Byte
   - Visual Script Cube Configration
-  - Visual Script Cube Connecter
-  - Visual Script Near Scanner
-  - Visual Script Nearest Scanner
 - [Toio]->[Simulator]から
   - Mat
 - [Toio]->[Navigation]から
