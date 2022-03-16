@@ -105,7 +105,7 @@ Visual Scriptingを利用するために必要な作業を終えたら、Visual 
 
 `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/`までフォルダを移動し、`0.BasicScene シーンファイル`をダブルクリックで開きます。
 
-ヒエラルキーの[scene]をクリックします。インスペクター上の[Badic Scene(Script)]に入っているチェックを外し、[Script Machine]にチェックを入れてください。
+ヒエラルキーの[scene]をクリックします。インスペクター上の[Basic Scene(Script)]に入っているチェックを外し、[Script Machine]にチェックを入れてください。
 
 <img src="res/download_sdk/change_csharp_to_visual_scripting.png">
 
