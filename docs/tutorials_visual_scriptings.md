@@ -2,10 +2,10 @@
 
 ## 目次
 - [1. 概要](tutorials_visual_scriptings.md#1-概要)
-- [2. ステージの配置方法](tutorials_visual_scriptings#2-ステージの配置方法)
-- [3. ステージの配置方法](tutorials_visual_scriptings#3-キューブの接続方法)
-- [4. 複数のキューブを利用する場合](tutorials_visual_scriptings#4-複数のキューブを利用する場合)
-- [5. イベントの検出](tutorials_visual_scriptings#5-イベントの検出)
+- [2. ステージの配置方法](tutorials_visual_scriptings.md#2-ステージの配置方法)
+- [3. ステージの配置方法](tutorials_visual_scriptings.md#3-キューブの接続方法)
+- [4. 複数のキューブを利用する場合](tutorials_visual_scriptings.md#4-複数のキューブを利用する場合)
+- [5. イベントの検出](tutorials_visual_scriptings.md#5-イベントの検出)
 
 # 1. 概要
 toio SDK for UnityにおけるVisual Scriptingは現在(2022年3月11日)、チュートリアルで利用する全ての機能に対応しております。
