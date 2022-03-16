@@ -89,6 +89,7 @@ Type Operarionに追加するクラスは必要に応じて適宜追加してく
   - Movement
 - [Toio]->[Visual Scripting]から
   - Converter To Byte
+  - Sensor Checker
   - Visual Script Cube Configration
 - [Toio]->[Simulator]から
   - Mat
@@ -96,6 +97,8 @@ Type Operarionに追加するクラスは必要に応じて適宜追加してく
   - Navigator
 - [Enum]から
   - Connect Type
+- [UnityEngine]から
+  - Wait for Seconds RealTime
 
 ### 3.Visual Scripting版のサンプルの実行、動作確認
 Visual Scriptingを利用するために必要な作業を終えたら、Visual Scripting版のサンプルを実行してみましょう。

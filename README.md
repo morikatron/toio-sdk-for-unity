@@ -74,7 +74,6 @@ public class Hello_Toio : MonoBehaviour
   - 目標に移動する以外に目標から離れるようなナビゲーションもできる
 - Visual Scripting
   - Unity2021から標準となったVisual ScriptingでCube, CubeHandle, Navigatorが利用できる
-  - Cubeの一部の機能は未対応
 
 ## 動作環境
 

@@ -5,9 +5,10 @@
 - [2. ステージの配置方法](tutorials_visual_scriptings#2-ステージの配置方法)
 - [3. ステージの配置方法](tutorials_visual_scriptings#3-キューブの接続方法)
 - [4. 複数のキューブを利用する場合](tutorials_visual_scriptings#4-複数のキューブを利用する場合)
+- [5. イベントの検出](tutorials_visual_scriptings#5-イベントの検出)
 
 # 1. 概要
-toio SDK for UnityにおけるVisual Scriptingは現在(2022年3月11日)、`\Assets\toio-sdk\Tutorials\1.Basic\5.Event`における「センサーイベントの検知」以外の全ての機能に対応しております。
+toio SDK for UnityにおけるVisual Scriptingは現在(2022年3月11日)、チュートリアルで利用する全ての機能に対応しております。
 
 Visual Scripting版のサンプルは基本的にC#版のサンプルを再現する形で実装されているため、
 本資料は[チュートリアル(Basic)](tutorials_basic.md)のVisual Scripting向け補足資料となっています。
@@ -160,3 +161,64 @@ StartでCubeManagerを利用した接続処理を書いたので、UpdateでCube
 また、[Codebase]->[Toio]->[Cube Manager]->[Multi Connext Async(Cube Num, Coroutine Object, Connect Action, Auto Running)]を利用すると、非同期で接続を行うことも可能です。
 
 詳しくは`\Assets\toio-sdk\Tutorials\1.Basic\6.MultiCube`や`\Assets\toio-sdk\Tutorials\1.Basic\7.CubeManager`を参考にしてください。
+
+
+# 5. イベントの検出
+Visual Scriptingにおけるイベントの検出方法を説明します。
+
+ここでは例として、キューブのボタンが押された時に、音を鳴らすイベントが発生させます。
+これは`\Assets\toio-sdk\Tutorials\1.Basic\5.Event`の一部機能を抜粋したものとなっています。
+
+## 1. 準備
+まず最初に、本チュートリアルの「2. ステージの配置方法」と「3.キューブの接続方法」を参考に、Startでステージ上のキューブと接続するところまで進めてください。
+
+以下のようなスクリプトまで作れていれば大丈夫です。
+
+<div align="center"><img src="res/tutorial_visual_scriptings/start.png"></div>
+
+## 2. イベント検出の設定を行う
+次に、検出したいイベントを設定します。
+
+[Codebase]->[Toio]->[Visual Script]->[Sensor Checker]->[Create Sensor Checker]ノードを追加します。
+
+「今回はキューブのボタンが押された」というイベントを検出したいので[Create Sensor Checker]の[Button Callback]ポートのみにチェックを入れます。
+
+次に[Set Graph Varible] (Name: cube)と[Create Sensor Checker]を接続します。
+
+また、[Create Sensor Checker]のCubeポートにはイベントを発生させたいキューブのCubeクラスを入力してください。
+
+最終的には下図のような接続になります。
+
+<div align="center"><img src="res/tutorial_visual_scriptings/event_config.png"></div>
+
+これでキューブのボタンが押された際に、イベントが発生するようになりました。
+
+## 3. イベントを作成する
+ここまでで、イベントが検出できるようになったので、ここからはイベントが発生した際にどのような操作を行うかの処理を作成していきます。
+
+グラフエディター上で右クリックをして[Events]->[T4u Event]をみると様々なイベントが存在していることが確認できます。
+
+これらのイベントは[Create Sensor Checker]でチェックを入れることが出来る各コールバックに対応しています。また、イベントノードのCubeポートは[Create Sensor Checker]で入力したキューブのCubeクラスを利用することになります。今回はボタンを押した際のイベントを利用したいので以下のノードを追加していきます。
+
+- [Events]->[T4u Event]->[On Press Button]
+- [Codebase]->[Toio]->[Cube]->[Play Preset Sound]
+
+追加したら以下のように接続していきます。
+
+- [On Press Button] - [Play Preset Sound]
+- [On Press Button] (Cubeポート) - [Play Preset Sound] (Cubeポート)
+
+最終的に以下のような接続になります。
+
+<div align="center"><img src="res/tutorial_visual_scriptings/on_press_button.png"></div>
+
+## 4. 動かして確認する
+これで必要なスクリプトは完成です。Unityエディターに戻ってプレイボタンを押し、実際に動かしてみましょう。
+
+以下のようにキューブのボタンを左クリックするとグラフエディター上でイベントが発火し、音がなることが確認できると思います。
+
+<div align="center"><img src="res/tutorial_visual_scriptings/event_success.gif"></div>
+
+イベントは他にも種類があり、センサーに対しても様々な設定を施すことができます。
+
+詳しくは`\Assets\toio-sdk\Tutorials\1.Basic\5.Event`に他のイベントの例があるので、そちらを参考にしてください。
