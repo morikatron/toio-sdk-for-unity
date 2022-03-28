@@ -229,6 +229,7 @@ namespace toio
                     if (this.isScanning && foundObjs.Count < satisfiedNum &&
                         !this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
                     {
+                        foundObjs.Add(obj);
                         if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
                         {
                             peripheral = this.peripheralDatabase[peripheral.device_address];
@@ -254,7 +255,6 @@ namespace toio
                         if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
                         if (!foundObjs.Contains(obj))
                         {
-                            foundObjs.Add(obj);
                             foundCallback.Invoke(obj);
                         }
                     }
@@ -286,7 +286,8 @@ namespace toio
                     }
                     if (!this.isScanning && this.autoRunning)
                     {
-                        this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
+                        if (this.coroutineObject != null)
+                            this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
                     }
                 }
             }
@@ -546,7 +547,8 @@ namespace toio
                     }
                     if (!this.isScanning && this.autoRunning)
                     {
-                        this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
+                        if (this.coroutineObject != null)
+                            this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
                     }
                 }
             }
