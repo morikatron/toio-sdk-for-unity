@@ -18,8 +18,12 @@ namespace toio.VisualScript
         public static string OnMagnetState = "OnMagnetState";
         public static string OnMagneticForce = "OnMagneticForce";
         public static string OnAttitude = "OnAttitude";
+        public static string AsyncConnected = "AsyncConnected";
     }
 
+    /******************************************************
+                        Sensor Event                        
+    *******************************************************/
     public class BaseToioEvent : EventUnit<Cube>
     {
         [DoNotSerialize]// No need to serialize ports.
@@ -175,6 +179,47 @@ namespace toio.VisualScript
         public override EventHook GetHook(GraphReference reference)
         {
             return new EventHook(EventNames.OnAttitude);
+        }
+    }
+
+    /******************************************************
+                        Other Event                        
+    *******************************************************/
+    public struct OnConnectedArgs
+    {
+        public Cube cube {get; private set;}
+        public CONNECTION_STATUS connection_status {get; private set;}
+        public OnConnectedArgs(Cube cube, CONNECTION_STATUS connection_status)
+        {
+            this.cube = cube;
+            this.connection_status = connection_status;
+        }
+    }
+
+    [UnitTitle("On Async Connected")]
+    [UnitCategory("Events\\t4u Event")]
+    public class OnAsyncConnected: EventUnit<OnConnectedArgs>
+    {
+        [DoNotSerialize]// No need to serialize ports.
+        public ValueOutput cube { get; private set; }
+        public ValueOutput connection_status {get; private set;}
+        protected override bool register => true;
+
+        protected override void Definition()
+        {
+            base.Definition();
+            cube = ValueOutput<Cube>(nameof(cube));
+            connection_status = ValueOutput<CONNECTION_STATUS>(nameof(connection_status));
+        }
+        // Setting the value on our port.
+        protected override void AssignArguments(Flow flow, OnConnectedArgs args)
+        {
+            flow.SetValue(cube, args.cube);
+            flow.SetValue(connection_status, args.connection_status);
+        }
+        public override EventHook GetHook(GraphReference reference)
+        {
+            return new EventHook(EventNames.AsyncConnected);
         }
     }
 }
