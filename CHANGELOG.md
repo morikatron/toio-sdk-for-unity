@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.5.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2022-TBD-TBD
+
+★ **Upgraded to Unity 2021.2.16**
+
+### Added
+
+- [Docs] Documents are published with [Github Pages](https://morikatron.github.io/toio-sdk-for-unity/)
+
+### Fixed
+
+- [Cube] Fix connecting to connected cube on WebGL blocking `CubeScanner.NearestScan` issue.
+- [Cube] Fix disconnecting connected cube blocking `CubeConnecter` issue.
+- [Cube] Fix `CubeManager.connectedAction`'s null reference issue.
+- [Simulator] Fix tag `t4u_Magnet` not defined issue.
+
+
 ## [1.4.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.4.0) - 2021-11-30
 
 ★ **Upgraded to Unity 2020.3.17f1 LTS.**
