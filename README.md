@@ -1,6 +1,8 @@
 # toio SDK for Unity
 
-> **Switch Language:**　`日本語`　|　[`English`](README_EN.md)
+> **Switch Language:** | `日本語` | [`English`](README_EN.md)
+
+> [`Github Pages版`](https://morikatron.github.io/toio-sdk-for-unity/)
 
 ## 概要
 
@@ -89,7 +91,7 @@ public class Hello_Toio : MonoBehaviour
 
 インストール、チュートリアル、サンプル紹介、機能解説などの詳細については以下のドキュメントをご参照ください。
 
-- [「toio SDK for Unity ドキュメント」](docs/README.md)
+- [「toio SDK for Unity ドキュメント」](docs/README.md) (Markdown 版)
 
 ## サンプルアプリ
 
