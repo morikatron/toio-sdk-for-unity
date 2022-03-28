@@ -91,8 +91,7 @@ public class Hello_Toio : MonoBehaviour
 
 For details on installation, tutorials, sample introductions, and feature explanations, please refer to the following documents.
 
-- [toio SDK for Unity Documentation](docs_EN/README.md) (Markdown version)
-- [toio SDK for Unity Documentation](https://morikatron.github.io/toio-sdk-for-unity/) (Github Pages version)
+- [toio SDK for Unity Documentation](docs_EN/README.md)
 
 ## License
 
