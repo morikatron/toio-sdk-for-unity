@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [Docs] Documents are published with [Github Pages](https://morikatron.github.io/toio-sdk-for-unity/)
+- [Visual Scripting] Supports Unity VIsual Scripting(Version 1.7.8).
+  - [Visual Scripting Library] Add `VisualScriptingLibrary`.This library include functions for using toio-sdk-for-unity in Unity Visual Scripting.
+  - [Tutorials] Add Tutorials with Unity Visual Scripting.
+  - [Docs] Add Tutorial Document in Unity Visual Scripting.
 
 ### Fixed
 
