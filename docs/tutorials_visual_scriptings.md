@@ -8,10 +8,21 @@
 - [5. イベントの検出](tutorials_visual_scriptings.md#5-イベントの検出)
 
 # 1. 概要
-toio SDK for UnityにおけるVisual Scriptingは現在(2022年3月11日)、チュートリアルで利用する全ての機能に対応しております。
+Unity Visual ScriptingはUnity2021から標準機能として採用されたビジュアルプログラミング言語です。
+
+toio SDK for UnityにおけるVisual Scriptingは現在(2022年3月29日)、チュートリアルで利用する全ての機能に対応しております。
+
+toio SDK for UnityをVisual Scriptingで利用することで、
+- C#の知識なしでキューブを動かすプログラムを作成できる。
+- 視覚的にプログラムを作ることが出来るため、流れを追いやすい。
+- 実行中にプログラムの動きを見ることが出来るため、バグを発見しやすい
+
+といったメリットがあります。
 
 Visual Scripting版のサンプルは基本的にC#版のサンプルを再現する形で実装されているため、
 本資料は[チュートリアル(Basic)](tutorials_basic.md)のVisual Scripting向け補足資料となっています。
+
+本資料を読む前に、Visual Scripting向けの初期設定を行っていない方は先に[「コチラ」](visual_scripting_setting.md)を読みながら設定を行ってください。
 
 # 2. ステージの配置方法
 
@@ -24,9 +35,10 @@ Visual Scripting版のサンプルは基本的にC#版のサンプルを再現�
    ※「シーンビュー」に切り替えてマウス操作すれば「Cube」オブジェクトの移動も出来ます。
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします(※名前は自由です)。
 6. 「scene」オブジェクトを選択し、インスペクター上から「コンポーネントを追加」->[Visual Scripting]->[Script Machine]をクリックします。
-7. プロジェクトビューを右クリックし[Create]->[Visual Scripting]->[Script Graph]を選択して、任意の名前を入力してスクリプトグラフを作成します。
-8. 作成したスクリプトグラフのアイコンをドラッグし、sceneオブジェクトで追加したScript MachineコンポーネントのGraphフィールドにドラッグ&ドロップします。
-9. インスペクター上の[Edit Graph]が選択可能になるのでクリックするとグラフビューが開き、任意のスクリプトを書くことが出来るようになります。
+7. プロジェクトビューを操作してスクリプトグラフ(Visual Scriptingで処理を書くファイル)を保存する場所を作成します。場所や名前などは自由ですが、今回は`\Assets\toio-sdk\Tutorials`以下に`VisualScriptingSample`というフォルダを作成します。
+8. 作成したフォルダ内のプロジェクトビュー上で右クリックし[Create]->[Visual Scripting]->[Script Graph]を選択して、任意の名前を入力し、スクリプトグラフを作成します。
+9. 作成したスクリプトグラフのアイコンをドラッグし、sceneオブジェクトで追加したScript MachineコンポーネントのGraphフィールドにドラッグ&ドロップします。
+10. インスペクター上の[Edit Graph]が選択可能になるのでクリックするとグラフビューが開き、任意のスクリプトを書くことが出来るようになります。
 
 
 <div align="center"><img width=800 src="res/tutorial_visual_scriptings/script_machine.png"></div>
@@ -37,128 +49,105 @@ Visual Scripting版ではキューブとの接続にCubeManaggerを利用する�
 
 ここでは、`\Assets\toio-sdk\Tutorials\1.Basic\0.BasicScene`のサンプルを例に、キューブを接続、回転させる方法を説明します。
 
+## キューブの接続方法の全体の流れ
+- [1. 変数の初期化](#1-変数の初期化)
+- [2. キューブの接続](#2-キューブの接続)
+- [3. Updateで接続が出来たかを確認する](#3-Updateで接続が出来たかを確認する)
+- [4. Cubeを動かす](#4-cubeを動かす)
+- [5. 実際に動かす](#5-実際に動かす)
+
 ## 1. 変数の初期化
 グラフビューを開いたら、まず最初にブラックボードから変数の初期化を行います。
-Graph変数で変数名を「cube」と入力し、変数の型はNullに設定します。
+
+グラフビュー左側にあるGraph変数で変数名を「cube」と入力し、[+]アイコンを押すことで変数を追加できます。変数の型は(Null)に設定します。
 
 <div align="center"><img src="res/tutorial_visual_scriptings/blackboard.png"></div>
 
-## 2. CubeManagerの作成とキューブとの接続
-変数の初期化が終わったら次にCubeManagerを利用してキューブの接続を試みます。
-グラフビュー上で右クリックをするとノードをグラフビュー上に追加できるので、以下のノードを用意してください。
-- [Events]->[Lifecycle]->[On Start]
-- [Codebase]->[Toio]->[Cube Manager]->[Create Cube Manager(Type)]
-- [Codebase]->[Toio]->[Cube Manager]->[Single Connect]
+## 2. キューブの接続
+変数の初期化が終わったら次にキューブの接続を試みます。
 
-ノードの追加ができたら以下のようにノード間を接続してください。
-また、On StartノードをクリックするとGraph Inspecter上にCoroutineというチェックボックスが表示されるのでこれにチェックを入れてください。
+グラフビュー上で何もない箇所を右クリックすると、配置可能なノードの一覧が表示されるため、以下のノードを選択肢してグラフビュー上に追加してください。
+- [Events]->[Lifecycle]->[On Start]
+- [T4U]->[Connecter]->[Visual Scripting Connect Cube]
+- [Variables]->[Graph]->[Set cube]
+
+<div align="center"><img src="res/tutorial_visual_scriptings/add_node.gif"></div>
+
+また、On Startノードをクリックするとグラフインスペクター上にCoroutineというチェックボックスが表示されるのでこれにチェックを入れてください。
 
 <div align="center"><img src="res/tutorial_visual_scriptings/make_cubemanager.png"></div>
 
-## 3. CubeManagerの接続を確認する
-キューブとの接続が開始されたら接続状況を確認するための処理をつくります。
-これはCubeManagerクラスが持つCubeリスト(Cubes)が格納しているCubeクラスの数を数えることで確認します。
 
-### Is Connectedサブグラフの作成
-処理が少し大きくなるため、[Nesting]->[Subgraph]でサブグラフを追加します。
+ノードの追加が出来たら、ノードとノードを接続します。
 
-追加したらサブグラフをダブルクリックしてサブグラフの処理を書いていきます。Graph Inspecter上の(Title)で名前を付けることが出来るので適当な名前を付けておきましょう。今回は「Is Connected」という名前を付けておきます。
+ポート(ノードの左右についている三角や円の部分)を左クリックするとマウスポインタまで線が伸びるため、つなげたいポートまで線を伸ばして左クリックを行うとノード間を接続することが可能になります。
 
-このサブグラフではCubeリストを受け取って、格納しているCubeクラスが接続したい数に達しているかどうかを戻します。
+<div align="center"><img src="res/tutorial_visual_scriptings/connect_node.png"></div>
 
-以下のノードを追加してください。
-
-- [Collections]->[Count items]
-- [Codebase]->[System]->[Integer]->[Integer Literal] (値を1に設定)
-- [Logic]->[Equal]
-
-また[Input],[Output]をクリックしてGraph Inspecter上にそれぞれ以下のように設定を行います。
-
-<div align="center"><img src="res/tutorial_visual_scriptings/is_connected_input.png">    <img src="res/tutorial_visual_scriptings/is_connected_output.png"></div>
-
-ノードの追加、設定が終わったら以下のようにノードを接続します。接続が終わればサブグラフでの作業は終了です。
-<div align="center"><img src="res/tutorial_visual_scriptings/is_connected.png"></div>
-
-### Is Connectedサブグラフと他のノードを接続する。
-サブグラフの作成が終わったら、このサブグラフを利用してCubeManagerのCubeリストの数が接続したい数に達しているかを調べる処理を書きます。
-[Codebase]->[Toio]->[Cube Manager]->[Get Cubes]ノードを追加し、[Is Connected]ノードと接続してください、
-
-## 4. Cubeが接続するまで待機する。
-これでCubeManagerがキューブと接続をする処理と、接続状況を確認するための処理が完成しました。
-
-次に、接続が終了するまで処理を待機する処理を書いていきます。
-[Time]->[Wait Until]ノードを追加してください。追加したら、以下のノード同士を接続してください。
-- [Create Cube Manager(Type)] - [Get Cubes]
-- [Single Connect] - [Wait Until]
-- [Is Connected] - [Wait Until] (Conditionポート)
-
-以下の図のようになります。
-
-<div align="center"><img src="res/tutorial_visual_scriptings/wait_until.png"></div>
-
-
-## 5. CubeManagerからCubeを取り出す。
-接続が完了したらCubeManagerからCubeクラスを取り出します。以下のノードを追加してください。
-- [Variables]->[Graph]->[Set Graph Variable] (Name: cube)
-- [Collections]->[First item]
-
-追加したら以下のノード同士を接続します。
-- [Wait Until] - [Set Graph Variable]
-- [Get Cubes] - [First item]
-- [First item] - [Set Graph Variable] (New Valueポート)
-
-これでStartにおける処理は完了です。最終的なノード同士の接続は以下のようになります。
+グラフビュー上に追加したノード群を以下のように接続します。
 
 <div align="center"><img src="res/tutorial_visual_scriptings/start.png"></div>
 
-## 6. Updateで接続が出来たかを確認する
-StartでCubeManagerを利用した接続処理を書いたので、UpdateでCubeクラスを利用してキューブを動かす処理を作っていきます。
+Ctrl(Macの場合、command)キーを押しながらグラフビュー上をドラッグすると、ノードを囲む枠を作成することができます。
 
-まず最初に、Startの処理が完了したかを確認する処理を作ります。これはcube変数がNullのままの状態かどうかで判別します。
+この枠は、色を付けたり、タイトルを入れることが可能であり、上手く使うことで視認性を上げることできるので積極的に使っていくと良いでしょう。
 
-また、接続が確認出来たら場合、キューブに命令を送る時間間隔も設定してあげます。以下のノードを追加してください。
+これでキューブと接続できるようになります。
+
+## 3. Updateで接続が出来たかを確認する
+Startでキューブの接続処理を書いたので、UpdateではCubeクラスを利用してキューブを動かす処理を作っていきます。
+
+まず最初に、Startの処理が完了したかを確認する処理を作ります。これはcube変数がNullの状態ままかどうかで判別します。
+
+また、接続が確認出来た場合、キューブに命令を送る時間間隔も設定してあげます。
+
+Startで行った操作と同じ要領で、スクリプトグラフ上でノードの追加とノード間の接続を行います。
+
+最初に以下のノードを追加してください。
 
 - [Events]->[Lifecycle]->[On Update]
 - [Nulls]->[Null Check]
-- [Variables]->[Graph]->[Get Graph Variable] (Name: cube)
-- [Time]->[Cooldown] (Duration: 0.05)
+- [Variables]->[Graph]->[Get Cube]
+- [Time]->[Cooldown] 設定値(Duration: 0.05)
 
 追加したら以下のように接続を行ってください。これで、接続終了後に0.05sの間隔で命令を送る処理が完成します。
 <div align="center"><img src="res/tutorial_visual_scriptings/null_check.png"></div>
 
-## 7. Cubeを動かす
+## 4. Cubeを動かす
 最後に、Cubeクラスを利用してキューブに命令を送ります。ここではサンプルと同じようにキューブがその場で回転するように動かします。
 以下のノードを追加してください。
 
-- [Codebase]->[Toio]->[Cube]->[Move(Left, Right, Duration Ms, Order)] (Left: 50, Right: -50, Duration Ms: 200)
-- [Variables]->[Graph]->[Get Graph Variable] (Name: cube)
+- [Codebase]->[Toio]->[Cube]->[Move(Left, Right, Duration Ms, Order)] 設定値(Left: 50, Right: -50, Duration Ms: 200)
+- [Variables]->[Graph]->[Get cube]
 
-追加したら以下のように接続してください。
-- [Cooldown] (Readyポート) - [Move]
-- [Get Graph Variable] (Name: cube) - [Move] (Tragetポート)
-
-これでUpdateの処理は完成です。最終的に、以下のような接続になっているか確認してください。
+追加したら「3. Updateで接続が出来たかを確認する」で作成した処理も含めて以下のように接続してください。
 
 <div align="center"><img src="res/tutorial_visual_scriptings/update.png"></div>
 
+これでUpdateの処理は完成です。
 
-## 8. 実際に動かす
+
+## 5. 実際に動かす
 最後にUnityエディターに戻ってプレイボタンを押し、実際に動かしてみましょう。
 
 以下のように動いていれば正しく動かせたことになります。
 
-<div align="center"><img width=200 src="res/tutorial_visual_scriptings/movescene.gif"></div>
+<div align="center"><img width=200 src="res/tutorial_visual_scriptings/simplescene.gif"></div>
 
 他チュートリアルも基本は同じです。
 
-接続を行い、Cubeクラスの機能を利用することで、チュートリアルにある機能は「センサーイベントの検知」以外は全て利用することが可能となっています。
+接続を行い、Cubeクラスの機能を利用することで、チュートリアルにある機能はは全て利用することが可能となっています。
 
 詳しくは実際にサンプルを見て確認してください、
 
 # 4. 複数のキューブを利用する場合
-複数のキューブを利用する場合は[Codebase]->[Toio]->[Cube Manager]->[Multi Connect(Cube Num)]を[Single Connect]ノードの代わりに利用してください。
+複数のキューブを利用する場合は[T4U]->[Connecter]->[Visual Scripting Connect Cube]ノードで設定できる値「ConnectNum」を利用したいキューブの数に合わせてください。
 
-また、[Codebase]->[Toio]->[Cube Manager]->[Multi Connext Async(Cube Num, Coroutine Object, Connect Action, Auto Running)]を利用すると、非同期で接続を行うことも可能です。
+利用するキューブが1つの場合は「Cube」のポートからCubeクラスを取り出していましたが、「Cube List」のポートから出力させることで「Cubeクラスのリスト」を取り出すことが可能となります。
+
+また、接続時の内部処理としてCubeManagerクラスを利用しているため、「CubeManager」ポートから値を出力することでCubeManagerを利用可能です、
+
+さらに[T4U]->[Connecter]->[Visual Scripting Async Connect Cube]を利用すると、非同期で接続を行うことも出来ます。
 
 詳しくは`\Assets\toio-sdk\Tutorials\1.Basic\6.MultiCube`や`\Assets\toio-sdk\Tutorials\1.Basic\7.CubeManager`を参考にしてください。
 
@@ -168,6 +157,11 @@ Visual Scriptingにおけるイベントの検出方法を説明します。
 
 ここでは例として、キューブのボタンが押された時に、音を鳴らすイベントが発生させます。
 これは`\Assets\toio-sdk\Tutorials\1.Basic\5.Event`の一部機能を抜粋したものとなっています。
+
+- [1. 準備](#1-準備)
+- [2. イベント検出の設定を行う](#2-イベント検出の設定を行う)
+- [3. イベントを作成する](#3-イベントを作成する)
+- [4. 動かして確認する](#4-動かして確認する)
 
 ## 1. 準備
 まず最初に、本チュートリアルの「2. ステージの配置方法」と「3.キューブの接続方法」を参考に、Startでステージ上のキューブと接続するところまで進めてください。
@@ -183,18 +177,16 @@ Visual Scriptingにおけるイベントの検出方法を説明します。
 
 「今回はキューブのボタンが押された」というイベントを検出したいので[Create Sensor Checker]の[Button Callback]ポートのみにチェックを入れます。
 
-次に[Set Graph Varible] (Name: cube)と[Create Sensor Checker]を接続します。
-
-また、[Create Sensor Checker]のCubeポートにはイベントを発生させたいキューブのCubeクラスを入力してください。
-
-最終的には下図のような接続になります。
+追加したら「1. 準備」で作成した処理も含めて以下のように接続します。
 
 <div align="center"><img src="res/tutorial_visual_scriptings/event_config.png"></div>
+
+[Create Sensor Checker]のCubeポートにはイベントを発生させたいキューブのCubeクラスを入力してください。
 
 これでキューブのボタンが押された際に、イベントが発生するようになりました。
 
 ## 3. イベントを作成する
-ここまでで、イベントが検出できるようになったので、ここからはイベントが発生した際にどのような操作を行うかの処理を作成していきます。
+これまで作成した処理で、イベントが検出できるようになったので、ここからはイベントが発生した際にどのような操作を行うかの処理を作成していきます。
 
 グラフエディター上で右クリックをして[Events]->[T4u Event]をみると様々なイベントが存在していることが確認できます。
 
@@ -205,12 +197,9 @@ Visual Scriptingにおけるイベントの検出方法を説明します。
 
 追加したら以下のように接続していきます。
 
-- [On Press Button] - [Play Preset Sound]
-- [On Press Button] (Cubeポート) - [Play Preset Sound] (Cubeポート)
-
-最終的に以下のような接続になります。
-
 <div align="center"><img src="res/tutorial_visual_scriptings/on_press_button.png"></div>
+
+これでボタンが押された際にキューブから音が発生するようになりました。
 
 ## 4. 動かして確認する
 これで必要なスクリプトは完成です。Unityエディターに戻ってプレイボタンを押し、実際に動かしてみましょう。
