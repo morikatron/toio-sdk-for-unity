@@ -92,7 +92,7 @@ namespace toio.VisualScript
         }
     }
 
-    [UnitTitle("Visual Scripting Asunc Connect Cubes")]
+    [UnitTitle("Visual Scripting Async Connect Cubes")]
     [UnitCategory("t4U\\Connecter")]
     public class VisualScriptingAsyncConnectCubes : Unit
     {
