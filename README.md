@@ -83,8 +83,8 @@ public class Hello_Toio : MonoBehaviour
 - Windows 10（64 ビット版のみ）
 - iOS端末（iOS ver.12以上）
 - Android端末(Android OS 9.0以上)
-- Unity（2021.2.15f1）
-
+- Unity（2021.1.28f1）
+- Unity Visual Scripting(ver 1.7.6)
 
 ## ドキュメント
 
