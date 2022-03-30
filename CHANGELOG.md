@@ -9,13 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2022-TBD-TBD
 
-★ **Upgraded to Unity 2021.2.16**
+★ **Upgraded to Unity 2021.1.28f1**
 
 ### Added
 
 - [Docs] Documents are published with [Github Pages](https://morikatron.github.io/toio-sdk-for-unity/)
 - [Visual Scripting] Supports Unity VIsual Scripting(Version 1.7.8).
-  - [Visual Scripting Library] Add `VisualScriptingLibrary`.This library include functions for using toio-sdk-for-unity in Unity Visual Scripting.
+  - [Visual Scripting Library] Add `VisualScriptingLibrary`.This library includes functions for using toio-sdk-for-unity in Unity Visual Scripting.
   - [Tutorials] Add Tutorials with Unity Visual Scripting.
   - [Docs] Add Tutorial Document in Unity Visual Scripting.
 
