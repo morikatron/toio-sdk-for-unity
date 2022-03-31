@@ -1,16 +1,15 @@
 var WebBLEPlugin =
 {
-    $scriptObjectName: "",
     $unityMethods: {},
-
-    call_setscriptObjectName: function(name)
-    {
-        scriptObjectName = Pointer_stringify(name);
-        return 0;
-    },
 
     InitMethods: function(return_RequestDevice, return_Connect, callback_Disconnected, return_getCharacteristic, return_getCharacteristics, return_ReadValue, callback_StartNotifications)
     {
+        // "Runtime" removed on Unity 2021.2, this is for backwards compatibility
+        if (typeof Runtime === "undefined") Runtime = { dynCall : dynCall };
+
+        // "UTF8ToString" is replaced by "UTF8ToString" on Unity 2021.2, this is for backwards compatibility
+        if (typeof UTF8ToString === "undefined") UTF8ToString = Pointer_stringify;
+
         unityMethods.return_RequestDevice = return_RequestDevice;
         unityMethods.return_Connect = return_Connect;
         unityMethods.callback_Disconnected = callback_Disconnected;
@@ -27,7 +26,7 @@ var WebBLEPlugin =
 
     call_RequestDevice: function(SERVICE_UUID)
     {
-        var str = Pointer_stringify(SERVICE_UUID);
+        var str = UTF8ToString(SERVICE_UUID);
         bluetooth_requestDevice(str, return_call_RequestDevice, error_call_RequestDevice);
         return 0;
     },
@@ -35,36 +34,36 @@ var WebBLEPlugin =
     $return_call_RequestDevice: function(id, uuid, name)
     {
         // uuid
-        var size = lengthBytesUTF8(uuid) + 1; // null文字終端となるため+1
+        var size = lengthBytesUTF8(uuid) + 1; // Add null to end of string
         var ptr_uuid = _malloc(size);
-        stringToUTF8(uuid, ptr_uuid, size); // この関数でHEAPxxxに書き込まれる
+        stringToUTF8(uuid, ptr_uuid, size); // write into HEAPxxx
         // name
-        size = lengthBytesUTF8(name) + 1; // null文字終端となるため+1
+        size = lengthBytesUTF8(name) + 1; // Add null to end of string
         var ptr_name = _malloc(size);
-        stringToUTF8(name, ptr_name, size); // この関数でHEAPxxxに書き込まれる
+        stringToUTF8(name, ptr_name, size); // write into HEAPxxx
         Runtime.dynCall('viii', unityMethods.return_RequestDevice, [id, ptr_uuid, ptr_name]);
     },
 
     $error_call_RequestDevice: function(msg)
     {
-        var size = lengthBytesUTF8(msg) + 1; // null文字終端となるため+1
+        var size = lengthBytesUTF8(msg) + 1; // Add null to end of string
         var ptr = _malloc(size);
-        stringToUTF8(msg, ptr, size); // この関数でHEAPxxxに書き込まれる
+        stringToUTF8(msg, ptr, size); // write into HEAPxxx
         Runtime.dynCall('vi', unityMethods.error_RequestDevice, [ptr]);
     },
 
     call_Connect: function(deviceID, SERVICE_UUID)
     {
-        var str = Pointer_stringify(SERVICE_UUID);
+        var str = UTF8ToString(SERVICE_UUID);
         server_connect(deviceID, str, return_call_Connect, callback_Disconnected);
         return 0;
     },
 
     $return_call_Connect: function(deviceID, serverID, serviceID, serviceUUID)
     {
-        var size = lengthBytesUTF8(serviceUUID) + 1; // null文字終端となるため+1
+        var size = lengthBytesUTF8(serviceUUID) + 1; // Add null to end of string
         var ptr = _malloc(size);
-        stringToUTF8(serviceUUID, ptr, size); // この関数でHEAPxxxに書き込まれる
+        stringToUTF8(serviceUUID, ptr, size); // write into HEAPxxx
         Runtime.dynCall('viiii', unityMethods.return_Connect, [deviceID, serverID, serviceID, ptr]);
     },
 
@@ -81,16 +80,16 @@ var WebBLEPlugin =
 
     call_getCharacteristic: function(serviceID, characteristicUUID)
     {
-        var str = Pointer_stringify(characteristicUUID);
+        var str = UTF8ToString(characteristicUUID);
         service_getCharacteristic(serviceID, str, return_call_getCharacteristic);
         return 0;
     },
 
     $return_call_getCharacteristic: function(serviceID, id, characteristicUUID)
     {
-        var size = lengthBytesUTF8(characteristicUUID) + 1; // null文字終端となるため+1
+        var size = lengthBytesUTF8(characteristicUUID) + 1; // Add null to end of string
         var ptr = _malloc(size);
-        stringToUTF8(characteristicUUID, ptr, size); // この関数でHEAPxxxに書き込まれる
+        stringToUTF8(characteristicUUID, ptr, size); // write into HEAPxxx
         Runtime.dynCall('viii', unityMethods.return_getCharacteristic, [serviceID, id, ptr]);
     },
 
@@ -102,18 +101,17 @@ var WebBLEPlugin =
 
     $return_call_getCharacteristics: function(serviceID, len, idx, id, uuid)
     {
-        var size = lengthBytesUTF8(uuid) + 1; // null文字終端となるため+1
+        var size = lengthBytesUTF8(uuid) + 1; // Add null to end of string
         var ptr = _malloc(size);
-        stringToUTF8(uuid, ptr, size); // この関数でHEAPxxxに書き込まれる
+        stringToUTF8(uuid, ptr, size); // write into HEAPxxx
         Runtime.dynCall('viiiii', unityMethods.return_getCharacteristics, [serviceID, len, idx, id, ptr]);
     },
 
-    // ポインターから各種数値型配列(サブ配列)を返す関数を用意
+    // Get sub array of of heap starting from ptr
     // https://qiita.com/gtk2k/items/1c7aa7a202d5f96ebdbf
     $arrFromPtr: function(ptr, size, heap)
     {
-        // 配列生成(値コピー)せず、HEAPのサブ配列を返す
-        var startIndex = ptr / heap.BYTES_PER_ELEMENT; // 型のバイト数で割って開始インデックスを算出
+        var startIndex = ptr / heap.BYTES_PER_ELEMENT;
         return heap.subarray(startIndex, startIndex + size);
     },
 
@@ -160,7 +158,6 @@ var WebBLEPlugin =
 }
 
 autoAddDeps(WebBLEPlugin, '$unityMethods');
-autoAddDeps(WebBLEPlugin, '$scriptObjectName');
 autoAddDeps(WebBLEPlugin, '$return_call_RequestDevice');
 autoAddDeps(WebBLEPlugin, '$error_call_RequestDevice');
 autoAddDeps(WebBLEPlugin, '$return_call_Connect');
