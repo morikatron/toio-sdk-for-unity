@@ -60,6 +60,8 @@ Windows の場合、コマンドプロンプトを起動して以下のコマン
 git version 2.21.0.windows.1
 ```
 
-このように表示されます。まだ git コマンドが入っていない場合は、[git for windows の公式サイト](https://gitforwindows.org/)からインストーラをダウンロードして、インストールしてください。gitをインストールした際に、UnityがGitを認識しない場合がありますが、その場合はパソコンを再起動してください。
+このように表示されます。まだ git コマンドが入っていない場合は、[git for windows の公式サイト](https://gitforwindows.org/)からインストーラをダウンロードして、インストールしてください。
+
+gitをインストールした際に、UnityがGitを認識しない場合がありますが、その場合はパソコンを再起動してください。
 
 これで事前準備は完了です。続いて toio SDK for Unity をインストールする場合は [toio SDK for Unity のインストール](download_sdk.md) を参照してください。
