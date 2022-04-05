@@ -1,11 +1,11 @@
 # Visual Scripting向けチュートリアル
 
 ## 目次
-- [1. 概要](tutorials_visual_scriptings.md#1-概要)
-- [2. ステージの配置方法](tutorials_visual_scriptings.md#2-ステージの配置方法)
-- [3. キューブの接続方法](tutorials_visual_scriptings.md#3-キューブの接続方法)
-- [4. 複数のキューブを利用する場合](tutorials_visual_scriptings.md#4-複数のキューブを利用する場合)
-- [5. イベントの検出](tutorials_visual_scriptings.md#5-イベントの検出)
+- [1. 概要](#1-概要)
+- [2. ステージの配置方法](#2-ステージの配置方法)
+- [3. キューブの接続方法](#3-キューブの接続方法)
+- [4. 複数のキューブを利用する場合](#4-複数のキューブを利用する場合)
+- [5. イベントの検出](#5-イベントの検出)
 
 # 1. 概要
 Unity Visual ScriptingはUnity2021から標準機能として採用されたビジュアルプログラミング言語です。
@@ -18,6 +18,8 @@ toio SDK for UnityをVisual Scriptingで利用することで、
 - 実行中にプログラムの動きを見ることが出来るため、バグを発見しやすい
 
 といったメリットがあります。
+
+<div align="center"><img src="res/tutorial_visual_scriptings/basic_scene.gif"></div>
 
 Visual Scripting版のサンプルは基本的にC#版のサンプルを再現する形で実装されているため、
 本資料は[チュートリアル(Basic)](tutorials_basic.md)のVisual Scripting向け補足資料となっています。
@@ -36,7 +38,7 @@ Visual Scripting版のサンプルは基本的にC#版のサンプルを再現�
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします(※名前は自由です)。
 6. 「scene」オブジェクトを選択し、インスペクター上から「コンポーネントを追加」->[Visual Scripting]->[Script Machine]をクリックします。
 7. プロジェクトビューを操作してスクリプトグラフ(Visual Scriptingで処理を書くファイル)を保存する場所を作成します。場所や名前などは自由ですが、今回は`\Assets\toio-sdk\Tutorials`以下に`VisualScriptingSample`というフォルダを作成します。
-8. 作成したフォルダ内のプロジェクトビュー上で右クリックし[Create]->[Visual Scripting]->[Script Graph]を選択して、任意の名前を入力し、スクリプトグラフを作成します。
+8. 作成したフォルダ内のプロジェクトビュー上で右クリックし[Create]->[Visual Scripting]->[Script Graph]を選択して、「BasicScene」という名前にします(※名前は自由です)。
 9. 作成したスクリプトグラフのアイコンをドラッグし、sceneオブジェクトで追加したScript MachineコンポーネントのGraphフィールドにドラッグ&ドロップします。
 10. インスペクター上の[Edit Graph]が選択可能になるのでクリックするとグラフビューが開き、任意のスクリプトを書くことが出来るようになります。
 
@@ -52,12 +54,12 @@ Visual Scripting版ではキューブとの接続にCubeManaggerを利用する�
 ## キューブの接続方法の全体の流れ
 - [1. 変数の初期化](#1-変数の初期化)
 - [2. キューブの接続](#2-キューブの接続)
-- [3. Updateで接続が出来たかを確認する](#3-Updateで接続が出来たかを確認する)
+- [3. Updateで接続が出来たかを確認する](#3-updateで接続が出来たかを確認する)
 - [4. Cubeを動かす](#4-cubeを動かす)
 - [5. 実際に動かす](#5-実際に動かす)
 
 ## 1. 変数の初期化
-グラフビューを開いたら、まず最初にブラックボードから変数の初期化を行います。
+グラフビューを開いたら、まず最初にBlackboardから変数の初期化を行います。
 
 グラフビュー左側にあるGraph変数で変数名を「cube」と入力し、[+]アイコンを押すことで変数を追加できます。変数の型は(Null)に設定します。
 
@@ -66,14 +68,19 @@ Visual Scripting版ではキューブとの接続にCubeManaggerを利用する�
 ## 2. キューブの接続
 変数の初期化が終わったら次にキューブの接続を試みます。
 
-グラフビュー上で何もない箇所を右クリックすると、配置可能なノードの一覧が表示されるため、以下のノードを選択肢してグラフビュー上に追加してください。
+Graph Inspectorの右側の黒いエリアを右クリックすると、配置可能なノードの一覧が表示され、追加したいノードを選択することでグラフビュー上にノードを追加することが出来ます。
+
+<div align="center"><img src="res/tutorial_visual_scriptings/add_node.gif"></div>
+
+それでは以下の3つのノードを選択肢して下図のようにグラフビュー上に横に並べてください。
 - [Events]->[Lifecycle]->[On Start]
 - [T4U]->[Connecter]->[Visual Scripting Connect Cube]
 - [Variables]->[Graph]->[Set cube]
 
-<div align="center"><img src="res/tutorial_visual_scriptings/add_node.gif"></div>
 
-また、On Startノードをクリックするとグラフインスペクター上にCoroutineというチェックボックスが表示されるのでこれにチェックを入れてください。
+<div align="center"><img src="res/tutorial_visual_scriptings/start_nodes.png"></div>
+
+また、On StartノードをクリックするとGraph Inspector上にCoroutineというチェックボックスが表示されるのでこれにチェックを入れてください。
 
 <div align="center"><img src="res/tutorial_visual_scriptings/make_cubemanager.png"></div>
 
@@ -93,6 +100,10 @@ Ctrl(Macの場合、command)キーを押しながらグラフビュー上をド�
 この枠は、色を付けたり、タイトルを入れることが可能であり、上手く使うことで視認性を上げることできるので積極的に使っていくと良いでしょう。
 
 これでキューブと接続できるようになります。
+
+ここまでのノードを簡単に説明すると[On Start]はプログラム開始時に一度だけ実行される処理となっています。[Visual Scripting Connect Cube]は内部でCubeManagerというクラスを利用して「Connect Num」個のキューブと接続を試み、全てのキューブとの接続が完了するまで待機するノードとなっています。[Set cube]では[Visual Scripting Connect Cube]で接続したキューブをCubeクラスというクラスで、cubeという名前の変数に保存しています。
+
+つまり、ここまで作成してきたプログラムは、プログラム開始時に1個のキューブと接続を行い、接続が終了するまで待機して、接続したキューブをCubeクラスとしてcubeという変数で保存する処理となっています。
 
 ## 3. Updateで接続が出来たかを確認する
 Startでキューブの接続処理を書いたので、UpdateではCubeクラスを利用してキューブを動かす処理を作っていきます。
