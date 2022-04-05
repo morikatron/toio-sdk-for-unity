@@ -43,7 +43,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Press Button")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnPressButton : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -53,7 +53,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Collision")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnCollision : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -63,7 +63,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Slope")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnSlope : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -73,7 +73,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Update ID")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnUpdateID : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -83,7 +83,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Update Standard ID")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnUpdateStandardID : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -93,7 +93,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Missed ID")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnMissedID : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -103,7 +103,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Missed Standard ID")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnMissedStandardID : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -113,7 +113,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Pose")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnPose : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -123,7 +123,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Double Tap")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnDoubleTap : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -133,7 +133,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Shake")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnShake : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -143,7 +143,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Mortor Speed")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnMotorSpeed : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -153,7 +153,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Magenet State")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnMagnetState : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -163,7 +163,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Magnetic Force")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnMagneticForce : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -173,7 +173,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Attitude")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnAttitude : BaseToioEvent
     {
         public override EventHook GetHook(GraphReference reference)
@@ -197,7 +197,7 @@ namespace toio.VisualScript
     }
 
     [UnitTitle("On Async Connected")]
-    [UnitCategory("Events\\t4u Event")]
+    [UnitCategory("Events\\t4uEvent")]
     public class OnAsyncConnected: EventUnit<OnConnectedArgs>
     {
         [DoNotSerialize]// No need to serialize ports.
