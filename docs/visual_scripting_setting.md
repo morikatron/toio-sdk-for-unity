@@ -6,8 +6,9 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 ## 目次
   - [1. Unity Visual Scriptingの確認](#1-unity-visual-scriptingの確認)
     - [Visual Scriptingがインストールされていない場合](#visual-scriptingがインストールされていない場合)
-  - [2. toio SDK for UnityをVisual Scriptingで利用できるようにする。](#2-toio-sdk-for-unityをvisual-scriptingで利用できるようにする)
-  - [3. Visual Scripting版のサンプルの実行、動作確認](#3-visual-scripting版のサンプルの実行動作確認)
+  - [2. ビルドのプラットフォームをPCにする](#2-ビルドのプラットフォームをpcにする)
+  - [3. toio SDK for UnityをVisual Scriptingで利用できるようにする。](#3-toio-sdk-for-unityをvisual-scriptingで利用できるようにする)
+  - [4. Visual Scripting版のサンプルの実行、動作確認](#4-visual-scripting版のサンプルの実行動作確認)
 
 ## 1. Unity Visual Scriptingの確認
 1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開く。
@@ -22,8 +23,16 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 
 [Packages:in Project]の状態でVisual Scriptingが存在していればインストールは完了です。
 
+## 2. ビルドのプラットフォームをPCにする
+ビルド設定をPCに設定します。この設定を行わないとCubeクラス等、一部表示されないノードがあります。
+ビルド自体はios,android,WebGLでも可能ですが、Visual Scriptingでプログラムを作成している際はビルド時のプラットフォームをPCにしてください。
+1. [File]->[Build Setting]をクリックする。
+1. [Platform]のリストから[Windows, Mac, Linux]を選択肢して[Switch Platform]をクリックする。
+<img src="res/visual_scripting_setting/change_platform.png">
 
-## 2. toio SDK for UnityをVisual Scriptingで利用できるようにする。
+[Switch Platform]を押して数秒待ち、[Windows, Mac, Linux]の横にUnityのアイコンが表示されていれば成功です。
+
+## 3. toio SDK for UnityをVisual Scriptingで利用できるようにする。
 1. [Edit]->[Project Setting]->[Visual Scripting]とクリックする。
 2. Node Libraryに[toio-sdk-scripts]を新規に追加する。
    1. [Node Library]をクリックすると現在利用できるライブラリーの一覧が表示されるので、[+]アイコンを押す。
@@ -58,7 +67,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
   
 <img src="res/visual_scripting_setting/add_node.png">
 
-## 3. Visual Scripting版のサンプルの実行、動作確認
+## 4. Visual Scripting版のサンプルの実行、動作確認
 Visual Scriptingを利用するために必要な作業を終えたら、Visual Scripting版のサンプルを実行してみましょう。
 
 `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/`までフォルダを移動し、`0.BasicScene シーンファイル`をダブルクリックで開きます。
