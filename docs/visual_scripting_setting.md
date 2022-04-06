@@ -57,7 +57,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
          - Mat
       - [Toio]->[Navigation]から
          - Navigator
-      - [Enum]から
+      - [(Enums)]から
          - Connect Type
       - [UnityEngine]から
          - Wait for Seconds RealTime
@@ -65,9 +65,10 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 
 以下のように、「Regenerates Nodes Completed」のメッセージが表示されればtoio SDK for UnityをVisual Scriptingで利用できるようにするための設定は完了です。
 
-<img src="res/visual_scripting_setting/add_node.png">
+<img src="res/visual_scripting_setting/add_node.png"><br><br>
 
-<br><br>
+### ＊[Connect Type]の追加方法について
+
 > ノード追加時、Connect Typeと検索すると下画像のように[Connect Type (in Toio)]と表示され、[Toio]のリストに配置されているように表示されます。<br>
 > <div align="center"><img src="res/visual_scripting_setting/connect_type_search.png"></div>
 > <br>しかし[Toio]のリストには[Connect Type]のノードは存在していません。
