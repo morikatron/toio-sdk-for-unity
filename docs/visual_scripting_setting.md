@@ -64,8 +64,16 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 4. [Regenerate Nodes]をクリックしてノードを再生成する。
 
 以下のように、「Regenerates Nodes Completed」のメッセージが表示されればtoio SDK for UnityをVisual Scriptingで利用できるようにするための設定は完了です。
-  
+
 <img src="res/visual_scripting_setting/add_node.png">
+
+<br><br>
+> ノード追加時、Connect Typeと検索すると下画像のように[Connect Type (in Toio)]と表示され、[Toio]のグループに配置されているように表示されます。<br>
+> <div align="center"><img src="res/visual_scripting_setting/connect_type_search.png"></div>
+> <br>しかし[Toio]のグループには[Connect Type]のノードは存在していません。
+> <div align="center"><img src="res/visual_scripting_setting/connect_type_toio.png"></div>
+> <br>これはConnect Typeの型がEnumでありながら[Toio]というグループにプログラム上では属している影響でこのようになっています。[Enum]グループに属している[Connect Type]とConnect Typeで検索した際の[Connect Type (in Toio)]は同一のノードとなっているので、どちらの方法で追加しても大丈夫です。
+
 
 ## 4. Visual Scripting版のサンプルの実行、動作確認
 Visual Scriptingを利用するために必要な作業を終えたら、Visual Scripting版のサンプルを実行してみましょう。
