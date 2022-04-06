@@ -101,7 +101,7 @@ Ctrl(Macの場合、command)キーを押しながらグラフビュー上をド�
 
 これでキューブと接続できるようになります。
 
-ここまでのノードを簡単に説明すると[On Start]はプログラム開始時に一度だけ実行される処理となっています。[Visual Scripting Connect Cube]は内部でCubeManagerというクラスを利用して「Connect Num」個のキューブと接続を試み、全てのキューブとの接続が完了するまで待機するノードとなっています。[Set cube]では[Visual Scripting Connect Cube]で接続したキューブをCubeクラスというクラスで、cubeという名前の変数に保存しています。
+ここまでのノードを簡単に説明すると[On Start]はプログラム開始時に一度だけ実行される処理となっています。[Visual Scripting Connect Cube]は内部でCubeManagerというクラスを利用して「Connect Num」個のキューブと接続を試み、全てのキューブとの接続が完了するまで待機するノードとなっています。[Set Variable]では[Visual Scripting Connect Cube]で接続したキューブをcubeという名前の変数に保存しています。
 
 つまり、ここまで作成してきたプログラムは、プログラム開始時に1個のキューブと接続を行い、接続が終了するまで待機して、接続したキューブをCubeクラスとしてcubeという変数で保存する処理となっています。
 
