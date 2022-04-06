@@ -10,7 +10,7 @@
 - [4. 命令送信](sys_cube.md#4-命令送信)
 - [5. 機能拡張の方法](sys_cube.md#5-機能拡張の方法)
   - [5.1. Cube クラスに関数を追加するには](sys_cube.md#51-cube-クラスに関数を追加するには)
-  - [5.2. ファームウェアバージョンを追加するには](sys_cube.md#52-ファームウェアバージョンを追加するには)
+  - [5.2. BLE プロトコルバージョンを追加するには](sys_cube.md#52-ble-プロトコルバージョンを追加するには)
   - [5.3. 通信プログラムを変更する場合](sys_cube.md#53-通信プログラムを変更する場合)
 
 <br>
@@ -80,7 +80,7 @@ toio™コア キューブ 技術仕様（通信仕様）以外の機能を利�
 
 #### CubeUnity
 
-Unity エディタ実行時に動作するシミュレータ用 Cube クラスです。<br>ファームウェアバージョンの解決処理が無いため、1 つのバージョンのみが動作対象になります。<br>
+Unity エディタ実行時に動作するシミュレータ用 Cube クラスです。<br>BLE プロトコルバージョンの解決処理が無いため、1 つのバージョンのみが動作対象になります。<br>
 
 実装コード：[CubeUnity.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Sim/CubeUnity.cs)
 
@@ -383,7 +383,7 @@ public class RealImpl : CubeScannerInterface
 </div>
 <br>
 
-CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファームウェアバージョンの適応(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
+CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>BLE プロトコルバージョンの適応(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
 [CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
 
 <b>Connect 関数</b>を呼ぶ事でキューブに接続します。<br>
@@ -393,12 +393,12 @@ CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファーム
 
 1. UnityPeripheral(GameObject)から GameObject を取得
 2. GameObjet を引数に CubeUnity 変数を生成
-   (※シミュレータ実装版ではファームウェアバージョン適応は実装されていません)
+   (※シミュレータ実装版ではBLE プロトコルバージョン適応は実装されていません)
 
 リアル実装：
 
 1. Peripheral(Bluetooth デバイス)へ接続して Characteristic(機能)配列を取得
-2. ファームウェアバージョンを取得
+2. BLE プロトコルバージョンを取得
 3. 事前に追加しておいたバージョンテーブルを参照、ファームウェアに適応した Cube 変数(CubeReal_verX_X_X)を生成
 
 <br>
@@ -414,7 +414,7 @@ public interface CubeConnecterInterface
 }
 
 /// <summary>
-/// CoreCubeのファームウェアバージョンを参照し, バージョンに応じたCubeクラスを生成.
+/// CoreCubeのBLE プロトコルバージョンを参照し, バージョンに応じたCubeクラスを生成.
 /// </summary>
 public class CubeConnecter : CubeConnecterInterface
 {
@@ -533,9 +533,9 @@ toio SDK for Unity の機能拡張は、次のような方法が考えられま�
 
 <br>
 
-## 5.2. ファームウェアバージョンを追加するには
+## 5.2. BLE プロトコルバージョンを追加するには
 
-1. 新たに追加されたファームウェアバージョンに対応する CubeReal 派生クラスを作成します。
+1. 新たに追加されたBLE プロトコルバージョンに対応する CubeReal 派生クラスを作成します。
 2. CubeConnecter クラスの versionTable メンバ変数に生成関数を登録します。
 
 <br>
