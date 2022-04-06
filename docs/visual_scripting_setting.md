@@ -72,7 +72,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 > <div align="center"><img src="res/visual_scripting_setting/connect_type_search.png"></div>
 > <br>しかし[Toio]のグループには[Connect Type]のノードは存在していません。
 > <div align="center"><img src="res/visual_scripting_setting/connect_type_toio.png"></div>
-> <br>これはConnect Typeの型がEnumでありながら[Toio]というグループにプログラム上では属している影響でこのようになっています。[Enum]グループに属している[Connect Type]とConnect Typeで検索した際の[Connect Type (in Toio)]は同一のノードとなっているので、どちらの方法で追加しても大丈夫です。
+> <br>これはConnect Typeの型がEnumでありながら[Toio]というグループにプログラム上では属している影響でこのようになっています。[Enum]グループに属している[Connect Type]とConnect Typeで検索した際の[Connect Type (in Toio)]は同一のノードとなっているので、どちらの方法で追加しても問題ありません。
 
 
 ## 4. Visual Scripting版のサンプルの実行、動作確認
