@@ -45,7 +45,7 @@
 - [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
 - [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
 - [11. UI の作成](tutorials_UI.md)
-- [12. Unity Visual Scriptingでの利用方法](tutorials_visual_scriptings.md))
+- [12. Unity Visual Scriptingでの利用方法](tutorials_visual_scriptings.md)
 
 ### 便利な移動機能 - CubeHandle
 
