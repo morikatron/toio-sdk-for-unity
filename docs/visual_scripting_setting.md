@@ -79,7 +79,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 ## 4. Visual Scripting版のサンプルの実行、動作確認
 Visual Scriptingを利用するために必要な作業を終えたら、Visual Scripting版のサンプルを実行してみましょう。
 
-`Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/`までフォルダを移動し、`0.BasicScene シーンファイル`をダブルクリックで開きます。
+`Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/`までフォルダを移動し、`0.BasicScene` シーンファイルをダブルクリックで開きます。
 
 ヒエラルキーの[scene]をクリックします。インスペクター上の[Basic Scene(Script)]に入っているチェックを外し、[Script Machine]にチェックを入れてください。
 
