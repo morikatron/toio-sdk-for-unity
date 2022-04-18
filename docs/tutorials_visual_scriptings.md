@@ -39,7 +39,7 @@ Visual Scripting版のサンプルは基本的にC#版のサンプルを再現�
 6. 「scene」オブジェクトを選択し、インスペクター上から「コンポーネントを追加」->[Visual Scripting]->[Script Machine]をクリックします。
 7. プロジェクトビューを操作してスクリプトグラフ(Visual Scriptingで処理を書くファイル)を保存する場所を作成します。場所や名前などは自由ですが、今回は`\Assets\toio-sdk\Tutorials`以下に`VisualScriptingSample`というフォルダを作成します。
 8. 作成したフォルダ内のプロジェクトビュー上で右クリックし[Create]->[Visual Scripting]->[Script Graph]を選択して、「BasicScene」という名前にします(※名前は自由です)。
-9. 作成したスクリプトグラフのアイコンをドラッグし、sceneオブジェクトで追加したScript MachineコンポーネントのGraphフィールドにドラッグ&ドロップします。
+9. 作成したスクリプトグラフのアイコンをドラッグし、sceneオブジェクトで追加したScript MachineコンポーネントのGraphフィールドにドロップします。
 10. インスペクター上の[Edit Graph]が選択可能になるのでクリックするとグラフビューが開き、任意のスクリプトを書くことが出来るようになります。
 
 
@@ -186,7 +186,7 @@ Visual Scriptingにおけるイベントの検出方法を説明します。
 
 [Codebase]->[Toio]->[Visual Script]->[Sensor Checker]->[Create Sensor Checker]ノードを追加します。
 
-「今回はキューブのボタンが押された」というイベントを検出したいので[Create Sensor Checker]の[Button Callback]ポートのみにチェックを入れます。
+今回は「キューブのボタンが押された」というイベントを検出したいので[Create Sensor Checker]の[Button Callback]ポートのみにチェックを入れます。
 
 追加したら「1. 準備」で作成した処理も含めて以下のように接続します。
 
