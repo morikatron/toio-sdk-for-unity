@@ -718,7 +718,7 @@ protected virtual void SimulateAttitudeSensor()
     int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
     var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
 
-    // NOTE Reproducing real firmware's BUG
+    // NOTE Reproducing real BLE protocol's BUG
     var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
     quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
                             Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
@@ -814,14 +814,14 @@ internal void _SetSpeed(float speedL, float speedR)
 AddForce, the frictional force of the mat is set to 0 and the delay factor, which is normally caused by the laws of physics, is included in the calculation of the target speed.<br>
 Since we are using a simplified model for these physical calculations, we cannot simulate the behavior of the mat when it is tilted.
 For a more accurate modeling, the following steps could be considered：
-- Input the difference between the target speed and the current speed converted from the motor control command into the same control module (e.g. PID) as the actual cube firmware.
+- Input the difference between the target speed and the current speed converted from the motor control command into the same control module (e.g. PID) as the actual cube BLE protocol.
 - Input the output "voltage" of the PID into the motor model.
 - The "current" output of the motor model is converted to "power" and fed to the physics engine.
 - Make the wheel's collider, physics materials, etc. as realistic as possible.
 
 ### Motor control with target specification
 
-Since the firmware implementation of the actual machine has not been released, the motor control with target specification of Simulator was implemented by referring to the specifications and the movements of the actual machine. There are some parts that were created by guessing, and there may be some differences from the actual machine, so we will explain some important parts.
+Since the BLE protocol implementation of the actual machine has not been released, the motor control with target specification of Simulator was implemented by referring to the specifications and the movements of the actual machine. There are some parts that were created by guessing, and there may be some differences from the actual machine, so we will explain some important parts.
 
 #### Case where the move type is 0 (move while rotating)
 

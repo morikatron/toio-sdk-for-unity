@@ -224,7 +224,7 @@ namespace toio.Simulator
                 // Hardware Simulation
                 _SimulateIMU();
 
-                // Firmware Simulation
+                // BLE protocol Simulation
                 impl.Simulate();
 
                 // Connection
@@ -258,13 +258,13 @@ namespace toio.Simulator
             // Hardware
             _InitIMU();
 
-            // Firmware
+            // BLE protocol
             this.impl.Init();
         }
 
         private void Reset()
         {
-            // Firmware
+            // BLE protocol
             this.impl.Reset();
 
             // Hardware

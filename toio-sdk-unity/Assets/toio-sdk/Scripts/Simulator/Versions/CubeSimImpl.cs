@@ -274,7 +274,7 @@ namespace toio.Simulator
         }
         protected virtual void NotSupportedWarning()
         {
-            // Debug.LogWarning("Not Supported in this firmware version.");
+            // Debug.LogWarning("Not Supported in this BLE protocol version.");
         }
 
     }

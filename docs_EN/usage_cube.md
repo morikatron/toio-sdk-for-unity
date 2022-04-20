@@ -22,14 +22,14 @@ In real Cube, you control real Cube through Bluetooth communication from Unity p
 
 ### Real/Sim Performance Meter
 
-Currently (09/01/2021), there are 4 firmware versions in Cube.
+Currently (09/01/2021), there are 4 BLE protocol versions in Cube.
 
 `2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`
 
 toio SDK for Unity has two internal implementations: Cube class that runs in real life (Real-compatible) and Cube class that runs in Simulator (Sim-compatible). Since the internal implementations are different, there are differences in the support status.<br>
 The following table shows the implementation correspondence.
 
-#### Firmware version 2.0.0
+#### BLE protocol version 2.0.0
 
 > Links are of version 2.3.0, which is the lowerest version supporting English.
 
@@ -57,7 +57,7 @@ The following table shows the implementation correspondence.
 
 > ... The detection function is not implemented on Simulator side, but you can manually switch the judgment on and off from the inspector. For more details, please refer to [[here]](usage_simulator.md#41-inspector-in-cubesimulator).
 
-#### Firmware version 2.1.0
+#### BLE protocol version 2.1.0
 
 > Links are of version 2.3.0, which is the lowerest version supporting English.
 
@@ -73,7 +73,7 @@ The following table shows the implementation correspondence.
 |                    | [Responses to motor control with multiple targets specified](https://toio.github.io/toio-spec/en/docs/ble_motor#responses-to-motor-control-with-multiple-targets-specified) | x | x |
 | Configuration      | [Double-tap detection time interval settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#double-tap-detection-time-interval-settings) | o   | x            |
 
-#### Firmware version 2.2.0
+#### BLE protocol version 2.2.0
 
 > Links are of version 2.3.0, which is the lowerest version supporting English.
 
@@ -93,7 +93,7 @@ The following table shows the implementation correspondence.
 |                    | [Motor speed information acquisition settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#motor-speed-information-acquisition-settings) | o | o            |
 |                    | [Responses to motor speed information acquisition settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-motor-speed-information-acquisition-settings)| o | o |
 
-#### Firmware version 2.3.0
+#### BLE protocol version 2.3.0
 
 | Function Type      | Function                                                                                                                              | Real Support Status | Sim Support Status |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
@@ -166,7 +166,7 @@ public class SimpleScene : MonoBehaviour
 ## 3.1. Variable
 
 ```csharp
-// Firmware version of the connected cube
+// BLE protocol version of the connected cube
 public string version { get; }
 
 // Unique identification ID of Cube
@@ -243,11 +243,11 @@ public bool isCollisionDetected { get; protected set; }
 public bool isGrounded { get; protected set; }
 
 // Variable representing the maximum speed of Cube.
-// It is provided for each firmware version differently.
+// It is provided for each BLE protocol version differently.
 public int maxSpd { get; }
 
 // Variable representing the minimum speed of Cube
-// It is provided for each firmware version differently.
+// It is provided for each BLE protocol version differently.
 public int deadzone { get; }
 
 // ver2.1.0
