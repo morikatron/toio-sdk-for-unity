@@ -244,7 +244,7 @@ Simulator is divided into two parts: "Configuring Simulator" and "Manually chang
 
 <div align="center"><img src="res/usage_simulator/cube_setting.png"></div>
 
-- `Version`: Firmware version.
+- `Version`: BLE protocol version.
 - `Power Start`: Initial state of Cube power supply.
 - `Motor Tau`: Parameters of the first-order delay element of the motor.
 - `Delay`: Communication delay (the lag between the transmission of a command and the change in the acquired coordinates).
@@ -254,7 +254,7 @@ Simulator is divided into two parts: "Configuring Simulator" and "Manually chang
 
 <div align="center"><img src="res/usage_simulator/cube_info.png"></div>
 
-- `Version`: Firmware version. Cannot be changed.
+- `Version`: BLE protocol version. Cannot be changed.
 - `Power`: Power supply for Cube.
 - `Running`: Activated and ready to connect.
 - `Connected`: Connected or not.

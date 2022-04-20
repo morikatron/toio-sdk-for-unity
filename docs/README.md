@@ -6,7 +6,9 @@
 
 1. 開発環境を整える [→「事前準備」](preparation.md)
 2. Unity で新規プロジェクトを作り、 toio SDK for Unity を読み込む [→「toio SDK for Unity インストール」](download_sdk.md)
-3. オプション機能の導入 [→「Mac用BLE通信の導入」](usage_macble.md)
+3. オプション機能の導入
+   - [→「Mac用BLE通信の導入」](usage_macble.md)
+   - [→「Unity Visual Scripting向けの設定」](visual_scripting_setting.md)
 <br><br>
 
 ### 【 2 】開発
@@ -43,6 +45,7 @@
 - [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
 - [10. 途中接続/途中切断](tutorials_basic.md#10-途中接続--途中切断)
 - [11. UI の作成](tutorials_UI.md)
+- [12. Unity Visual Scriptingでの利用方法](tutorials_visual_scriptings.md)
 
 ### 便利な移動機能 - CubeHandle
 

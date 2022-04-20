@@ -72,7 +72,8 @@ public class Hello_Toio : MonoBehaviour
   - ボイドで、複数台のキューブを群れとして動かせる
   - 衝突回避とボイドは組み合わせて同時実行できる
   - 目標に移動する以外に目標から離れるようなナビゲーションもできる
-
+- Visual Scripting
+  - Unity2021から標準となったVisual ScriptingでCube, CubeHandle, Navigatorが利用できる
 
 ## 動作環境
 
@@ -82,8 +83,8 @@ public class Hello_Toio : MonoBehaviour
 - Windows 10（64 ビット版のみ）
 - iOS端末（iOS ver.12以上）
 - Android端末(Android OS 9.0以上)
-- Unity（2020.3.17f1 LTS）
-
+- Unity（2021.3.0f1LTS）
+- Unity Visual Scripting(ver 1.7.6)
 
 ## ドキュメント
 

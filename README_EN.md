@@ -72,7 +72,8 @@ public class Hello_Toio : MonoBehaviour
   - Bird-oid allows Cubes to move as a herd
   - Collision avoidance and voids can be combined and run simultaneously
   - In addition to moving to the target, it can also navigate away from the target.
-
+- Visual Scripting
+  - Cube, CubeHandle, and Navigator are available in Visual Scripting, a standard since Unity2021.
 
 ## Operating Environment
 
@@ -82,7 +83,8 @@ public class Hello_Toio : MonoBehaviour
 - Windows 10 (64 bit version only)
 - iOS devices (iOS ver. 12 or higher)
 - Android device (Android OS 9.0 or higher)
-- Unity（2020.3.17f1 LTS）
+- Unity（2021.3.0f1LTS）
+- Unity Visual Scripting(ver 1.7.6)
 
 
 ## Documentation

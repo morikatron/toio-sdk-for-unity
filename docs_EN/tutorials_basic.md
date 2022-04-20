@@ -18,6 +18,7 @@
 This SDK allows you to run toio™ Core Cube (Cube) in both simulator and smart device environments with the same source code.
 The following explanations are based on the assumption that toio™ Core Cube runs in Simulator environment.
 
+When using Visual Scripting, it is recommended that you read through [Click here](tutorials_visual_scriptings.md) as appropriate concurrently with this tutorial.
 
 # 2. Creating Scenes
 
