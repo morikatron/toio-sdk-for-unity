@@ -1,13 +1,13 @@
 # Tutorial for Visual Scripting
 
 ## Table of Contents
-- [1.Overview](#1overview)
+- [1. Overview](#1-overview)
 - [2. How to place the stage](#2-how-to-place-the-stage)
 - [3. How to Connect to the cube](#3-how-to-connect-to-the-cube)
-- [4.Multiple Cubes](#4multiple-cubes)
+- [4. Multiple Cubes](#4-multiple-cubes)
 - [5. Event detection](#5-event-detection)
 
-# 1.Overview
+# 1. Overview
 Uniti Visual Scripting is a visual programming language that has been adopted as a standard feature since Unity 2021.
 
 Visual Scripting in toio SDK for Unity currently (March 29, 2022) supports all features used in the tutorials.
@@ -144,7 +144,7 @@ By making connections and using the functions of the Cube class, all the functio
 
 For more details, please see the actual samples.
 
-# 4.Multiple Cubes
+# 4. Multiple Cubes
 If you want to use multiple cubes, set the value "ConnectNum," which can be set in the [T4U]->[Connecter]->[Visual Scripting Connect Cube] node, to the number of cubes you want to use.
 
 If there is only one cube to use, the Cube class was taken from the "Cube" port, but by having it output from the 「Cube List」 port, it is possible to take the Cube class list.
