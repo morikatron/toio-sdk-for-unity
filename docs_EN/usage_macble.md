@@ -20,7 +20,7 @@ We have confirmed that it works in the following environment. You don't necessar
 | Tools and Software | Confirmed version         | Confirmed version          | Confirmed version          |
 | -------------------- | ---------------------- | ----------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15.7 | MacOS Big Sur 11.6.1 | MacOS Monterey 12.0.1 |
-| Unity                | 2020.3.17f1             | 2020.3.0f1         | 2020.3.23f1         |
+| Unity                | 2021.3.0f1             | 2020.3.0f1         | 2020.3.23f1         |
 | PC                   | iMac 2017 | iMac 2019 | MacBook Pro 2017 |
 
 <br>
@@ -28,7 +28,7 @@ We have confirmed that it works in the following environment. You don't necessar
 | Tools and Software | Recommended version          |
 | -------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15 or higher |
-| Unity                | 2020.3 or higher         |
+| Unity                | 2021.3 or higher         |
 
 <br>
 

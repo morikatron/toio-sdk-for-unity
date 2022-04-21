@@ -10,7 +10,7 @@ toio SDK for Unity を使うためや、このドキュメントのサンプル�
 
 Unity のインストールや動作環境については以下の公式のドキュメントを参考にしてください。
 
-- [Installing Unity \- Unity マニュアル](https://docs.unity3d.com/ja/2020.3/Manual/GettingStartedInstallingUnity.html)
+- [Installing Unity \- Unity マニュアル](https://docs.unity3d.com/ja/2021.3/Manual/GettingStartedInstallingUnity.html)
 （リンク先ページの右矢印→をクリックすると、システム要件やインストール方法の詳細が表示されます）
 
 Unity Hub を使うとバージョンの異なる Unity を複数インストールすることができるのでおすすめです。
