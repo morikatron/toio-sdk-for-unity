@@ -2,6 +2,8 @@
 
 > **Switch Language:**　[`日本語`](README.md)　|　`English`
 
+> [`Github Pages version`](https://morikatron.github.io/toio-sdk-for-unity/README_EN.html)
+
 ## Overview
 
 **toio SDK for Unity** is a Software Development Kit for controlling toio™ Core Cube (hereafter referred to as Cubes) in Unity.
@@ -91,7 +93,7 @@ public class Hello_Toio : MonoBehaviour
 
 For details on installation, tutorials, sample introductions, and feature explanations, please refer to the following documents.
 
-- ["toio SDK for Unity Documentation"](docs_EN/README.md)
+- [toio SDK for Unity Documentation](docs_EN/README.md)
 
 ## License
 
