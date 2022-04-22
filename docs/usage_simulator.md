@@ -3,20 +3,20 @@
 ## 目次
 
 - [1. 概説](usage_simulator.md#1-概説)
-- [2. Mat Prefab](usage_simulator.md#2-Mat-Prefab)
+- [2. Mat Prefab](usage_simulator.md#2-mat-prefab)
   - [2.1. インスペクターでのパラメーター](usage_simulator.md#21-インスペクターでのパラメーター)
   - [2.2. 定数](usage_simulator.md#22-定数)
   - [2.3. 列挙型](usage_simulator.md#23-列挙型)
   - [2.4. メソッド](usage_simulator.md#24-メソッド)
-- [3. StandardID Prefab](usage_simulator.md#3-StandardID-Prefab)
+- [3. StandardID Prefab](usage_simulator.md#3-standardid-prefab)
   - [ 3.1. インスペクターでのパラメーター](usage_simulator.md#31-インスペクターでのパラメーター)
-- [4. Cube Prefab](usage_simulator.md#4-Cube-Prefab)
-  - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-CubeSimulator-のインスペクター)
-  - [4.2. CubeSimulator の定数](usage_simulator.md#42-CubeSimulator-の定数)
-  - [4.3. CubeSimulator のプロパティ](usage_simulator.md#43-CubeSimulator-のプロパティ)
-  - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-CubeSimulator-のメソッド)
-  - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-Cube-オブジェクトの操作-CubeInteraction)
-- [5. Stage Prefab](usage_simulator.md#5-Stage-Prefab)
+- [4. Cube Prefab](usage_simulator.md#4-cube-prefab)
+  - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-cubesimulator-のインスペクター)
+  - [4.2. CubeSimulator の定数](usage_simulator.md#42-cubesimulator-の定数)
+  - [4.3. CubeSimulator のプロパティ](usage_simulator.md#43-cubesimulator-のプロパティ)
+  - [4.4. CubeSimulator のメソッド](usage_simulator.md#44-cubesimulator-のメソッド)
+  - [4.5. Cube オブジェクトの操作 (CubeInteraction)](usage_simulator.md#45-cube-オブジェクトの操作-cubeinteraction)
+- [5. Stage Prefab](usage_simulator.md#5-stage-prefab)
   - [5.1. ターゲットポール](usage_simulator.md#51-ターゲットポール)
   - [5.2. キューブをフォーカス](usage_simulator.md#52-キューブをフォーカス)
 - [6. Magnet Prefab](#6-Magnet-Prefab)
@@ -72,7 +72,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 
 ## 2.2. 定数
 
-```c#
+```csharp
 // マット単位とメートルの比例
 public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 ```
@@ -83,7 +83,7 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 マットのタイプ
 
-```c#
+```csharp
 toio_collection_front = 0,  // トイコレ付属マット（土俵面）
 toio_collection_back = 1,   // トイコレ付属マット（色タイル面）
 simple_playmat = 2,         // キューブ（単体）付属簡易マット
@@ -95,7 +95,7 @@ custom = 4                  // 座標範囲をカスタマイズ
 
 開発用マットの番号
 
-```c#
+```csharp
 _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12
 ```
 
@@ -103,7 +103,7 @@ _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12
 
 ### GetRectForMatType
 
-```c#
+```csharp
 public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default);
 ```
 
@@ -119,7 +119,7 @@ public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMat
 
 ### UnityDeg2MatDeg
 
-```c#
+```csharp
 public int UnityDeg2MatDeg(double deg);
 ```
 
@@ -133,7 +133,7 @@ Unity 上の角度を本マット上の角度に変換します。
 
 ### MatDeg2UnityDeg
 
-```c#
+```csharp
 public float MatDeg2UnityDeg(double deg);
 ```
 
@@ -147,7 +147,7 @@ public float MatDeg2UnityDeg(double deg);
 
 ### UnityCoord2MatCoord
 
-```c#
+```csharp
 public Vector2Int UnityCoord2MatCoord(Vector3 unityCoord);
 ```
 
@@ -161,7 +161,7 @@ Unity の 3D 空間座標から、本マットにおけるマット座標に変�
 
 ### MatCoord2UnityCoord
 
-```c#
+```csharp
 public Vector3 MatCoord2UnityCoord(double x, double y);
 ```
 
@@ -203,7 +203,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 
 ### UnityDeg2MatDeg
 
-```c#
+```csharp
 public int UnityDeg2MatDeg(double deg);
 ```
 
@@ -217,7 +217,7 @@ Unity 上の角度を本 StandardID 上の角度に変換します。
 
 ### MatDeg2UnityDeg
 
-```c#
+```csharp
 public float MatDeg2UnityDeg(double deg);
 ```
 
@@ -241,7 +241,7 @@ Cube Prefab は二つのスクリプトを持っています。
 - `CubeInteraction`：シミュレータ上で、Cubeオブジェクトを押したりつかんだりする操作を実装したもの
 
 > 実際のキューブとは一部機能差があります。<br>
-> 詳細については、[機能の対応状況](usage_cube.md#RealSim-機能表)をご確認下さい。
+> 詳細については、[機能の対応状況](usage_cube.md#realsim-機能表)をご確認下さい。
 
 Cube Prefab はシーンの中に複数台配置することが出来ます。 （ Cube Prefab が他のオブジェクトと重ならないように配置してください。）
 
@@ -291,7 +291,7 @@ Cube Prefab はシーンの中に複数台配置することが出来ます。 �
 
 ## 4.2. CubeSimulator の定数
 
-```c#
+```csharp
 // 左右タイヤの間隔（メートル）
 public static readonly float TireWidthM = 0.0266f;
 // 左右タイヤの間隔（ドット（マット座標））
@@ -304,7 +304,7 @@ public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM
 
 ## 4.3. CubeSimulator のプロパティ
 
-```c#
+```csharp
 public bool power { get; set; }                 // 電源
 public bool isRunning { get; private set; }     // 稼働中か否か
 public int maxMotor { get; }                    // モーター指令最大値
@@ -394,12 +394,12 @@ Ctrl キーを押したままに、任意のオブジェクトにマウスの右
 
 開発者はターゲットポールの位置を取得してキューブの制御に利用することが出来ます。
 
-```c#
+```csharp
 public bool targetPoleActive { get; }      // ターゲットポールが設置されたか？
 public Vector2Int targetPoleCoord { get; } // ターゲットポールのマット座標を取得
 ```
 
-ターゲットポールを使ってキューブを操作する具体的な方法については [チュートリアル](tutorials_cubehandle.md#Follow-TargetPole-デモ) で紹介しています。
+ターゲットポールを使ってキューブを操作する具体的な方法については [チュートリアル](tutorials_cubehandle.md#follow-targetpole-デモ) で紹介しています。
 
 ## 5.2. キューブをフォーカス
 
@@ -412,14 +412,14 @@ Ctrl キーを押したままに、キューブを左クリックすると、フ
 
 ### プロパティ
 
-```c#
+```csharp
 // フォーカス対象の名前（Unityヒエラルキーでの名前）
 public string focusName { get; }
 ```
 
 ### SetFocus
 
-```c#
+```csharp
 public void SetFocus(Transform transform);
 ```
 
@@ -430,7 +430,7 @@ public void SetFocus(Transform transform);
 
 ### SetNoFocus
 
-```c#
+```csharp
 public void SetNoFocus();
 ```
 
@@ -460,7 +460,7 @@ Magnet Prefab 自身（一番上の親オブジェクト）には磁荷が定義
 
 ### GetSelfH
 
-```c#
+```csharp
 public Vector3 GetSelfH(Vector3 pos);
 ```
 
@@ -475,7 +475,7 @@ public Vector3 GetSelfH(Vector3 pos);
 
 ### SumUpH
 
-```c#
+```csharp
 public Vector3 SumUpH(Vector3 pos);
 ```
 

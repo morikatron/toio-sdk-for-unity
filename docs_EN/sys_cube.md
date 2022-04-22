@@ -10,8 +10,8 @@
 - [4. Send command](sys_cube.md#4-send-command)
 - [5. How to extend functionality](sys_cube.md#5-how-to-extend-functionality)
   - [5.1. How to add a function to Cube class](sys_cube.md#51-how-to-add-a-function-to-cube-class)
-  - [5.2. How to add a firmware version](sys_cube.md#52-how-to-add-a-firmware-version)
-  - [5.3. How to add a firmware version](sys_cube.md#53-to-change-the-communication-program)
+  - [5.2. How to add a BLE protocol version](sys_cube.md#52-how-to-add-a-BLE-protocol-version)
+  - [5.3. To change the communication program](sys_cube.md#53-to-change-the-communication-program)
 
 <br>
 
@@ -76,33 +76,33 @@ By doing so, it absorbs differences in internal implementation between execution
 To maintain reusability, there is no functionality in this class other than [toio™ Core Cube Technical Specification (Communication Specification)](https://toio.github.io/toio-spec/en/docs/ble_communication_overview).<br>
 To use/extend functions other than toio™ Core Cube technical specifications (communication specifications), use extension classes such as [CubeHandle](usage_cubehandle.md), [CubeNavigator](sys_navigator.md), etc.<br>
 
-Implementation Code:[Cube.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
+Implementation Code:[Cube.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
 
 #### CubeUnity
 
-This is Cube class for Simulator that runs when Unity editor is executed.<br>There is no firmware version resolution, so only one version will work.<br>
+This is Cube class for Simulator that runs when Unity editor is executed.<br>There is no BLE protocol version resolution, so only one version will work.<br>
 
-Implementation Code:[CubeUnity.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Sim/CubeUnity.cs)
+Implementation Code:[CubeUnity.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Sim/CubeUnity.cs)
 
 #### CubeReal
 
 This is Cube class that handles BLE communication with the real cube.<br>Most of the internal implementation is done in the derived class, except for the minimum common processing.<br>
 
-Implementation Code:[CubeReal.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)
+Implementation Code:[CubeReal.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)
 
 <b>ver2_0_0:</b>
 
-- Implementation Code:[CubeReal_ver2_0_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
+- Implementation Code:[CubeReal_ver2_0_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
 - Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.0.0/about
 
 <b>ver2_1_0:</b>
 
-- Implementation Code:[CubeReal_ver2_1_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
+- Implementation Code:[CubeReal_ver2_1_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
 - Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.1.0/about
 
 <b>ver2_2_0:</b>
 
-- Implementation Code:[CubeReal_ver2_2_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
+- Implementation Code:[CubeReal_ver2_2_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
 - Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.2.0/about
 
 <br>
@@ -111,7 +111,7 @@ Implementation Code:[CubeReal.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube
 
 As an example, here is a simple Cube move code.<br>When this code is executed, the move function will be called after connecting to Cube.
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -155,7 +155,7 @@ public class SimpleScene : MonoBehaviour
 
 In this chapter, we will discuss the search connection program part.
 
-```C#
+```csharp
 async void Start()
 {
   // Search for Bluetooth devices (3.1. Search)
@@ -245,7 +245,7 @@ Calling the <b>NearScan function</b> will return <b>synchronously</b> a specifie
 By calling the <b>NearScanAsync function</b>, we can <b>asynchronously</b> call back a specified number of devices in the order of increasing signal strength (satisfiedNum), and by using Unity coroutine function, we can run the scan across frames and call the specified function. This function supports connect/disconnect at any time. By using the "autoRunning=true" argument, it will automatically restart the scan when the connection to Cube is lost.
 
 The internal implementation is divided into simulator implementation and real implementation, and the connection method can be specified by the constructor parameters. In the basic configuration, the internal implementation automatically changes depending on the build target, so you do not need to write separate code for each platform. If you want to specify the connection method explicitly, please refer to [Cube Connection Settings](usage_cube.md#4-cube-connection-settings).<br>
-It is implemented by inheriting the interface for the purpose of extensibility to [CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs).
+It is implemented by inheriting the interface for the purpose of extensibility to [CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs).
 
 Simulator Implementation:
 
@@ -255,10 +255,9 @@ Real Implementation:
 
 - Search for Bluetooth devices
 
-<details>
-<summary>Summary Code: (click to expand)</summary>
+Summary Code
 
-```C#
+```csharp
 public interface CubeScannerInterface
 {
     bool isScanning { get; }
@@ -348,8 +347,6 @@ public class RealImpl : CubeScannerInterface
 
 ```
 
-</details>
-
 <br>
 
 ### <u>NearestScanner</u>
@@ -361,7 +358,7 @@ Please refer to [CubeScanner NearestScan function](sys_cube.md#cubescanner) for 
 
 Implementation Code:
 
-- [NearestScanner.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs)
+- [NearestScanner.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs)
 
 <br>
 
@@ -374,7 +371,7 @@ Calling the <b>ScanAsync function</b> will <b>asynchronously</b> call back a spe
 
 Implementation Code:
 
-- [NearScanner.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs)
+- [NearScanner.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs)
 
 <br>
 
@@ -387,8 +384,8 @@ Implementation Code:
 </div>
 <br>
 
-CubeConnecter's role is to connect to BLE device and <b><u>adapt the firmware version (real implementation only)</u></b>.<br>The internal implementation is divided into simulator implementation and real implementation, and the internal implementation changes automatically depending on the build target, so you don't need to write separate code for each platform. async/await keyword is used to wait for the end of the connection, which is the same as synchronous processing from the caller's point of view. The following is an example.<br>
-[CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs) is implemented by inheriting its interface for the purpose of extensibility.
+CubeConnecter's role is to connect to BLE device and <b><u>adapt the BLE protocol version (real implementation only)</u></b>.<br>The internal implementation is divided into simulator implementation and real implementation, and the internal implementation changes automatically depending on the build target, so you don't need to write separate code for each platform. async/await keyword is used to wait for the end of the connection, which is the same as synchronous processing from the caller's point of view. The following is an example.<br>
+[CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs) is implemented by inheriting its interface for the purpose of extensibility.
 
 Connect to Cube by calling the <b>Connect function</b>.<br>
 By calling the <b>disconnect function</b>, we can disconnect the communication with the connected Cube.<br>
@@ -397,20 +394,19 @@ Simulator implementation:
 
 1. Get a GameObject from UnityPeripheral(GameObject)
 2. Create CubeUnity variable with GameObjet as argument
-   (Firmware version adaptation is not implemented in Simulator version)
+   (BLE protocol version adaptation is not implemented in Simulator version)
 
 Real implementation:
 
 1. Connect to Peripheral (Bluetooth device) and get Characteristic (function) array
-2. Get the firmware version
-3. Refer to the version table that was added in advance, and generate Cube variables (CubeReal_verX_X_X) that are adapted to the firmware
+2. Get the BLE protocol version
+3. Refer to the version table that was added in advance, and generate Cube variables (CubeReal_verX_X_X) that are adapted to the BLE protocol
 
 <br>
 
-<details>
-<summary>Summary Code: (Click to expand)</summary>
+Summary Code
 
-```C#
+```csharp
 public interface CubeConnecterInterface
 {
     Task<Cube> Connect(BLEPeripheralInterface peripheral);
@@ -419,7 +415,7 @@ public interface CubeConnecterInterface
 }
 
 /// <summary>
-/// It refers to the firmware version of CoreCube and generates Cube class according to the version.
+/// It refers to the BLE protocol version of CoreCube and generates Cube class according to the version.
 /// </summary>
 public class CubeConnecter : CubeConnecterInterface
 {
@@ -474,18 +470,17 @@ public class CubeConnecter : CubeConnecterInterface
 }
 ```
 
-</details>
 <br>
 
 Implementation Code:
 
-- [toio-sdk/Scripts/Cube/CubeConnecter.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeConnecter.cs)
+- [toio-sdk/Scripts/Cube/CubeConnecter.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeConnecter.cs)
 
 Sample Code:
 
-- [CubeManagerScene_RawSingle.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_RawSingle.cs)
+- [CubeManagerScene_RawSingle.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_RawSingle.cs)
 
-- [CubeManagerScene_Single.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_Single.cs)
+- [CubeManagerScene_Single.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_Single.cs)
 
 <br><br>
 
@@ -526,7 +521,7 @@ Therefore, this class provides the following two functions
 
    <b>Weak instructions:</b> If the queue is mixed with strong instructions, the weak instructions will not be sent and will be discarded. If there are multiple weak instructions in the queue, only the last instruction in the queue will be sent, and all other instructions will be discarded. In the case of movement instructions (such as navigation) that are sent frequently, it may not be a problem to ignore some instructions. By making these instructions that can be ignored as weak instructions, strong instructions with high priority can be sent stably in contrast.
 
-Implementation Code:[CubeOrderBalancer.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/CubeOrderBalancer.cs)
+Implementation Code:[CubeOrderBalancer.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/CubeOrderBalancer.cs)
 
 <br>
 
@@ -540,9 +535,9 @@ As explained in [Structure of Cube Class](sys_cube.md#2-structure-of-cube-class)
 
 <br>
 
-## 5.2. How to add a firmware version
+## 5.2. How to add a BLE protocol version
 
-1. Create CubeReal derived class that corresponds to the newly added firmware version.
+1. Create CubeReal derived class that corresponds to the newly added BLE protocol version.
 2. Register the generating function in the versionTable member variable of CubeConnecter class.
 
 <br>

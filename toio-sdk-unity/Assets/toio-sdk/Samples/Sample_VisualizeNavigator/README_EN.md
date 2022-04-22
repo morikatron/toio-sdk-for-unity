@@ -3,7 +3,7 @@
 > Debugging module is not available in WebGL version.
 
 <div align="center">
-<img src="/docs/res/samples/visualize_navigator.gif">
+<img src="../../../../../docs/res/samples/visualize_navigator.gif">
 </div>
 
 <br>

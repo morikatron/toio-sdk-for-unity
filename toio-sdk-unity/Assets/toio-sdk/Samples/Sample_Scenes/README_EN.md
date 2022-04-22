@@ -18,17 +18,24 @@ To run and build
 
 The following methods can be used to move and hold game objects in a common space independent of the scene.
 
-> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/2020.3/Documentation/ScriptReference/Object.DontDestroyOnLoad.html)
+> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/2021.3/Documentation/ScriptReference/Object.DontDestroyOnLoad.html)
 
 ```c#
 // Smaple_Scenes_Preload.cs
 void Start(){
     // ...
-#if UNITY_EDITOR
+
     // Keep Cubes across scenes
-    foreach (var c in GameObject.FindGameObjectsWithTag("Cube"))
-        DontDestroyOnLoad(c);
-#endif
+    if (CubeScanner.actualTypeOfAuto == ConnectType.Simulator)
+    {
+        try
+        {
+            foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
+                DontDestroyOnLoad(c);
+        }
+        catch (UnityException){}
+    }
+
     // ...
 }
 ```

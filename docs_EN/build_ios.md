@@ -9,9 +9,9 @@ The following environments have been tested. You don't necessarily have to match
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS | macOS Catalina 10.15.5 | macOS Mojave 10.14 or higher |
-| Unity | 2020.3.17f1 | 2020.3 or higher | | Xcode | 11.5
+| Unity | 2021.3.0f1 | 2021.3 or higher | | Xcode | 11.5
 | Xcode | 11.5 (11E608c) | 11 or above
-| Unity | 2020.3.17f1 | 2020.3 or above | Xcode | 11.5 (11E608c) | 11 or above | iOS | 12.3.1, 13.2.2 | 11 or above
+| iOS   | 12.3.1, 13.2.2 | 11 以上 |
 
 ## Check Unity's iOS Build Support
 
@@ -49,7 +49,7 @@ Open the project file (SimpleScene/Unity-iPhone.xcodeproj in this example) in Xc
 
 Configure the Xcode project settings and provisioning profile settings with reference to the following Unity official page.
 
-- [Developing Games for iOS - Unity Manual](https://docs.unity3d.com/2020.3/Documentation/Manual/iphone-GettingStarted.html)
+- [Developing Games for iOS - Unity Manual](https://docs.unity3d.com/2021.3/Documentation/Manual/iphone-GettingStarted.html)
 
 ## Xcode Build
 

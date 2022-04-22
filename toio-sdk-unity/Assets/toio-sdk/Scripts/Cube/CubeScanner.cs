@@ -17,7 +17,7 @@ namespace toio
     public interface CubeScannerInterface
     {
         bool isScanning { get; }
-        UniTask<BLEPeripheralInterface> NearestScan();
+        UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f);
         UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3.0f);
         void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning = true);
     }
@@ -56,9 +56,24 @@ namespace toio
             }
         }
         public bool isScanning { get { return this.impl.isScanning; } }
-        public async UniTask<BLEPeripheralInterface> NearestScan() { return await this.impl.NearestScan(); }
+
+        /// <summary>
+        /// Scan for 1 nearest cube.
+        /// 0 or negative waitSeconds stands for infinite.
+        /// </summary>
+        /// <param name="waitSeconds"></param>
+        /// <returns></returns>
+        public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f) { return await this.impl.NearestScan(waitSeconds); }
+
+        /// <summary>
+        /// Scan for 1 nearest cube.
+        /// 0 or negative waitSeconds does NOT stand for infinite but the exact value.
+        /// </summary>
+        /// <param name="waitSeconds"></param>
+        /// <returns></returns>
         public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds) { return await this.impl.NearScan(satisfiedNum, waitSeconds); }
         public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning) { this.impl.NearScanAsync(satisfiedNum, coroutineObject, callback, autoRunning); }
+
 
         /// <summary>
         /// Impl for UnitySimulator.
@@ -79,8 +94,9 @@ namespace toio
                 this.isScanning = false;
             }
 
-            public async UniTask<BLEPeripheralInterface> NearestScan()
+            public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds)
             {
+                float start_time = Time.time;
                 List<BLEPeripheralInterface> peripheralList = new List<BLEPeripheralInterface>();
                 List<GameObject> foundObjs = new List<GameObject>();
 
@@ -102,7 +118,7 @@ namespace toio
                     }
                 };
 
-                isScanning = true;
+                this.isScanning = true;
 
                 // Scanning Loop
                 while (true)
@@ -119,15 +135,21 @@ namespace toio
                         }
                     }
 
+                    // Scanned
                     if (0 < peripheralList.Count) break;
+
+                    // Time out
+                    var elapsed = Time.time - start_time;
+                    if (waitSeconds > 0 && waitSeconds <= elapsed)
+                        return null;
 
                     // Searching Period
                     await UniTask.Delay(200);
                 }
 
                 peripheralList.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
-                isScanning = false;
-                return peripheralList[0];
+                this.isScanning = false;
+                return peripheralList.Count>0 ? peripheralList[0] : null;
             }
             public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
             {
@@ -207,6 +229,7 @@ namespace toio
                     if (this.isScanning && foundObjs.Count < satisfiedNum &&
                         !this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
                     {
+                        foundObjs.Add(obj);
                         if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
                         {
                             peripheral = this.peripheralDatabase[peripheral.device_address];
@@ -232,7 +255,6 @@ namespace toio
                         if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
                         if (!foundObjs.Contains(obj))
                         {
-                            foundObjs.Add(obj);
                             foundCallback.Invoke(obj);
                         }
                     }
@@ -264,11 +286,13 @@ namespace toio
                     }
                     if (!this.isScanning && this.autoRunning)
                     {
-                        this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
+                        if (this.coroutineObject != null)
+                            this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
                     }
                 }
             }
         }
+
 
         /// <summary>
         /// Impl for RealCube.
@@ -296,8 +320,9 @@ namespace toio
 #endif
             }
 
-            public async UniTask<BLEPeripheralInterface> NearestScan()
+            public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds)
             {
+                var start_time = Time.time;
                 Dictionary<string, BLEPeripheralInterface> peripheralTable = new Dictionary<string, BLEPeripheralInterface>();
                 List<BLEPeripheralInterface> peripheralList = new List<BLEPeripheralInterface>();
 
@@ -326,6 +351,12 @@ namespace toio
                             peripheralList.Add(peripheral);
                             peripheralTable.Add(peripheral.device_address, peripheral);
                         }
+#if !UNITY_EDITOR && UNITY_WEBGL
+                        else
+                        {
+                            errorflg = true;
+                        }
+#endif
                     });
                 });
                 this.StartScanning(foundCallback);
@@ -335,28 +366,33 @@ namespace toio
                 while(true)
                 {
                     await UniTask.Delay(300);
+
+                    // Error
                     if (errorflg)
                     {
-                        this.isScanning = false;
-                        if (null != device)
-                        {
-                            device.StopScan();
-                        }
-                        return null;
+                        break;
                     }
+
+                    // Scanned
                     if (0 < peripheralList.Count)
                     {
                         break;
                     }
-                }
-                peripheralList.Sort((a, b) => 0 < (b.rssi - a.rssi) ? 1 : -1);
-                this.isScanning = false;
-                if (null != device)
-                {
-                    device.StopScan();
-                }
 
-                return peripheralList[0];
+                    // Time out
+                    var elapsed = Time.time - start_time;
+                    if (waitSeconds > 0 && waitSeconds <= elapsed)
+                    {
+                        break;
+                    }
+
+                }
+                this.device?.StopScan();
+                await UniTask.Delay(100);
+                this.isScanning = false;
+
+                peripheralList.Sort((a, b) => 0 < (b.rssi - a.rssi) ? 1 : -1);
+                return peripheralList.Count > 0 ? peripheralList[0] : null;
             }
             public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
             {
@@ -401,12 +437,6 @@ namespace toio
                     // 必要数に達したらスキャン終了
                     if (satisfiedNum <= peripheralList.Count)
                     {
-                        this.isScanning = false;
-                        if (null != this.device)
-                        {
-                            this.device.StopScan();
-                        }
-                        await UniTask.Delay(100);
                         break;
                     }
 
@@ -414,15 +444,13 @@ namespace toio
                     var elapsed = Time.time - start_time;
                     if (waitSeconds <= elapsed)
                     {
-                        this.isScanning = false;
-                        if (null != this.device)
-                        {
-                            this.device.StopScan();
-                        }
-                        await UniTask.Delay(100);
                         break;
                     }
                 }
+                this.device?.StopScan();
+                await UniTask.Delay(100);
+                this.isScanning = false;
+
                 peripheralList.Sort((a, b) => (int)(b.rssi*100) - (int)(a.rssi*100));
                 var nearPeripherals = peripheralList.GetRange(0, Mathf.Min(satisfiedNum, peripheralList.Count)).ToArray();
                 return nearPeripherals;
@@ -477,10 +505,7 @@ namespace toio
                     {
                         //Debug.Log("stop scanning");
                         this.isScanning = false;
-                        if (null != this.device)
-                        {
-                            this.device.StopScan();
-                        }
+                        this.device?.StopScan();
                         yield return new WaitForSeconds(0.1f);
                         yield break;
                     }
@@ -522,7 +547,8 @@ namespace toio
                     }
                     if (!this.isScanning && this.autoRunning)
                     {
-                        this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
+                        if (this.coroutineObject != null)
+                            this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
                     }
                 }
             }

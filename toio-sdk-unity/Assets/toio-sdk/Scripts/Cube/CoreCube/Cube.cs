@@ -14,7 +14,7 @@ namespace toio
         //      プロパティ
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-        // 接続したコアキューブのファームウェアバージョン
+        // 接続したコアキューブのBLE プロトコルバージョン
         public abstract string version { get; }
         // コアキューブの固有識別ID
         public abstract string id { get; protected set; }

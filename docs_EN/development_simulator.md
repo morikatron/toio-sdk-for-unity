@@ -97,7 +97,7 @@ It is divided into two parts: [Simulator Settings] and [Manually Change Cube Sta
 
 <div align="center"><img src="res/usage_simulator/cube_setting.png"></div>
 
-- `Version`： Firmware version. Cannot be changed at runtime.
+- `Version`： BLE protocol version. Cannot be changed at runtime.
 - `Motor Tau`： Parameter for the primary delay element of the motor. Cannot be changed at runtime.
 - `Delay`： Communication delay (the lag between the transmission of the command and the change in the acquired coordinates). Cannot be changed at runtime.
 - `Force Stop`: When checked, it will forcibly stop the output of the motor.

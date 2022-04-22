@@ -3,7 +3,7 @@
 > ※ UnityEngine.Debug モジュールの可視化が利用できないため、WebGL 版はなしです。
 
 <div align="center">
-<img src="/docs/res/samples/visualize_navigator.gif">
+<img src="../../../../../docs/res/samples/visualize_navigator.gif">
 </div>
 
 <br>

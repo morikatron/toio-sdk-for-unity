@@ -3,7 +3,7 @@
 > ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/circling)です。
 
 <div align="center">
-<img src="/docs/res/samples/circling_boids.gif">
+<img src="../../../../../docs/res/samples/circling_boids.gif">
 </div>
 
 <br>

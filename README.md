@@ -1,6 +1,8 @@
 # toio SDK for Unity
 
-> **Switch Language:**　`日本語`　|　[`English`](README_EN.md)
+> **Switch Language:** | `日本語` | [`English`](README_EN.md)
+
+> [`Github Pages版`](https://morikatron.github.io/toio-sdk-for-unity/)
 
 ## 概要
 
@@ -10,13 +12,12 @@ toio SDK for Unity を使用することでキューブを使ったアプリを�
 
 
 <p align="center">
-<img src="./docs/res/main/overview.gif" width=720></img>
+<img src="./docs/res/main/overview.gif" width=720>
 </p>
 
-<details>
-<summary>toio SDK for Unity の一つ大きな特徴は、上図の様に、一つのソースコード（クリック展開）でシミュレータとリアルのキューブの両方を動かすことが出来ます。</summary>
+toio SDK for Unity の一つ大きな特徴は、このような一つのソースコードでシミュレータとリアルのキューブの両方を動かすことが出来ることです。
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -47,8 +48,6 @@ public class Hello_Toio : MonoBehaviour
 }
 ```
 
-</details>
-
 
 ## 機能一覧
 
@@ -75,7 +74,8 @@ public class Hello_Toio : MonoBehaviour
   - ボイドで、複数台のキューブを群れとして動かせる
   - 衝突回避とボイドは組み合わせて同時実行できる
   - 目標に移動する以外に目標から離れるようなナビゲーションもできる
-
+- Visual Scripting
+  - Unity2021から標準となったVisual ScriptingでCube, CubeHandle, Navigatorが利用できる
 
 ## 動作環境
 
@@ -85,8 +85,8 @@ public class Hello_Toio : MonoBehaviour
 - Windows 10（64 ビット版のみ）
 - iOS端末（iOS ver.12以上）
 - Android端末(Android OS 9.0以上)
-- Unity（2020.3.17f1 LTS）
-
+- Unity（2021.3.0f1LTS）
+- Unity Visual Scripting(ver 1.7.6)
 
 ## ドキュメント
 
@@ -100,6 +100,6 @@ public class Hello_Toio : MonoBehaviour
 
 ## ライセンス
 
-- [LICENSE](LICENSE)
+- [LICENSE](https://github.com/morikatron/toio-sdk-for-unity/blob/main/LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
 - [知的財産権表記 / Trademark Notice](Trademark-Notices.md)

@@ -4,16 +4,16 @@
 
 - [1. 概説](sys_navigator.md#1-概説)
   - [1.1. クラスダイアグラム](sys_navigator.md#11-クラスダイアグラム)
-- [2. Navigator クラス](sys_navigator.md#2-Navigator-クラス)
+- [2. Navigator クラス](sys_navigator.md#2-navigator-クラス)
   - [2.1. 制御ブロック図](sys_navigator.md#21-制御ブロック図)
   - [2.2. モード](sys_navigator.md#22-モード)
-- [3. CubeNavigator クラス](sys_navigator.md#3-CubeNavigator-クラス)
+- [3. CubeNavigator クラス](sys_navigator.md#3-cubenavigator-クラス)
   - [3.1. 制御ブロック図](sys_navigator.md#31-制御ブロック図)
   - [3.2. 内部処理の解説](sys_navigator.md#32-内部処理の解説)
   - [3.3. 拡張について](sys_navigator.md#33-拡張について)
 - [4. アルゴリズムの詳細](sys_navigator.md#4-アルゴリズムの詳細)
-  - [4.1. ヒューマンライク衝突回避 HLAvoid](sys_navigator.md#41-ヒューマンライク衝突回避-HLAvoid)
-  - [4.2. ボイド Boids](sys_navigator.md#42-ボイド-Boids)
+  - [4.1. ヒューマンライク衝突回避 HLAvoid](sys_navigator.md#41-ヒューマンライク衝突回避-hlavoid)
+  - [4.2. ボイド Boids](sys_navigator.md#42-ボイド-boids)
 
 # 1. 概説
 
@@ -45,8 +45,8 @@ Navigation  +----------------------+ Navigator 関連ディレクトリ
 
 ## 1.1. クラスダイアグラム
 
-toio SDK for Unity の Navigator モジュール群は、 toio™ 関連とは独立して実装されている [Navigator](sys_navigator.md#2-Navigator-クラス) クラス(図の 「Cube-independent Navigator」)と、
-Navigator と CubeHandle とをつなげるインターフェイスである [CubeNavigator](sys_navigator.md#3-CubeNavigator-クラス) クラス および CubeEntity クラス (図の 「Interfavce for Cube」) とで構成されています。
+toio SDK for Unity の Navigator モジュール群は、 toio™ 関連とは独立して実装されている [Navigator](sys_navigator.md#2-navigator-クラス) クラス(図の 「Cube-independent Navigator」)と、
+Navigator と CubeHandle とをつなげるインターフェイスである [CubeNavigator](sys_navigator.md#3-cubenavigator-クラス) クラス および CubeEntity クラス (図の 「Interfavce for Cube」) とで構成されています。
 
 <div align="center"><img width=600 src="res/navigator/arch.png"></div>
 
@@ -132,7 +132,7 @@ CubeNavigator では、 Navigator と CubeHandle を組み合わせて
 
 `CubeHandle.Update` メソッドを呼び出し、予測結果と元情報を CubeEntity にセットします。
 
-```c#
+```csharp
 // CubeNavigator.Update
 public class CubeNavigator : Navigator
 {
@@ -182,7 +182,7 @@ public class CubeEntity : Entity
 
 入力された目標値から Navigator に実装されているアルゴリズムでウェイポイントなどを計算し、その結果を `CubeHandle.Move2Target` に渡します。
 
-```c#
+```csharp
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20)
 {
     // Navigator のウェイポイント計算
@@ -236,7 +236,7 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
 
 toio SDK for Unity の HLAvoid クラスは機能としてのメソッドを 2 つ持っています。
 
-```c#
+```csharp
 // 目標にナビゲーションする（ウェイポイント、衝突状態、速度上限）を計算
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls);
 // 目標から逃げる（ウェイポイント、衝突状態、速度上限）を計算
@@ -261,7 +261,7 @@ RunTowards / RunAway
 
 ### 4.1.1. スキャンの結果を表す ScanResult 構造体
 
-```c#
+```csharp
 public struct ScanResult
 {
     public bool isCollision;    // 衝突状態
@@ -281,7 +281,7 @@ public struct ScanResult
 
 ### 4.1.2. スキャンの結果を統合する CombineScanRes メソッド
 
-```c#
+```csharp
 private ScanResult CombineScanRes(List<ScanResult> results, bool isCol, double[] rads);
 ```
 
@@ -295,10 +295,9 @@ private ScanResult CombineScanRes(List<ScanResult> results, bool isCol, double[]
 元論文　[Guzzi, Jérôme, et al. "Human-friendly robot navigation in dynamic environments." 2013 IEEE International Conference on Robotics and Automation. IEEE, 2013.](https://ieeexplore.ieee.org/abstract/document/6630610) <br>
 及び [改良版手法の解説ブログ](https://tech.morikatron.ai/entry/2020/03/04/100000)（Morikatron Engineer Blog）を参照してください。
 
-<details>
-<summary>_ScanEntity 実装コード</summary>
+_ScanEntity 実装コード
 
-```c#
+```csharp
 private ScanResult _ScanEntity(Navigator other, double[] rads){
     ScanResult res = ScanResult.init(rads, maxRange);
     var o = other.entity;
@@ -355,15 +354,11 @@ private ScanResult _ScanEntity(Navigator other, double[] rads){
     return res;
 }
 ```
-
-</details>
-
 <br>
 
-<details>
-<summary>RunTowards 実装コード</summary>
+RunTowards 実装コード
 
-```c#
+```csharp
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls){
 
     var rads = SampleRads(target);
@@ -443,8 +438,6 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
 }
 ```
 
-</details>
-
 <br>
 
 ## 4.2. ボイド Boids
@@ -462,7 +455,7 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
 
 toio SDK for Unity の Boids クラスは機能としてのメソッドを 2 つ持っています。
 
-```c#
+```csharp
 // 目標への「引力」を含めて、ボイドの力ベクトルを計算
 public Vector Run(List<Navigator> others, Vector tarPos);
 // 目標への「引力」なしで、ボイドの力ベクトルを計算

@@ -6,7 +6,9 @@
 
 1. Prepare the development environment ["Preparation"](preparation.md)
 2. Create a new project in Unity and load toio SDK for Unity ["toio SDK for Unity Installation"](download_sdk.md)
-3. (Optional)Install BLE plugin for Mac ["How to set up MacBLE"](usage_macble.md)
+3. Optional
+   - ["Install BLE plugin for Mac"](usage_macble.md)
+   - ["Setting of Visual Scripting"](visual_scripting_setting.md)
 <br><br>
 
 ### [2] Development
@@ -23,7 +25,7 @@
 
 1. Build an app for a smart device and verify that it works on the device. (C)
     - ["iOS Build"](build_ios.md) | ["Android Build"](build_android.md) | ["WebGL Build"](build_web.md)
-    - For Mac or Windows 10 build, please refer to [Unity's official document](https://docs.unity3d.com/ja/2020.3/Manual/PublishingBuilds.html).
+    - For Mac or Windows 10 build, please refer to [Unity's official document](https://docs.unity3d.com/ja/2021.3/Manual/PublishingBuilds.html).
 2. Repeat `(A)` `(B)` `(C)` to brush up the program.
 
 <br>
@@ -43,7 +45,7 @@
 - [9. Simplifying the source code using CubeManager class](tutorials_basic.md#9-simplifying-the-source-code-using-cubemanager-class)
 - [10. Connection/disconnection on the way](tutorials_basic.md#10-connectiondisconnection-on-the-way)
 - [11. Creating UI](tutorials_UI.md)
-
+- [12. How to use in Visual Scripting](tutorials_visual_scriptings.md)
 ### Useful movement functions - CubeHandle
 
 - [1. Synchronized control of cubes using CubeManager](tutorials_cubehandle.md#1-synchronized-control-of-cubes-using-cubemanager)
@@ -121,7 +123,7 @@
 ### Diagram of the entire system
 
 <p align="center">
-<img src="./res/main/arch.png" width=550></img>
+<img src="./res/main/arch.png" width=550>
 </p>
 
 Explain from low level (left) to high level (right).

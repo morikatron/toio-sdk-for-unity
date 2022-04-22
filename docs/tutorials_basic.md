@@ -6,8 +6,8 @@
 - [2. シーン作成](tutorials_basic.md#2-シーン作成)
 - [3. 移動する](tutorials_basic.md#3-移動する)
 - [4. 音を鳴らす](tutorials_basic.md#4-音を鳴らす)
-- [5. LED を発光する](tutorials_basic.md#5-LED-を発光する)
-- [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-IDの読み取りPosition-ID--Standard-ID)
+- [5. LED を発光する](tutorials_basic.md#5-led-を発光する)
+- [6. toio IDの読み取り(Position ID & Standard ID)](tutorials_basic.md#6-toio-idの読み取りposition-id--standard-id)
 - [7. センサーのイベントを検知](tutorials_basic.md#7-センサーのイベントを検知)
 - [8. 複数のキューブを動かす](tutorials_basic.md#8-複数のキューブを動かす)
 - [9. CubeManagerクラスを用いたソースコードの簡略化](tutorials_basic.md#9-cubemanagerクラスを用いたソースコードの簡略化)
@@ -18,6 +18,7 @@
 本 SDK は同じソースコードで、シミュレータ環境とスマートデバイス環境の両方で toio™コア キューブ （以降キューブ） を動かすことが出来ます。
 以下の説明は、シミュレータ環境での動作を前提として説明します。
 
+また、Visual Scriptingを利用する場合、本チュートリアルと並行して適宜[【コチラ】](tutorials_visual_scriptings.md)も目を通すことをお勧めします。
 
 # 2. シーン作成
 
@@ -44,7 +45,7 @@
 
 ### サンプルコード
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -96,7 +97,7 @@ public class BasicScene : MonoBehaviour
 
 Cube クラスの Move メソッドでキューブのモーターを制御することが出来ます。
 
-```C#
+```csharp
 //--------------------------------------------------------
 // 時間指定付きモーター制御
 // https://toio.github.io/toio-spec/docs/ble_motor#時間指定付きモーター制御
@@ -109,10 +110,9 @@ Cube クラスの Move メソッドでキューブのモーターを制御する
 cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
-```C#
+```csharp
 // ファイル名とクラス名は一致させる必要があります
 public class MoveScene : MonoBehaviour
 {
@@ -179,8 +179,6 @@ public class MoveScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 4. 音を鳴らす
@@ -191,7 +189,7 @@ public class MoveScene : MonoBehaviour
 Cube クラスの PlayPresetSound メソッドでキューブからあらかじめ用意された効果音を再生出来ます。
 用意されている効果音については[【コチラ】](https://toio.github.io/toio-spec/docs/ble_sound#効果音の-id)を参照してください。
 
-```C#
+```csharp
 //--------------------------------------------------------
 // 効果音の再生
 // https://toio.github.io/toio-spec/docs/ble_sound#効果音の再生
@@ -205,7 +203,7 @@ cube.PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.St
 
 任意の音を鳴らしたい場合は、 再生したい音を、音符に相当するCubeクラス内の SoundOperation 内部クラスの配列として定義し、それを Cube クラスの PlaySound メソッドで再生させます。
 
-```C#
+```csharp
 //--------------------------------------------------------
 // MIDI note numberの再生
 // https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-の再生
@@ -224,10 +222,9 @@ cube.PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order=OR
 
 ※ Unity でシミューレータ実行すると音が鳴ります。
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
-```C#
+```csharp
 // ファイル名とクラス名は一致させる必要があります
 public class SoundScene : MonoBehaviour
 {
@@ -281,8 +278,6 @@ public class SoundScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 5. LED を発光する
@@ -294,7 +289,7 @@ public class SoundScene : MonoBehaviour
 
 Cube クラスの TurnLedOn メソッドでキューブ底面についている LED を制御することが出来ます。
 
-```C#
+```csharp
 //--------------------------------------------------------
 // 点灯・消灯
 // https://toio.github.io/toio-spec/docs/ble_light#点灯消灯
@@ -308,7 +303,7 @@ Cube クラスの TurnLedOn メソッドでキューブ底面についている 
 cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-```C#
+```csharp
 //--------------------------------------------------------
 // 連続的な点灯・消灯
 // https://toio.github.io/toio-spec/docs/ble_light#連続的な点灯消灯
@@ -326,10 +321,9 @@ new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte b
 cube.TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong)
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
-```C#
+```csharp
 // ファイル名とクラス名は一致させる必要があります
 public class LEDScene : MonoBehaviour
 {
@@ -374,8 +368,6 @@ public class LEDScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 6. toio IDの読み取り(Position ID & Standard ID)
@@ -391,18 +383,17 @@ toio ID について詳細は[toio™コア キューブ技術仕様](https://to
 
 
 toio ID は、Cube クラスのメンバー変数として、直接読み取ることができます。
-```c#
+```csharp
 public int x { get; }   // Position ID の x 座標
 public int y { get; }   // Position ID の y 座標
 public Vector2 pos { get; } // 2Dベクトルに変換済みの Position ID
 public uint standardId { get; protected set; } // Standard ID
 ```
-> ※ 他にも直接読み取れる情報がありますので、ドキュメントの[CubeクラスAPI](usage_cube.md#3-Cube-クラス-API)を参照してください。
+> ※ 他にも直接読み取れる情報がありますので、ドキュメントの[CubeクラスAPI](usage_cube.md#3-cube-クラス-api)を参照してください。
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
-```c#
+```csharp
 public class toioIDScene : MonoBehaviour
 {
     float intervalTime = 0.1f;
@@ -447,8 +438,6 @@ public class toioIDScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 7. センサーのイベントを検知
@@ -466,7 +455,7 @@ public class toioIDScene : MonoBehaviour
 - モーター速度検出イベント：https://toio.github.io/toio-spec/docs/ble_motor
 - 磁気センサーイベント：https://toio.github.io/toio-spec/docs/ble_magnetic_sensor
 
-```C#
+```csharp
 // ボタンイベント
 // https://toio.github.io/toio-spec/docs/ble_button
 cube.buttonCallback.AddListener("EventScene", OnPressButton);
@@ -507,10 +496,9 @@ cube.magneticForceCallback.AddListener("EventScene", OnMagneticForce);
 cube.attitudeCallback.AddListener("EventScene", OnAttitude);
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
-```C#
+```csharp
 // ファイル名とクラス名は一致させる必要があります
 public class EventScene : MonoBehaviour
 {
@@ -628,8 +616,6 @@ public class EventScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 8. 複数のキューブを動かす
@@ -642,17 +628,16 @@ public class EventScene : MonoBehaviour
 これまでのサンプルコードでは 1 台のキューブに接続していました。<br>
 スキャン部分を以下のコードに変更すると、複数台のキューブに接続が可能になります。
 
-```C#
+```csharp
 // 最大12台のキューブを検索
 var peripherals = await new NearScanner(12).Scan();
 // 検索したキューブに接続
 cubes = await new CubeConnecter().Connect(peripherals);
 ```
 
-<details>
-<summary>実行コード：（クリック展開）</summary>
+実行コード
 
-```C#
+```csharp
 // ファイル名とクラス名は一致させる必要があります
 public class MultiCubeScene : MonoBehaviour
 {
@@ -685,8 +670,6 @@ public class MultiCubeScene : MonoBehaviour
 }
 ```
 
-</details>
-
 <br>
 
 # 9. CubeManagerクラスを用いたソースコードの簡略化
@@ -711,7 +694,7 @@ CubeManager クラスを使うと、これらの定型的な処理を簡略化�
 
 #### 簡略前
 
-```C#
+```csharp
 public class CubeManagerScene_RawSingle : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -741,7 +724,7 @@ public class CubeManagerScene_RawSingle : MonoBehaviour
 
 #### 簡略後
 
-```C#
+```csharp
 public class CubeManagerScene_Single : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -771,7 +754,7 @@ public class CubeManagerScene_Single : MonoBehaviour
 
 #### 簡略前
 
-```C#
+```csharp
 public class CubeManagerScene_RawMulti : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -806,7 +789,7 @@ public class CubeManagerScene_RawMulti : MonoBehaviour
 
 #### 簡略後
 
-```C#
+```csharp
 public class CubeManagerScene_Multi : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -836,7 +819,7 @@ public class CubeManagerScene_Multi : MonoBehaviour
 
 #### 簡略前
 
-```C#
+```csharp
 public class CubeManagerScene_RawReconnect : MonoBehaviour
 {
     float intervalTime = 0.05f;
@@ -887,7 +870,7 @@ public class CubeManagerScene_RawReconnect : MonoBehaviour
 
 #### 簡略後
 
-```C#
+```csharp
 public class CubeManagerScene_Reconnect : MonoBehaviour
 {
     CubeManager cubeManager;
@@ -938,7 +921,7 @@ public class CubeManagerScene_Reconnect : MonoBehaviour
 
 NearScanner クラスの ScanAsync メソッドを呼ぶ事で、非同期検索が出来るようになります。
 
-```C#
+```csharp
 nearScanner.ScanAsync(coroutineObject, callback, autoRunning);
 ```
 
@@ -946,7 +929,7 @@ NearScanner クラスを直接利用した場合様々な処理を追加する�
 CubeManager クラス内部で必要な処理を実行する事により、<br>
 分かりやすい形で非同期に接続/切断を実装する事が出来ます。
 
-```C#
+```csharp
 public class CubeManagerScene_MultiAsync : MonoBehaviour
 {
     CubeManager cubeManager;

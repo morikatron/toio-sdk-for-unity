@@ -19,8 +19,8 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 
 | ツール・ソフトウェア | 確認バージョン1         | 確認バージョン2          | 確認バージョン3          |
 | -------------------- | ---------------------- | ----------------------- | ----------------------- |
-| OS                   | MacOS Catalina 10.15.7 | MacOS Big Sur 11.6.1 | MacOS Monterey 12.0.1 |
-| Unity                | 2020.3.17f1             | 2020.3.0f1             | 2020.3.23f1             |
+| OS                   | MacOS Catalina 10.15.7 | MacOS Big Sur 11.6.5 | MacOS Monterey 12.3.1 |
+| Unity                | 2021.3.0f1             | 2021.3.0f1             | 2021.3.0f1             |
 | PC            | iMac 2017 | iMac 2019 | MacBook Pro 2017 |
 
 <br>
@@ -28,7 +28,7 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 | ツール・ソフトウェア |  推奨バージョン          |
 | -------------------- |  ----------------------- |
 | OS                   |  MacOS Catalina 10.15 以上 |
-| Unity                |  2020.3 以上             |
+| Unity                |  2021.3 以上             |
 
 <br>
 
@@ -55,7 +55,7 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 ダウンロードしたzipファイルを解凍し、bundleファイルをUnityウィンドウへ直接ドラッグ&ドロップします。
 
 <div  align="center">
-<img width=600 src="res/usage_macble/add_bundle_file.png"></img>
+<img width=600 src="res/usage_macble/add_bundle_file.png">
 </div>
 
 <br>
@@ -67,7 +67,7 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 [toio/ble-plugin-unity](https://github.com/toio/ble-plugin-unity) を開き、【Code】>【Download ZIP】の順でクリックしてリポジトリをダウンロードします。<br>
 
 <div  align="center">
-<img width=300 src="res/usage_macble/download_zip.png"></img>
+<img width=300 src="res/usage_macble/download_zip.png">
 </div>
 
 #### 2. bundleファイル のビルド
@@ -76,7 +76,7 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 Deployment 設定内にある <b>macOS Deployment Target</b> の右列にある【macOS (バージョン値)】をクリックして、事前作業で確認したOSバージョンを選択してください。
 
 <div  align="center">
-<img width=500 src="res/usage_macble/xcode_buildtarget.png"></img>
+<img width=500 src="res/usage_macble/xcode_buildtarget.png">
 </div>
 
 上記作業が完了したら、Xcodeの左上にある再生ボタン(:arrow_forward:)をクリックしてビルドを開始し、ビルドが完了するまで待ちます。
@@ -87,7 +87,7 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 ビルドで生成されたbundleファイルを<b>Xcodeウィンドウ</b>からUnityウィンドウへ直接ドラッグ&ドロップします。
 
 <div  align="center">
-<img width=600 src="res/usage_macble/add_bundle.png"></img>
+<img width=600 src="res/usage_macble/add_bundle.png">
 </div>
 
 <br>

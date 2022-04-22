@@ -3,7 +3,7 @@
 > ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/cross)です。
 
 <div align="center">
-<img src="/docs/res/samples/cross.gif">
+<img src="../../../../../docs/res/samples/cross.gif">
 </div>
 
 <br>

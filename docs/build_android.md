@@ -9,13 +9,14 @@
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Winidows 10            | Winidows 10 以上        |
-| Unity                | 2020.3.17f1            | 2020.3 以上             |
+| Unity                | 2021.3.0f1             | 2021.3 以上             |
 
 スマホ
-| 機種名 | OS|
+
+| 機種名 | OS |
 | -- | -- |
-| HUAWEI nova 5T        | Android 9|
-| Xiaomi Mi Note 10 Lite| Android 10|
+| HUAWEI nova 5T         | Android 9 |
+| Xiaomi Mi Note 10 Lite | Android 10 |
 
 <br>
 
@@ -97,7 +98,7 @@ Unity をインストール際に選択した Android Build Support にすでに
 
 もし同じパッケージ名の他の環境でビルドされたアプリがすでに端末にインストールされたら、インストールが失敗する可能性が高いので、自分のパッケージ名を設定しましょう。
 
-[IL2CPPの設定](build_android.md#IL2CPP-を設定)と同じ、<br>
+[IL2CPPの設定](build_android.md#il2cpp-を設定)と同じ、<br>
 【Project Settings】-【Player】-【Androidのアイコンのタブ】-【その他の設定】の中で、パッケージ名を変更してください。
 
 <img width=400 src="res/build_android/10.png">
@@ -148,7 +149,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2020.3 だと、NDK 19 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2020.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 2021.3 だと、NDK 21 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2021.3/Manual/android-sdksetup.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 

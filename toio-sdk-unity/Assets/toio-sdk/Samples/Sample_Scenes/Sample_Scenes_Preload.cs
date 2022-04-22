@@ -29,8 +29,14 @@ public class Sample_Scenes_Preload : MonoBehaviour
 
         // Keep Cubes across scenes, On Simulator
         if (CubeScanner.actualTypeOfAuto == ConnectType.Simulator)
-            foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
-                DontDestroyOnLoad(c);
+        {
+            try
+            {
+                foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
+                    DontDestroyOnLoad(c);
+            }
+            catch (UnityException){}
+        }
 
         if (Keep_script)
         {

@@ -56,7 +56,7 @@ The actual measurement of the mat was 56 cm = 0.560 m per side.
 
 From here, we define the coordinate information of the mat and the factor `DotPerM` to convert it to distance (meters) as follows
 
-```c#
+```csharp
 public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 ```
 
@@ -64,10 +64,9 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 When you change the matType from the Inspector, the ApplyMatType method in Mat.cs will be executed to change the coordinate range and switch the material.
 
-<details>
-<summary>Implementation code (Click to expand)</summary>
+Implementation code
 
-```c#
+```csharp
 public enum MatType
 {
     toio_collection_front = 0,
@@ -112,18 +111,15 @@ internal void ApplyMatType()
 }
 ```
 
-</details>
-
 ## 2.3. Converting the coordinates on the mat to the coordinates in Unity
 
 We have a method to convert between coordinates/angles in Unity and coordinates/angles on the mat.
 
 > Mat Prefab can only be converted correctly if it is placed horizontally.
 
-<details>
-<summary>Implementation code (Click to expand)</summary>
+Implementation code
 
-```c#
+```csharp
 // Converting angles in Unity to angles on the main mat
 public int UnityDeg2MatDeg(double deg)
 {
@@ -179,8 +175,6 @@ public Vector3 MatCoord2UnityCoord(double x, double y)
 }
 ```
 
-</details>
-
 <br>
 
 # 3. StandardID Prefab
@@ -198,10 +192,9 @@ Because of the large number of standard IDs, it would be difficult to prepare ma
 </div>
 <br>
 
-<details>
-<summary>Implementation code (Click to expand)</summary>
+Implementation code
 
-```c#
+```csharp
 internal void ApplyStandardIDType()
 {
     // Load Sprite
@@ -262,7 +255,6 @@ private Mesh SpriteToMesh(Sprite sprite)
 }
 ```
 
-</details>
 <br>
 
 # 4. Cube Prefab
@@ -282,7 +274,7 @@ This chapter introduces the implementation of each version of `CubeSimulator`.
 
 From the dimensions listed in [toio™ Core Cube Technical specifications/Hardware specifications/Shape and size](https://toio.github.io/toio-spec/en/docs/hardware_shape) and [Mat.DotPerM constants](sys_simulator.md#21-conversion-from-mat-coordinate-units-to-meters), the distance between the left and right tires and the size of Cube are defined as follows
 
-```c#
+```csharp
 // Distance between left and right tires (meters)
 public static readonly float TireWidthM = 0.0266f;
 // Distance between left and right tires (dots (mat coordinates))
@@ -293,7 +285,7 @@ public static readonly float WidthM= 0.0318f;
 
 Based on the motor specs listed in [toio™ Core Cube Technical Specifications / Communication Specifications / Various Functions / Motors](https://toio.github.io/toio-spec/en/docs/ble_motor) and the tire diameter (0.0125m) listed in [toio™ Core Cube Technical specifications/Hardware specifications/Shape and size](https://toio.github.io/toio-spec/en/docs/hardware_shape), The coefficients of the speed on the mat and the speed indication are defined as follows.
 
-```c#
+```csharp
 // Proportional to the speed (dots per second) and the indicated value
 // (dot/s)/u = 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
 public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM; // about 2.06
@@ -307,7 +299,7 @@ Raycast a ray "down" from the bottom of Cube, and if the object hit within 5mm i
 
 > To get the mat coordinates, we use the Mat coordinate conversion method.
 
-```C#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected virtual void SimulateIDSensor()
 {
@@ -339,7 +331,7 @@ protected virtual void SimulateIDSensor()
 
 The method `_SetXYDeg` to set the Position ID and angle calls the callback `IDCallback` if there are any changes.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
 {
@@ -354,7 +346,7 @@ protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
 
 The method `_SetStandardID` to set the Standard ID and angle calls the callback `StandardIDCallback` if there are any changes.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected void _SetSandardID(uint stdID, int deg)
 {
@@ -369,7 +361,7 @@ protected void _SetSandardID(uint stdID, int deg)
 
 The method `_SetOffGround` will call the callbacks `positionIDMissedCallback` or `standardIDMissedCallback` if Cube leaves the Mat or StandardID.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected void _SetOffGround()
 {
@@ -386,7 +378,7 @@ protected void _SetOffGround()
 
 Calls the `buttonCallback` callback when the button state is changed.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected bool _button;
 public override bool button
@@ -405,7 +397,7 @@ public override bool button
 
 It also calls `CubeSimulator._SetPressed` to represent Cube object being pressed.
 
-```c#
+```csharp
 // CubeSimulator.cs
 internal void _SetPressed(bool pressed)
 {
@@ -419,7 +411,7 @@ internal void _SetPressed(bool pressed)
 
 If the angle of Cube object exceeds the threshold, set `sloped` to true.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected virtual void SimulateMotionSensor()
 {
@@ -434,7 +426,7 @@ protected virtual void SimulateMotionSensor()
 
 Invoke the motion sensor callback via `InvokeMotionSensorCallback` when `sloped` is changed.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected bool _sloped;
 public override bool sloped
@@ -456,7 +448,7 @@ public override bool sloped
 
 When a collision is manually generated in the inspector, `TriggerCollision` is called, which calls the motion sensor callback via `InvokeMotionSensorCallback`.
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected bool _collisonDetected = false;
 internal override void TriggerCollision()
@@ -473,7 +465,7 @@ Double-tap simulation is not yet implemented.
 
 When a double-tap is pressed manually in the inspector, `TriggerDoubleTap` is called, which calls the motion sensor callback via `InvokeMotionSensorCallback`.
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected bool _doubleTapped = false;
 internal override void TriggerDoubleTap()
@@ -488,7 +480,7 @@ internal override void TriggerDoubleTap()
 > This is a feature of 2.1.0.
 The principle is the same as the horizontal detection: if the angle of Cube object exceeds the threshold in the corresponding direction, the `pose` is set to the corresponding direction.
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected virtual void SimulateMotionSensor()
 {
@@ -521,7 +513,7 @@ protected virtual void SimulateMotionSensor()
 
 Invoke the motion sensor callback through `InvokeMotionSensorCallback` when `pose` is changed.
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected Cube.PoseType _pose = Cube.PoseType.up;
 public override Cube.PoseType pose {
@@ -542,7 +534,7 @@ Simulation of shake detection is not yet implemented.
 
 Invoke the motion sensor callback via `InvokeMotionSensorCallback` when `shakeLevel` is manually changed in the inspector.
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected int _shakeLevel;
 public override int shakeLevel
@@ -564,7 +556,7 @@ public override int shakeLevel
 
 The tire speed calculated by the motor simulation is converted to the motor speed.
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected void SimulateMotorSpeedSensor()
 {
@@ -576,7 +568,7 @@ protected void SimulateMotorSpeedSensor()
 
 Call the corresponding callback `motorSpeedCallback` when the value is changed.
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected void _SetMotorSpeed(int left, int right)
 {
@@ -596,7 +588,7 @@ protected void _SetMotorSpeed(int left, int right)
 
 CubeSimulator searches for the [Magnet Prefab](#6-Magnet-Prefab) in the scene and calculates the composite magnetic field vector at the location of the magnetic sensor.
 
-```c#
+```csharp
 internal Vector3 _GetMagneticField()
 {
     if (isSimulateMagneticSensor)
@@ -621,7 +613,7 @@ internal Vector3 _GetMagneticField()
 Depending on the length and direction of the magnetic field vector, the magnet state transitions.
 
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected virtual void SimulateMagnetState(Vector3 force)
 {
@@ -661,7 +653,7 @@ protected virtual void SimulateMagnetState(Vector3 force)
 
 Convert the magnetic field vector to units for the cube.
 
-```c#
+```csharp
 // CubeSimImpl_v2_3_0.cs
 protected virtual void SimulateMagneticForce(Vector3 force)
 {
@@ -691,7 +683,7 @@ protected virtual void SimulateMagneticForce(Vector3 force)
 Converts a Cube Prefab from Euler angles in the Unity coordinate system to Euler angles in the coordinate system defined in the specification. <br>
 It also sets the Yaw reference value at startup and implements Yaw error accumulation.
 
-```c#
+```csharp
 // CubeSimulator.cs
 private void _InitIMU()
 {
@@ -717,7 +709,7 @@ internal Vector3 _GetIMU()
 The Euler angles and quaternions to be sent to the CubeUnity class are created by the Euler angles of the specification coordinate system. <br>
 At the moment (2021.09.01), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
 
-```c#
+```csharp
 // CubeSimImpl_v2_3_0.cs
 private float attitudeInitialYaw = 0;
 protected virtual void SimulateAttitudeSensor()
@@ -726,7 +718,7 @@ protected virtual void SimulateAttitudeSensor()
     int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
     var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
 
-    // NOTE Reproducing real firmware's BUG
+    // NOTE Reproducing real BLE protocol's BUG
     var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
     quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
                             Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
@@ -756,7 +748,7 @@ Simulator uses the following logic to process instructions passed from [CubeUnit
 
 Use Raycast to investigate if the tires are hitting the ground.
 
-```C#
+```csharp
 // CubeSimulator.cs
 internal bool offGroundL = true;
 internal bool offGroundR = true;
@@ -774,7 +766,7 @@ private void SimulatePhysics_Input()
 
 It converts the target speed of the current motor control instruction to the speed in Unity coordinate system, calculates the tire speed depending on if it is forced to stop or pushed, then calculates Cube speed depending on the landing state, and passes it to `CubeSimulator._SetSpeed`.
 
-```C#
+```csharp
 // CubeSimulator.cs
 private void SimulatePhysics_Output()
 {
@@ -803,7 +795,7 @@ private void SimulatePhysics_Output()
 
 Depending on the amount of change from the current speed to the target speed, Unity's Rigidbody.Addforce will apply a force to the body, and the position and angle will be updated by Unity's physics engine.
 
-```C#
+```csharp
 // CubeSimulator.cs
 internal void _SetSpeed(float speedL, float speedR)
 {
@@ -822,20 +814,20 @@ internal void _SetSpeed(float speedL, float speedR)
 AddForce, the frictional force of the mat is set to 0 and the delay factor, which is normally caused by the laws of physics, is included in the calculation of the target speed.<br>
 Since we are using a simplified model for these physical calculations, we cannot simulate the behavior of the mat when it is tilted.
 For a more accurate modeling, the following steps could be considered：
-- Input the difference between the target speed and the current speed converted from the motor control command into the same control module (e.g. PID) as the actual cube firmware.
+- Input the difference between the target speed and the current speed converted from the motor control command into the same control module (e.g. PID) as the actual cube BLE protocol.
 - Input the output "voltage" of the PID into the motor model.
 - The "current" output of the motor model is converted to "power" and fed to the physics engine.
 - Make the wheel's collider, physics materials, etc. as realistic as possible.
 
 ### Motor control with target specification
 
-Since the firmware implementation of the actual machine has not been released, the motor control with target specification of Simulator was implemented by referring to the specifications and the movements of the actual machine. There are some parts that were created by guessing, and there may be some differences from the actual machine, so we will explain some important parts.
+Since the BLE protocol implementation of the actual machine has not been released, the motor control with target specification of Simulator was implemented by referring to the specifications and the movements of the actual machine. There are some parts that were created by guessing, and there may be some differences from the actual machine, so we will explain some important parts.
 
 #### Case where the move type is 0 (move while rotating)
 
 In the case of `rotate and move`, you decide whether to move forward or backward depending on whether the target is in front or behind Cube.
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected (float, float) TargetMove_MoveControl(float elipsed, ushort x, ushort y, byte maxSpd, Cube.TargetSpeedType targetSpeedType, float acc, Cube.TargetMoveType targetMoveType)
 {
@@ -866,7 +858,7 @@ protected (float, float) TargetMove_MoveControl(float elipsed, ushort x, ushort 
 
 Taking the case of acceleration as an example, when the execution of a directive starts, the acceleration is calculated according to the length of the path and the maximum velocity. During the execution of the directive, the acceleration is based on the passage of time and acceleration, regardless of the position of Cube.
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected virtual void TargetMoveInit()
 {
@@ -885,7 +877,7 @@ On the other hand, if you multiply `rotate` and `translate` to get a new `rotate
 
 So, depending on the size of the `translate`, we can take a weighted average of the above two types of `rotate` to eliminate the lack of rotation.
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected void ApplyMotorControl(float translate, float rotate)
 {
@@ -908,8 +900,7 @@ The tones of A (A0 to A10) in each octave are created as audio files in advance.
 
 The audio is generated by the following python script, which generates a wav file that samples a sine wave of one period.
 
-<details>
-<summary>Implementation code (click to expand)</summary>
+Implementation code
 
 ```python
 import numpy as np
@@ -937,7 +928,6 @@ for i in range(11):
     w.close()
 ```
 
-</details>
 <br>
 
 This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/en/docs/ble_sound#midi-note-number-and-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/Resources/Octave].
@@ -947,7 +937,7 @@ This audio file is named according to the correspondence table in [toio™ Core 
 
 Scales other than A, which are prepared in advance, are converted and played back from A in the same octave using the Pitch parameter of AudioSource.
 
-```c#
+```csharp
 // CubeSimulator.cs
 private int playingSoundId = -1;
 internal void _PlaySound(int soundId, int volume){
@@ -971,7 +961,7 @@ internal void _PlaySound(int soundId, int volume){
 
 Placing a light source in the lamp to represent the luminescence would make the process too heavy, so we simply change the color of the material.
 
-```c#
+```csharp
 // CubeSimulator.cs
 internal void _SetLight(int r, int g, int b){
     LED.GetComponent<Renderer>().material.color = new Color(r/255f, g/255f, b/255f);
@@ -995,10 +985,9 @@ Stage Prefab is a set of the following
 
 By right-clicking or dragging the mouse, target poles can be placed and moved. The developer can get the position of the target pole and use it to control Cube.
 
-<details>
-<summary>Implementation code (click to expand)</summary>
+Implementation code
 
-```c#
+```csharp
 void Update(){
     // Move the target pole
     // Moving TargetPole
@@ -1015,8 +1004,6 @@ void Update(){
 }
 ```
 
-</details>
-
 <br>
 
 The property `tarPoleCoord` can be used to get the coordinates of the target pole on the mat, which is useful when moving Cube.
@@ -1026,10 +1013,9 @@ The property `tarPoleCoord` can be used to get the coordinates of the target pol
 
 When you left-click, the ray will fly from the mouse cursor position and follow Cube that the ray collided with, focusing the spotlight on it.
 
-<details>
-<summary>Implementation code (click to expand)</summary>
+Implementation code
 
-```c#
+```csharp
 void Update(){
     ...
     // Keep focusing on focusTarget
@@ -1056,8 +1042,6 @@ private void OnLeftDown()
 }
 ```
 
-</details>
-
 <br>
 
 The property `focusName` allows you to get the name of Cube to focus on.<br>
@@ -1074,7 +1058,7 @@ However, only the parent object Magnet has the tag `t4u_Magnet`, so CubeSimulato
 
 Magnet.cs can calculate the vector that the magnetic field defined by itself will place at a given position.
 
-```c#
+```csharp
 public Vector3 GetSelfH(Vector3 pos)
 {
     var src = transform.position;
@@ -1087,7 +1071,7 @@ public Vector3 GetSelfH(Vector3 pos)
 
 The synthetic magnetic field defined by Magnet.cs, which is attached to the Magnet Prefab parent object and all child objects, is recursively sought.
 
-```c#
+```csharp
 public Vector3 SumUpH(Vector3 pos)
 {
     if (Vector3.Distance(pos, transform.position) > maxDistance) return Vector3.zero;

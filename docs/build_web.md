@@ -6,7 +6,7 @@
 
 - [概要](build_web.md#概要)
 - [WebGL ビルド](build_web.md#webgl-ビルド)
-- [SNSで共有しよう](build_web.md#SNSで共有しよう)
+- [SNSで共有しよう](build_web.md#snsで共有しよう)
 - [注意事項](build_web.md#注意事項)
 <br>
 
@@ -19,7 +19,7 @@ Unity エンジンの標準機能には Bluetooth 通信機能が存在しない
 iOS ビルドと同様に、対象プラットフォームを WebGL にしてビルドをすると自動的にこのプラグインに切り替わりウェブアプリとキューブ間で通信出来る仕組みになっています。
 
 [WebGL ビルド](build_web.md#webgl-ビルド)の章では、ウェブアプリとしてビルドした場合にブラウザ用 Bluetooth プラグインを動かすための設定などを説明します。
-[SNSで共有しよう](build_web.md#SNSで共有しよう)の章では、ビルドしたウェブアプリを SNS などを通して世界に公開するための手順を簡単に紹介します。
+[SNSで共有しよう](build_web.md#snsで共有しよう)の章では、ビルドしたウェブアプリを SNS などを通して世界に公開するための手順を簡単に紹介します。
 
 <br>
 
@@ -35,7 +35,7 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | MacOS Catalina 10.15.2 | macOS Mojave 10.14 以上 |
 | Bluetooth®           | 4.2                    | 4.2 以上             |
-| Unity                | 2020.3.17f1             | 2020.3 以上           |
+| Unity                | 2021.3.0f1             | 2021.3 以上           |
 | ブラウザ(Chrome)       | 85.0.4183.102         | 56 以上             |
 
 > Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
@@ -46,7 +46,7 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Windows 10 Pro 64bit 1903 | Windows 10 |
 | Bluetooth®            | 5.0(LMP 9.256)         | 4.2 以上             |
-| Unity                | 2020.3.17f1             | 2020.3 以上             |
+| Unity                | 2021.3.0f1              | 2021.3 以上             |
 | ブラウザ(Edge)       | 85.0.564.51         | 79 以上             |
 | ブラウザ(Chrome)       | 85.0.4183.102         | 56 以上             |
 
@@ -54,7 +54,7 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 その他ブラウザでのウェブアプリ動作環境ついては、依存モジュールとなる [WebGL](https://developer.mozilla.org/ja/docs/Web/API/WebGL_API) および [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) のサポート対象をご確認ください。
 - WebGL
-  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2020.3/Manual/webgl-browsercompatibility.html)
+  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2021.3/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)

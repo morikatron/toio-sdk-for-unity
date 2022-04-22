@@ -3,7 +3,7 @@
 > The web app sample on this page is [[here](https://morikatron.github.io/t4u/sample/webgl/ui)].
 
 <div align="center">
-<img src="/docs/res/samples/web_ui.gif">
+<img src="../../../../../../docs/res/samples/web_ui.gif">
 </div>
 
 <br>

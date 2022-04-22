@@ -2,6 +2,8 @@
 
 > **Switch Language:**　[`日本語`](README.md)　|　`English`
 
+> [`Github Pages version`](https://morikatron.github.io/toio-sdk-for-unity/README_EN.html)
+
 ## Overview
 
 **toio SDK for Unity** is a Software Development Kit for controlling toio™ Core Cube (hereafter referred to as Cubes) in Unity.
@@ -10,13 +12,12 @@ toio SDK for Unity makes it easy to develop applications that use Cubes. In addi
 
 
 <p align="center">
-<img src="./docs_EN/res/main/overview.gif" width=720></img>
+<img src="./docs_EN/res/main/overview.gif" width=720>
 </p>
 
-<details>
-<summary>One of the key features of toio SDK for Unity is that it allows you to run both the simulator and the real Cube with a single source code (click to expand), as shown above. </summary>
+One of the key features of toio SDK for Unity is that it allows you to run both the simulator and the real Cube with a single source code, as shown below.
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -47,8 +48,6 @@ public class Hello_Toio : MonoBehaviour
 }
 ```
 
-</details>
-
 
 ## Feature list
 
@@ -75,7 +74,8 @@ public class Hello_Toio : MonoBehaviour
   - Bird-oid allows Cubes to move as a herd
   - Collision avoidance and voids can be combined and run simultaneously
   - In addition to moving to the target, it can also navigate away from the target.
-
+- Visual Scripting
+  - Cube, CubeHandle, and Navigator are available in Visual Scripting, a standard since Unity2021.
 
 ## Operating Environment
 
@@ -85,17 +85,18 @@ public class Hello_Toio : MonoBehaviour
 - Windows 10 (64 bit version only)
 - iOS devices (iOS ver. 12 or higher)
 - Android device (Android OS 9.0 or higher)
-- Unity（2020.3.17f1 LTS）
+- Unity（2021.3.0f1LTS）
+- Unity Visual Scripting(ver 1.7.6)
 
 
 ## Documentation
 
 For details on installation, tutorials, sample introductions, and feature explanations, please refer to the following documents.
 
-- ["toio SDK for Unity Documentation"](docs_EN/README.md)
+- [toio SDK for Unity Documentation](docs_EN/README.md)
 
 ## License
 
-- [LICENSE](LICENSE)
+- [LICENSE](https://github.com/morikatron/toio-sdk-for-unity/blob/main/LICENSE)
 - [Third Party Notices](Third-Party-Notices.md)
 - [Intellectual Property Notice](Trademark-Notices_EN.md)

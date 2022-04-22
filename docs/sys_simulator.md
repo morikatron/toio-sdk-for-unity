@@ -3,20 +3,20 @@
 ## 目次
 
 - [1. 概説](sys_simulator.md#1-概説)
-- [2. Mat Prefab](sys_simulator.md#2-Mat-Prefab)
+- [2. Mat Prefab](sys_simulator.md#2-mat-prefab)
   - [2.1 マットの座標単位からメートルへの変換](sys_simulator.md#21-マットの座標単位からメートルへの変換)
   - [2.2 マットタイプの切り替え](sys_simulator.md#22-マットタイプの切り替え)
-  - [2.3 マット上の座標と Unity 上の座標との変換](sys_simulator.md#23-マット上の座標と-Unity-上の座標との変換)
-- [3. StandardID Prefab](sys_simulator.md#3-StandardID-Prefab)
-  - [3.1. スタンダード ID タイプの切り替え](sys_simulator.md#31-スタンダード-ID-タイプの切り替え)
-- [4. Cube Prefab](sys_simulator.md#4-Cube-Prefab)
+  - [2.3 マット上の座標と Unity 上の座標との変換](sys_simulator.md#23-マット上の座標と-unity-上の座標との変換)
+- [3. StandardID Prefab](sys_simulator.md#3-standardid-prefab)
+  - [3.1. スタンダード ID タイプの切り替え](sys_simulator.md#31-スタンダード-id-タイプの切り替え)
+- [4. Cube Prefab](sys_simulator.md#4-cube-prefab)
   - [4.1 定数の定義](sys_simulator.md#41-定数の定義)
   - [4.2. 状態の模擬](sys_simulator.md#42-状態の模擬)
   - [4.3. コマンドの実行](sys_simulator.md#43-コマンドの実行)
-- [5. Stage Prefab](sys_simulator.md#5-Stage-Prefab)
+- [5. Stage Prefab](sys_simulator.md#5-stage-prefab)
   - [5.1 ターゲットポール](sys_simulator.md#51-ターゲットポール)
   - [5.2 キューブをフォーカス](sys_simulator.md#52-キューブをフォーカス)
-- [6. Stage Prefab](sys_simulator.md#6-Magnet-Prefab)
+- [6. Stage Prefab](sys_simulator.md#6-magnet-prefab)
 
 # 1. 概説
 
@@ -57,7 +57,7 @@ Mat Prefab には、スクリプト Mat.cs がアタッチされています。
 
 ここから、 マットの座標情報と距離(メートル)に変換するための係数 `DotPerM` を以下のように定義しています。
 
-```c#
+```csharp
 public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 ```
 
@@ -65,10 +65,9 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 インスペクターから matType を変更すると、 Mat.cs の ApplyMatType メソッドが実行され、 座標範囲の変更とマテリアルの切り替えが行われます。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
-```c#
+```csharp
 public enum MatType
 {
     toio_collection_front = 0,
@@ -113,18 +112,15 @@ internal void ApplyMatType()
 }
 ```
 
-</details>
-
 ## 2.3. マット上の座標と Unity 上の座標との変換
 
 Unity 上の座標/角度とマット上の座標/角度との相互変換メソッドを用意しています。
 
 > Mat Prefab が水平に配置されている場合にのみ正しく変換可能です。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
-```c#
+```csharp
 // Unity上の角度を本マット上の角度に変換
 public int UnityDeg2MatDeg(double deg)
 {
@@ -180,8 +176,6 @@ public Vector3 MatCoord2UnityCoord(double x, double y)
 }
 ```
 
-</details>
-
 <br>
 
 # 3. StandardID Prefab
@@ -199,10 +193,9 @@ StandardID Prefab には、スクリプト StandardID.cs がアタッチされ�
 </div>
 <br>
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード（クリック展開）
 
-```c#
+```csharp
 internal void ApplyStandardIDType()
 {
     // Load Sprite
@@ -263,7 +256,6 @@ private Mesh SpriteToMesh(Sprite sprite)
 }
 ```
 
-</details>
 <br>
 
 # 4. Cube Prefab
@@ -284,7 +276,7 @@ Cube Prefab には３つのスクリプトが実装されています。
 [toio™コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ](https://toio.github.io/toio-spec/docs/hardware_shape)に記載されている寸法と
 [Mat.DotPerM 定数](sys_simulator.md#21-マットの座標単位からメートルへの変換) から、左右のタイヤの間隔とキューブのサイズを以下のように定義しています。
 
-```c#
+```csharp
 // 左右タイヤの間隔（メートル）
 public static readonly float TireWidthM = 0.0266f;
 // 左右タイヤの間隔（ドット（マット座標））
@@ -297,7 +289,7 @@ public static readonly float WidthM= 0.0318f;
 [toio™コア キューブ 技術仕様/ハードウェア仕様/形状・サイズ](https://toio.github.io/toio-spec/docs/hardware_shape)に記載されているタイヤの直径(0.0125m)から、
 マット上の速度と速度指示値の係数を以下のように定義しています。
 
-```c#
+```csharp
 // 速度（ドット毎秒）と指示値の比例
 // (dot/s)/u = 4.3 rpm/u * pi * 0.0125m / (60s/m) * DotPerM
 public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM; // about 2.06
@@ -311,7 +303,7 @@ public static readonly float VDotOverU =  4.3f*Mathf.PI*0.0125f/60 * Mat.DotPerM
 
 > マット座標の取得には Mat の座標変換メソッドを利用しています。
 
-```C#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected virtual void SimulateIDSensor()
 {
@@ -343,7 +335,7 @@ protected virtual void SimulateIDSensor()
 
 Position ID と角度をセットするメソッド `_SetXYDeg` は、変更がある場合にコールバック `IDCallback` を呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
 {
@@ -358,7 +350,7 @@ protected void _SetXYDeg(int x, int y, int deg, int xSensor, int ySensor)
 
 Standard ID と角度をセットするメソッド `_SetStandardID` は、変更がある場合にコールバック `StandardIDCallback` を呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected void _SetSandardID(uint stdID, int deg)
 {
@@ -373,7 +365,7 @@ protected void _SetSandardID(uint stdID, int deg)
 
 キューブが Mat や StandardID 上から離れた場合は、メソッド `_SetOffGround` がコールバック `positionIDMissedCallback` 或いは `standardIDMissedCallback` を呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected void _SetOffGround()
 {
@@ -390,7 +382,7 @@ protected void _SetOffGround()
 
 ボタン状態が変更された際、コールバック `buttonCallback` を呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected bool _button;
 public override bool button
@@ -409,7 +401,7 @@ public override bool button
 
 また、`CubeSimulator._SetPressed` を呼び出して、Cube オブジェクトが押された表現をします。
 
-```c#
+```csharp
 // CubeSimulator.cs
 internal void _SetPressed(bool pressed)
 {
@@ -423,7 +415,7 @@ internal void _SetPressed(bool pressed)
 
 Cube オブジェクトの角度が閾値を超えると、`sloped` を true にします。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected virtual void SimulateMotionSensor()
 {
@@ -438,7 +430,7 @@ protected virtual void SimulateMotionSensor()
 
 `sloped` が変更された時に、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected bool _sloped;
 public override bool sloped
@@ -460,7 +452,7 @@ public override bool sloped
 
 衝突がインスペクターで手動で発生された時に、`TriggerCollision` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_0_0.cs
 protected bool _collisonDetected = false;
 internal override void TriggerCollision()
@@ -477,7 +469,7 @@ internal override void TriggerCollision()
 
 ダブルタップがインスペクターで手動で押された時に、`TriggerDoubleTap` が呼ばれ、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected bool _doubleTapped = false;
 internal override void TriggerDoubleTap()
@@ -492,7 +484,7 @@ internal override void TriggerDoubleTap()
 > 2.1.0 の機能です。
 原理は水平検出と同じで、Cube オブジェクトの角度が対応方向に閾値を超えたら、`pose` を対応方向にします。
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected virtual void SimulateMotionSensor()
 {
@@ -525,7 +517,7 @@ protected virtual void SimulateMotionSensor()
 
 `pose` が変更された時に、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected Cube.PoseType _pose = Cube.PoseType.up;
 public override Cube.PoseType pose {
@@ -546,7 +538,7 @@ public override Cube.PoseType pose {
 
 `shakeLevel` がインスペクターで手動で変更された時に、`InvokeMotionSensorCallback` を通じてモーションセンサーのコールバックを呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected int _shakeLevel;
 public override int shakeLevel
@@ -568,7 +560,7 @@ public override int shakeLevel
 
 モーターのシミュレーションによって計算されたタイヤの速度を変換してモーター速度とします。
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected void SimulateMotorSpeedSensor()
 {
@@ -580,7 +572,7 @@ protected void SimulateMotorSpeedSensor()
 
 値が変更された時に、対応コールバック `motorSpeedCallback` を呼び出します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected void _SetMotorSpeed(int left, int right)
 {
@@ -600,7 +592,7 @@ protected void _SetMotorSpeed(int left, int right)
 
 CubeSimulator がシーンにある [Magnet Prefab](#6-Magnet-Prefab) を検索し、磁気センサーの位置での合成磁場ベクトルを求めます。
 
-```c#
+```csharp
 internal Vector3 _GetMagneticField()
 {
     if (isSimulateMagneticSensor)
@@ -624,7 +616,7 @@ internal Vector3 _GetMagneticField()
 
 磁場ベクトルの長さと方向によって、磁石状態が遷移します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_2_0.cs
 protected virtual void SimulateMagnetState(Vector3 force)
 {
@@ -664,7 +656,7 @@ protected virtual void SimulateMagnetState(Vector3 force)
 
 磁場ベクトルをキューブ用の単位に変換します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_3_0.cs
 protected virtual void SimulateMagneticForce(Vector3 force)
 {
@@ -694,7 +686,7 @@ protected virtual void SimulateMagneticForce(Vector3 force)
 Cube Prefab の Unity 座標系でのオイラー角から、仕様書で定義された座標系のオイラー角に変換します。<br>
 また、起動時に Yaw 基準値の設定と、Yaw の誤差累積も実装されています。
 
-```c#
+```csharp
 // CubeSimulator.cs
 private void _InitIMU()
 {
@@ -720,7 +712,7 @@ internal Vector3 _GetIMU()
 仕様書座標系のオイラー角によって、CubeUnity クラスに送信するオイラー角とクォータニオンを作成します。<br>
 現時点（2021.09.01）では、リアルのコアキューブのクォータニオンがオイラーと別々の座標系のものになっていますので、シミュレーターでも同じく再現しています。（仕様書座標系に一致しているのはオイラーの方です。）
 
-```c#
+```csharp
 // CubeSimImpl_v2_3_0.cs
 private float attitudeInitialYaw = 0;
 protected virtual void SimulateAttitudeSensor()
@@ -729,7 +721,7 @@ protected virtual void SimulateAttitudeSensor()
     int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
     var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
 
-    // NOTE Reproducing real firmware's BUG
+    // NOTE Reproducing real BLE protocol's BUG
     var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
     quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
                             Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
@@ -759,7 +751,7 @@ protected virtual void SimulateAttitudeSensor()
 
 レイキャストを利用し、タイヤが地面に当たってるかを調査します。
 
-```C#
+```csharp
 // CubeSimulator.cs
 internal bool offGroundL = true;
 internal bool offGroundR = true;
@@ -778,7 +770,7 @@ private void SimulatePhysics_Input()
 現在のモーター制御命令の目標速度を Unity 座標系での速度に変換し、
 強制停止・押された場合によってタイヤ速度を計算してから、着地状態によって Cube 速度を計算し、`CubeSimulator._SetSpeed` に渡します。
 
-```C#
+```csharp
 // CubeSimulator.cs
 private void SimulatePhysics_Output()
 {
@@ -807,7 +799,7 @@ private void SimulatePhysics_Output()
 
 現在速度から目標速度までの変化量によって、 Unity の Rigidbody.Addforce で力を与え、 位置と角度を Unity の物理エンジンに更新させます。
 
-```C#
+```csharp
 // CubeSimulator.cs
 internal void _SetSpeed(float speedL, float speedR)
 {
@@ -840,7 +832,7 @@ internal void _SetSpeed(float speedL, float speedR)
 
 `回転しながら移動`の場合、目標がキューブの前方にあるか後方にあるかによって、前進か後退かを決めます。
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected (float, float) TargetMove_MoveControl(float elipsed, ushort x, ushort y, byte maxSpd, Cube.TargetSpeedType targetSpeedType, float acc, Cube.TargetMoveType targetMoveType)
 {
@@ -871,7 +863,7 @@ protected (float, float) TargetMove_MoveControl(float elipsed, ushort x, ushort 
 
 加速の場合を例として、指令の実行が始まる際に、パスの長さと最大速度によって加速度が計算されます。指令の実行中は、キューブの位置と関係なく、時間経過と加速度によって加速していきます。
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected virtual void TargetMoveInit()
 {
@@ -889,7 +881,7 @@ protected virtual void TargetMoveInit()
 
 なので、`translate`の大きさによって、上記二種類の`rotate`の加重平均を取ることで、回転不足を解消します。
 
-```c#
+```csharp
 // CubeSimImpl_v2_1_0.cs
 protected void ApplyMotorControl(float translate, float rotate)
 {
@@ -912,8 +904,7 @@ Unity の AudioSource コンポーネントを利用して MIDI ノートナン�
 
 音声は以下の python スクリプトで、1 周期の正弦波をサンプリングした wav ファイルを生成しています。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
 ```python
 import numpy as np
@@ -941,7 +932,6 @@ for i in range(11):
     w.close()
 ```
 
-</details>
 <br>
 
 この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-と-note-name) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
@@ -951,7 +941,7 @@ for i in range(11):
 
 あらかじめ用意した A 以外の音階は、 AudioSource の Pitch パラメータを利用して 同じオクターブにある A から変換して再生しています。
 
-```c#
+```csharp
 // CubeSimulator.cs
 private int playingSoundId = -1;
 internal void _PlaySound(int soundId, int volume){
@@ -975,7 +965,7 @@ internal void _PlaySound(int soundId, int volume){
 
 ランプに光源を配置して発光を表現すると処理が重くなるので、単にマテリアルの色を変えています。
 
-```c#
+```csharp
 // CubeSimulator.cs
 internal void _SetLight(int r, int g, int b){
     LED.GetComponent<Renderer>().material.color = new Color(r/255f, g/255f, b/255f);
@@ -1002,10 +992,9 @@ Stage Prefab は、
 マウスの右クリックまたはドラッグすることで ターゲットポールを設置・移動することができ、
 開発者はターゲットポールの位置を取得してキューブの制御に利用することが出来ます。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
+実装コード
 
-```c#
+```csharp
 void Update(){
     // ターゲットポールを移動
     // Moving TargetPole
@@ -1022,8 +1011,6 @@ void Update(){
 }
 ```
 
-</details>
-
 <br>
 
 プロパティ `tarPoleCoord` でターゲットポールのマット上の座標を取得すると、キューブを動かす時に便利に使えます。
@@ -1033,10 +1020,10 @@ void Update(){
 
 左クリックした際、マウスカーソル位置からレイを飛ばし、レイが衝突したキューブにスポットライトの焦点を合わせて追従します。
 
-<details>
-<summary>実装コード（クリック展開）</summary>
 
-```c#
+実装コード
+
+```csharp
 void Update(){
     ...
     // Keep focusing on focusTarget
@@ -1063,8 +1050,6 @@ private void OnLeftDown()
 }
 ```
 
-</details>
-
 <br>
 
 プロパティ `focusName` でフォーカスの対象のキューブの名前を取得することが出来ます。<br>
@@ -1081,7 +1066,7 @@ Magnet Prefab には、スクリプト Magnet.cs がアタッチされていま�
 
 Magnet.cs は自身で定義した磁場が指定位置におくベクトルを計算できます。
 
-```c#
+```csharp
 public Vector3 GetSelfH(Vector3 pos)
 {
     var src = transform.position;
@@ -1094,7 +1079,7 @@ public Vector3 GetSelfH(Vector3 pos)
 
 Magnet Prefab の親オブジェクトとすべての子オブジェクトにアタッチされる Magnet.cs が定義した合成磁場を再帰的に求められます。
 
-```c#
+```csharp
 public Vector3 SumUpH(Vector3 pos)
 {
     if (Vector3.Distance(pos, transform.position) > maxDistance) return Vector3.zero;

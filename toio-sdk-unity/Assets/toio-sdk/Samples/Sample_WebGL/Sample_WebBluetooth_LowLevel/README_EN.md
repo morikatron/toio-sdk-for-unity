@@ -3,7 +3,7 @@
 > The web app sample on this page is [[here](https://morikatron.github.io/t4u/sample/webgl/web-bluetooth).
 
 <div align="center">
-<img height=280 src="/docs/res/samples/real.gif" title="How Cube works" alt="How Cube works">
+<img height=280 src="../../../../../../docs/res/samples/real.gif" title="How Cube works" alt="How Cube works">
 </div>
 
 <br>

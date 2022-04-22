@@ -73,10 +73,9 @@ BLE  +---------------------------------+ BLE root directory
 Singleton class as the first window for BLE functionality<br>
 <u>BLEService.Instance.SetImplement()</u>Set the internal implementation class by putting the implementation instance in the function.
 
-<details>
-<summary>Implementation code: (Click to expand)</summary>
+Implementation code
 
-```C#
+```csharp
 public class BLEService : GenericSingleton<BLEService>
 {
     public bool hasImplement { get; private set; }
@@ -109,8 +108,6 @@ public class BLEService : GenericSingleton<BLEService>
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEServiceInterface
@@ -118,10 +115,9 @@ public class BLEService : GenericSingleton<BLEService>
 Interface that serves as the first window for BLE processing<br>
 It provides a function to acquire the Device interface that provides BLE function of the operating terminal.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
-```C#
+```csharp
 public interface BLEServiceInterface
 {
     void RequestDevice(Action<BLEDeviceInterface> action);
@@ -130,8 +126,6 @@ public interface BLEServiceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEDeviceInterface
@@ -139,10 +133,9 @@ public interface BLEServiceInterface
 BLE function interface of the operating terminal<br>
 Its main role is to access BLE functions and perform scanning operations.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
-```C#
+```csharp
 public interface BLEDeviceInterface
 {
     void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action);
@@ -152,18 +145,15 @@ public interface BLEDeviceInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLEPeripheralInterface
 
 Interface for scanned BLE devices<br>Its main role is to perform the connection process to the scanned BLE device.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
-```C#
+```csharp
 public interface BLEPeripheralInterface
 {
     string[] serviceUUIDs { get; }
@@ -179,18 +169,15 @@ public interface BLEPeripheralInterface
 }
 ```
 
-</details>
-
 <br>
 
 #### BLECharacteristicInterface
 
 Interface for each function of the scanned BLE device<br>The main role is to perform write/read operations for each function of BLE device.
 
-<details>
-<summary>Interface code: (Click to expand)</summary>
+Interface code
 
-```C#
+```csharp
 public interface BLECharacteristicInterface
 {
     string deviceAddress { get; }
@@ -203,8 +190,6 @@ public interface BLECharacteristicInterface
     void StopNotifications();
 }
 ```
-
-</details>
 
 # 3. How Communication Works
 
@@ -237,7 +222,7 @@ The Connector class is used for the connection. Please refer to the [cube docume
 
 The following points should be added to BLE process.
 
-1. Immediately after Cube variable is created, it calls [Subscribe to automatic notifications (cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) to start subscribing to automatic notifications such as coordinates and buttons.
+1. Immediately after Cube variable is created, it calls [Subscribe to automatic notifications (cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) to start subscribing to automatic notifications such as coordinates and buttons.
 
 <br>
 
@@ -252,8 +237,8 @@ The following points should be added to BLE process.
 
 ### Send
 
-The sending call itself is made from a derived class of CubeReal, see [cube documentation](sys_cube.md#4-send-command)).<br>
+The sending call itself is made from a derived class of CubeReal, see [cube documentation](sys_cube.md#4-send-command).<br>
 
 ### Receive
 
-The subscribed information will be automatically notified by [Subscribe to automatic notifications (cube.StartNotifications)](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) done immediately after the connection process.
+The subscribed information will be automatically notified by [Subscribe to automatic notifications (cube.StartNotifications)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs) done immediately after the connection process.

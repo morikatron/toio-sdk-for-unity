@@ -19,7 +19,6 @@ namespace toio
                     GameObject gameObject = new GameObject();
                     gameObject.name = "~WebBluetoothScript";
                     instance = (WebBluetoothScript)gameObject.AddComponent(typeof(WebBluetoothScript));
-                    instance.SetObjectName(gameObject.name);
                     instance.Init();
                 }
                 return instance;
@@ -44,17 +43,6 @@ namespace toio
         private Dictionary<int, Action<byte[]>> callbackTable_StartNotifications = new Dictionary<int, Action<byte[]>>();
 #endif
 
-        /// <summary>
-        /// WebBluetoothScriptがアタッチされているGameobjectの名前をセットする
-        /// JavascriptからUnity関数を呼び出すために必要
-        /// </summary>
-        /// <param name="name">Gameobjectの名前</param>
-        public void SetObjectName(string name)
-        {
-#if UNITY_WEBGL
-            call_setscriptObjectName(name);
-#endif
-        }
 
         /// <summary>
         /// BLEデバイスをスキャンする
@@ -191,8 +179,6 @@ namespace toio
         private static extern IntPtr InitMethods(Action<int, string, string> return_RequestDevice, Action<int, int, int, string> return_Connect, Action<int> callback_Disconnected, Action<int, int, string> return_getCharacteristic, Action<int, int, int, int, string> return_getCharacteristics, Action<int, IntPtr, int> return_ReadValue, Action<int, IntPtr, int> callback_StartNotifications);
         [DllImport("__Internal")]
         private static extern IntPtr InitErrorMethods(Action<string> error_RequestDevice);
-        [DllImport("__Internal")]
-        private static extern int call_setscriptObjectName(string name);
         [DllImport("__Internal")]
         private static extern int call_RequestDevice(string SERVICE_UUID);
         [DllImport("__Internal")]

@@ -3,18 +3,18 @@
 ## 目次
 
 - [1. 概説](usage_navigator.md#1-概説)
-- [2. CubeNavigator クラス API](usage_navigator.md#2-CubeNavigator-クラス-API)
+- [2. CubeNavigator クラス API](usage_navigator.md#2-cubenavigator-クラス-API)
   - [2.1. 列挙型](usage_navigator.md#21-列挙型)
   - [2.2. パラメーター](usage_navigator.md#22-パラメーター)
   - [2.3. プロパティ](usage_navigator.md#23-プロパティ)
-  - [2.4. NaviResult 構造体](usage_navigator.md#24-NaviResult-構造体)
+  - [2.4. NaviResult 構造体](usage_navigator.md#24-naviresult-構造体)
   - [2.5. メソッド](usage_navigator.md#25-メソッド)
-- [3. HLAvoid クラス API](usage_navigator.md#3-HLAvoid-クラス-API)
-  - [3.1. スキャン結果構造体 ScanResult](usage_navigator.md#31-スキャン結果構造体-ScanResult)
+- [3. HLAvoid クラス API](usage_navigator.md#3-hlavoid-クラス-api)
+  - [3.1. スキャン結果構造体 ScanResult](usage_navigator.md#31-スキャン結果構造体-scanresult)
   - [3.2. パラメーター](usage_navigator.md#32-パラメーター)
   - [3.3. 取得できる情報](usage_navigator.md#33-取得できる情報)
   - [3.4. メソッド](usage_navigator.md#34-メソッド)
-- [4. Boids クラス API](usage_navigator.md#4-Boids-クラス-API)
+- [4. Boids クラス API](usage_navigator.md#4-boids-クラス-api)
   - [4.1. パラメーター](usage_navigator.md#41-パラメーター)
   - [4.2. メソッド](usage_navigator.md#42-メソッド)
 
@@ -55,7 +55,7 @@ Navigator クラスには 3 つのモード（Navigator.mode）があります�
 
 ## 2.1. 列挙型
 
-```c#
+```csharp
 // ナビゲーターのモード
 public enum Mode : byte
 {
@@ -74,7 +74,7 @@ public enum Relation : byte
 
 ## 2.2. パラメーター
 
-```c#
+```csharp
 // CubeNavigator
 public bool usePred = false;    // CubeHandle の予測値を使うか
 
@@ -89,7 +89,7 @@ public double p_speedratio_boids = 1;       // BOIDS モード時、ボイドの
 
 ## 2.3. プロパティ
 
-```c#
+```csharp
 public Cube cube{ get; }
 public CubeHandle handle{ get; }
 public NaviResult result{ get; }    // 計算結果を保存
@@ -105,7 +105,7 @@ public HLAvoid avoid { get; }   // 回避アルゴ
 ナビゲーターの計算結果を持つ構造体です。<br>
 以下のプロパティを持っています。
 
-```c#
+```csharp
 public Vector waypoint { get; }     // ウェイポイント
 public double speedRatio { get; }   // （ボイドからの）速度係数（既定値は１）
 public double speedLimit { get; }   // （回避からの）速度上限（既定値はDoubleの最大値）
@@ -124,7 +124,7 @@ public Vector boidsVector { get; }  // ボイドの結果ベクトル（バッ�
 
 #### Walls
 
-```c#
+```csharp
 public System.Collections.Generic.IEnumerable<Wall> Walls();
 ```
 
@@ -132,7 +132,7 @@ public System.Collections.Generic.IEnumerable<Wall> Walls();
 
 #### AddWall
 
-```c#
+```csharp
 public void AddWall(Wall wall);
 ```
 
@@ -141,7 +141,7 @@ public void AddWall(Wall wall);
 - wall
   - 定義：壁
 
-```c#
+```csharp
 public void AddWall(List<Wall> walls);
 ```
 
@@ -152,7 +152,7 @@ public void AddWall(List<Wall> walls);
 
 #### RemoveWall
 
-```c#
+```csharp
 public void RemoveWall(Wall wall);
 ```
 
@@ -163,7 +163,7 @@ public void RemoveWall(Wall wall);
 
 #### ClearWall
 
-```c#
+```csharp
 public void ClearWall();
 ```
 
@@ -171,7 +171,7 @@ public void ClearWall();
 
 #### AddBorder
 
-```c#
+```csharp
 public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500);
 ```
 
@@ -196,7 +196,7 @@ CubeNavigator をインスタンス化する際、自動的に `AddBorder(70);` 
 
 既定値を例として、x 座標 -60 ~ 60, 440 ~ 560 と y 座標 -60 ~ 60, 440 ~ 560 は壁になってナビゲーターに回避されます。
 
-```c#
+```csharp
 public void AddBorder(int width, RectInt rect);
 ```
 
@@ -209,7 +209,7 @@ public void AddBorder(int width, RectInt rect);
 
 #### AddOther
 
-```c#
+```csharp
 public void AddOther(Navigator other, Relation relation=Relation.BOIDS);
 ```
 
@@ -221,7 +221,7 @@ public void AddOther(Navigator other, Relation relation=Relation.BOIDS);
   - 定義：ボイドか否か
   - 既定値：[Relation.BOIDS](usage_navigator.md#21-列挙型)
 
-```c#
+```csharp
 public void AddOther(List<CubeNavigator> others, Relation relation=Relation.BOIDS);
 public void AddOther(List<Navigator> others, Relation relation=Relation.BOIDS);
 ```
@@ -233,7 +233,7 @@ public void AddOther(List<Navigator> others, Relation relation=Relation.BOIDS);
 
 #### RemoveOther
 
-```c#
+```csharp
 public void RemoveOther(Navigator other);
 ```
 
@@ -244,7 +244,7 @@ public void RemoveOther(Navigator other);
 
 #### ClearOther
 
-```c#
+```csharp
 public void ClearOther();
 ```
 
@@ -252,7 +252,7 @@ public void ClearOther();
 
 #### ClearGNavigators
 
-```c#
+```csharp
 public static void ClearGNavigators();
 ```
 
@@ -270,7 +270,7 @@ CubeNavigator のインスタンスが作り直された場合、
 
 #### SetRelation
 
-```c#
+```csharp
 public void SetRelation(Navigator other, Relation relation);
 ```
 
@@ -281,7 +281,7 @@ public void SetRelation(Navigator other, Relation relation);
 - relation
   - 定義：ボイドか否か [（Relation）](usage_navigator.md#21-列挙型)
 
-```c#
+```csharp
 public void SetRelation(List<CubeNavigator> others, Relation relation);
 public void SetRelation(List<Navigator> others, Relation relation);
 ```
@@ -293,7 +293,7 @@ public void SetRelation(List<Navigator> others, Relation relation);
 
 ### 状態の更新
 
-```c#
+```csharp
 public void Update();
 ```
 
@@ -301,7 +301,7 @@ public void Update();
 
 ナビゲーションの計算を行うフレームで、計算の前に一回実行してください。
 
-```c#
+```csharp
 public void Update(bool usePred);
 ```
 
@@ -314,7 +314,7 @@ public void Update(bool usePred);
 
 #### GetWaypointTo
 
-```c#
+```csharp
 public NaviResult GetWaypointTo(double x, double y);
 ```
 
@@ -327,9 +327,9 @@ public NaviResult GetWaypointTo(double x, double y);
   - 定義：目標ｙ座標
   - 範囲：任意
 - 戻り値
-  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-NaviResult-構造体)
+  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-naviresult-構造体)
 
-```c#
+```csharp
 public NaviResult GetWaypointTo(Vector pos);
 public NaviResult GetWaypointTo(Vector2 pos);
 public NaviResult GetWaypointTo(Vector2Int pos);
@@ -340,7 +340,7 @@ public NaviResult GetWaypointTo(Vector2Int pos);
 - pos
   - 目標座標
 
-```c#
+```csharp
 public NaviResult GetWaypointTo(Entity target);
 public NaviResult GetWaypointTo(Navigator target);
 ```
@@ -352,7 +352,7 @@ public NaviResult GetWaypointTo(Navigator target);
 
 #### GetWaypointAway
 
-```c#
+```csharp
 public NaviResult GetWaypointAway(double x, double y);
 ```
 
@@ -365,9 +365,9 @@ public NaviResult GetWaypointAway(double x, double y);
   - 定義：目標ｙ座標
   - 範囲：任意
 - 戻り値
-  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-NaviResult-構造体)
+  - 定義：ナビゲーション計算結果 [（NaviResult）](usage_navigator.md#24-naviresult-構造体)
 
-```c#
+```csharp
 public NaviResult GetWaypointAway(Vector pos);
 public NaviResult GetWaypointAway(Vector2 pos);
 public NaviResult GetWaypointAway(Vector2Int pos);
@@ -378,7 +378,7 @@ public NaviResult GetWaypointAway(Vector2Int pos);
 - pos
   - 目標座標
 
-```c#
+```csharp
 public NaviResult GetWaypointAway(Entity target);
 public NaviResult GetWaypointAway(Navigator target);
 ```
@@ -392,7 +392,7 @@ public NaviResult GetWaypointAway(Navigator target);
 
 サンプルコード
 
-```c#
+```csharp
 // ウェイポイントを計算
 NaviResult res = cubeNavigator.GetWaypointTo(x, y);
 // 目標速度 targetSpd を spd に調整
@@ -413,7 +413,7 @@ mv.Exec();
 
 #### Navi2Target
 
-```c#
+```csharp
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20);
 ```
 
@@ -443,9 +443,9 @@ public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotat
   - 既定値：20
   - 説明：目標との距離が tolerance 以下になると、到達だと判断します。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
 
-```c#
+```csharp
 public virtual Movement Navi2Target(Vector pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
 public virtual Movement Navi2Target(Vector2 pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
 public virtual Movement Navi2Target(Vector2Int pos, int maxSpd=70, int rotateTime=250, double tolerance=20);
@@ -458,7 +458,7 @@ public virtual Movement Navi2Target(Vector2Int pos, int maxSpd=70, int rotateTim
 
 #### NaviAwayTarget
 
-```c#
+```csharp
 public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int rotateTime=250);
 ```
 
@@ -484,13 +484,13 @@ public virtual Movement NaviAwayTarget(double x, double y, int maxSpd=70, int ro
     小さい値を入れると早く回転し、大きな値を入れるとゆっくりと回転します。正確な回転時間ではなく、だいたいの目安です。<br>
     200 以下になると不安定になる可能性があります。
 - 戻り値
-  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-Movement-構造体)
+  - 定義：移動命令 [（Movement）](usage_cubehandle.md#22-movement-構造体)
   - 説明：
 
 Navi2Target が返す Movement.reached は目標への距離で判定していますが、<br>
 NaviAwayTarget の場合は明確な「到達」の定義がないため、<br>ウェイポイントへ移動する Move2Target の Movement を返します。
 
-```c#
+```csharp
 public virtual Movement NaviAwayTarget(Vector pos, int maxSpd=70, int rotateTime=250);
 public virtual Movement NaviAwayTarget(Vector2 pos, int maxSpd=70, int rotateTime=250);
 public virtual Movement NaviAwayTarget(Vector2Int pos, int maxSpd=70, int rotateTime=250);
@@ -505,7 +505,7 @@ public virtual Movement NaviAwayTarget(Vector2Int pos, int maxSpd=70, int rotate
 
 簡潔化したサンプルコード
 
-```c#
+```csharp
 // 目標へナビゲーションする Movement を計算
 Movement mv = cubeNavigator.Navi2Target(x, y);
 // 実行
@@ -514,7 +514,7 @@ mv.Exec();
 
 或いは
 
-```c#
+```csharp
 // 目標へナビゲーションする Movement を計算 ＆ 実行
 Movement mv = cubeNavigator.Navi2Target(x, y).Exec();
 ```
@@ -528,7 +528,7 @@ Movement mv = cubeNavigator.Navi2Target(x, y).Exec();
 CubeNavigator クラスが HLAvoid のインスタンスを持っているので、
 CubeNavigator クラスから HLAvoid のパラメーターを変更したり、情報を取得したりするには以下のようにします。
 
-```c#
+```csharp
 CubeNavigator navigator = ...
 // 例として、パラメーター range を変更
 navigator.avoid.range = 220;
@@ -536,7 +536,7 @@ navigator.avoid.range = 220;
 
 ## 3.1. スキャン結果構造体 ScanResult
 
-```c#
+```csharp
 public struct ScanResult
 {
     public bool isCollision;    // 衝突状態
@@ -556,7 +556,7 @@ public struct ScanResult
 
 ## 3.2. パラメーター
 
-```c#
+```csharp
 public double range = 200;  // 見える距離
 public int nsample = 19;    // 周囲をスキャンする時の角度の数、奇数を勧める
 public double margin = 22;  // 回避用の自分のマージン
@@ -575,7 +575,7 @@ public double p_runaway_range = 250;            // スキャン結果をp_runawa
 
 デバッグに便利です。
 
-```c#
+```csharp
 // 保存した最新の計算結果
 public ScanResult scanResult;   // スキャン結果
 public int waypointIndex = 0;   // 選択したウェイポイントのインデックス
@@ -589,7 +589,7 @@ Navigator の GetWaypointTo, GetWaypointAway に呼ばれています。
 
 ### RunTowards
 
-```c#
+```csharp
 public virtual (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls);
 ```
 
@@ -605,7 +605,7 @@ public virtual (Vector, bool, double) RunTowards(List<Navigator> others, Entity 
 
 ### RunAway
 
-```c#
+```csharp
 public virtual (Vector, bool, double) RunAway(List<Navigator> others, Entity target, List<Wall> walls);
 ```
 
@@ -628,7 +628,7 @@ public virtual (Vector, bool, double) RunAway(List<Navigator> others, Entity tar
 CubeNavigator クラスが Boids のインスタンスを持っているので、
 CubeNavigator クラスから Boids のパラメーターを変更したり、情報を取得したりするには以下のようにします。
 
-```c#
+```csharp
 CubeNavigator navigator = ...
 // 例として、パラメーター range を変更
 navigator.boids.range = 180;
@@ -636,7 +636,7 @@ navigator.boids.range = 180;
 
 ## 4.1. パラメーター
 
-```c#
+```csharp
 public double fov = Deg2Rad(120);       // 視野
 public double range = 150;              // 見える距離
 public double margin = 25;              // ボイド用のマージン
@@ -655,7 +655,7 @@ public double p_max_all = 100;          // 合ベクトルの上限
 
 ### Run
 
-```c#
+```csharp
 public Vector Run(List<Navigator> others, Vector tarPos);
 ```
 
@@ -667,7 +667,7 @@ public Vector Run(List<Navigator> others, Vector tarPos);
   - 定義：目標座標
 - 戻り値: 合ベクトル
 
-```c#
+```csharp
 // 合ベクトルを計算、目標なし
 public Vector Run(List<Navigator> others);
 ```

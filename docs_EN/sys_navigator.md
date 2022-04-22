@@ -128,7 +128,7 @@ CubeNavigator uses a combination of Navigator and CubeHandle to control Cube usi
 
 Call the `CubeHandle.Update` method to set the prediction result and source information to CubeEntity.
 
-```c#
+```csharp
 // CubeNavigator.Update
 public class CubeNavigator : Navigator
 {
@@ -178,7 +178,7 @@ public class CubeEntity : Entity
 
 It calculates waypoints, etc., from the input target value using the algorithm implemented in Navigator, and passes the result to `CubeHandle.Move2Target`.
 
-```c#
+```csharp
 public virtual Movement Navi2Target(double x, double y, int maxSpd=70, int rotateTime=250, double tolerance=20)
 {
     // Navigator waypoint calculation
@@ -232,7 +232,7 @@ To summarize HLAvoid.
 
 HLAvoid class in toio SDK for Unity has two methods as functions.
 
-```c#
+```csharp
 // Calculate navigation to target (waypoints, collision conditions, speed limits)
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls);
 // Calculate escape from target (waypoint, collision state, speed limit)
@@ -257,7 +257,7 @@ RunTowards / RunAway
 
 ### 4.1.1. ScanResult structure representing the result of the scan.
 
-```c#
+```csharp
 public struct ScanResult
 {
     public bool isCollision;    // Collision status
@@ -277,7 +277,7 @@ public struct ScanResult
 
 ### 4.1.2. CombineScanRes method to merge the results of a scan
 
-```c#
+```csharp
 private ScanResult CombineScanRes(List<ScanResult> results, bool isCol, double[] rads);
 ```
 
@@ -291,10 +291,9 @@ Merge multiple ScanResult as follows.
 See orignal thesis [Guzzi, Jérôme, et al. "Human-friendly robot navigation in dynamic environments." 2013 IEEE International Conference on Robotics and Automation. IEEE, 2013.](https://ieeexplore.ieee.org/abstract/document/6630610) <br>
 and see [Blog explaining the improved method](https://tech.morikatron.ai/entry/2020/03/04/100000).
 
-<details>
-<summary>_ScanEntity Implementation Code</summary>
+_ScanEntity Implementation Code
 
-```c#
+```csharp
 private ScanResult _ScanEntity(Navigator other, double[] rads){
     ScanResult res = ScanResult.init(rads, maxRange);
     var o = other.entity;
@@ -352,14 +351,11 @@ private ScanResult _ScanEntity(Navigator other, double[] rads){
 }
 ```
 
-</details>
-
 <br>
 
-<details>
-<summary>RunTowards Implementation Code</summary>
+RunTowards Implementation Code
 
-```c#
+```csharp
 public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, List<Wall> walls){
 
     var rads = SampleRads(target);
@@ -439,8 +435,6 @@ public (Vector, bool, double) RunTowards(List<Navigator> others, Entity target, 
 }
 ```
 
-</details>
-
 <br>
 
 ## 4.2. Boids
@@ -458,7 +452,7 @@ Boids is an algorithm that simulates the collective behavior of birds, and it is
 
 Boids class in toio SDK for Unity has two methods as functions.
 
-```c#
+```csharp
 // Calculate the force vector of the void, including the "gravitational force" to the target.
 public Vector Run(List<Navigator> others, Vector tarPos);
 // Calculate the force vector of the void without "attraction" to the target.

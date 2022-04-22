@@ -24,11 +24,18 @@
 // Smaple_Scenes_Preload.cs
 void Start(){
     // ...
-#if UNITY_EDITOR
+
     // Keep Cubes across scenes
-    foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
-        DontDestroyOnLoad(c);
-#endif
+    if (CubeScanner.actualTypeOfAuto == ConnectType.Simulator)
+    {
+        try
+        {
+            foreach (var c in GameObject.FindGameObjectsWithTag("t4u_Cube"))
+                DontDestroyOnLoad(c);
+        }
+        catch (UnityException){}
+    }
+
     // ...
 }
 ```

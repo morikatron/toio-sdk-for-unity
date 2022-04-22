@@ -224,7 +224,7 @@ namespace toio.Simulator
                 // Hardware Simulation
                 _SimulateIMU();
 
-                // Firmware Simulation
+                // BLE protocol Simulation
                 impl.Simulate();
 
                 // Connection
@@ -258,13 +258,13 @@ namespace toio.Simulator
             // Hardware
             _InitIMU();
 
-            // Firmware
+            // BLE protocol
             this.impl.Init();
         }
 
         private void Reset()
         {
-            // Firmware
+            // BLE protocol
             this.impl.Reset();
 
             // Hardware
@@ -870,9 +870,23 @@ namespace toio.Simulator
         private Vector3 _magneticField = default;
         internal Vector3 _GetMagneticField()
         {
-            if (isSimulateMagneticSensor)
+            // Not enabled
+            if (!isSimulateMagneticSensor)
+                return this._magneticField;
+
+            // Find magnet objects, otherwise return
+            GameObject[] magnetObjs = null;
+            try
             {
-                var magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+                magnetObjs = GameObject.FindGameObjectsWithTag("t4u_Magnet");
+            }
+            catch (UnityException)
+            {
+                return this._magneticField;
+            }
+
+            // Calc. magnetic field with found magnet objects
+            {
                 var magnets = Array.ConvertAll(magnetObjs, obj => obj.GetComponent<Magnet>());
 
                 Vector3 magSensor = transform.Find("MagneticSensor").position;

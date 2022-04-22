@@ -180,7 +180,7 @@ namespace toio.Simulator
             int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
             var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
 
-            // NOTE Reproducing real firmware's BUG
+            // NOTE Reproducing real BLE protocol's BUG
             var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
             quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
                                     Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);

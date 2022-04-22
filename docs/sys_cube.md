@@ -9,8 +9,8 @@
   - [3.2. 接続(Connecter)](sys_cube.md#32-接続connecter)
 - [4. 命令送信](sys_cube.md#4-命令送信)
 - [5. 機能拡張の方法](sys_cube.md#5-機能拡張の方法)
-  - [5.1. Cube クラスに関数を追加するには](sys_cube.md#51-Cube-クラスに関数を追加するには)
-  - [5.2. ファームウェアバージョンを追加するには](sys_cube.md#52-ファームウェアバージョンを追加するには)
+  - [5.1. Cube クラスに関数を追加するには](sys_cube.md#51-cube-クラスに関数を追加するには)
+  - [5.2. BLE プロトコルバージョンを追加するには](sys_cube.md#52-ble-プロトコルバージョンを追加するには)
   - [5.3. 通信プログラムを変更する場合](sys_cube.md#53-通信プログラムを変更する場合)
 
 <br>
@@ -76,33 +76,33 @@ Cube を操作するためのインタフェースです。<br>
 再利用性を保つために、このクラスには[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_communication_overview)以外の機能が存在しません。<br>
 toio™コア キューブ 技術仕様（通信仕様）以外の機能を利用/拡張する場合は、[CubeHandle](usage_cubehandle.md), [CubeNavigator](sys_navigator.md)等の拡張クラスを利用します。<br>
 
-実装コード：[Cube.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
+実装コード：[Cube.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Cube.cs)
 
 #### CubeUnity
 
-Unity エディタ実行時に動作するシミュレータ用 Cube クラスです。<br>ファームウェアバージョンの解決処理が無いため、1 つのバージョンのみが動作対象になります。<br>
+Unity エディタ実行時に動作するシミュレータ用 Cube クラスです。<br>BLE プロトコルバージョンの解決処理が無いため、1 つのバージョンのみが動作対象になります。<br>
 
-実装コード：[CubeUnity.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Sim/CubeUnity.cs)
+実装コード：[CubeUnity.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Sim/CubeUnity.cs)
 
 #### CubeReal
 
 現実のキューブとの BLE 通信を行う Cube クラスです。<br>最低限の共通処理を除いて、殆どの内部実装を派生クラスで行います。<br>
 
-実装コード：[CubeReal.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)
+実装コード：[CubeReal.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/CubeReal.cs)
 
 <b>ver2_0_0：</b>
 
-- 実装コード：[CubeReal_ver2_0_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
+- 実装コード：[CubeReal_ver2_0_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_0_0.cs)
 - 通信仕様：https://toio.github.io/toio-spec/docs/2.0.0/about
 
 <b>ver2_1_0：</b>
 
-- 実装コード：[CubeReal_ver2_1_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
+- 実装コード：[CubeReal_ver2_1_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_1_0.cs)
 - 通信仕様：https://toio.github.io/toio-spec/docs/2.1.0/about
 
 <b>ver2_2_0：</b>
 
-- 実装コード：[CubeReal_ver2_2_0.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
+- 実装コード：[CubeReal_ver2_2_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
 - 通信仕様：https://toio.github.io/toio-spec/docs/2.2.0/about
 
 <br>
@@ -111,7 +111,7 @@ Unity エディタ実行時に動作するシミュレータ用 Cube クラス�
 
 例として、シンプルな Cube 移動コードを示します。<br>このコードを実行すると、Cube へ接続後に移動関数が呼ばれます。Cube はクルクルと回転します。
 
-```C#
+```csharp
 using UnityEngine;
 using toio;
 
@@ -155,7 +155,7 @@ public class SimpleScene : MonoBehaviour
 
 この章では、検索接続プログラム部分について解説します。
 
-```C#
+```csharp
 async void Start()
 {
   // Bluetoothデバイスを検索 (3.1. 検索)
@@ -245,7 +245,7 @@ CubeScanner クラス：
 <b>NearScanAsync 関数</b>を呼ぶ事で、信号強度の高い順に指定された数(satisfiedNum)のデバイスを<b>非同期的</b>にコールバックします。Unity コルーチン機能を使うことでフレームをまたいでスキャンを実行し、終了時に指定された関数を呼び出します。この関数は随時接続/切断に対応しています。引数「autoRunning=true」で実行する事で、キューブとの接続が切れた際に自動的にスキャンを再開します。
 
 内部実装はシミュレータ実装 と リアル実装の 2 つに分かれており、コンストラクタのパラメータによって接続方法を指定可能です。基本設定の場合はビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。接続方法を明示的に指定したい場合は、[Cubeの接続設定](usage_cube.md#4-cubeの接続設定)をご参照ください。<br>
-[CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
+[CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
 
 シミュレータ実装：
 
@@ -255,10 +255,9 @@ CubeScanner クラス：
 
 - Bluetooth デバイスを検索
 
-<details>
-<summary>概要コード：（クリック展開）</summary>
+概要コード
 
-```C#
+```csharp
 public interface CubeScannerInterface
 {
     bool isScanning { get; }
@@ -347,9 +346,6 @@ public class RealImpl : CubeScannerInterface
 }
 
 ```
-
-</details>
-
 <br>
 
 ### <u>NearestScanner</u>
@@ -361,7 +357,7 @@ public class RealImpl : CubeScannerInterface
 
 実装コード：
 
-- [NearestScanner.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs)
+- [NearestScanner.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs)
 
 <br>
 
@@ -374,7 +370,7 @@ public class RealImpl : CubeScannerInterface
 
 実装コード：
 
-- [NearScanner.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs)
+- [NearScanner.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs)
 
 <br>
 
@@ -387,8 +383,8 @@ public class RealImpl : CubeScannerInterface
 </div>
 <br>
 
-CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファームウェアバージョンの適応(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
-[CubeManager](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
+CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>BLE プロトコルバージョンの適応(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
+[CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
 
 <b>Connect 関数</b>を呼ぶ事でキューブに接続します。<br>
 <b>Disconnect 関数</b>を呼ぶ事で接続済みのキューブとの通信を切断します。<br>
@@ -397,20 +393,19 @@ CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>ファーム
 
 1. UnityPeripheral(GameObject)から GameObject を取得
 2. GameObjet を引数に CubeUnity 変数を生成
-   (※シミュレータ実装版ではファームウェアバージョン適応は実装されていません)
+   (※シミュレータ実装版ではBLE プロトコルバージョン適応は実装されていません)
 
 リアル実装：
 
 1. Peripheral(Bluetooth デバイス)へ接続して Characteristic(機能)配列を取得
-2. ファームウェアバージョンを取得
+2. BLE プロトコルバージョンを取得
 3. 事前に追加しておいたバージョンテーブルを参照、ファームウェアに適応した Cube 変数(CubeReal_verX_X_X)を生成
 
 <br>
 
-<details>
-<summary>概要コード：（クリック展開）</summary>
+概要コード
 
-```C#
+```csharp
 public interface CubeConnecterInterface
 {
     Task<Cube> Connect(BLEPeripheralInterface peripheral);
@@ -419,7 +414,7 @@ public interface CubeConnecterInterface
 }
 
 /// <summary>
-/// CoreCubeのファームウェアバージョンを参照し, バージョンに応じたCubeクラスを生成.
+/// CoreCubeのBLE プロトコルバージョンを参照し, バージョンに応じたCubeクラスを生成.
 /// </summary>
 public class CubeConnecter : CubeConnecterInterface
 {
@@ -473,19 +468,17 @@ public class CubeConnecter : CubeConnecterInterface
 #endif
 }
 ```
-
-</details>
 <br>
 
 実装コード：
 
-- [toio-sdk/Scripts/Cube/CubeConnecter.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeConnecter.cs)
+- [toio-sdk/Scripts/Cube/CubeConnecter.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeConnecter.cs)
 
 サンプルコード：
 
-- [CubeManagerScene_RawSingle.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_RawSingle.cs)
+- [CubeManagerScene_RawSingle.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_RawSingle.cs)
 
-- [CubeManagerScene_Single.cs](../toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_Single.cs)
+- [CubeManagerScene_Single.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Tutorials/1.Basic/7.CubeManager/CubeManagerScene_Single.cs)
 
 <br><br>
 
@@ -526,7 +519,7 @@ public class CubeConnecter : CubeConnecterInterface
 
    <b>弱い命令：</b>キューに強い命令と混在していた場合、弱い命令は送信されずに破棄されます。複数の弱い命令がキューにある場合、キューの最後の命令だけ送信して、その他の命令は全て破棄します。高頻度で送信する(ナビゲーションなどの)移動命令の場合、命令を多少無視しても問題無い場合があります。こういった多少無視しても問題ない命令を弱い命令にする事で、対照的に優先度の高い強い命令を安定して送信出来ます。
 
-実装コード：[CubeOrderBalancer.cs](../toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/CubeOrderBalancer.cs)
+実装コード：[CubeOrderBalancer.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/CubeOrderBalancer.cs)
 
 <br>
 
@@ -540,9 +533,9 @@ toio SDK for Unity の機能拡張は、次のような方法が考えられま�
 
 <br>
 
-## 5.2. ファームウェアバージョンを追加するには
+## 5.2. BLE プロトコルバージョンを追加するには
 
-1. 新たに追加されたファームウェアバージョンに対応する CubeReal 派生クラスを作成します。
+1. 新たに追加されたBLE プロトコルバージョンに対応する CubeReal 派生クラスを作成します。
 2. CubeConnecter クラスの versionTable メンバ変数に生成関数を登録します。
 
 <br>
