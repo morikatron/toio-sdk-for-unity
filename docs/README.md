@@ -25,7 +25,7 @@
 
 1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 `★C`
     - [「 iOS ビルド」](build_ios.md) | [「 Android ビルド」](build_android.md) | [「 WebGL ビルド」](build_web.md)
-    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2020.3/Manual/PublishingBuilds.html)を参照してください
+    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2021.3/Manual/PublishingBuilds.html)を参照してください
 2. `★A` `★B` `★C` を繰り返してプログラムを仕上げていく
 
 <br>

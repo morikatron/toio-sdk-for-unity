@@ -9,7 +9,7 @@
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | macOS Catalina 10.15.5 | macOS Mojave 10.14 以上 |
-| Unity                | 2020.3.17f1            | 2020.3 以上             |
+| Unity                | 2021.3.0f1             | 2021.3 以上             |
 | Xcode                | 11.5 (11E608c)         | 11 以上                 |
 | iOS                  | 12.3.1, 13.2.2         | 11 以上                 |
 
@@ -49,7 +49,7 @@ iOS 用のビルドをするために Xcode でプロジェクトファイル（
 
 以下の Unity 公式ページを参考に、Xcode プロジェクトの設定やプロビジョニングプロファイルの設定を行います。
 
-- [iOS 用ゲームの開発について \- Unity マニュアル](https://docs.unity3d.com/ja/2020.3/Manual/iphone-GettingStarted.html)
+- [iOS 用ゲームの開発について \- Unity マニュアル](https://docs.unity3d.com/ja/2021.3/Manual/iphone-GettingStarted.html)
 
 ## Xcode ビルド
 

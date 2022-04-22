@@ -9,7 +9,7 @@
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Winidows 10            | Winidows 10 以上        |
-| Unity                | 2020.3.17f1            | 2020.3 以上             |
+| Unity                | 2021.3.0f1             | 2021.3 以上             |
 
 スマホ
 
@@ -149,7 +149,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2020.3 だと、NDK 19 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2020.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 2021.3 だと、NDK 21 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2021.3/Manual/android-sdksetup.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 

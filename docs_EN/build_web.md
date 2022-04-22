@@ -35,7 +35,7 @@ The following environments have been tested. You don't necessarily have to match
 | -------------------- | ---------------------- | ----------------------- |
 | OS | MacOS Catalina 10.15.2 | macOS Mojave 10.14 or higher
 | Bluetooth® | 4.2 | 4.2 or higher | | Unity
-| Unity | 2020.3.17f1 | 2020.3 or higher
+| Unity | 2021.3.0f1 | 2021.3 or higher
 | Browser (Chrome) | 85.0.4183.102 | 56 or higher
 
 To check the version of BlueTooth®, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
@@ -46,7 +46,7 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Windows 10 Pro 64bit 1903 | Windows 10 | BluetoothR
 | Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher
-| Unity | 2020.3.17f1 | 2020.3 or higher
+| Unity | 2021.3.0f1 | 2021.3 or higher
 | Browser (Edge) | 85.0.564.51 | 79 or higher
 | Browser (Chrome) | 85.0.4183.102 | 56 or higher
 
@@ -54,7 +54,7 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 
 For other browsers, please refer to [WebGL](https://developer.mozilla.org/docs/Web/API/WebGL_API) and [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/).
 - WebGL
-  - [WebGL Browser Compatibility](https://docs.unity3d.com/2020.3/Documentation/Manual/webgl-browsercompatibility.html)
+  - [WebGL Browser Compatibility](https://docs.unity3d.com/2021.3/Documentation/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
