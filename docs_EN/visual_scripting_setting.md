@@ -7,7 +7,7 @@ We assume that version of Unity Visual Scripting is 1.7.6.
   - [1. Confirm Unity Visual Scripting](#1-confirm-unity-visual-scripting)
     - [How to install Visual Scripting](#how-to-install-visual-scripting)
   - [2.Make build platform PC](#2make-build-platform-pc)
-  - [3. Make toio SDK for Unity available to Unity Visual Scripting.](#3-make-toio-sdk-for-unity-available-to-unity-visual-scripting)
+  - [3. Make toio SDK for Unity available to Unity Visual Scripting](#3-make-toio-sdk-for-unity-available-to-unity-visual-scripting)
   - [4. Run and test Sample of Visual Scripting](#4-run-and-test-sample-of-visual-scripting)
 
 ## 1. Confirm Unity Visual Scripting
@@ -32,16 +32,15 @@ Builds can be done on IOS, android, and WebGL, but if you are programming with V
 
 Click [Switch Platform] and wait a second,If you see the Unity icon next to [Windows, Mac, Linux], you have succeeded.
 
-## 3. Make toio SDK for Unity available to Unity Visual Scripting.
+## 3. Make toio SDK for Unity available to Unity Visual Scripting
 
 1. Click [Edit]->[Project Setting]->[Visual Scripting].
 2. Add [toio-sdk-scripts] to Node Library.
    1. Click [Node Library] to see the list of currently available libraries and press the [+] icon.
-   2. A tab labeled (No Asseembly) will be added, click on it and select [toio-sdk-scripts].
+   2. A tab labeled (No Asseembly) will be added, click on it and select [toio-sdk-scripts].<br>
+![](res/visual_scripting_setting/add_toio_sdk_scripts.png)
 
-<img src="res/visual_scripting_setting/add_toio_sdk_scripts.png">
-
-3. Add Classes to Type Options as necessary. 
+3. Add Classes to Type Options as necessary.
    1. Click [Type Options] to see the list of currently available nodes and press the [+] icon.
    2.  A tab labeled (No Type) will be added, click on it and select class you need.(The Nodes below are all the classes needed to run all the tutorials.)
        - [Toio]

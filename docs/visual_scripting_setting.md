@@ -7,7 +7,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
   - [1. Unity Visual Scriptingの確認](#1-unity-visual-scriptingの確認)
     - [Visual Scriptingがインストールされていない場合](#visual-scriptingがインストールされていない場合)
   - [2. ビルドのプラットフォームをPCにする](#2-ビルドのプラットフォームをpcにする)
-  - [3. toio SDK for UnityをVisual Scriptingで利用できるようにする。](#3-toio-sdk-for-unityをvisual-scriptingで利用できるようにする)
+  - [3. toio SDK for UnityをVisual Scriptingで利用できるようにする](#3-toio-sdk-for-unityをvisual-scriptingで利用できるようにする)
   - [4. Visual Scripting版のサンプルの実行、動作確認](#4-visual-scripting版のサンプルの実行動作確認)
 
 ## 1. Unity Visual Scriptingの確認
@@ -32,13 +32,12 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 
 [Switch Platform]を押して数秒待ち、[Windows, Mac, Linux]の横にUnityのアイコンが表示されていれば成功です。
 
-## 3. toio SDK for UnityをVisual Scriptingで利用できるようにする。
+## 3. toio SDK for UnityをVisual Scriptingで利用できるようにする
 1. [Edit]->[Project Setting]->[Visual Scripting]とクリックする。
 2. Node Libraryに[toio-sdk-scripts]を新規に追加する。
    1. [Node Library]をクリックすると現在利用できるライブラリーの一覧が表示されるので、[+]アイコンを押す。
-   2. (No Assembly)と表示されたタブが追加されるので、タブをクリックし[toio-sdk-scripts]を選択する。
-
-<img src="res/visual_scripting_setting/add_toio_sdk_scripts.png">
+   2. (No Assembly)と表示されたタブが追加されるので、タブをクリックし[toio-sdk-scripts]を選択する。<br>
+![](res/visual_scripting_setting/add_toio_sdk_scripts.png)
 
 3. Type Optionsに必要に応じてクラスを新規に追加する
    1. [Type Options]をクリックすると現在利用できるノードの一覧が表示されるので、[+]アイコンを押す。
