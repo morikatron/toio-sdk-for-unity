@@ -90,8 +90,8 @@ public class Hello_Toio : MonoBehaviour
 
 インストール、チュートリアル、サンプル紹介、機能解説などの詳細については以下のドキュメントをご参照ください。
 
+- [「toio SDK for Unity ドキュメント」](https://morikatron.github.io/toio-sdk-for-unity/docs/)
 - [「toio SDK for Unity ドキュメント」(Github版)](https://github.com/morikatron/toio-sdk-for-unity/tree/main/docs)
-- [「toio SDK for Unity ドキュメント」(Github Pages版)](https://morikatron.github.io/toio-sdk-for-unity/docs/)
 
 ## サンプルアプリ
 
