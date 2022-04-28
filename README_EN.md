@@ -86,13 +86,16 @@ public class Hello_Toio : MonoBehaviour
 - Unity（2021.3.0f1LTS）
 - Unity Visual Scripting(ver 1.7.6)
 
-
 ## Documentation
 
 For details on installation, tutorials, sample introductions, and feature explanations, please refer to the following documents.
 
 - [toio SDK for Unity Documentation](https://morikatron.github.io/toio-sdk-for-unity/docs_EN/)
 - [toio SDK for Unity Documentation (Github version)](https://github.com/morikatron/toio-sdk-for-unity/blob/main/docs_EN/README.md)
+
+## Sample applications
+
+- [CubeMarker](https://github.com/morikatron/toio-cube-marker): an online battle game (Japanese)
 
 ## License
 
