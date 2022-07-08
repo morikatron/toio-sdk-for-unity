@@ -132,7 +132,7 @@ And the screen of the web page should look like this.
 
 Click the [Connect] button at the bottom center to connect to Cube. You can control Cube by clicking the other buttons.
 
-### Errors due to compression format
+### Resolving errors due to compression format
 
 The following errors may occur depending on the server environment that hosts the application.
 
