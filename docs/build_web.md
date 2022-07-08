@@ -131,6 +131,17 @@ sample_ui
 
 中央下にある【Connect】ボタンをクリックすると、キューブに接続します。その他のボタンを押すとキューブを操作する事が出来ます。
 
+### 圧縮形式によるエラー
+
+アプリをホストするサーバー環境によって、下記のようなエラーが発生する場合があります。
+
+```
+Unable to parse XXXXXX.js.gz! This can be happen if build compression was enabled
+but web server hosting the content was misconfigured to not serve the file with
+HTTP Response Header "Content-Encoding: gzip" present...
+```
+
+その場合は、【ファイル】→【ビルド設定...】→【プレイヤー設定...】→【公開設定】→【圧縮形式】を「無効」に変更してください。
 
 <br>
 

@@ -132,6 +132,17 @@ And the screen of the web page should look like this.
 
 Click the [Connect] button at the bottom center to connect to Cube. You can control Cube by clicking the other buttons.
 
+### Errors due to compression format
+
+The following errors may occur depending on the server environment that hosts the application.
+
+```
+Unable to parse XXXXXX.js.gz! This can be happen if build compression was enabled
+but web server hosting the content was misconfigured to not serve the file with
+HTTP Response Header "Content-Encoding: gzip" present...
+```
+
+In this case, set [File] -> [Build Settings...] -> [Player Settings...] -> [Publishing Settings...] -> [Compression Format] to "Disabled".
 
 <br>
 
