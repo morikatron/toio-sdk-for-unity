@@ -15,7 +15,7 @@ namespace toio
         public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action)
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.RequestDevice(serviceUUIDs[0].ToLower(), (deviceID, uuid, name) => {
+            WebBluetoothScript.RequestDevice(serviceUUIDs[0].ToLower(), (deviceID, uuid, name) => {
                 var peripheral = new BLEWebPeripheral(serviceUUIDs, deviceID, uuid, name);
                 peripherals.Add(peripheral);
                 action.Invoke(peripheral);
@@ -34,7 +34,7 @@ namespace toio
 #if UNITY_WEBGL
             foreach(var peri in this.peripherals)
             {
-                WebBluetoothScript.Instance.Disconnect(peri.serverID);
+                WebBluetoothScript.Disconnect(peri.serverID);
             }
             this.peripherals.Clear();
 #endif
