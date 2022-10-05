@@ -30,12 +30,12 @@ namespace toio
         public void Connect(Action<BLECharacteristicInterface> characteristicAction)
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.Connect(this.deviceID, this.serviceUUIDs[0].ToLower(),
+            WebBluetoothScript.Connect(this.deviceID, this.serviceUUIDs[0].ToLower(),
                 (serverID, serviceID, serviceUUID) => {
                     this.isConnected = true;
                     this.serverID = serverID;
                     this.ConnectionNotify(this);
-                    WebBluetoothScript.Instance.GetCharacteristics(serviceID, (characteristicID, uuid) => {
+                    WebBluetoothScript.GetCharacteristics(serviceID, (characteristicID, uuid) => {
                         var instance = new BLEWebCharacteristic(serviceID, this.device_address, serviceUUID, characteristicID, uuid);
                         characteristicAction.Invoke(instance);
                     });
@@ -54,7 +54,7 @@ namespace toio
         public void Disconnect()
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.Disconnect(this.serverID);
+            WebBluetoothScript.Disconnect(this.serverID);
 #endif
         }
 

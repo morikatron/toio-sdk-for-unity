@@ -52,8 +52,9 @@ public class Sample_WebPlugin_VeryLowLevel : MonoBehaviour
                 _timeout = 0f;
                 if (state == State.Scan)
                 {
+                    WebBluetoothScript.Init();
                     // [呼び出し]スキャン
-                    WebBluetoothScript.Instance.RequestDevice(SERVICE_UUID,
+                    WebBluetoothScript.RequestDevice(SERVICE_UUID,
                         // [コールバック]スキャン成功
                         (_deviceID, _deviceUUID, _deviceName) =>
                         {
@@ -72,7 +73,7 @@ public class Sample_WebPlugin_VeryLowLevel : MonoBehaviour
                 if (state == State.Connect)
                 {
                     // [呼び出し]接続
-                    WebBluetoothScript.Instance.Connect(deviceID, SERVICE_UUID,
+                    WebBluetoothScript.Connect(deviceID, SERVICE_UUID,
                         // [コールバック]接続成功
                         (_serverID, _serviceID, _serviceUUID) =>
                         {
@@ -80,7 +81,7 @@ public class Sample_WebPlugin_VeryLowLevel : MonoBehaviour
                             serverID = _serverID;
                             serviceID = _serviceID;
                             // [呼び出し]全てのCharacteristicを取得
-                            WebBluetoothScript.Instance.GetCharacteristics(serviceID,
+                            WebBluetoothScript.GetCharacteristics(serviceID,
                                 // [コールバック]各Characteristicを取得
                                 (_characteristicID, _characteristicUUID) =>
                                 {
@@ -105,7 +106,7 @@ public class Sample_WebPlugin_VeryLowLevel : MonoBehaviour
                 if (state == State.Subscribe)
                 {
                     // 座標や角度を定期受信出来るように購読開始
-                    WebBluetoothScript.Instance.StartNotifications(characteristicID:characteristicIDTable[CHARACTERISTIC_ID], callback:Recv_Id);
+                    WebBluetoothScript.StartNotifications(characteristicID:characteristicIDTable[CHARACTERISTIC_ID], callback:Recv_Id);
                     SetState(State.Control, 1f);
                 }
                 if (state == State.Control)
@@ -114,7 +115,7 @@ public class Sample_WebPlugin_VeryLowLevel : MonoBehaviour
                     // https://toio.github.io/toio-spec/docs/2.0.0/ble_motor#時間指定付きモーター制御
                     byte[] buff = { 2, 1, 1, 100, 2, 1, 70, 100 };
                     // モーターcharacteristicに対してパケット送信
-                    WebBluetoothScript.Instance.WriteValue(characteristicID:characteristicIDTable[CHARACTERISTIC_MOTOR], data:buff);
+                    WebBluetoothScript.WriteValue(characteristicID:characteristicIDTable[CHARACTERISTIC_MOTOR], data:buff);
                     // 送信処理を50ミリ秒間隔で実行
                     SetState(State.Control, 0.05f);
                 }

@@ -23,7 +23,7 @@ namespace toio
         public void ReadValue(Action<string, byte[]> action)
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.ReadValue(this.characteristicID, (id, bytes) => {
+            WebBluetoothScript.ReadValue(this.characteristicID, (id, bytes) => {
                 action(this.characteristicUUID, bytes);
             });
 #endif
@@ -32,21 +32,21 @@ namespace toio
         public void WriteValue(byte[] data, bool withResponse)
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.WriteValue(this.characteristicID, data);
+            WebBluetoothScript.WriteValue(this.characteristicID, data);
 #endif
         }
 
         public void StartNotifications(Action<byte[]> action)
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.StartNotifications(this.characteristicID, action);
+            WebBluetoothScript.StartNotifications(this.characteristicID, action);
 #endif
         }
 
         public void StopNotifications()
         {
 #if UNITY_WEBGL
-            WebBluetoothScript.Instance.StopNotifications(this.characteristicID);
+            WebBluetoothScript.StopNotifications(this.characteristicID);
 #endif
         }
     }

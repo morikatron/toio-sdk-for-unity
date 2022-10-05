@@ -10,11 +10,11 @@ namespace toio
 
         public BLEWebService()
         {
-            var instance = WebBluetoothScript.Instance;
         }
 
         public void RequestDevice(Action<BLEDeviceInterface> action)
         {
+            WebBluetoothScript.Init();
             if (this.device == null)
             {
                 this.device = new BLEWebDevice();
