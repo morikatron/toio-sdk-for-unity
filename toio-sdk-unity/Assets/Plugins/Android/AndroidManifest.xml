@@ -15,8 +15,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
                      android:minSdkVersion="31"
                      android:usesPermissionFlags="neverForLocation" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"
-                     android:minSdkVersion="31"/>
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"
                      android:minSdkVersion="31"/>
     <!-- application must have ble hardware  -->

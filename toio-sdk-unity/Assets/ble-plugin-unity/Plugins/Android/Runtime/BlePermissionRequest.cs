@@ -20,7 +20,6 @@ namespace toio.Android
         const string androidCourceLocationPermission = "android.permission.ACCESS_COARSE_LOCATION";
         const string androidBluetoothPermission = "android.permission.BLUETOOTH";
         const string androidBluetoothAdminPermission = "android.permission.BLUETOOTH_ADMIN";
-        const string androidBluetoothAdvertisePermission = "android.permission.BLUETOOTH_ADVERTISE";
         const string androidBluetoothScanPermission = "android.permission.BLUETOOTH_SCAN";
         const string androidBluetoothConnectPermission = "android.permission.BLUETOOTH_CONNECT";
         Action initializedAction;
@@ -40,7 +39,6 @@ namespace toio.Android
             var willAskPermissions = new List<string>();
             if (androidOsVersion >= 31)
             {
-                willAskPermissions.Add(androidBluetoothAdvertisePermission);
                 willAskPermissions.Add(androidBluetoothScanPermission);
                 willAskPermissions.Add(androidBluetoothConnectPermission);
             }
