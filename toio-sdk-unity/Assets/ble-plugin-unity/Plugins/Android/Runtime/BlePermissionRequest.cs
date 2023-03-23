@@ -44,14 +44,20 @@ namespace toio.Android
                 willAskPermissions.Add(androidBluetoothScanPermission);
                 willAskPermissions.Add(androidBluetoothConnectPermission);
             }
+            else if(androidOsVersion >= 29)
+            {
+                willAskPermissions.Add(androidBluetoothPermission);
+                willAskPermissions.Add(androidBluetoothAdminPermission);
+                willAskPermissions.Add(androidFineLocationPermission);
+            }
             else
             {
                 willAskPermissions.Add(androidBluetoothPermission);
                 willAskPermissions.Add(androidBluetoothAdminPermission);
+                willAskPermissions.Add(androidCourceLocationPermission);
             }
 
-            willAskPermissions.Add(androidFineLocationPermission);
-
+            
             foreach (var permission in willAskPermissions.Where(permission =>
                          !Permission.HasUserAuthorizedPermission(permission)))
             {

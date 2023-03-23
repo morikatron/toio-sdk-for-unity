@@ -6,17 +6,21 @@
                      android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
                      android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+                     android:maxSdkVersion="30"
+                     android:minSdkVersion="29"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
-                     android:maxSdkVersion="30" />
+                     android:maxSdkVersion="28"
+                     android:minSdkVersion="26"/>
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+                     android:minSdkVersion="31"
                      android:usesPermissionFlags="neverForLocation" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-  <!--
-         If your app targets Android 9 or lower, you can declare
-         ACCESS_COARSE_LOCATION instead.
-    -->
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"
+                     android:minSdkVersion="31"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"
+                     android:minSdkVersion="31"/>
+    <!-- application must have ble hardware  -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
   <application
 		android:theme="@style/UnityThemeSelector"
 		android:icon="@drawable/app_icon"
