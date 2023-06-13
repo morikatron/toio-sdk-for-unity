@@ -17,6 +17,7 @@
 2. Create a development folder under the Assets folder ["Script Dependencies"](development_basics.md#1-script-dependencies).
 3. Create a new scene and load Simulator's Prefab ["Creating Scenes"](tutorials_basic.md#2-creating-scenes).
 4. Programming.
+<br><br>
 
 ### [3] Verifying program in Unity Editor
 
