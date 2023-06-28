@@ -18,8 +18,7 @@ public class Sample_VisualizeNavigator : MonoBehaviour
         await cubeManager.SingleConnect();
 
         var navi = cubeManager.navigators[0];
-        navi.ClearWall();
-        // Set new borders
+        // Set borders
         navi.AddBorder(10, 60, 440, 60, 440);
         // Set triangle shaped walls
         navi.AddWall(new Wall(250, 200, 200, 300, 10));
