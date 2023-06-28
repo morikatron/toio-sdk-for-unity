@@ -169,7 +169,7 @@ public class BleDeviceObj extends BluetoothGattCallback {
         this.charastricsKeyHashMap = new HashMap<CharastricsKey,BluetoothGattCharacteristic>();
         this.pubCharastricsKeyHashMap = new HashMap<CharastricsKey,BluetoothGattCharacteristic>();
         this.charastricsKeys = new ArrayList<CharastricsKey>(32);
-        device.connectGatt(cxt,true,this);
+        device.connectGatt(cxt,true,this,BluetoothDevice.TRANSPORT_LE);
     }
 
 

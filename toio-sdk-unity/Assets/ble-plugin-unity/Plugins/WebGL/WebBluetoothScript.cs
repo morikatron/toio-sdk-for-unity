@@ -6,41 +6,25 @@ using UnityEngine;
 
 namespace toio
 {
-    public class WebBluetoothScript : MonoBehaviour
+    public class WebBluetoothScript
     {
-        private static WebBluetoothScript instance = null;
-
-        public static WebBluetoothScript Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    GameObject gameObject = new GameObject();
-                    gameObject.name = "~WebBluetoothScript";
-                    instance = (WebBluetoothScript)gameObject.AddComponent(typeof(WebBluetoothScript));
-                    instance.Init();
-                }
-                return instance;
-            }
-        }
-
 #if UNITY_WEBGL
+        private static bool isInited = false;
         // RequestDevice
-        private Action<int, string, string> callback_RequestDevice = null;
-        private Action<string> errorCallback_RequestDevice = null;
+        private static Action<int, string, string> callback_RequestDevice = null;
+        private static Action<string> errorCallback_RequestDevice = null;
         // Connect
-        private Dictionary<int, Action<int, int, string>> callbackTable_Connect = new Dictionary<int, Action<int, int, string>>();
+        private static Dictionary<int, Action<int, int, string>> callbackTable_Connect = new Dictionary<int, Action<int, int, string>>();
         // Disconnected
-        private Dictionary<int, Action<int>> callbackTable_Disconnected = new Dictionary<int, Action<int>>();
+        private static Dictionary<int, Action<int>> callbackTable_Disconnected = new Dictionary<int, Action<int>>();
         // GetCharacteristic
-        private Dictionary<string, Action<int, string>> callbackTable_GetCharacteristic = new Dictionary<string, Action<int, string>>();
+        private static Dictionary<string, Action<int, string>> callbackTable_GetCharacteristic = new Dictionary<string, Action<int, string>>();
         // GetCharacteristics
-        private Dictionary<int, Action<int, string>> callbackTable_GetCharacteristics = new Dictionary<int, Action<int, string>>();
+        private static Dictionary<int, Action<int, string>> callbackTable_GetCharacteristics = new Dictionary<int, Action<int, string>>();
         // ReadValue
-        private Dictionary<int, Action<int, byte[]>> callbackTable_ReadValue = new Dictionary<int, Action<int, byte[]>>();
+        private static Dictionary<int, Action<int, byte[]>> callbackTable_ReadValue = new Dictionary<int, Action<int, byte[]>>();
         // Notifications
-        private Dictionary<int, Action<byte[]>> callbackTable_StartNotifications = new Dictionary<int, Action<byte[]>>();
+        private static Dictionary<int, Action<byte[]>> callbackTable_StartNotifications = new Dictionary<int, Action<byte[]>>();
 #endif
 
 
@@ -50,11 +34,11 @@ namespace toio
         /// <param name="SERVICE_UUID">BLEデバイスのサービスUUID</param>
         /// <param name="callback">スキャン成功コールバック(int deviceID, string deviceUUID, deviceName)</param>
         /// <param name="errorCallback">スキャン失敗コールバック(string errMsg)</param>
-        public void RequestDevice(string SERVICE_UUID, Action<int, string, string> callback, Action<string> errorCallback)
+        public static void RequestDevice(string SERVICE_UUID, Action<int, string, string> callback, Action<string> errorCallback)
         {
 #if UNITY_WEBGL
-            this.callback_RequestDevice = callback;
-            this.errorCallback_RequestDevice = errorCallback;
+            callback_RequestDevice = callback;
+            errorCallback_RequestDevice = errorCallback;
             call_RequestDevice(SERVICE_UUID);
 #endif
         }
@@ -66,10 +50,10 @@ namespace toio
         /// <param name="SERVICE_UUID">BLEデバイスのサービスUUID</param>
         /// <param name="callback">接続コールバック(int serverID, int serviceID, string serviceUUID)</param>
         /// <param name="disconnectedCallback">切断コールバック(int deviceID)</param>
-        public void Connect(int deviceID, string SERVICE_UUID, Action<int, int, string> callback, Action<int> disconnectedCallback = null)
+        public static void Connect(int deviceID, string SERVICE_UUID, Action<int, int, string> callback, Action<int> disconnectedCallback = null)
         {
 #if UNITY_WEBGL
-            this.callbackTable_Connect[deviceID] = callback;
+            callbackTable_Connect[deviceID] = callback;
             if (null != disconnectedCallback)
             {
                 callbackTable_Disconnected[deviceID] = disconnectedCallback;
@@ -82,7 +66,7 @@ namespace toio
         /// BLEデバイスを切断する
         /// </summary>
         /// <param name="serverID">BLEサーバー発行ID</param>
-        public void Disconnect(int serverID)
+        public static void Disconnect(int serverID)
         {
 #if UNITY_WEBGL
             call_Disconnect(serverID);
@@ -95,11 +79,11 @@ namespace toio
         /// <param name="serviceID">BLEサービス発行ID</param>
         /// <param name="characteristicUUID">characteristicUUID</param>
         /// <param name="callback">取得コールバック(int characteristicID, string characteristicUUID)</param>
-        public void GetCharacteristic(int serviceID, string characteristicUUID, Action<int, string> callback)
+        public static void GetCharacteristic(int serviceID, string characteristicUUID, Action<int, string> callback)
         {
 #if UNITY_WEBGL
             var id = serviceID + characteristicUUID;
-            this.callbackTable_GetCharacteristic[id] = callback;
+            callbackTable_GetCharacteristic[id] = callback;
             call_getCharacteristic(serviceID, characteristicUUID);
 #endif
         }
@@ -109,10 +93,10 @@ namespace toio
         /// </summary>
         /// <param name="serviceID">BLEサービス発行ID</param>
         /// <param name="callback">取得コールバック(int characteristicID, string characteristicUUID)</param>
-        public void GetCharacteristics(int serviceID, Action<int, string> callback)
+        public static void GetCharacteristics(int serviceID, Action<int, string> callback)
         {
 #if UNITY_WEBGL
-            this.callbackTable_GetCharacteristics[serviceID] = callback;
+            callbackTable_GetCharacteristics[serviceID] = callback;
             call_getCharacteristics(serviceID);
 #endif
         }
@@ -122,7 +106,7 @@ namespace toio
         /// </summary>
         /// <param name="characteristicID">characteristic発行ID</param>
         /// <param name="data">書き込みデータ</param>
-        public void WriteValue(int characteristicID, byte[] data)
+        public static void WriteValue(int characteristicID, byte[] data)
         {
 #if UNITY_WEBGL
             call_WriteValue(characteristicID, data, data.Length);
@@ -134,10 +118,10 @@ namespace toio
         /// </summary>
         /// <param name="characteristicID">characteristic発行ID</param>
         /// <param name="callback">読み込みコールバック(int characteristicID, byte[] 読み込みデータ)</param>
-        public void ReadValue(int characteristicID, Action<int, byte[]> callback)
+        public static void ReadValue(int characteristicID, Action<int, byte[]> callback)
         {
 #if UNITY_WEBGL
-            this.callbackTable_ReadValue[characteristicID] = callback;
+            callbackTable_ReadValue[characteristicID] = callback;
             call_ReadValue(characteristicID);
 #endif
         }
@@ -147,10 +131,10 @@ namespace toio
         /// </summary>
         /// <param name="characteristicID">characteristic発行ID</param>
         /// <param name="callback">購読コールバック(byte[] 読み込みデータ)</param>
-        public void StartNotifications(int characteristicID, Action<byte[]> callback)
+        public static void StartNotifications(int characteristicID, Action<byte[]> callback)
         {
 #if UNITY_WEBGL
-            this.callbackTable_StartNotifications[characteristicID] = callback;
+            callbackTable_StartNotifications[characteristicID] = callback;
             call_startNotifications(characteristicID);
 #endif
         }
@@ -159,16 +143,18 @@ namespace toio
         /// 定期購読を終了する
         /// </summary>
         /// <param name="characteristicID">characteristic発行ID</param>
-        public void StopNotifications(int characteristicID)
+        public static void StopNotifications(int characteristicID)
         {
 #if UNITY_WEBGL
             call_stopNotifications(characteristicID);
 #endif
         }
 
-        private void Init()
+        public static void Init()
         {
 #if UNITY_WEBGL
+            if (isInited) return;
+            isInited = true;
             InitMethods(return_RequestDevice, return_Connect, callback_Disconnected, return_getCharacteristic, return_getCharacteristics, return_ReadValue, callback_StartNotifications);
             InitErrorMethods(error_RequestDevice);
 #endif
@@ -202,18 +188,18 @@ namespace toio
         private static void return_RequestDevice(int deviceID, string uuid, string name)
         {
             //Debug.LogFormat("[WebBluetoothScript.return_RequestDevice]デバイスid: {0}, uuid: {1}, name: {2}", deviceID, uuid, name);
-            instance.callback_RequestDevice.Invoke(deviceID, uuid, name);
-            instance.callback_RequestDevice = null;
-            instance.errorCallback_RequestDevice = null;
+            callback_RequestDevice.Invoke(deviceID, uuid, name);
+            callback_RequestDevice = null;
+            errorCallback_RequestDevice = null;
         }
 
         [MonoPInvokeCallback(typeof(Action<string>))]
         private static void error_RequestDevice(string msg)
         {
             //Debug.LogFormat("[WebBluetoothScript.error_RequestDevice]msg: {0}", msg);
-            instance.errorCallback_RequestDevice.Invoke(msg);
-            instance.callback_RequestDevice = null;
-            instance.errorCallback_RequestDevice = null;
+            errorCallback_RequestDevice.Invoke(msg);
+            callback_RequestDevice = null;
+            errorCallback_RequestDevice = null;
         }
 
         [MonoPInvokeCallback(typeof(Action<int, int, int, string>))]
@@ -221,17 +207,17 @@ namespace toio
         {
             //Debug.LogFormat("[WebBluetoothScript.return_Connect]deviceID: {0}, serverID: {1}, serviceID: {2}, serviceUUID: {3}", deviceID, serverID, serviceID, serviceUUID);
 
-            instance.callbackTable_Connect[deviceID].Invoke(serverID, serviceID, serviceUUID);
-            instance.callbackTable_Connect.Remove(deviceID);
+            callbackTable_Connect[deviceID].Invoke(serverID, serviceID, serviceUUID);
+            callbackTable_Connect.Remove(deviceID);
         }
 
         [MonoPInvokeCallback(typeof(Action<int>))]
         private static void callback_Disconnected(int deviceID)
         {
             //Debug.LogFormat("[WebBluetoothScript.callback_Disconnected]deviceID: {0}", deviceID);
-            if (instance.callbackTable_Disconnected.ContainsKey(deviceID))
+            if (callbackTable_Disconnected.ContainsKey(deviceID))
             {
-                instance.callbackTable_Disconnected[deviceID].Invoke(deviceID);
+                callbackTable_Disconnected[deviceID].Invoke(deviceID);
             }
         }
 
@@ -241,8 +227,8 @@ namespace toio
             var str = serviceID + characteristicUUID;
             //Debug.LogFormat("[WebBluetoothScript.return_getCharacteristic]serviceID: {0}, characteristicUUID: {1}, characteristicID: {2}", serviceID, characteristicUUID, characteristicID);
 
-            instance.callbackTable_GetCharacteristic[str].Invoke(characteristicID, characteristicUUID);
-            instance.callbackTable_GetCharacteristic.Remove(str);
+            callbackTable_GetCharacteristic[str].Invoke(characteristicID, characteristicUUID);
+            callbackTable_GetCharacteristic.Remove(str);
         }
 
         [MonoPInvokeCallback(typeof(Action<int, int, int, int, string>))]
@@ -250,10 +236,10 @@ namespace toio
         {
             //Debug.LogFormat("[WebBluetoothScript.return_getCharacteristics]serviceID: {0}, len: {1}, idx: {2}, characteristicID: {3}, characteristicUUID: {4}", serviceID, len, idx, characteristicID, characteristicUUID);
 
-            instance.callbackTable_GetCharacteristics[serviceID].Invoke(characteristicID, characteristicUUID);
+            callbackTable_GetCharacteristics[serviceID].Invoke(characteristicID, characteristicUUID);
             if (len-1 <= idx)
             {
-                instance.callbackTable_GetCharacteristics.Remove(serviceID);
+                callbackTable_GetCharacteristics.Remove(serviceID);
             }
         }
 
@@ -262,7 +248,7 @@ namespace toio
         {
             var bytes = IntPtr2Bytes(ptr, len);
             //Debug.LogFormat("[WebBluetoothScript.return_ReadValue]characteristicID: {0}, buff: {1}", characteristicID, Bytes2String(bytes));
-            instance.callbackTable_ReadValue[characteristicID].Invoke(characteristicID, bytes);
+            callbackTable_ReadValue[characteristicID].Invoke(characteristicID, bytes);
         }
 
         [MonoPInvokeCallback(typeof(Action<int, IntPtr, int>))]
@@ -270,7 +256,7 @@ namespace toio
         {
             var bytes = IntPtr2Bytes(ptr, len);
             //Debug.LogFormat("[WebBluetoothScript.callback_StartNotifications]characteristicID: {0}, buff: {1}", characteristicID, Bytes2String(bytes));
-            instance.callbackTable_StartNotifications[characteristicID].Invoke(bytes);
+            callbackTable_StartNotifications[characteristicID].Invoke(bytes);
         }
 
         private static string Bytes2String(byte[] bytes)
