@@ -8,7 +8,7 @@
     - [2.2. 同期でキューブを制御する場合](tutorials_navigator.md#22-同期でキューブを制御する場合)
     - [2.3. CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#23-cubemanager-を使わないで-cubenavigator-を利用する)
 - [3. CubeNavigator による衝突回避](tutorials_navigator.md#3-cubenavigator-による衝突回避)
-    - [3.1. 設定](tutorials_navigator.md#31-設定)
+    - [3.1. 基本設定](tutorials_navigator.md#31-基本設定)
     - [3.2. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#32-衝突を回避しつつ目標に移動する-navi2target-関数)
     - [3.3. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#33-目標から離れる-naviawaytarget-関数)
 - [4. ボイドによる集団制御](tutorials_navigator.md#4-ボイドによる集団制御)
@@ -162,7 +162,7 @@ public class NavigatorBasic : MonoBehaviour
 
 ## 3. CubeNavigator による衝突回避
 
-### 3.1. 設定
+### 3.1. 基本設定
 
 > 設定は必須ではないので、直接に次節に進めても構いません。
 
@@ -179,6 +179,8 @@ CubeNavigator は虚構な壁を設置し、それを回避させることがで
 // （前略）cubeManager接続後
 cubeManager.navigators[0].AddBorder(width:20, x1:40, x2:460, y1:40, y2:460);
 ```
+
+CubeHandleにもボーダー設定がありますが、CubeNavigatorのボーダーよりも内側にある場合は、キューブがCubeHandleのボーダーの外側に行こうとして引っかかる可能性がありますので、ご注意ください。
 
 `AddBorder`は一気に4枚の壁を作る便利機能ですが、`AddWall` で任意の壁を一枚だけ設定することも可能です。
 
