@@ -2,31 +2,32 @@
 
 ## Table of Contents
 
-- [1. CubeNavigator](tutorials_navigator.md#1-cubenavigator)
-  - [1.1. Using CubeManager with CubeNavigator](tutorials_navigator.md#11-using-cubemanager-with-cubenavigator)
-    - [1.1.1. Want to control Cube asynchronously](tutorials_navigator.md#111-want-to-control-cube-asynchronously)
-    - [1.1.2. Want to control Cube synchronously](tutorials_navigator.md#112-want-to-control-cube-synchronously)
-    - [1.1.3. Using CubeNavigator without CubeManager](tutorials_navigator.md#113-using-cubenavigator-without-cubemanager)
-  - [1.2. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#12-avoiding-collisions-with-cubenavigator)
-    - [1.2.1. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#121-navi2target-function-to-move-to-the-target-while-avoiding-collision)
-    - [1.2.2. Move away from the target NaviAwayTarget function](tutorials_navigator.md#121-navi2target-function-to-move-to-the-target-while-avoiding-collision)
-  - [1.3. Population Control with Boids](tutorials_navigator.md#13-population-control-with-boids)
-  - [1.4. Boids + Conflict Avoidance](tutorials_navigator.md#14-boids--conflict-avoidance)
+- [1. Overview](tutorials_navigator.md#1-overview)
+- [2. Using CubeManager with CubeNavigator](tutorials_navigator.md#2-using-cubemanager-with-cubenavigator)
+    - [2.1. Want to control Cube asynchronously](tutorials_navigator.md#21-want-to-control-cube-asynchronously)
+    - [2.2. Want to control Cube synchronously](tutorials_navigator.md#22-want-to-control-cube-synchronously)
+    - [2.3. Using CubeNavigator without CubeManager](tutorials_navigator.md#23-using-cubenavigator-without-cubemanager)
+- [3. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#3-avoiding-collisions-with-cubenavigator)
+    - [3.1. Basic Settings](tutorials_navigator.md#31-Basic-Settings)
+    - [3.2. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#32-navi2target-function-to-move-to-the-target-while-avoiding-collision)
+    - [3.3. Move away from the target NaviAwayTarget function](tutorials_navigator.md#33-navi2target-function-to-move-to-the-target-while-avoiding-collision)
+- [4. Population Control with Boids](tutorials_navigator.md#4-population-control-with-boids)
+- [5. Boids + Conflict Avoidance](tutorials_navigator.md#5-boids--conflict-avoidance)
 
-# 1. CubeNavigator
+## 1. Overview
 
 By using CubeNavigator, multiple Cubes can be successfully moved all together while taking each other's movements into account.
 
 For more information about CubeNavigator, click [here](usage_navigator.md).
 
-## 1.1. Using CubeManager with CubeNavigator
+## 2. Using CubeManager with CubeNavigator
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/0.BasicScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/basic/).
 
 CubeNavigator is automatically created by CubeManager when Cube is connected and put in the list of member variables.
 
-### 1.1.1. Want to control Cube asynchronously
+### 2.1. Want to control Cube asynchronously
 
 In the following sample code, CubeNavigator is controlled after confirming its controllable status in Update.
 
@@ -57,7 +58,7 @@ public class NavigatorBasic : MonoBehaviour
 
 Since everyone's controllable state is different, it is "asynchronous".
 
-### 1.1.2. Want to control Cube synchronously
+### 2.2. Want to control Cube synchronously
 
 If you do the following, all navigator will be controlled by the same frame every 50ms.
 
@@ -110,7 +111,7 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-### 1.1.3. Using CubeNavigator without CubeManager
+### 2.3. Using CubeNavigator without CubeManager
 
 If you do not use CubeManager, create CubeNavigator instance using Cube class as shown below.
 
@@ -158,9 +159,43 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-## 1.2. Avoiding Collisions with CubeNavigator
+## 3. Avoiding Collisions with CubeNavigator
 
-### 1.2.1. Navi2Target function to move to the target while avoiding collision
+### 3.1. Basic Settings
+
+> Settings are not mandatory, so feel free to proceed directly to the next section.
+
+For details, please refer to [[here]](usage_navigator.md#2-cubenavigator-class-api).
+
+#### Set Borders According to the Mat Type
+
+CubeNavigator can set up virtual walls and navigate around them.
+
+If you want to set borders around the four sides of the mat, you can do so using `AddBorder` according to the coordinate range of the mat. For example, the following code creates a wall with a thickness of 20 at the position of a rectangle with vertices at (40, 40) and (460, 460) when using the "Play mat (sumo ring)". (The edge of the rectangle is taken as the center, and it expands by 20 units on both sides, so it actually becomes a thickness of 40 in total.)
+
+```csharp
+// (snip) after cubeManager connection
+cubeManager.navigators[0].AddBorder(width:20, x1:40, x2:460, y1:40, y2:460);
+```
+
+There is also a border setting in CubeHandle, but if it is inside the border of CubeNavigator, the cube may get stuck when trying to go outside the border of CubeHandle, so please be careful.
+
+`AddBorder` is a convenient function to create four walls at once, but you can also set a single wall anywhere with `AddWall`.
+
+#### Margin (Safety Distance)
+
+You can set the size of the cube itself used for collision avoidance calculations. This allows for use cases such as adjusting to the size of a customized cube, or increasing safety during high-speed driving by taking extra size.
+
+Collision avoidance and void each have margin settings, so you set them individually as follows.
+
+```csharp
+// (snip) after cubeManager connection
+cubeManager.navigators[0].avoid.margin = 25;
+cubeManager.navigators[0].boids.margin = 30;
+```
+
+
+### 3.2. Navi2Target function to move to the target while avoiding collision
 
 > ※ The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/1.Navi2TargetScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/navi2target/).
@@ -276,7 +311,7 @@ async void Start()
 }
 ```
 
-### 1.2.2. Move away from the target NaviAwayTarget function
+### 3.3. Move away from the target NaviAwayTarget function
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/2.NaviAwayTargetScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/navi_away_target/).
@@ -331,7 +366,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
 }
 ```
 
-### 1.3. Population Control with Boids
+## 4. Population Control with Boids
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/boids/).
@@ -448,7 +483,7 @@ Red Cubes that were not Boids moved straight forward to the target, while Green 
 > Cube in BOIDS mode cannot avoid Cube that is not Boids.<br>
 > Therefore, it is not recommended to use BOIDS mode in complex configurations. Please consider BOIDS_AVOID mode specification described below.
 
-### 1.4. Boids + Conflict Avoidance
+## 5. Boids + Conflict Avoidance
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/4.BoidsAvoidScene/".<br>
 > ※ The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/boids_avoid/).Connect to two or more units.

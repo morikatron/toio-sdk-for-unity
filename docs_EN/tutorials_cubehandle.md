@@ -4,9 +4,10 @@
 
 - [1. Synchronized control of cubes using CubeManager](tutorials_cubehandle.md#1-synchronized-control-of-cubes-using-cubemanager)
 - [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
-  - [2.1. CubeHandle's Move function and MoveRaw function](tutorials_cubehandle.md#21-cubehandles-move-function-and-moveraw-function)
-  - [2.2. One-shot method to reduce the amount of communication with Cube](tutorials_cubehandle.md#22-one-shot-method-to-reduce-the-amount-of-communication-with-cube)
-  - [2.3. Closed-Loop method to reach the specified coordinates/direction](tutorials_cubehandle.md#23-closed-loop-method-to-reach-the-specified-coordinatesdirection)
+  - [2.1. Basic Settings](tutorials_cubehandle.md#21-Basic-Settings)
+  - [2.2. CubeHandle's Move function and MoveRaw function](tutorials_cubehandle.md#22-cubehandles-move-function-and-moveraw-function)
+  - [2.3. One-shot method to reduce the amount of communication with Cube](tutorials_cubehandle.md#23-one-shot-method-to-reduce-the-amount-of-communication-with-cube)
+  - [2.4. Closed-Loop method to reach the specified coordinates/direction](tutorials_cubehandle.md#24-closed-loop-method-to-reach-the-specified-coordinatesdirection)
 - [3. Follow TargetPole Demo](tutorials_cubehandle.md#3-follow-targetpole-demo)
 
 ## 1. Synchronized control of cubes using CubeManager
@@ -117,7 +118,32 @@ CubeHandle class provides the following movement control.
 
 For more information on CubeHandle, see [[here]](cubehandle.md).
 
-### 2.1. CubeHandle's Move function and MoveRaw function
+### 2.1. Basic Settings
+
+> If you are using the "Play mat (sumo ring)", settings are not mandatory, so feel free to proceed directly to the next section.
+
+#### Border
+
+CubeHandle can automatically limit the output to the cube's motor to prevent it from going beyond the border. The border can be set as follows:
+
+```csharp
+cubeHandle.borderRect = new RectInt(65, 65, 370, 370);
+```
+
+The default value is `RectInt(65, 65, 370, 370)`, which corresponds to the "Play mat (sumo ring)", so be sure to set it if you are using a different mat.
+
+If the cube gets stuck on (goes beyond) the border, it cannot move forward towards the outside of the border, but it can rotate. If you make the cube move towards the inside of the border before moving forward, you can bring it back inside the border.
+
+#### Delay
+
+CubeHandle calculates to eliminate the impact considering communication delay. If you want to improve control accuracy, it's crucial to measure and set the delay value. The `lag` variable of CubeHandle is set to the value that combines the delay when obtaining information from the cube and the delay from sending motor commands until the cube receives them.
+
+```csharp
+cubeHandle.lag = 0.13;  // seconds
+```
+
+
+### 2.2. CubeHandle's Move function and MoveRaw function
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/1.MoveScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/move/).
@@ -227,7 +253,7 @@ mv.Exec();
 handle.Move(mv);
 ```
 
-### 2.2. One-shot method to reduce the amount of communication with Cube
+### 2.3. One-shot method to reduce the amount of communication with Cube
 
 > The sample files for this chapter are located in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/2.OneShotScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/oneshot/).
@@ -291,7 +317,7 @@ void Update()
 }
 ```
 
-### 2.3. Closed-Loop method to reach the specified coordinates/direction
+### 2.4. Closed-Loop method to reach the specified coordinates/direction
 
 > The sample files for this chapter are located in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/3.ToTargetScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/to_target/).
