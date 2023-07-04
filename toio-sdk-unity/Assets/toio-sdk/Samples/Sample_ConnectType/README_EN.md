@@ -4,7 +4,7 @@
 <img src="../../../../../docs/res/cube/sample_connectType.png">
 </div>
 
-This sample demonstrates how connection settings can vary between a simulator and actual device based on different connection configurations.
+This sample is intended to verify how the connection varies between the simulator and the physical device due to differences in the connection settings.
 
 In the Unity Editor hierarchy, select the `scene` object and you can change the way to connect to the cube by toggling the Connect Type in the inspector.
 

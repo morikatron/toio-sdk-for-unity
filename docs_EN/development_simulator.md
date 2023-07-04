@@ -1,4 +1,4 @@
-# How to operate Simulator
+# How to operate Simulator (Settings for mats and cubes, etc.)
 
 ## Table of Contents
 

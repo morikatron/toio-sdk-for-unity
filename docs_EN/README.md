@@ -13,13 +13,13 @@
 
 ### [2] Development
 
-1. Check before development ["How to operate Simulator"](development_simulator.md).
+1. Check before development ["How to operate Simulator (Settings for mats and cubes, etc.)"](development_simulator.md).
 2. Create a development folder under the Assets folder ["Script Dependencies"](development_basics.md#1-script-dependencies).
 3. Create a new scene and load Simulator's Prefab ["Creating Scenes"](tutorials_basic.md#2-creating-scenes).
 4. Programming.
 <br><br>
 
-### [3] Verifying program in Unity Editor
+### [3] Verifying program in Unity Editor (Connect to simulator or actual device)
 
 1. Press the Play button to verify operation in the simulator.
 2. Set ConnectType to Real (actual device), press the Play button, and connect to the actual device to verify operation.
