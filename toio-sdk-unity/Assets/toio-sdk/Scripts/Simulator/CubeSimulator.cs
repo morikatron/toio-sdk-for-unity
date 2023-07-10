@@ -779,9 +779,10 @@ namespace toio.Simulator
                 playingSoundId = soundId;
                 int octave = (int)(soundId/12);
                 int idx = (int)(soundId%12);
-                var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+                var loader = GetComponent<AudioAssetLoader>();
+                if (!loader) return;
+                audioSource.clip = loader.GetAudioCLip(octave);
                 audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-                audioSource.clip = aCubeOnSlot;
             }
             audioSource.volume = (float)volume/256 * 0.5f;
             if (!audioSource.isPlaying)

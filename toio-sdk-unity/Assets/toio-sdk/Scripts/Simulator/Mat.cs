@@ -15,7 +15,7 @@ namespace toio.Simulator
             simple_playmat = 2,
             developer = 3,
             gesundroid = 4,
-            custom = 99  // 座標範囲をカスタマイズ
+            custom = 5  // 座標範囲をカスタマイズ
         }
 
         public static readonly string[] MatTypeNames = new string[]
@@ -71,26 +71,9 @@ namespace toio.Simulator
             this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 
             // Change material
-            switch (matType){
-                case MatType.toio_collection_front:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
-                    break;
-                case MatType.toio_collection_back:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
-                    break;
-                case MatType.simple_playmat:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-                    break;
-                case MatType.developer:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-                    break;
-                case MatType.gesundroid:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/gesundroid");
-                    break;
-                case MatType.custom:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
-                    break;
-            }
+            var loader = GetComponent<MatAssetLoader>();
+            if (loader)
+                GetComponent<Renderer>().material = loader.GetMaterial(matType);
         }
 
         public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default)
