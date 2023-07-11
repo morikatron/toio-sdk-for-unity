@@ -67,7 +67,7 @@ public int maxSpd { get; }                      // 最大速度指示値（実�
 
 ```csharp
 public static double dt = 1.0 / 60 * 3;     // 制御の周期 50ms
-public static double lag = 0.130;           // ラグ
+public static double lag = 0.130;           // キューブから情報取得する際の遅延とモーター指令を送信してからキューブが受信するまでの遅延を合わせた値
 
 public RectInt borderRect   // ボーダーの範囲を表す RectInt
 ```

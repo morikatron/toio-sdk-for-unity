@@ -13,20 +13,26 @@
 
 ### [2] Development
 
-1. Check before development ["How to operate Simulator"](development_simulator.md).
+1. Check before development ["How to operate Simulator (Settings for mats and cubes, etc.)"](development_simulator.md).
 2. Create a development folder under the Assets folder ["Script Dependencies"](development_basics.md#1-script-dependencies).
 3. Create a new scene and load Simulator's Prefab ["Creating Scenes"](tutorials_basic.md#2-creating-scenes).
-4. Create a program by playing it in Unity Editor and checking how it works in Simulator. (A)
-5. Connect to real cubes from Unity Editor to check how programs work on real cubes. (B) <br>
-([Set up Mac BLE](usage_macble.md) first if using Mac) (Learn how to connect to real cubes from Unity Editor with sample [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md))
+4. Programming.
 <br><br>
 
-### [3] Build
+### [3] Verifying program in Unity Editor (Connect to simulator or actual device)
 
-1. Build an app for a smart device and verify that it works on the device. (C)
+1. Press the Play button to verify operation in the simulator.
+2. Set ConnectType to Real (actual device), press the Play button, and connect to the actual device to verify operation.
+    - [Set up Mac BLE](usage_macble.md) first if using Mac
+    - For specifications and how to set ConnectType, refer to the sample [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/README_EN.md).
+3. Repeat the development and operation verification in Unity Editor to efficiently finalize your program.
+<br><br>
+
+### [4] Build
+
+1. Build an app for a smart device and verify that it works on the device.
     - ["iOS Build"](build_ios.md) | ["Android Build"](build_android.md) | ["WebGL Build"](build_web.md)
     - For Mac or Windows 10 build, please refer to [Unity's official document](https://docs.unity3d.com/ja/2021.3/Manual/PublishingBuilds.html).
-2. Repeat `(A)` `(B)` `(C)` to brush up the program.
 
 <br>
 
