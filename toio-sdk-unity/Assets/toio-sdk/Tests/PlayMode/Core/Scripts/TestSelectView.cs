@@ -11,6 +11,7 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using UnityEditor;
 
 
 namespace toio.Tests
@@ -35,7 +36,7 @@ namespace toio.Tests
             // リソース読み込み
             if (null == res_button)
             {
-                res_button = await Resources.LoadAsync<GameObject>("ViewButton") as GameObject;
+                res_button = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/toio-sdk/Tests/PlayMode/Core/Prefabs/ViewButton.prefab");
                 await UniTask.WaitForFixedUpdate();
             }
 

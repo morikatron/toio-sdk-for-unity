@@ -153,7 +153,7 @@ namespace toio.Tests
                 await CubeTestCase.cubeManager.MultiConnect(8);
 
                 // UIオブジェクトを生成
-                var (uiObj, selectView) = await EnvUtl.CreateTestUI(testRoot);
+                var (uiObj, selectView) = EnvUtl.CreateTestUI(testRoot);
 
                 // 選択モードの場合は、終了するまでテストを待機
                 // 実行モードの場合は、ボタンから選択モードを終了
@@ -194,7 +194,7 @@ namespace toio.Tests
                 await CubeTestCase.cubeManager.MultiConnect(8);
 
                 // UIオブジェクトを生成
-                var (uiObj, selectView) = await EnvUtl.CreateTestUI(testRoot);
+                var (uiObj, selectView) = EnvUtl.CreateTestUI(testRoot);
                 UIObject = uiObj;
 
                 // 選択モードの場合は、終了するまでテストを待機
@@ -235,8 +235,8 @@ namespace toio.Tests
                 await EnvUtl.CreateSimStageObject();
 
                 // ボタンを配置して押下待機
-                var connectButton = await EnvUtl.CreateButton("connect", new Vector3(0, 80, 0), new Vector2(160, 100), 24);
-                var startButton = await EnvUtl.CreateButton("start", new Vector3(0, -80, 0), new Vector2(160, 100), 24);
+                var connectButton = EnvUtl.CreateButton("connect", new Vector3(0, 80, 0), new Vector2(160, 100), 24);
+                var startButton = EnvUtl.CreateButton("start", new Vector3(0, -80, 0), new Vector2(160, 100), 24);
                 var startFlg = false;
                 startButton.onClick.AddListener(() => { startFlg = true; });
                 try
@@ -258,7 +258,7 @@ namespace toio.Tests
                 GameObject.DestroyImmediate(startButton.gameObject);
 
                 // UIオブジェクトを生成
-                var (uiObj, selectView) = await EnvUtl.CreateTestUI(testRoot);
+                var (uiObj, selectView) = EnvUtl.CreateTestUI(testRoot);
 
                 // 選択モードの場合は、終了するまでテストを待機
                 // 実行モードの場合は、ボタンから選択モードを終了
@@ -285,7 +285,7 @@ namespace toio.Tests
         {
             if (null == res_stage)
             {
-                res_stage = await Resources.LoadAsync<GameObject>("Stage") as GameObject;
+                res_stage = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/toio-sdk/Scripts/Simulator/Prefabs/Stage.prefab");
             }
             var stage = GameObject.Find("Stage");
             if (null == stage)
@@ -301,7 +301,7 @@ namespace toio.Tests
         {
             if (null == res_cube)
             {
-                res_cube = await Resources.LoadAsync<GameObject>("Cube") as GameObject;
+                res_cube = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/toio-sdk/Scripts/Simulator/Prefabs/Cube.prefab");
             }
             // マット座標 to Unity座標
             var unipos = Mat.MatCoord2UnityCoord(matPos.x, matPos.y, mat);
@@ -446,11 +446,11 @@ namespace toio.Tests
             return poslist;
         }
 
-        public static async UniTask<UnityEngine.UI.Button> CreateButton(string text, Vector3 pos, Vector2 size, int fontsize=16)
+        public static UnityEngine.UI.Button CreateButton(string text, Vector3 pos, Vector2 size, int fontsize=16)
         {
             if (null == res_buttonCanvas)
             {
-                res_buttonCanvas = await Resources.LoadAsync<GameObject>("ButtonCanvas") as GameObject;
+                res_buttonCanvas = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/toio-sdk/Tests/PlayMode/Core/Prefabs/ButtonCanvas.prefab");
             }
 
             var obj = GameObject.Instantiate<GameObject>(res_buttonCanvas);
@@ -464,7 +464,7 @@ namespace toio.Tests
             return button;
         }
 
-        public static async UniTask<(GameObject, toio.Tests.TestSelectView)> CreateTestUI(ITest testRoot, GameObject parent=null)
+        public static (GameObject, toio.Tests.TestSelectView) CreateTestUI(ITest testRoot, GameObject parent=null)
         {
             // テスト配列を取得
             List<ITest> testList = new List<ITest>();
@@ -473,7 +473,7 @@ namespace toio.Tests
             // テスト選択UIを生成
             if (null == res_testUI)
             {
-                res_testUI = await Resources.LoadAsync<GameObject>("TestUI") as GameObject;
+                res_testUI = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/toio-sdk/Tests/PlayMode/Core/Prefabs/TestUI.prefab");
             }
 
             var obj = GameObject.Instantiate<GameObject>(res_testUI);

@@ -28,7 +28,7 @@
 
 Simulator is a virtual environment for testing smart device applications that communicate with toio™ Core Cube (Cube).
 
-Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Resources/`.
+Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Prefabs/`.
 
 - Mat ... Imitation of various play mats
 - StandardID ... Imitates various types of cards/sheets that can read StandardID

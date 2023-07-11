@@ -33,7 +33,7 @@ You can build a basic environment by following the steps below.
 
 1. Click "File > New Scene" to create a new scene.
 2. Remove Main Camera and Directional Light from the hierarchy.
-3. Open the "Assets/toio-sdk/Scripts/Simulator/Resources" folder in the project window.
+3. Open the "Assets/toio-sdk/Scripts/Simulator/Prefabs" folder in the project window.
 4. Drag and drop Cube Prefab file and the Stage Prefab file into the hierarchy.<br>
    You can also move Cube object by switching to the Scene View and using the mouse.<br>
    If you want to change the mat, select "Stage -> Mat" in the Hierarchy window, and then choose the desired play mat in the "Mat -> Type" section of the Inspector window. For detailed instructions, please refer to [[here]](development_simulator.md#2-mat-prefab).

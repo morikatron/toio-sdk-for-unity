@@ -20,7 +20,7 @@ Please refer to [Usage - Simulator](usage_simulator.md) in the technical documen
 
 ## Composition
 
-Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Resources/`.
+Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Prefabs/`.
 
 - Mat … Various imitations of [Play mat](https://toio.github.io/toio-spec/en/docs/hardware_position_id)
 - StandardID … Imitation of various [cards or sheets](https://toio.github.io/toio-spec/en/docs/hardware_standard_id) that can be read for Standard ID

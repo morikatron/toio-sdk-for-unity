@@ -34,7 +34,8 @@ Assets/toio-sdk/Scripts/Simulator/  +------+ There's a script directly underneat
 ├── Editor/  +-----------------------------+ Unity Editor script to customize the Inspector
 ├── Materials/  +--------------------------+ Materials and physical materials used for objects in Simulator
 ├── Models/  +-----------------------------+ 3D models used for objects in Simulator
-└── Resoureces/  +-------------------------+ Prefab is placed directly below it
+├── Prefabs/  +-------------------------+ Prefab is placed directly below it
+└── AssetLoader/  +------------------------+ Various material files and loader scripts
     ├── Mat/  +----------------------------+ Various mat textures and materials
     ├── Ocatave/  +------------------------+ Sound files used for the Sound function
     └── StandardID/  +---------------------+ Various standard ID textures
@@ -45,9 +46,11 @@ Assets/toio-sdk/Scripts/Simulator/  +------+ There's a script directly underneat
 
 # 2. Mat Prefab
 
-Mat Prefab has the script Mat.cs attached to it.
+The Mat Prefab has the Mat.cs script and the MatAssetLoader.cs attached for loading materials.
 
 Also, the Mat.cs inspector is customized by the script Editor/MatEditor.cs.
+
+The following is a description of Mat.cs.
 
 ## 2.1. Conversion from mat coordinate units to meters
 
@@ -73,7 +76,8 @@ public enum MatType
     toio_collection_back = 1,
     simple_playmat = 2,
     developer = 3,
-    custom = 4  // Customize the coordinate range.
+    gesundroid = 4,
+    custom = 5  // Customize the coordinate range.
 }
 
 public MatType matType;
@@ -91,23 +95,9 @@ internal void ApplyMatType()
     this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 
     // Change material
-    switch (matType){
-        case MatType.toio_collection_front:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
-            break;
-        case MatType.toio_collection_back:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
-            break;
-        case MatType.simple_playmat:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-            break;
-        case MatType.developer:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-            break;
-        case MatType.custom:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
-            break;
-    }
+    var loader = GetComponent<MatAssetLoader>();
+    if (loader)
+        GetComponent<Renderer>().material = loader.GetMaterial(matType);
 }
 ```
 
@@ -179,9 +169,11 @@ public Vector3 MatCoord2UnityCoord(double x, double y)
 
 # 3. StandardID Prefab
 
-StandardID Prefab has the script StandardID.cs attached to it.
+StandardID Prefab has the StandardID.cs script and the StandardIDAssetLoader.cs attached for loading materials.
 
 Also, the inspector in StandardID.cs is customized by the script Editor/StandardIDEditor.cs.
+
+The following is a description of StandardID.cs.
 
 ## 3.1. Switching between standard ID types
 
@@ -198,10 +190,13 @@ Implementation code
 internal void ApplyStandardIDType()
 {
     // Load Sprite
-    string spritePath = "StandardID/"+title.ToString()+"/";
-    if (title == Title.toio_collection) spritePath += toioColleType.ToString();
-    else if (title == Title.simple_card) spritePath += simpleCardType.ToString();
-    var sprite = (Sprite)Resources.Load<Sprite>(spritePath);
+    var loader = GetComponent<StandardIDAssetLoader>();
+    if (!loader) return;
+    Sprite sprite = null;
+    if (title == Title.toio_collection)
+        sprite = loader.GetSprite(toioColleType);
+    else if (title == Title.simple_card)
+        sprite = loader.GetSprite(simpleCardType);
     GetComponent<SpriteRenderer>().sprite = sprite;
 
     // Create Mesh
@@ -930,7 +925,7 @@ for i in range(11):
 
 <br>
 
-This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/en/docs/ble_sound#midi-note-number-and-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/Resources/Octave].
+This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/en/docs/ble_sound#midi-note-number-and-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/AssetLoader/Octave].
 
 
 #### Playing sounds
@@ -947,9 +942,10 @@ internal void _PlaySound(int soundId, int volume){
         playingSoundId = soundId;
         int octave = (int)(soundId/12);
         int idx = (int)(soundId%12);
-        var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+        var loader = GetComponent<AudioAssetLoader>();
+        if (!loader) return;
+        audioSource.clip = loader.GetAudioCLip(octave);
         audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-        audioSource.clip = aCubeOnSlot;
     }
     audioSource.volume = (float)volume/256 * 0.5f;
     if (!audioSource.isPlaying)

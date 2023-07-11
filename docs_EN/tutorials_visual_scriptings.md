@@ -29,7 +29,7 @@ The environment can be established by following the steps below.
 
 1. Click [File] -> [New Scene] to create a new scene.
 2. Remove Main Camera and Directional Light from the hierarchy.
-3. Open the "Assets/toio-sdk/Scripts/Simulator/Resources" folder in the project window.
+3. Open the "Assets/toio-sdk/Scripts/Simulator/Prefabs" folder in the project window.
 4. Drag and drop Cube Prefab file and the Stage Prefab file into the hierarchy.<br>
    You can also move Cube object by switching to the Scene View and using the mouse.
 5. Right-click on the hierarchy, click "Create Empty Object" from the right-click menu, and name it "scene" (you can name it whatever you want).

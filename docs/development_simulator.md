@@ -20,7 +20,7 @@
 
 ## 構成
 
-シミュレータは `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つのプリハブから構成されています。
+シミュレータは `Assets/toio-sdk/Scripts/Simulator/Prefabs/` の下にある、以下の 4 つのプリハブから構成されています。
 
 - Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/hardware_position_id)を模したもの
 - StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/hardware_standard_id)を模したもの
