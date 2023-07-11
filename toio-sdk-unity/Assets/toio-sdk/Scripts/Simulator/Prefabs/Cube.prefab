@@ -214,6 +214,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 0}
+  cubeIndicatorPrefab: {fileID: 4766518985789878506, guid: 33eeba6d0c44a184facff8d9f691e39b,
+    type: 3}
+  pullIndicatorPrefab: {fileID: 158880276286982137, guid: 28cb5c53be9ceed43a12e90b29144ddc,
+    type: 3}
 --- !u!82 &6352447562411728856
 AudioSource:
   m_ObjectHideFlags: 0

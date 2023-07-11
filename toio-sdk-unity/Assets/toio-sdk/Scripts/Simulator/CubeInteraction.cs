@@ -17,6 +17,9 @@ namespace toio.Simulator
         [SerializeField]
         public Camera targetCamera;
 
+        public GameObject cubeIndicatorPrefab;
+        public GameObject pullIndicatorPrefab;
+
         CubeSimulator cube;
         Rigidbody rb;
 
@@ -26,30 +29,14 @@ namespace toio.Simulator
         static bool maskClickOnDrop = false;
         static RaycastHit dropHit;
         static Transform _cubeIndicator;
-        static Transform cubeIndicator{get{
-            if (_cubeIndicator==null)
-            {
-                _cubeIndicator = Instantiate((GameObject)Resources.Load("CubeIndicator")).transform;
-                _cubeIndicator.gameObject.SetActive(false);
-            }
-            return _cubeIndicator;
-        }}
+        static Transform cubeIndicator => _cubeIndicator;
 
         //  Pull
         public static bool isPulling {get; protected set;} = false;
         static Vector3 pullInitialLocalPos;
         static float pullInitialY;
         static LineRenderer _pullIndicator;
-        static LineRenderer pullIndicator{get{
-            if (_pullIndicator==null)
-            {
-                _pullIndicator = Instantiate((GameObject)Resources.Load("Line")).GetComponent<LineRenderer>();
-                _pullIndicator.startColor = Color.black;
-                _pullIndicator.endColor = Color.black;
-                _pullIndicator.gameObject.SetActive(false);
-            }
-            return _pullIndicator;
-        }}
+        static LineRenderer pullIndicator => _pullIndicator;
 
         //  Button
         bool isPressing = false;
@@ -59,6 +46,19 @@ namespace toio.Simulator
         {
             cube = gameObject.GetComponent<CubeSimulator>();
             rb = gameObject.GetComponent<Rigidbody>();
+
+            if (_cubeIndicator == null)
+            {
+                _cubeIndicator = Instantiate(cubeIndicatorPrefab).transform;
+                _cubeIndicator.gameObject.SetActive(false);
+            }
+            if (_pullIndicator == null)
+            {
+                _pullIndicator = Instantiate(pullIndicatorPrefab).GetComponent<LineRenderer>();
+                _pullIndicator.startColor = Color.black;
+                _pullIndicator.endColor = Color.black;
+                _pullIndicator.gameObject.SetActive(false);
+            }
 
             SceneManager.sceneUnloaded += OnSceneUnloaded;
             SceneManager.sceneLoaded += OnSceneLoaded;
