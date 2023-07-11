@@ -20,6 +20,7 @@ public class Sample_Circling : MonoBehaviour
 
         foreach (var navi in cm.navigators)
         {
+            navi.AddBorder(20);
             navi.usePred = true;
             navi.mode = naviMode;
             // navi.avoid.useSafety = false;

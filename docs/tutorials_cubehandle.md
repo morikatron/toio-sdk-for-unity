@@ -4,9 +4,10 @@
 
 - [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-cubemanager-を使ったキューブの同期制御)
 - [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
-  - [2.1. CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#21-cubehandle-の-move-関数と-moveraw-関数)
-  - [2.2. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#22-キューブとの通信量を抑える-one-shot-メソッド)
-  - [2.3. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#23-指定した座標方向に到達する-closed-loop-メソッド)
+  - [2.1. 基本設定](tutorials_cubehandle.md#21-基本設定)
+  - [2.2. Move 関数と MoveRaw 関数](tutorials_cubehandle.md#22-move-関数と-moveraw-関数)
+  - [2.3. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#23-キューブとの通信量を抑える-one-shot-メソッド)
+  - [2.4. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#24-指定した座標方向に到達する-closed-loop-メソッド)
 - [3. Follow TargetPole デモ](tutorials_cubehandle.md#3-follow-targetpole-デモ)
 
 ## 1. CubeManager を使ったキューブの同期制御
@@ -117,7 +118,34 @@ CubeHandle クラスは、以下のような移動制御を提供します。
 
 CubeHandle の詳細については[【コチラ】](usage_cubehandle.md)を参照してください。
 
-### 2.1. CubeHandle の Move 関数と MoveRaw 関数
+### 2.1. 基本設定
+
+> 「トイコレ付属マット（土俵面）」をお使いの場合、設定は必須ではないので、直接に次節に進めても構いません。
+
+#### ボーダー
+
+ボーダーから出ないように、CubeHandleはCubeのモーターへの出力を自動的に制限できます。
+ボーダーの設定は以下のようにできます。
+
+```csharp
+cubeHandle.borderRect = new RectInt(65, 65, 370, 370);
+```
+
+既定値は「トイコレ付属マット（土俵面）」に合わせた `RectInt(65, 65, 370, 370)` なので、違うマットを利用する場合は必ず設定を行ってください。
+
+ボーダーに引っかかった（行き過ぎた）場合は、ボーダー外に向かって前進できないが、回転することはできます。キューブをボーダー内へ向かわせてから前進させれば、ボーダー内に戻すことができます。
+
+#### 遅延
+
+CubeHandle は通信遅延を考慮してその影響をなくすように計算しています。
+制御の精度を高めたい場合は、遅延の値を実測して設定するのが重要なポイントになります。
+CubeHandle の `lag` 変数は、キューブから情報取得する際の遅延とモーター指令を送信してからキューブが受信するまでの遅延を合わせた値に設定します。
+
+```csharp
+cubeHandle.lag = 0.13;  // seconds
+```
+
+### 2.2. Move 関数と MoveRaw 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/1.MoveScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/move/)です。
@@ -229,7 +257,7 @@ mv.Exec();
 handle.Move(mv);
 ```
 
-### 2.2. キューブとの通信量を抑える One-shot メソッド
+### 2.3. キューブとの通信量を抑える One-shot メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/2.OneShotScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/oneshot/)です。
@@ -293,7 +321,7 @@ void Update()
 }
 ```
 
-### 2.3. 指定した座標/方向に到達する Closed-Loop メソッド
+### 2.4. 指定した座標/方向に到達する Closed-Loop メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/3.ToTargetScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/to_target/)です。
