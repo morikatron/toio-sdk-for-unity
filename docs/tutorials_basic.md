@@ -33,7 +33,7 @@
 
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
 2. ヒエラルキー上から「Main Camera」と「Directional Light」を削除
-3. プロジェクトウィンドウで「Assets/toio-sdk/Scripts/Simulator/Resources」フォルダを開きます。
+3. プロジェクトウィンドウで「Assets/toio-sdk/Scripts/Simulator/Prefabs」フォルダを開きます。
 4. 「Cube」Prefabファイルと「Stage」Prefabファイルをヒエラルキーにドラック&ドロップします。<br>
    ※「シーンビュー」に切り替えてマウス操作すれば「Cube」オブジェクトの移動も出来ます。<br>
    ※マットを変更する場合はHierarchyウィンドウで「Stage→Mat」を選択し、Inspectorウィンドウの「Mat → Type」で利用するプレイマットを選択することができます。詳しい操作方法は[【こちら】](development_simulator.md#2-mat-prefab)を参照してください。

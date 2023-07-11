@@ -28,7 +28,7 @@
 
 Simulator は、toio™コア キューブ (以降、キューブ) と通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作チェックができるように作られたテスト用の仮想環境です。
 
-Simulator は `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つの prefab から構成されています。
+Simulator は `Assets/toio-sdk/Scripts/Simulator/Prefabs/` の下にある、以下の 4 つの prefab から構成されています。
 
 - Mat … 各種プレイマットを模したもの
 - StandardID … Standard ID を読み取れる各種のカード・シートを模したもの
