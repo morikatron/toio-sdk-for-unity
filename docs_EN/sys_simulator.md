@@ -936,7 +936,7 @@ Scales other than A, which are prepared in advance, are converted and played bac
 // CubeSimulator.cs
 private int playingSoundId = -1;
 internal void _PlaySound(int soundId, int volume){
-    if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+    if (soundId >= 128) { _StopSound(); return; }
     if (soundId != playingSoundId)
     {
         playingSoundId = soundId;

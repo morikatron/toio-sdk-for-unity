@@ -57,6 +57,7 @@ Click [Switch Platform] and wait a second,If you see the Unity icon next to [Win
          - Mat
       - [Toio]->[Navigation]
          - Navigator
+         - Wall
       - [(Enums)]
          - Connect Type
       - [UnityEngine]
