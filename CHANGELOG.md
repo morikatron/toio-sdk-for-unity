@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - TBD
+
+★ **Upgraded to Unity 2022.3.2f1 LTS**
+
+### Changed
+
+- [BLE] Update `AndroidManifest.xml` for Android 12 (API level 31). This update is **NOT backward-compatible**.
+- [Simulator] Get rid of `Resources` folder. All assets of simulator are now static. Thus, **if you are using `Resource.Load` to dynamically load simulator assets (e.g. Cube prefab or texture of mat), you need to replace it with static links.**
+- [Navigator] Now, no border is set by default. Corresponding samples are also updated. (However, you should still care for CubeHandle's border.)
+- [Docs] Upgrade to google analysis 4.
+- [Docs] Improve documents on `ConnectType` and visual scripting.
+
 ## [1.5.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.1) - 2022-10-05
 
 ### Fixed
