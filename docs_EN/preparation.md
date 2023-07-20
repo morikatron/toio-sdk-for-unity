@@ -14,7 +14,7 @@ For more information about Unity installation and operating environment, please 
 (*Japanese. Click the right arrow on the linked page to see the system requirements and installation details.)
 
 We recommend using Unity Hub as it allows you to install multiple Unity versions of different versions.
-Unity version should be **Unity 2022.3.2f1LTS**. (We have tested with Unity 2021.3.0f1LTS. If you want to use a newer version of Unity, please try it at your own risk. If you want to use Unity 2020LTS, please use toio SDK for Unity v1.4. If you want to use Unity 2021LTS, please use toio SDK for Unity v1.5.1.)
+Unity version should be **Unity 2022.3.2f1LTS**. (We have tested with Unity 2022.3.0f1LTS. If you want to use a newer version of Unity, please try it at your own risk. If you want to use Unity 2020LTS, please use toio SDK for Unity v1.4. If you want to use Unity 2021LTS, please use toio SDK for Unity v1.5.1.)
 
 You can also add **iOS Build Support**, **Android Build Support** or **WebGL Build Support** modules on demand during installation to enable building on supported platforms (modules can also be added later using Unity Hub).
 

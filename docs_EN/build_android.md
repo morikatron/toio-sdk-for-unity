@@ -48,7 +48,7 @@ Wait a few seconds, and when Unity icon appears to the right of Android, the swi
 
 ## Smart Phone Settings
 
-There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2021.3/Documentation/Manual/android-sdksetup.html).
+There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2022.3/Documentation/Manual/android-sdksetup.html).
 
 ### Enable Developer Options
 

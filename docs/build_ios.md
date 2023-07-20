@@ -49,7 +49,7 @@ iOS 用のビルドをするために Xcode でプロジェクトファイル（
 
 以下の Unity 公式ページを参考に、Xcode プロジェクトの設定やプロビジョニングプロファイルの設定を行います。
 
-- [iOS 用ゲームの開発について \- Unity マニュアル](https://docs.unity3d.com/ja/2021.3/Manual/iphone-GettingStarted.html)
+- [iOS 用ゲームの開発について \- Unity マニュアル](https://docs.unity3d.com/ja/2022.3/Manual/iphone-GettingStarted.html)
 
 ## Xcode ビルド
 
