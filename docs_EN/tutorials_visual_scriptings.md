@@ -52,8 +52,8 @@ Here, we explain how to connect and rotate the cubes using the sample from `\Ass
 - [2. Connect to the cubes](#2-connect-to-the-cubes)
 - [3 Check to see if the connection has been made in Update.](#3-check-to-see-if-the-connection-has-been-made-in-update)
 - [4. Move Cubes](#4-move-cubes)
-- [5. Run a program(Simulator)](#5-run-a-program(simulator))
-- [6. Run a program(Real)](#6-run-a-program(real))
+- [5. Run a program(Simulator)](#5-run-a-programsimulator)
+- [6. Run a program(Real)](#6-run-a-programreal)
 
 ## 1. Initialization of variables
 First, open a graph view and initialize variables from Blackboard.
