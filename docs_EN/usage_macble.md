@@ -17,18 +17,11 @@ This section explains how to connect to the real cube from the Unity Editor on a
 
 We have confirmed that it works in the following environment. You don't necessarily have to match, but if it doesn't work in your environment, please refer to the following.
 
-| Tools and Software | Confirmed version         | Confirmed version          | Confirmed version          |
-| -------------------- | ---------------------- | ----------------------- | ----------------------- |
-| OS                   | MacOS Catalina 10.15.7 | MacOS Big Sur 11.6.5 | MacOS Monterey 12.3.1 |
-| Unity                | 2021.3.0f1             | 2021.3.0f1         | 2021.3.0f1         |
-| PC                   | iMac 2017 | iMac 2019 | MacBook Pro 2017 |
-
-<br>
-
-| Tools and Software | Recommended version          |
-| -------------------- | ----------------------- |
-| OS                   | MacOS Catalina 10.15 or higher |
-| Unity                | 2021.3 or higher         |
+| Tools and Software | Confirmed version | Recommended version |
+| ------------------ | ---------------------- | ----------------------- |
+| OS                 | MacOS 13.4.1 | MacOS 11 or higher |
+| Unity              | 2022.3.2f1 | 2022.3 or higher |
+| Device             | MacBook Pro 2017 | N/A |
 
 <br>
 
@@ -47,7 +40,7 @@ For other OS versions, please refer to [How to build the bundle file on your own
 
 Open [toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) and click on `bleplugin_10.bundle.zip` if your OS version is <b>10.x</b> or `bleplugin_11.bundle.zip` if your OS version is <b>11.x</b> or <b>12.x</b>. If your OS version is <b>10.x</b>, click on `bleplugin_10.bundle.zip`, and if your OS version is <b>11.x</b> <b>12.x</b>, click on `bleplugin_11.bundle.zip` to download.
 
-> As of v1.4.0, this SDK targets the v1.0.0 release.
+> As of v1.5.1, this SDK targets the v1.0.0 release.
 
 #### 2. Drag and drop bundle file into your Unity project
 

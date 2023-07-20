@@ -702,7 +702,7 @@ internal Vector3 _GetIMU()
 ```
 
 The Euler angles and quaternions to be sent to the CubeUnity class are created by the Euler angles of the specification coordinate system. <br>
-At the moment (2021.09.01), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
+At the moment (2023.07.20), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
 
 ```csharp
 // CubeSimImpl_v2_3_0.cs

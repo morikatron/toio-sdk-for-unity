@@ -31,12 +31,12 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 #### Mac
 
-| ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
+| ツール・ソフトウェア | 確認バージョン | 推奨バージョン |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | MacOS Catalina 10.15.2 | macOS Mojave 10.14 以上 |
-| Bluetooth®           | 4.2                    | 4.2 以上             |
-| Unity                | 2021.3.0f1             | 2021.3 以上           |
-| ブラウザ(Chrome)       | 85.0.4183.102         | 56 以上             |
+| OS                   | MacOS 13.4.1 | macOS 11 以上 |
+| Bluetooth®           | 4.2 | 4.2 以上 |
+| Unity                | 2022.3.2f1 | 2022.3 以上 |
+| ブラウザ(Chrome)      | 114.0.5735.133 | 56 以上 |
 
 > Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
 
@@ -45,19 +45,20 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Windows 10 Pro 64bit 1903 | Windows 10 |
-| Bluetooth®            | 5.0(LMP 9.256)         | 4.2 以上             |
-| Unity                | 2021.3.0f1              | 2021.3 以上             |
-| ブラウザ(Edge)       | 85.0.564.51         | 79 以上             |
-| ブラウザ(Chrome)       | 85.0.4183.102         | 56 以上             |
+| Bluetooth®           | 5.0(LMP 9.256) | 4.2 以上 |
+| Unity                | 2022.3.2f1 | 2022.3 以上 |
+| ブラウザ(Edge)        | 114.0.1823.82 | 79 以上 |
+| ブラウザ(Chrome)      | 114.0.5735.199 | 56 以上 |
 
 <br>
 
 その他ブラウザでのウェブアプリ動作環境ついては、依存モジュールとなる [WebGL](https://developer.mozilla.org/ja/docs/Web/API/WebGL_API) および [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) のサポート対象をご確認ください。
 - WebGL
-  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2021.3/Manual/webgl-browsercompatibility.html)
+  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2022.3/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
+
 #### 注記
 
 > 開発時点で確認出来たキューブとの最大同時接続数は、3 台となっています。<br>

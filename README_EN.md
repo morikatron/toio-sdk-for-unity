@@ -79,12 +79,12 @@ public class Hello_Toio : MonoBehaviour
 
 - toio™ Core Cube
 - Mat for toio™Core Cube (Play mat included in toio Collection, Simple play mat included in toio™Core Cube (single package), toio play mat for development)
-- Mac (macOS ver. 10.14 or higher)
+- Mac (macOS ver. 11 or higher)
 - Windows 10 (64 bit version only)
 - iOS devices (iOS ver. 12 or higher)
 - Android device (Android OS 9.0 or higher)
-- Unity（2021.3.0f1LTS）
-- Unity Visual Scripting(ver 1.7.6)
+- Unity（2022.3.2f1LTS）
+- Unity Visual Scripting(ver 1.8.0)
 
 ## Documentation
 

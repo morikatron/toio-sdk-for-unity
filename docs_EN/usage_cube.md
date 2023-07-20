@@ -22,7 +22,7 @@ In real Cube, you control real Cube through Bluetooth communication from Unity p
 
 ### Real/Sim Performance Meter
 
-Currently (09/01/2021), there are 4 BLE protocol versions in Cube.
+Currently (07/20/2023), there are 4 BLE protocol versions in Cube.
 
 `2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`
 
@@ -290,7 +290,7 @@ public Vector3 eulers { get; protected set; }
 
 // Attitude of Cube in quaternion
 // Callback function: attitudeCallback
-// Currently (2021.09.01), the coordinates of quaternion is different from euler's. The euler's is correct to the specification.
+// Currently (2023.07.20), the coordinates of quaternion is different from euler's. The euler's is correct to the specification.
 public Quaternion quaternion { get; protected set; }
 ```
 

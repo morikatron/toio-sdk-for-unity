@@ -32,7 +32,7 @@
 
 1. Build an app for a smart device and verify that it works on the device.
     - ["iOS Build"](build_ios.md) | ["Android Build"](build_android.md) | ["WebGL Build"](build_web.md)
-    - For Mac or Windows 10 build, please refer to [Unity's official document](https://docs.unity3d.com/ja/2021.3/Manual/PublishingBuilds.html).
+    - For Mac or Windows 10 build, please refer to [Unity's official document](https://docs.unity3d.com/ja/2022.3/Manual/PublishingBuilds.html).
 
 <br>
 
