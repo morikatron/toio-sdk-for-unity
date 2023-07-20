@@ -48,11 +48,24 @@ in Visual Scitpting, it is recommended to use [CubeManager] to connect to the cu
 Here, we explain how to connect and rotate the cubes using the sample from `\Assets\toio-sdk\Tutorials\1.Basic\0.BasicScene` as an example.
 
 ## The whole process of connecting cubes
-- [1. Initialization of variables](#1-initialization-of-variables)
-- [2. Connect to the cubes](#2-connect-to-the-cubes)
-- [3 Check to see if the connection has been made in Update.](#3-check-to-see-if-the-connection-has-been-made-in-update)
-- [4. Move Cubes](#4-move-cubes)
-- [5. Run a program](#5-run-a-program)
+- [Tutorial for Visual Scripting](#tutorial-for-visual-scripting)
+  - [Table of Contents](#table-of-contents)
+- [1. Overview](#1-overview)
+- [2. How to place the stage](#2-how-to-place-the-stage)
+- [3. How to Connect to the cube](#3-how-to-connect-to-the-cube)
+  - [The whole process of connecting cubes](#the-whole-process-of-connecting-cubes)
+  - [1. Initialization of variables](#1-initialization-of-variables)
+  - [2. Connect to the cubes](#2-connect-to-the-cubes)
+  - [3 Check to see if the connection has been made in Update.](#3-check-to-see-if-the-connection-has-been-made-in-update)
+  - [4. Move Cubes](#4-move-cubes)
+  - [5. Run a program(Simulator)](#5-run-a-programsimulator)
+  - [6. Run a program(Real)](#6-run-a-programreal)
+- [4. Multiple Cubes](#4-multiple-cubes)
+- [5. Event detection](#5-event-detection)
+  - [1. Preparation](#1-preparation)
+  - [2. Configure event detection settings](#2-configure-event-detection-settings)
+  - [3. Create event](#3-create-event)
+  - [4. Run and Confirm.](#4-run-and-confirm)
 
 ## 1. Initialization of variables
 First, open a graph view and initialize variables from Blackboard.
@@ -131,12 +144,24 @@ After added nodes, connect as follows, including the process created in 「3.Che
 
 The process of Update is now complete.
 
-## 5. Run a program
-Finally, go back to the Unity editor, press the play button, and actually move in the Unity editor.
+## 5. Run a program(Simulator)
+Then, go back to the Unity editor, press the play button, and actually move in the Unity editor.
 
 If it works as follows, you have done it correctly.
 
 <div align="center"><img width=200 src="res/tutorial_visual_scriptings/simplescene.gif"></div>
+
+## 6. Run a program(Real)
+Finally, let's connect to the real cube instead of the cube in the simulator and try to move it.
+
+Go back to the graph view and set the value of [Connect Type] of [Visual Scripting Connect Cube] node placed in [2. Connect to the cubes](#2-connect-to-the-cubes) to [Real] by selecting it from the tab.
+
+<div align="center"><img src="res/tutorial_visual_scriptings/connect_real.png"></div>
+
+Then turn on the power of the real cube and press the play button in the Unity editor.
+
+If the real cube is connected and the real cube moves in the same way as in [5. Run a program(Simulator)](#5-run-a-program(simulator)), it is working correctly.
+
 
 The basics are the same for the other tutorials.
 
