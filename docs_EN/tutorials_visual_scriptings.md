@@ -148,7 +148,7 @@ Go back to the graph view and set the value of [Connect Type] of [Visual Scripti
 
 Then turn on the power of the real cube and press the play button in the Unity editor.
 
-If the real cube is connected and the real cube moves in the same way as in [5. Run a program(Simulator)](#5-run-a-program(simulator)), it is working correctly.
+If the real cube is connected and the real cube moves in the same way as in [5. Run a program(Simulator)](#5-run-a-programsimulator), it is working correctly.
 
 
 The basics are the same for the other tutorials.
