@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 #if UNITY_EDITOR
 namespace toio.Simulator
@@ -57,6 +58,11 @@ namespace toio.Simulator
                 xMax.intValue = xMax_new;
                 yMin.intValue = yMin_new;
                 yMax.intValue = yMax_new;
+            }
+
+            // Refresh button
+            if (GUILayout.Button(new GUIContent("Refresh", "Click to apply changes of MatAssetLoader."))){
+                toApply = true;
             }
 
             // Apply Changes

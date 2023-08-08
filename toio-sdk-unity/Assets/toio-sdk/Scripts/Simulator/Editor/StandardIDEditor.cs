@@ -47,6 +47,11 @@ namespace toio.Simulator
                 simpleCardType.intValue = simpleCardType_new;
             }
 
+            // Refresh button
+            if (GUILayout.Button(new GUIContent("Refresh", "Click to apply changes of StandardIDAssetLoader."))){
+                toApply = true;
+            }
+
             // Apply Changes
             serializedObject.ApplyModifiedProperties();
             if (toApply) stdID.ApplyStandardIDType();

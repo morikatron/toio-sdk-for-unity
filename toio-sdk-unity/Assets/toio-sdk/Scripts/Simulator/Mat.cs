@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Linq;
+using UnityEngine;
+
 
 namespace toio.Simulator
 {
@@ -68,12 +71,28 @@ namespace toio.Simulator
                 xMin = rect.xMin; xMax = rect.xMax;
                 yMin = rect.yMin; yMax = rect.yMax;
             }
-            this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 
             // Change material
             var loader = GetComponent<MatAssetLoader>();
-            if (loader)
-                GetComponent<Renderer>().material = loader.GetMaterial(matType);
+            if (!loader) return;
+
+            Sprite sprite = loader.GetSprite(matType);
+            GetComponent<SpriteRenderer>().sprite = sprite;
+
+            // Create Mesh
+            var mesh = SpriteToMesh(sprite);
+            GetComponentInChildren<MeshFilter>().mesh = mesh;
+
+            // Update Mesh Collider
+            GetComponentInChildren<MeshCollider>().sharedMesh = null;
+            GetComponentInChildren<MeshCollider>().sharedMesh = mesh;
+
+            // Update size
+            var realW = (xMax-xMin)/DotPerM;
+            var realH = (yMax-yMin)/DotPerM;
+            var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
+            var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+            this.transform.localScale = new Vector3(scaleW, scaleH, 1);
         }
 
         public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default)
@@ -108,6 +127,16 @@ namespace toio.Simulator
                     return new RectInt(0, 0, 0, 0);
             }
             throw new System.Exception("matType out of range.");
+        }
+
+        private Mesh SpriteToMesh(Sprite sprite)
+        {
+            if (sprite == null) return null;
+            var mesh = new Mesh();
+            mesh.SetVertices(Array.ConvertAll(sprite.vertices, v => (Vector3)v).ToList());
+            mesh.SetUVs(0, sprite.uv.ToList());
+            mesh.SetTriangles(Array.ConvertAll(sprite.triangles, t => (int)t), 0);
+            return mesh;
         }
 
 
