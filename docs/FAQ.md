@@ -4,9 +4,9 @@
 
 - [基本](FAQ.md#基本)
     - [toio SDK for Unity をダウンロードしましたがサンプルが動きません](FAQ.md#toio-sdk-for-unity-をダウンロードしましたがサンプルが動きません)
-    - [シーン遷移後に、キューブを制御できなくなりました](FAQ.md#シーン遷移後に、キューブを制御できなくなりました)
+    - [シーン遷移後に、キューブを制御できなくなりました](FAQ.md#シーン遷移後にキューブを制御できなくなりました)
 - [制御](FAQ.md#基本)
-    - [CubeHandle・CubeNavigatorを使っていますが、キューブが動きません](FAQ.md#CubeHandle・CubeNavigatorを使っていますが、キューブが動きません)
+    - [CubeHandle・CubeNavigatorを使っていますが、キューブが動きません](FAQ.md#CubeHandleCubeNavigatorを使っていますがキューブが動きません)
 - [シミュレータ関連](FAQ.md#シミュレータ関連)
     - [どのマットを使えば自分の開発に合うのかがよくわかりません](FAQ.md#どのマットを使えば自分の開発に合うのかがよくわかりません)
     - [Stage Prefab は必須ですか](FAQ.md#stage-prefab-は必須ですか)

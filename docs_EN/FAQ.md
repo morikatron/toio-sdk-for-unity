@@ -4,10 +4,10 @@
 
 - [Basics](FAQ.md#basics)
     - [I downloaded toio SDK for Unity, but the samples don't work.](FAQ.md#i-downloaded-toio-sdk-for-unity-but-the-samples-dont-work)
-    - [After the scene transition, I can no longer control the cube.](FAQ.md#After-the-scene-transition,-I-can-no-longer-control-the-cube)
+    - [After the scene transition, I can no longer control the cube.](FAQ.md#After-the-scene-transition-I-can-no-longer-control-the-cube)
 
 - [Control](FAQ.md#control)
-    - [I am using CubeHandle and CubeNavigator, but the cube is not moving.](FAQ.md#I-am-using-CubeHandle-and-CubeNavigator,-but-the-cube-is-not-moving)
+    - [I am using CubeHandle and CubeNavigator, but the cube is not moving.](FAQ.md#I-am-using-CubeHandle-and-CubeNavigator-but-the-cube-is-not-moving)
 
 - [Simulator](FAQ.md#simulator)
     - [I'm not sure which mats will work best for my development.](FAQ.md#im-not-sure-which-mats-will-work-best-for-my-development)
