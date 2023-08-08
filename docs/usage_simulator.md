@@ -4,12 +4,13 @@
 
 - [1. 概説](usage_simulator.md#1-概説)
 - [2. Mat Prefab](usage_simulator.md#2-mat-prefab)
-  - [2.1. インスペクターでのパラメーター](usage_simulator.md#21-インスペクターでのパラメーター)
+  - [2.1. インスペクター](usage_simulator.md#21-インスペクター)
   - [2.2. 定数](usage_simulator.md#22-定数)
   - [2.3. 列挙型](usage_simulator.md#23-列挙型)
   - [2.4. メソッド](usage_simulator.md#24-メソッド)
 - [3. StandardID Prefab](usage_simulator.md#3-standardid-prefab)
-  - [ 3.1. インスペクターでのパラメーター](usage_simulator.md#31-インスペクターでのパラメーター)
+  - [3.1. インスペクター](usage_simulator.md#31-インスペクター)
+  - [3.2. メソッド](usage_simulator.md#32-メソッド)
 - [4. Cube Prefab](usage_simulator.md#4-cube-prefab)
   - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-cubesimulator-のインスペクター)
   - [4.2. CubeSimulator の定数](usage_simulator.md#42-cubesimulator-の定数)
@@ -45,9 +46,14 @@ Cube Prefab は Mat Prefab に置くと、 Mat の座標位置と方向を取得
 
 Mat Prefab はシーンの中に複数枚、水平であれば位置と角度任意で置けます。
 
-## 2.1. インスペクターでのパラメーター
+## 2.1. インスペクター
 
-<div align="center"><img src="res/usage_simulator/mat.png"></div>
+<div align="center">
+  <img src="res/usage_simulator/mat_inspector.png">
+  <img src="res/usage_simulator/mat_types.png">
+</div>
+
+### Mat タイプ
 
 Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リストに、
 
@@ -55,6 +61,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 - トイコレ付属マット（色タイル面）
 - 簡易マット・開発用マット（表面）1~6
 - 開発用マット（裏面）
+- ゲズンロイド
 - カスタマイズ
 
 のいずれかを選択すると、マットの見た目と座標を変えられます。
@@ -65,10 +72,33 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 | トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) |
 | 簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
 | 開発用マット | toio™開発用プレイマット（仮称） |
+| ゲズンロイド | 工作生物 ゲズンロイド付属のプレイマット |
 
  > ※ toio™開発用プレイマット（仮称）#1 ~ #6 の表面は、toio™コア キューブ（単体）付属の簡易プレイマットと同じ仕様なので、一つのタイプ「簡易マット・開発用マット（表面）1~6」にまとめています。
 
 各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考にしてください。
+
+### 「Refresh」ボタン
+
+「Refresh」ボタンをクリックすると、見た目の更新が行われます。
+
+インスペクターの `MatAssetLoader` コンポネントで、現在の「タイプ」に対応するテクスチャ（画像）を変更した場合や、「タイプ」の変更を Undo した場合など、マットの見た目は自動的に更新されないため、手動で「Refresh」ボタンを押すと変更が反映されます。
+
+「タイプ」の切り替え時には自動的に更新を行いますので、「Refresh」ボタンをクリックする必要は無いです。
+
+
+### カスタマイズ
+
+「タイプ」が「カスタマイズ」に設定された場合、以下のようにマット座標の範囲を自分で設定することが可能です。
+マットの（Unityにおいての）サイズはこの範囲によって換算され、自動的に設定されます。
+
+<div align="center">
+  <img src="res/usage_simulator/mat_custom.png">
+</div>
+
+`MatAssetLoader` コンポネントで、マットのテクスチャ（画像）を変更することも可能です。（ただし「カスタム」以外のものを変更することはおすすめしません。）
+「カスタム」に画像が設定されていない場合は、空白のマットが表示されます。
+また、現在選択中のマットタイプに対応するテクスチャを変更した場合は、「Refresh」ボタンをクリックして適用してください。
 
 ## 2.2. 定数
 
@@ -88,7 +118,8 @@ toio_collection_front = 0,  // トイコレ付属マット（土俵面）
 toio_collection_back = 1,   // トイコレ付属マット（色タイル面）
 simple_playmat = 2,         // キューブ（単体）付属簡易マット
 developer = 3,              // 開発用マット
-custom = 4                  // 座標範囲をカスタマイズ
+gesundroid = 4,             // ゲズンロイド
+custom = 5                  // 座標範囲をカスタマイズ
 ```
 
 ### DeveloperMatType
@@ -185,9 +216,11 @@ Cube Prefab を StandardID Prefab の上に載せると、Standard ID と方向�
 
 StandardID Prefab はシーンの中に複数枚、位置と角度任意で置けます。
 
-## 3.1. インスペクターでのパラメーター
+## 3.1. インスペクター
 
 <div align="center"><img src="res/usage_simulator/standardid.png"></div>
+
+### StandardID タイプ
 
 Unity のインスペクターで、スクリプト Mat.cs の「タイトル」を選択してから、特定の「タイプ」のカード・シートを選択して、StandardID を切り替えることが出来ます。
 
@@ -197,6 +230,14 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 - 簡易カード
 
 「タイプ」については、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_standard_id)を参照してください。
+
+### 「Refresh」ボタン
+
+「Refresh」ボタンをクリックすると、見た目の更新が行われます。
+
+インスペクターの `StandardIDAssetLoader` コンポネントで、現在の「タイプ」に対応するテクスチャ（画像）を変更した場合や、「タイプ」の変更を Undo した場合など、StandardID の見た目は自動的に更新されないため、手動で「Refresh」ボタンを押すと変更が反映されます。
+
+「タイプ」の切り替え時には自動的に更新を行いますので、「Refresh」ボタンをクリックする必要は無いです。
 
 
 ## 3.2. メソッド

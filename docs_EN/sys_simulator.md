@@ -67,6 +67,8 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 When you change the matType from the Inspector, the ApplyMatType method in Mat.cs will be executed to change the coordinate range and switch the material.
 
+Switching is achieved by introducing the image into a Sprite texture, converting it from script to mesh, and replacing it in the SpriteRenderer.
+
 Implementation code
 
 ```csharp
@@ -88,16 +90,32 @@ internal void ApplyMatType()
     // Resize
     if (matType != MatType.custom)
     {
-        var rect = GetRectForMatType(matType);
+        var rect = GetRectForMatType(matType, developerMatType);
         xMin = rect.xMin; xMax = rect.xMax;
         yMin = rect.yMin; yMax = rect.yMax;
     }
-    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 
     // Change material
     var loader = GetComponent<MatAssetLoader>();
-    if (loader)
-        GetComponent<Renderer>().material = loader.GetMaterial(matType);
+    if (!loader) return;
+
+    Sprite sprite = loader.GetSprite(matType);
+    GetComponent<SpriteRenderer>().sprite = sprite;
+
+    // Create Mesh
+    var mesh = SpriteToMesh(sprite);
+    GetComponentInChildren<MeshFilter>().mesh = mesh;
+
+    // Update Mesh Collider
+    GetComponentInChildren<MeshCollider>().sharedMesh = null;
+    GetComponentInChildren<MeshCollider>().sharedMesh = mesh;
+
+    // Update size
+    var realW = (xMax-xMin)/DotPerM;
+    var realH = (yMax-yMin)/DotPerM;
+    var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
+    var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+    this.transform.localScale = new Vector3(scaleW, scaleH, 1);
 }
 ```
 
@@ -177,12 +195,7 @@ The following is a description of StandardID.cs.
 
 ## 3.1. Switching between standard ID types
 
-Because of the large number of standard IDs, it would be difficult to prepare materials for each of them and scalability would be poor. Therefore, as shown in the figure below, switching is achieved by introducing the image into a Sprite texture, converting it from script to mesh, and replacing it with the object renderer.
-
-<div align="center">
-<img src="res/simulator/standardid.png">
-</div>
-<br>
+Switching StandardID types is achieved in the same approach as Mat.
 
 Implementation code
 

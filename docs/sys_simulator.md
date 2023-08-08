@@ -68,6 +68,8 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 インスペクターから matType を変更すると、 Mat.cs の ApplyMatType メソッドが実行され、 座標範囲の変更とマテリアルの切り替えが行われます。
 
+画像を Sprite 形式のテクスチャに導入し、スクリプトからメッシュに変換し、オブジェクトのレンダラーに差し替えることで、切り替えを実現しています。
+
 実装コード
 
 ```csharp
@@ -89,16 +91,32 @@ internal void ApplyMatType()
     // Resize
     if (matType != MatType.custom)
     {
-        var rect = GetRectForMatType(matType);
+        var rect = GetRectForMatType(matType, developerMatType);
         xMin = rect.xMin; xMax = rect.xMax;
         yMin = rect.yMin; yMax = rect.yMax;
     }
-    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
 
     // Change material
     var loader = GetComponent<MatAssetLoader>();
-    if (loader)
-        GetComponent<Renderer>().material = loader.GetMaterial(matType);
+    if (!loader) return;
+
+    Sprite sprite = loader.GetSprite(matType);
+    GetComponent<SpriteRenderer>().sprite = sprite;
+
+    // Create Mesh
+    var mesh = SpriteToMesh(sprite);
+    GetComponentInChildren<MeshFilter>().mesh = mesh;
+
+    // Update Mesh Collider
+    GetComponentInChildren<MeshCollider>().sharedMesh = null;
+    GetComponentInChildren<MeshCollider>().sharedMesh = mesh;
+
+    // Update size
+    var realW = (xMax-xMin)/DotPerM;
+    var realH = (yMax-yMin)/DotPerM;
+    var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
+    var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+    this.transform.localScale = new Vector3(scaleW, scaleH, 1);
 }
 ```
 
@@ -178,12 +196,7 @@ StandardID Prefab には、スクリプト StandardID.cs と素材をロード�
 
 ## 3.1. スタンダード ID タイプの切り替え
 
-スタンダード ID の種類が多いため、個々にマテリアルを用意するのは大変かつ拡張性も悪いため、下図のように画像を Sprite 形式のテクスチャに導入し、スクリプトからメッシュに変換し、オブジェクトのレンダラーに差し替えることで、切り替えを実現しています。
-
-<div align="center">
-<img src="res/simulator/standardid.png">
-</div>
-<br>
+Mat と同じ方法で切り替えを実現しています。
 
 実装コード
 
