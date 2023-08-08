@@ -5,11 +5,6 @@ namespace toio.Simulator
 {
     public class MatAssetLoader : MonoBehaviour
     {
-        // public Material blank;
-        // public Material toio_collection_front;
-        // public Material toio_collection_back;
-        // public Material gesundroid;
-        // public Material simple_playmat;
         public Sprite toio_collection_front;
         public Sprite toio_collection_back;
         public Sprite gesundroid;
