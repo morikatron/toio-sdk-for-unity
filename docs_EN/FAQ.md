@@ -4,6 +4,10 @@
 
 - [Basics](FAQ.md#basics)
     - [I downloaded toio SDK for Unity, but the samples don't work.](FAQ.md#i-downloaded-toio-sdk-for-unity-but-the-samples-dont-work)
+    - [After the scene transition, I can no longer control the cube.](FAQ.md#After-the-scene-transition,-I-can-no-longer-control-the-cube)
+
+- [Control](FAQ.md#control)
+    - [I am using CubeHandle and CubeNavigator, but the cube is not moving.](FAQ.md#I-am-using-CubeHandle-and-CubeNavigator,-but-the-cube-is-not-moving)
 
 - [Simulator](FAQ.md#simulator)
     - [I'm not sure which mats will work best for my development.](FAQ.md#im-not-sure-which-mats-will-work-best-for-my-development)
@@ -26,7 +30,33 @@ Assets\toio-sdk-unity\Assets\toio-sdk\Scripts\Cube\Scanner\NearScanner.cs(54,22)
 
 To run toio SDK for Unity, you need to install UniTask, see [here](download_sdk.md#install-unitask).
 
+### After the scene transition, I can no longer control the cube.
+
+The object that is connected to the cube has a script attached to the object in the scene. However, without special handling, the object itself will be destroyed during scene transitions, and you will lose access to the Cube object connected to it.
+
+Please refer to the following sample for a solution.
+
+https://github.com/morikatron/toio-sdk-for-unity/tree/main/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/README_EN.md
+
+
 ## Simulator
+
+### I am using CubeHandle and CubeNavigator, but the cube is not moving.
+
+It is likely that a mat other than "Play mat (sumo ring)" is being used.
+
+CubeHandle and CubeNavigator allow you to set borders to prevent the cube from moving outside certain areas. The default border values correspond to the "Play mat (sumo ring)." If you use other mats without changing the border settings, the cube will always be considered "outside the border" regardless of where you place it, and its movement will be blocked.
+
+For setting instructions, please refer to the documentation on CubeHandle's borderRect variable and getting/setting walls in CubeNavigator.
+
+Related sample codes are provided here:
+- [Sample_MultiMat](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/README_EN.md)
+  A sample demonstrating the use of multiple mats combined into one large mat.
+- [Sample_VisualizeNavigator](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/README_EN.md)
+  A sample visualizing the HLAvoid calculation results of CubeNavigator and all defined walls.
+- [Tutorial 3.3. NaviAwayTarget Function](tutorials_navigator.md#33-Move-away-from-the-target-NaviAwayTarget-function)
+  A tutorial explaining the NaviAwayTarget function to move away from the target.
+
 
 ### I'm not sure which mats will work best for my development.
 > Keywords: Mat Specifications

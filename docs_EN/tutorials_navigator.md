@@ -10,7 +10,7 @@
 - [3. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#3-avoiding-collisions-with-cubenavigator)
     - [3.1. Basic Settings](tutorials_navigator.md#31-Basic-Settings)
     - [3.2. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#32-navi2target-function-to-move-to-the-target-while-avoiding-collision)
-    - [3.3. Move away from the target NaviAwayTarget function](tutorials_navigator.md#33-navi2target-function-to-move-to-the-target-while-avoiding-collision)
+    - [3.3. Move away from the target NaviAwayTarget function](tutorials_navigator.md#33-Move-away-from-the-target-NaviAwayTarget-function)
 - [4. Population Control with Boids](tutorials_navigator.md#4-population-control-with-boids)
 - [5. Boids + Conflict Avoidance](tutorials_navigator.md#5-boids--conflict-avoidance)
 
