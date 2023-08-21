@@ -1,0 +1,18 @@
+{
+    "name": "toio-sdk-samples",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3934d7eddeb95425eae0b51b45b67aca",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:b61feb11b684c4fd693d1eb21ee431d1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
