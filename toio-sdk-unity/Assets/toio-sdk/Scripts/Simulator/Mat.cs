@@ -45,7 +45,8 @@ namespace toio.Simulator
         [SerializeField]
         public DeveloperMatType developerMatType;
         [SerializeField]
-        public int xMin, xMax, yMin, yMax;
+        public int xMinCustom = 98, xMaxCustom = 402, yMinCustom = 142, yMaxCustom = 358;
+        private int xMin, xMax, yMin, yMax;
         public float xCenter { get{ return (xMin+xMax)/2f; } }
         public float yCenter { get{ return (yMin+yMax)/2f; } }
 
@@ -70,6 +71,11 @@ namespace toio.Simulator
                 var rect = GetRectForMatType(matType, developerMatType);
                 xMin = rect.xMin; xMax = rect.xMax;
                 yMin = rect.yMin; yMax = rect.yMax;
+            }
+            else
+            {
+                xMin = xMinCustom; xMax = xMaxCustom;
+                yMin = yMinCustom; yMax = yMaxCustom;
             }
 
             // Change material
@@ -123,8 +129,8 @@ namespace toio.Simulator
                 case MatType.gesundroid:
                     return new RectInt(1050, 45, 410, 410);
                 case MatType.custom:
-                    Debug.LogError("Custom MatType not supported in this method.");
-                    return new RectInt(0, 0, 0, 0);
+                    Debug.LogWarning("Default rect for Custom MatType is returned, since this is a statci method.");
+                    return new RectInt(98, 402, 142, 358);
             }
             throw new System.Exception("matType out of range.");
         }
