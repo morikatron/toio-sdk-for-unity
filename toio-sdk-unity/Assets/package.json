@@ -1,0 +1,6 @@
+{
+  "name": "com.morikatron.toio-sdk-for-unity",
+  "version": "1.5.1",
+  "displayName": "toio SDK for Unity",
+  "description": "toio SDK for Unity is a Software Development Kit for controlling toio™ Core Cube (hereafter referred to as Cubes) in Unity."
+}
