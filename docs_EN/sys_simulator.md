@@ -94,6 +94,11 @@ internal void ApplyMatType()
         xMin = rect.xMin; xMax = rect.xMax;
         yMin = rect.yMin; yMax = rect.yMax;
     }
+    else
+    {
+        xMin = xMinCustom; xMax = xMaxCustom;
+        yMin = yMinCustom; yMax = yMaxCustom;
+    }
 
     // Change material
     var loader = GetComponent<MatAssetLoader>();

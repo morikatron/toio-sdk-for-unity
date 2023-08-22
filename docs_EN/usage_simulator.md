@@ -68,14 +68,6 @@ In Unity's Inspector, you can change the look and coordinates of the mat by sele
 
 Please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_position_id) and [toio play mat for development](https://toio.io/blog/detail/20200423-1.html) for the specifications of each type.
 
-### Refresh button
-
-Clicking the "Refresh" button will update the visual appearance.
-
-In the Inspector, when you change the texture (image) corresponding to the current "Type" in the MatAssetLoader component or undo a change in the "Type", the appearance of the mat is not automatically updated. In such cases, you need to manually press the "Refresh" button to apply the changes.
-
-However, when switching the "Type", the update is performed automatically, so there is no need to click the "Refresh" button.
-
 ### Customize
 
 When the "Type" is set to "Customize", you can manually set the range of mat coordinates as follows. The size of the mat in Unity is calculated based on this range and automatically adjusted.
@@ -84,11 +76,18 @@ When the "Type" is set to "Customize", you can manually set the range of mat coo
   <img src="res/usage_simulator/mat_custom.png">
 </div>
 
-In the `MatAssetLoader` component, you can also change the texture (image) of the mat. (However, it is not recommended to change it to anything other than "Custom".)
+In the `MatAssetLoader` component, it's also possible to change the texture (image) of the mat. (However, it's recommended not to change anything other than "Custom".) Changing the image for the "Custom" type is done as follows:
 
-If no image is set for "Custom", a blank mat will be displayed.
+1. Import the image file into the project.
+2. On the Inspector of the respective image, set the "Texture Type" to "Sprite (2D and UI)" and click the "Apply" button.
 
-Additionally, if you modify the texture corresponding to the currently selected mat type, please click the "Refresh" button to apply the changes.
+<div align="center">
+  <img src="res/usage_simulator/mat_custom_image.png">
+</div>
+
+3. The image you've selected will appear in the list of target images for the "Custom" option in the Mat Prefab. Select it.
+
+(If no image is set for "Custom," a blank mat will be displayed.)
 
 ## 2.2. Constants
 
