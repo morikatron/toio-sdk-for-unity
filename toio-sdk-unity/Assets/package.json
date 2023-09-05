@@ -1,0 +1,62 @@
+{
+  "name": "com.morikatron.toio-sdk-for-unity",
+  "version": "1.5.1",
+  "displayName": "toio SDK for Unity",
+  "description": "toio SDK for Unity is a Software Development Kit for controlling toio™ Core Cube (hereafter referred to as Cubes) in Unity.",
+  "author": {
+    "name": "MORIKATRON Inc.",
+    "url": "https://morikatron.com/"
+  },
+  "samples": [
+    {
+      "displayName": "Bluetooth",
+      "description": "This sample uses BLE interface, a low-level module, directly to communicate with Cube.\nWhen run on a smart phone build, Cube will spin around.",
+      "path": "toio-sdk/Samples~/Sample_Bluetooth"
+    },
+    {
+      "displayName": "Circling",
+      "description": "This is a sample to see how the behavior of many Cubes changes depending on the mode of CubeNavigator.",
+      "path": "toio-sdk/Samples~/Sample_Circling"
+    },
+    {
+      "displayName": "ConnectType",
+      "description": "This sample is to check if the connection settings are different between Simulator and the real environment.",
+      "path": "toio-sdk/Samples~/Sample_ConnectType"
+    },
+    {
+      "displayName": "Cross",
+      "description": "This sample shows how to use CubeNavigator to move a large number of Cubes while avoiding collisions.",
+      "path": "toio-sdk/Samples~/Sample_Cross"
+    },
+    {
+      "displayName": "Motor",
+      "description": "This sample uses Cube's TargetMove and AccelerationMove to reach the target and move in a spiral while accelerating.",
+      "path": "toio-sdk/Samples~/Sample_Motor"
+    },
+    {
+      "displayName": "MultiMat",
+      "description": "This is a sample where multiple mats are lined up and treated as one large mat.",
+      "path": "toio-sdk/Samples~/Sample_MultiMat"
+    },
+    {
+      "displayName": "Scenes",
+      "description": "This sample handles scene transitions while maintaining the connection to real Cube and the correlated instance with Cube on Simulator.",
+      "path": "toio-sdk/Samples~/Sample_Scenes"
+    },
+    {
+      "displayName": "Sensor",
+      "description": "This sample detects each sensor value in Cube and displays it in UI.",
+      "path": "toio-sdk/Samples~/Sample_Sensor"
+    },
+    {
+      "displayName": "VisualizeNavigator",
+      "description": "This sample visualizes the results of HLAvoid calculation of CubeNavigator and all defined walls.",
+      "path": "toio-sdk/Samples~/Sample_VisualizeNavigator"
+    },
+    {
+      "displayName": "WebGL",
+      "description": "This is a collection of samples for WebGL builds.\nIf you build the application with WebGL as the platform, BLE module will be automatically changed to a module for WebGL, and you can communicate with the application on the browser page with Cube.",
+      "path": "toio-sdk/Samples~/Sample_WebGL"
+    }
+  ]
+}
