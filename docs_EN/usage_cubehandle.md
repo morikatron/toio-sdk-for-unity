@@ -59,7 +59,7 @@ public int maxSpd { get; }                      // Maximum speed indication valu
 
 ```csharp
 public static double dt = 1.0 / 60 * 3;     // Control cycle 50ms
-public static double lag = 0.130;           // Lag
+public static double lag = 0.130;           // Combines the delay when obtaining information from the cube and the delay from sending motor commands until the cube receives them
 
 public RectInt borderRect   // Indicates the border range RectInt
 ```

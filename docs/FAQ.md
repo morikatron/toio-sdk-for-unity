@@ -4,7 +4,9 @@
 
 - [基本](FAQ.md#基本)
     - [toio SDK for Unity をダウンロードしましたがサンプルが動きません](FAQ.md#toio-sdk-for-unity-をダウンロードしましたがサンプルが動きません)
-
+    - [シーン遷移後に、キューブを制御できなくなりました](FAQ.md#シーン遷移後にキューブを制御できなくなりました)
+- [制御](FAQ.md#基本)
+    - [CubeHandle・CubeNavigatorを使っていますが、キューブが動きません](FAQ.md#CubeHandleCubeNavigatorを使っていますがキューブが動きません)
 - [シミュレータ関連](FAQ.md#シミュレータ関連)
     - [どのマットを使えば自分の開発に合うのかがよくわかりません](FAQ.md#どのマットを使えば自分の開発に合うのかがよくわかりません)
     - [Stage Prefab は必須ですか](FAQ.md#stage-prefab-は必須ですか)
@@ -25,6 +27,33 @@ Assets\toio-sdk-unity\Assets\toio-sdk\Scripts\Cube\Scanner\NearScanner.cs(54,22)
 ```
 
 toio SDK for Unity を動作させるには UniTask のインストールが必須ですので、[【コチラ】](download_sdk.md#unitask-のインストール)を参考にインストールしてください。
+
+### シーン遷移後に、キューブを制御できなくなりました
+
+キューブと接続をしているオブジェクトは、シーン内のオブジェクトにあるスクリプトが持っていますが、特別な処理を行わなければシーン遷移時にそのオブジェクト自体が廃棄されますので、キューブと接続した Cube オブジェクトにアクセスできなくなります。
+
+対策としては以下のサンプルを参照してください。
+
+https://github.com/morikatron/toio-sdk-for-unity/tree/main/toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes
+
+
+## 制御
+
+### CubeHandle・CubeNavigatorを使っていますが、キューブが動きません
+
+「トイコレ付属マット（表）」以外のマットが利用されている場合と予想されます。
+
+CubeHandleとCubeNavigatorはそれぞれボーダーを設定できます。キューブがボーダー外に移動しないようにするための機能です。ボーダーの既定値が「トイコレ付属マット（表）」に対応していますので、ボーダー設定を変えずに他のマットを使うと、キューブをどこに置いても「ボーダー外」という判定になりますので、移動が阻止されます。
+
+設定方法についてはドキュメント [CubeHandleのborderRect変数](usage_cubehandle.md#パラメーター)、[CubeNavigatorの壁を取得・設定](usage_navigator.md#壁を取得・設定) を参照してください。
+
+関連サンプルが以下になります。
+- [Sample_MultiMat](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/)
+  複数のマットを併せて一枚の大きいマットとして使うサンプルです。
+- [Sample_VisualizeNavigator](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_VisualizeNavigator/)
+  CubeNavigator の HLAvoid 計算結果と定義されたすべての Wall を可視化するサンプルです。
+- [チュートリアル 3.3. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#33-目標から離れる-naviawaytarget-関数)
+
 
 ## シミュレータ関連
 

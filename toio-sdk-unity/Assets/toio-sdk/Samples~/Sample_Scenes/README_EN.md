@@ -18,7 +18,7 @@ To run and build
 
 The following methods can be used to move and hold game objects in a common space independent of the scene.
 
-> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/2021.3/Documentation/ScriptReference/Object.DontDestroyOnLoad.html)
+> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Object.DontDestroyOnLoad.html)
 
 ```c#
 // Smaple_Scenes_Preload.cs

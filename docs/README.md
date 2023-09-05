@@ -13,20 +13,26 @@
 
 ### 【 2 】開発
 
-1. 開発前に確認する [→「シミュレータの操作方法」](development_simulator.md)
+1. 開発前に確認する [→「シミュレータの操作方法（マットやキューブの設定等）」](development_simulator.md)
 2. Assets フォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
 3. 新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
-4. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく `★A`
-5. Unity Editor で Play して実機と接続して動作確認 `★B` <br>
-（Macの場合は[BLEプラグインの導入](usage_macble.md)が必要）（実機と接続する方法はサンプル [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)を参照）
+4. プログラムを作っていく
 <br><br>
 
-### 【 3 】ビルド
+### 【 3 】Unity Editor で動作確認（シミュレータまたは実機に接続）
 
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 `★C`
+1. 再生ボタンを押してシミュレータで動作確認する
+2. ConnectType を Real (実機)に設定し、再生ボタンを押して実機と接続して動作確認する
+    - Macの場合は[BLEプラグインの導入](usage_macble.md)が必要
+    - ConnectType の仕様と設定方法についてはサンプル [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/) を参照
+3. 開発とUnity Editorでの動作確認を繰り返し、効率良くプログラムを仕上げていく
+<br><br>
+
+### 【 4 】ビルド
+
+1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認
     - [「 iOS ビルド」](build_ios.md) | [「 Android ビルド」](build_android.md) | [「 WebGL ビルド」](build_web.md)
-    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2021.3/Manual/PublishingBuilds.html)を参照してください
-2. `★A` `★B` `★C` を繰り返してプログラムを仕上げていく
+    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2022.3/Manual/PublishingBuilds.html)を参照してください
 
 <br>
 

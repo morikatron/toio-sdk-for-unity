@@ -35,7 +35,8 @@ Assets/toio-sdk/Scripts/Simulator/  +------+ 直下にスクリプトが置い�
 ├── Editor/  +-----------------------------+ インスペクターをカスタマイズする Unity Editor スクリプト
 ├── Materials/  +--------------------------+ シミュレータのオブジェクトに使われるマテリアル・物理マテリアル
 ├── Models/  +-----------------------------+ シミュレータのオブジェクトに使われる3Dモデル
-└── Resoureces/  +-------------------------+ 直下にプリハブが置いてある
+├── Prefabs/  +----------------------------+ 直下にプリハブが置いてある
+└── AssetLoader/  +------------------------+ 各種素材ファイルとローダースクリプト
     ├── Mat/  +----------------------------+ 各種マットのテクスチャとマテリアル
     ├── Ocatave/  +------------------------+ Sound 機能に使われた音源ファイル
     └── StandardID/  +---------------------+ 各種スタンダード ID のテクスチャ
@@ -46,9 +47,11 @@ Assets/toio-sdk/Scripts/Simulator/  +------+ 直下にスクリプトが置い�
 
 # 2. Mat Prefab
 
-Mat Prefab には、スクリプト Mat.cs がアタッチされています。
+Mat Prefab には、スクリプト Mat.cs と素材をロードするための MatAssetLoader.cs がアタッチされています。
 
 また、Mat.cs のインスペクターはスクリプト Editor/MatEditor.cs によってカスタマイズされています。
+
+以下は Mat.cs の説明になります。
 
 ## 2.1. マットの座標単位からメートルへの変換
 
@@ -65,6 +68,8 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 インスペクターから matType を変更すると、 Mat.cs の ApplyMatType メソッドが実行され、 座標範囲の変更とマテリアルの切り替えが行われます。
 
+画像を Sprite 形式のテクスチャに導入し、スクリプトからメッシュに変換し、オブジェクトのレンダラーに差し替えることで、切り替えを実現しています。
+
 実装コード
 
 ```csharp
@@ -74,7 +79,8 @@ public enum MatType
     toio_collection_back = 1,
     simple_playmat = 2,
     developer = 3,
-    custom = 4  // 座標範囲をカスタマイズ
+    gesundroid = 4,
+    custom = 5  // 座標範囲をカスタマイズ
 }
 
 public MatType matType;
@@ -85,30 +91,37 @@ internal void ApplyMatType()
     // Resize
     if (matType != MatType.custom)
     {
-        var rect = GetRectForMatType(matType);
+        var rect = GetRectForMatType(matType, developerMatType);
         xMin = rect.xMin; xMax = rect.xMax;
         yMin = rect.yMin; yMax = rect.yMax;
     }
-    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+    else
+    {
+        xMin = xMinCustom; xMax = xMaxCustom;
+        yMin = yMinCustom; yMax = yMaxCustom;
+    }
 
     // Change material
-    switch (matType){
-        case MatType.toio_collection_front:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
-            break;
-        case MatType.toio_collection_back:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
-            break;
-        case MatType.simple_playmat:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-            break;
-        case MatType.developer:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-            break;
-        case MatType.custom:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
-            break;
-    }
+    var loader = GetComponent<MatAssetLoader>();
+    if (!loader) return;
+
+    Sprite sprite = loader.GetSprite(matType);
+    GetComponent<SpriteRenderer>().sprite = sprite;
+
+    // Create Mesh
+    var mesh = SpriteToMesh(sprite);
+    GetComponentInChildren<MeshFilter>().mesh = mesh;
+
+    // Update Mesh Collider
+    GetComponentInChildren<MeshCollider>().sharedMesh = null;
+    GetComponentInChildren<MeshCollider>().sharedMesh = mesh;
+
+    // Update size
+    var realW = (xMax-xMin)/DotPerM;
+    var realH = (yMax-yMin)/DotPerM;
+    var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
+    var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+    this.transform.localScale = new Vector3(scaleW, scaleH, 1);
 }
 ```
 
@@ -180,29 +193,29 @@ public Vector3 MatCoord2UnityCoord(double x, double y)
 
 # 3. StandardID Prefab
 
-StandardID Prefab には、スクリプト StandardID.cs がアタッチされています。
+StandardID Prefab には、スクリプト StandardID.cs と素材をロードするための StandardIDAssetLoader.cs がアタッチされています。
 
 また、StandardID.cs のインスペクターはスクリプト Editor/StandardIDEditor.cs によってカスタマイズされています。
 
+以下は StandardID.cs の説明になります。
+
 ## 3.1. スタンダード ID タイプの切り替え
 
-スタンダード ID の種類が多いため、個々にマテリアルを用意するのは大変かつ拡張性も悪いため、下図のように画像を Sprite 形式のテクスチャに導入し、スクリプトからメッシュに変換し、オブジェクトのレンダラーに差し替えることで、切り替えを実現しています。
+Mat と同じ方法で切り替えを実現しています。
 
-<div align="center">
-<img src="res/simulator/standardid.png">
-</div>
-<br>
-
-実装コード（クリック展開）
+実装コード
 
 ```csharp
 internal void ApplyStandardIDType()
 {
     // Load Sprite
-    string spritePath = "StandardID/"+title.ToString()+"/";
-    if (title == Title.toio_collection) spritePath += toioColleType.ToString();
-    else if (title == Title.simple_card) spritePath += simpleCardType.ToString();
-    var sprite = (Sprite)Resources.Load<Sprite>(spritePath);
+    var loader = GetComponent<StandardIDAssetLoader>();
+    if (!loader) return;
+    Sprite sprite = null;
+    if (title == Title.toio_collection)
+        sprite = loader.GetSprite(toioColleType);
+    else if (title == Title.simple_card)
+        sprite = loader.GetSprite(simpleCardType);
     GetComponent<SpriteRenderer>().sprite = sprite;
 
     // Create Mesh
@@ -268,6 +281,7 @@ Cube Prefab には３つのスクリプトが実装されています。
   - `CubeSimImpl_v2_2_0.cs`：バージョン 2.2.0 を対応する実装
 - `CubeSimulatorEditor.cs`：`CubeSimulator.cs`のインスペクターをカスタマイズしたもの
 - `CubeInteraction.cs`：シミュレータ上で、Cubeオブジェクトを押したりつかんだりする操作を実装したもの
+- `AudioAssetLoader.cs`：素材のローダー。
 
 本章は `CubeSimulator` の各バージョンの実装を紹介します。
 
@@ -710,7 +724,7 @@ internal Vector3 _GetIMU()
 ```
 
 仕様書座標系のオイラー角によって、CubeUnity クラスに送信するオイラー角とクォータニオンを作成します。<br>
-現時点（2021.09.01）では、リアルのコアキューブのクォータニオンがオイラーと別々の座標系のものになっていますので、シミュレーターでも同じく再現しています。（仕様書座標系に一致しているのはオイラーの方です。）
+現時点（2023.07.20）では、リアルのコアキューブのクォータニオンがオイラーと別々の座標系のものになっていますので、シミュレーターでも同じく再現しています。（仕様書座標系に一致しているのはオイラーの方です。）
 
 ```csharp
 // CubeSimImpl_v2_3_0.cs
@@ -934,7 +948,7 @@ for i in range(11):
 
 <br>
 
-この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-と-note-name) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/Resources/Octave」 に配置しています。
+この音声ファイルを [toio™コア キューブ 技術仕様/通信仕様/各種機能/サウンド](https://toio.github.io/toio-spec/docs/ble_sound#midi-note-number-と-note-name) の対応表にしたがって名前を付け、「Assets/toio-sdk/Scripts/Simulator/AssetLoader/Octave」 に配置しています。
 
 
 #### 再生
@@ -945,15 +959,16 @@ for i in range(11):
 // CubeSimulator.cs
 private int playingSoundId = -1;
 internal void _PlaySound(int soundId, int volume){
-    if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+    if (soundId >= 128) { _StopSound(); return; }
     if (soundId != playingSoundId)
     {
         playingSoundId = soundId;
         int octave = (int)(soundId/12);
         int idx = (int)(soundId%12);
-        var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+        var loader = GetComponent<AudioAssetLoader>();
+        if (!loader) return;
+        audioSource.clip = loader.GetAudioCLip(octave);
         audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-        audioSource.clip = aCubeOnSlot;
     }
     audioSource.volume = (float)volume/256 * 0.5f;
     if (!audioSource.isPlaying)

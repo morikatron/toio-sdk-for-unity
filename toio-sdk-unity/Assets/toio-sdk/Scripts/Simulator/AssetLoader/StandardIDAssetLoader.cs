@@ -1,0 +1,197 @@
+using UnityEngine;
+
+namespace toio.Simulator
+{
+    public class StandardIDAssetLoader : MonoBehaviour
+    {
+        public Sprite arrow_down;
+        public Sprite arrow_left;
+        public Sprite arrow_right;
+        public Sprite arrow_up;
+        public Sprite char_A;
+        public Sprite char_B;
+        public Sprite char_C;
+        public Sprite char_D;
+        public Sprite char_E;
+        public Sprite char_F;
+        public Sprite char_G;
+        public Sprite char_H;
+        public Sprite char_I;
+        public Sprite char_J;
+        public Sprite char_K;
+        public Sprite char_L;
+        public Sprite char_M;
+        public Sprite char_N;
+        public Sprite char_O;
+        public Sprite char_P;
+        public Sprite char_Q;
+        public Sprite char_R;
+        public Sprite char_S;
+        public Sprite char_T;
+        public Sprite char_U;
+        public Sprite char_V;
+        public Sprite char_W;
+        public Sprite char_X;
+        public Sprite char_Y;
+        public Sprite char_Z;
+        public Sprite full;
+        public Sprite num_0;
+        public Sprite num_1;
+        public Sprite num_2;
+        public Sprite num_3;
+        public Sprite num_4;
+        public Sprite num_5;
+        public Sprite num_6;
+        public Sprite num_7;
+        public Sprite num_8;
+        public Sprite num_9;
+        public Sprite operator_divide;
+        public Sprite operator_equal;
+        public Sprite operator_minus;
+        public Sprite operator_plus;
+        public Sprite operator_times;
+        public Sprite symbol_exlamation;
+        public Sprite symbol_percent;
+        public Sprite symbol_question;
+
+        // toio Collection
+        public Sprite id_card_auto_tackle;
+        public Sprite id_card_auto_tackle_back;
+        public Sprite id_card_automatic_chasing;
+        public Sprite id_card_automatic_chasing_back;
+        public Sprite id_card_random;
+        public Sprite id_card_random_back;
+        public Sprite id_card_rush;
+        public Sprite id_card_rush_back;
+        public Sprite id_card_side_attack;
+        public Sprite id_card_side_attack_back;
+        public Sprite id_card_swing_attack_power_up;
+        public Sprite id_card_swing_attack_power_up_back;
+        public Sprite id_card_tackle_power_up;
+        public Sprite id_card_tackle_power_up_back;
+        public Sprite id_card_typhoon;
+        public Sprite id_card_typhoon_back;
+        public Sprite id_mark_craft_fighter;
+        public Sprite id_mark_finger_strike;
+        public Sprite id_mark_finger_strike_1p;
+        public Sprite id_mark_free_move;
+        public Sprite id_mark_rhythm_and_go;
+        public Sprite id_mark_skunk_chaser;
+        public Sprite id_rhythm_back;
+        public Sprite id_rhythm_front;
+        public Sprite id_rhythm_go;
+        public Sprite id_rhythm_left;
+        public Sprite id_rhythm_right;
+        public Sprite id_skunk_blue;
+        public Sprite id_skunk_brown;
+        public Sprite id_skunk_green;
+        public Sprite id_skunk_orange;
+        public Sprite id_skunk_red;
+        public Sprite id_skunk_yellow;
+        public Sprite id_sticker_panic;
+        public Sprite id_sticker_shock;
+        public Sprite id_sticker_speed_down;
+        public Sprite id_sticker_speed_up;
+        public Sprite id_sticker_spin;
+        public Sprite id_sticker_wobble;
+
+        public Sprite GetSprite(StandardID.SimpleCardType id){
+            switch (id) {
+                case StandardID.SimpleCardType.Arrow_Down: return arrow_down;
+                case StandardID.SimpleCardType.Arrow_Left: return arrow_left;
+                case StandardID.SimpleCardType.Arrow_Right: return arrow_right;
+                case StandardID.SimpleCardType.Arrow_Up: return arrow_up;
+                case StandardID.SimpleCardType.Char_A: return char_A;
+                case StandardID.SimpleCardType.Char_B: return char_B;
+                case StandardID.SimpleCardType.Char_C: return char_C;
+                case StandardID.SimpleCardType.Char_D: return char_D;
+                case StandardID.SimpleCardType.Char_E: return char_E;
+                case StandardID.SimpleCardType.Char_F: return char_F;
+                case StandardID.SimpleCardType.Char_G: return char_G;
+                case StandardID.SimpleCardType.Char_H: return char_H;
+                case StandardID.SimpleCardType.Char_I: return char_I;
+                case StandardID.SimpleCardType.Char_J: return char_J;
+                case StandardID.SimpleCardType.Char_K: return char_K;
+                case StandardID.SimpleCardType.Char_L: return char_L;
+                case StandardID.SimpleCardType.Char_M: return char_M;
+                case StandardID.SimpleCardType.Char_N: return char_N;
+                case StandardID.SimpleCardType.Char_O: return char_O;
+                case StandardID.SimpleCardType.Char_P: return char_P;
+                case StandardID.SimpleCardType.Char_Q: return char_Q;
+                case StandardID.SimpleCardType.Char_R: return char_R;
+                case StandardID.SimpleCardType.Char_S: return char_S;
+                case StandardID.SimpleCardType.Char_T: return char_T;
+                case StandardID.SimpleCardType.Char_U: return char_U;
+                case StandardID.SimpleCardType.Char_V: return char_V;
+                case StandardID.SimpleCardType.Char_W: return char_W;
+                case StandardID.SimpleCardType.Char_X: return char_X;
+                case StandardID.SimpleCardType.Char_Y: return char_Y;
+                case StandardID.SimpleCardType.Char_Z: return char_Z;
+                case StandardID.SimpleCardType.Full: return full;
+                case StandardID.SimpleCardType.Num_0: return num_0;
+                case StandardID.SimpleCardType.Num_1: return num_1;
+                case StandardID.SimpleCardType.Num_2: return num_2;
+                case StandardID.SimpleCardType.Num_3: return num_3;
+                case StandardID.SimpleCardType.Num_4: return num_4;
+                case StandardID.SimpleCardType.Num_5: return num_5;
+                case StandardID.SimpleCardType.Num_6: return num_6;
+                case StandardID.SimpleCardType.Num_7: return num_7;
+                case StandardID.SimpleCardType.Num_8: return num_8;
+                case StandardID.SimpleCardType.Num_9: return num_9;
+                case StandardID.SimpleCardType.Operator_Divide: return operator_divide;
+                case StandardID.SimpleCardType.Operator_Equal: return operator_equal;
+                case StandardID.SimpleCardType.Operator_Minus: return operator_minus;
+                case StandardID.SimpleCardType.Operator_Plus: return operator_plus;
+                case StandardID.SimpleCardType.Operator_Times: return operator_times;
+                case StandardID.SimpleCardType.Symbol_Exclamation: return symbol_exlamation;
+                case StandardID.SimpleCardType.Symbol_Percent: return symbol_percent;
+                case StandardID.SimpleCardType.Symbol_Question: return symbol_question;
+            }
+            return null;
+        }
+        public Sprite GetSprite(StandardID.ToioColleType id){
+            switch (id) {
+                case StandardID.ToioColleType.id_card_auto_tackle: return id_card_auto_tackle;
+                case StandardID.ToioColleType.id_card_auto_tackle_back: return id_card_auto_tackle_back;
+                case StandardID.ToioColleType.id_card_automatic_chasing: return id_card_automatic_chasing;
+                case StandardID.ToioColleType.id_card_automatic_chasing_back: return id_card_automatic_chasing_back;
+                case StandardID.ToioColleType.id_card_random: return id_card_random;
+                case StandardID.ToioColleType.id_card_random_back: return id_card_random_back;
+                case StandardID.ToioColleType.id_card_rush: return id_card_rush;
+                case StandardID.ToioColleType.id_card_rush_back: return id_card_rush_back;
+                case StandardID.ToioColleType.id_card_side_attack: return id_card_side_attack;
+                case StandardID.ToioColleType.id_card_side_attack_back: return id_card_side_attack_back;
+                case StandardID.ToioColleType.id_card_swing_attack_power_up: return id_card_swing_attack_power_up;
+                case StandardID.ToioColleType.id_card_swing_attack_power_up_back: return id_card_swing_attack_power_up_back;
+                case StandardID.ToioColleType.id_card_tackle_power_up: return id_card_tackle_power_up;
+                case StandardID.ToioColleType.id_card_tackle_power_up_back: return id_card_tackle_power_up_back;
+                case StandardID.ToioColleType.id_card_typhoon: return id_card_typhoon;
+                case StandardID.ToioColleType.id_card_typhoon_back: return id_card_typhoon_back;
+                case StandardID.ToioColleType.id_mark_craft_fighter: return id_mark_craft_fighter;
+                case StandardID.ToioColleType.id_mark_finger_strike: return id_mark_finger_strike;
+                case StandardID.ToioColleType.id_mark_finger_strike_1p: return id_mark_finger_strike_1p;
+                case StandardID.ToioColleType.id_mark_free_move: return id_mark_free_move;
+                case StandardID.ToioColleType.id_mark_rhythm_and_go: return id_mark_rhythm_and_go;
+                case StandardID.ToioColleType.id_mark_skunk_chaser: return id_mark_skunk_chaser;
+                case StandardID.ToioColleType.id_rhythm_back: return id_rhythm_back;
+                case StandardID.ToioColleType.id_rhythm_front: return id_rhythm_front;
+                case StandardID.ToioColleType.id_rhythm_go: return id_rhythm_go;
+                case StandardID.ToioColleType.id_rhythm_left: return id_rhythm_left;
+                case StandardID.ToioColleType.id_rhythm_right: return id_rhythm_right;
+                case StandardID.ToioColleType.id_skunk_blue: return id_skunk_blue;
+                case StandardID.ToioColleType.id_skunk_brown: return id_skunk_brown;
+                case StandardID.ToioColleType.id_skunk_green: return id_skunk_green;
+                case StandardID.ToioColleType.id_skunk_orange: return id_skunk_orange;
+                case StandardID.ToioColleType.id_skunk_red: return id_skunk_red;
+                case StandardID.ToioColleType.id_skunk_yellow: return id_skunk_yellow;
+                case StandardID.ToioColleType.id_sticker_panic: return id_sticker_panic;
+                case StandardID.ToioColleType.id_sticker_shock: return id_sticker_shock;
+                case StandardID.ToioColleType.id_sticker_speed_down: return id_sticker_speed_down;
+                case StandardID.ToioColleType.id_sticker_speed_up: return id_sticker_speed_up;
+                case StandardID.ToioColleType.id_sticker_spin: return id_sticker_spin;
+                case StandardID.ToioColleType.id_sticker_wobble: return id_sticker_wobble;
+            }
+            return null;
+        }
+    }
+}

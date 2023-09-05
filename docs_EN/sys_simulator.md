@@ -34,7 +34,8 @@ Assets/toio-sdk/Scripts/Simulator/  +------+ There's a script directly underneat
 ├── Editor/  +-----------------------------+ Unity Editor script to customize the Inspector
 ├── Materials/  +--------------------------+ Materials and physical materials used for objects in Simulator
 ├── Models/  +-----------------------------+ 3D models used for objects in Simulator
-└── Resoureces/  +-------------------------+ Prefab is placed directly below it
+├── Prefabs/  +-------------------------+ Prefab is placed directly below it
+└── AssetLoader/  +------------------------+ Various material files and loader scripts
     ├── Mat/  +----------------------------+ Various mat textures and materials
     ├── Ocatave/  +------------------------+ Sound files used for the Sound function
     └── StandardID/  +---------------------+ Various standard ID textures
@@ -45,9 +46,11 @@ Assets/toio-sdk/Scripts/Simulator/  +------+ There's a script directly underneat
 
 # 2. Mat Prefab
 
-Mat Prefab has the script Mat.cs attached to it.
+The Mat Prefab has the Mat.cs script and the MatAssetLoader.cs attached for loading materials.
 
 Also, the Mat.cs inspector is customized by the script Editor/MatEditor.cs.
+
+The following is a description of Mat.cs.
 
 ## 2.1. Conversion from mat coordinate units to meters
 
@@ -64,6 +67,8 @@ public static readonly float DotPerM = 411f/0.560f; // (410+1)/0.560 dot/m
 
 When you change the matType from the Inspector, the ApplyMatType method in Mat.cs will be executed to change the coordinate range and switch the material.
 
+Switching is achieved by introducing the image into a Sprite texture, converting it from script to mesh, and replacing it in the SpriteRenderer.
+
 Implementation code
 
 ```csharp
@@ -73,7 +78,8 @@ public enum MatType
     toio_collection_back = 1,
     simple_playmat = 2,
     developer = 3,
-    custom = 4  // Customize the coordinate range.
+    gesundroid = 4,
+    custom = 5  // Customize the coordinate range.
 }
 
 public MatType matType;
@@ -84,30 +90,37 @@ internal void ApplyMatType()
     // Resize
     if (matType != MatType.custom)
     {
-        var rect = GetRectForMatType(matType);
+        var rect = GetRectForMatType(matType, developerMatType);
         xMin = rect.xMin; xMax = rect.xMax;
         yMin = rect.yMin; yMax = rect.yMax;
     }
-    this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+    else
+    {
+        xMin = xMinCustom; xMax = xMaxCustom;
+        yMin = yMinCustom; yMax = yMaxCustom;
+    }
 
     // Change material
-    switch (matType){
-        case MatType.toio_collection_front:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
-            break;
-        case MatType.toio_collection_back:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
-            break;
-        case MatType.simple_playmat:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-            break;
-        case MatType.developer:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-            break;
-        case MatType.custom:
-            GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
-            break;
-    }
+    var loader = GetComponent<MatAssetLoader>();
+    if (!loader) return;
+
+    Sprite sprite = loader.GetSprite(matType);
+    GetComponent<SpriteRenderer>().sprite = sprite;
+
+    // Create Mesh
+    var mesh = SpriteToMesh(sprite);
+    GetComponentInChildren<MeshFilter>().mesh = mesh;
+
+    // Update Mesh Collider
+    GetComponentInChildren<MeshCollider>().sharedMesh = null;
+    GetComponentInChildren<MeshCollider>().sharedMesh = mesh;
+
+    // Update size
+    var realW = (xMax-xMin)/DotPerM;
+    var realH = (yMax-yMin)/DotPerM;
+    var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
+    var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+    this.transform.localScale = new Vector3(scaleW, scaleH, 1);
 }
 ```
 
@@ -179,18 +192,15 @@ public Vector3 MatCoord2UnityCoord(double x, double y)
 
 # 3. StandardID Prefab
 
-StandardID Prefab has the script StandardID.cs attached to it.
+StandardID Prefab has the StandardID.cs script and the StandardIDAssetLoader.cs attached for loading materials.
 
 Also, the inspector in StandardID.cs is customized by the script Editor/StandardIDEditor.cs.
 
+The following is a description of StandardID.cs.
+
 ## 3.1. Switching between standard ID types
 
-Because of the large number of standard IDs, it would be difficult to prepare materials for each of them and scalability would be poor. Therefore, as shown in the figure below, switching is achieved by introducing the image into a Sprite texture, converting it from script to mesh, and replacing it with the object renderer.
-
-<div align="center">
-<img src="res/simulator/standardid.png">
-</div>
-<br>
+Switching StandardID types is achieved in the same approach as Mat.
 
 Implementation code
 
@@ -198,10 +208,13 @@ Implementation code
 internal void ApplyStandardIDType()
 {
     // Load Sprite
-    string spritePath = "StandardID/"+title.ToString()+"/";
-    if (title == Title.toio_collection) spritePath += toioColleType.ToString();
-    else if (title == Title.simple_card) spritePath += simpleCardType.ToString();
-    var sprite = (Sprite)Resources.Load<Sprite>(spritePath);
+    var loader = GetComponent<StandardIDAssetLoader>();
+    if (!loader) return;
+    Sprite sprite = null;
+    if (title == Title.toio_collection)
+        sprite = loader.GetSprite(toioColleType);
+    else if (title == Title.simple_card)
+        sprite = loader.GetSprite(simpleCardType);
     GetComponent<SpriteRenderer>().sprite = sprite;
 
     // Create Mesh
@@ -707,7 +720,7 @@ internal Vector3 _GetIMU()
 ```
 
 The Euler angles and quaternions to be sent to the CubeUnity class are created by the Euler angles of the specification coordinate system. <br>
-At the moment (2021.09.01), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
+At the moment (2023.07.20), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
 
 ```csharp
 // CubeSimImpl_v2_3_0.cs
@@ -930,7 +943,7 @@ for i in range(11):
 
 <br>
 
-This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/en/docs/ble_sound#midi-note-number-and-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/Resources/Octave].
+This audio file is named according to the correspondence table in [toio™ Core Cube Technical Specifications/Communication Specifications/Functions/Sounds](https://toio.github.io/toio-spec/en/docs/ble_sound#midi-note-number-and-note-name) and placed in [Assets/toio-sdk/Scripts/Simulator/AssetLoader/Octave].
 
 
 #### Playing sounds
@@ -941,15 +954,16 @@ Scales other than A, which are prepared in advance, are converted and played bac
 // CubeSimulator.cs
 private int playingSoundId = -1;
 internal void _PlaySound(int soundId, int volume){
-    if (soundId >= 128) { _StopSound(); playingSoundId = -1; return; }
+    if (soundId >= 128) { _StopSound(); return; }
     if (soundId != playingSoundId)
     {
         playingSoundId = soundId;
         int octave = (int)(soundId/12);
         int idx = (int)(soundId%12);
-        var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+        var loader = GetComponent<AudioAssetLoader>();
+        if (!loader) return;
+        audioSource.clip = loader.GetAudioCLip(octave);
         audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-        audioSource.clip = aCubeOnSlot;
     }
     audioSource.volume = (float)volume/256 * 0.5f;
     if (!audioSource.isPlaying)

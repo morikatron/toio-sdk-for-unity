@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Linq;
+using UnityEngine;
+
 
 namespace toio.Simulator
 {
@@ -15,7 +18,7 @@ namespace toio.Simulator
             simple_playmat = 2,
             developer = 3,
             gesundroid = 4,
-            custom = 99  // 座標範囲をカスタマイズ
+            custom = 5  // 座標範囲をカスタマイズ
         }
 
         public static readonly string[] MatTypeNames = new string[]
@@ -42,7 +45,8 @@ namespace toio.Simulator
         [SerializeField]
         public DeveloperMatType developerMatType;
         [SerializeField]
-        public int xMin, xMax, yMin, yMax;
+        public int xMinCustom = 98, xMaxCustom = 402, yMinCustom = 142, yMaxCustom = 358;
+        private int xMin, xMax, yMin, yMax;
         public float xCenter { get{ return (xMin+xMax)/2f; } }
         public float yCenter { get{ return (yMin+yMax)/2f; } }
 
@@ -68,29 +72,33 @@ namespace toio.Simulator
                 xMin = rect.xMin; xMax = rect.xMax;
                 yMin = rect.yMin; yMax = rect.yMax;
             }
-            this.transform.localScale = new Vector3((xMax-xMin+1)/DotPerM, (yMax-yMin+1)/DotPerM, 1);
+            else
+            {
+                xMin = xMinCustom; xMax = xMaxCustom;
+                yMin = yMinCustom; yMax = yMaxCustom;
+            }
 
             // Change material
-            switch (matType){
-                case MatType.toio_collection_front:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_front");;
-                    break;
-                case MatType.toio_collection_back:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/toio_collection_back");
-                    break;
-                case MatType.simple_playmat:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-                    break;
-                case MatType.developer:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/simple_playmat");
-                    break;
-                case MatType.gesundroid:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/gesundroid");
-                    break;
-                case MatType.custom:
-                    GetComponent<Renderer>().material = (Material)Resources.Load<Material>("Mat/mat_null");
-                    break;
-            }
+            var loader = GetComponent<MatAssetLoader>();
+            if (!loader) return;
+
+            Sprite sprite = loader.GetSprite(matType);
+            GetComponent<SpriteRenderer>().sprite = sprite;
+
+            // Create Mesh
+            var mesh = SpriteToMesh(sprite);
+            GetComponentInChildren<MeshFilter>().mesh = mesh;
+
+            // Update Mesh Collider
+            GetComponentInChildren<MeshCollider>().sharedMesh = null;
+            GetComponentInChildren<MeshCollider>().sharedMesh = mesh;
+
+            // Update size
+            var realW = (xMax-xMin)/DotPerM;
+            var realH = (yMax-yMin)/DotPerM;
+            var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
+            var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+            this.transform.localScale = new Vector3(scaleW, scaleH, 1);
         }
 
         public static RectInt GetRectForMatType(MatType matType, DeveloperMatType devMatType=default)
@@ -121,10 +129,20 @@ namespace toio.Simulator
                 case MatType.gesundroid:
                     return new RectInt(1050, 45, 410, 410);
                 case MatType.custom:
-                    Debug.LogError("Custom MatType not supported in this method.");
-                    return new RectInt(0, 0, 0, 0);
+                    Debug.LogWarning("Default rect for Custom MatType is returned, since this is a statci method.");
+                    return new RectInt(98, 402, 142, 358);
             }
             throw new System.Exception("matType out of range.");
+        }
+
+        private Mesh SpriteToMesh(Sprite sprite)
+        {
+            if (sprite == null) return null;
+            var mesh = new Mesh();
+            mesh.SetVertices(Array.ConvertAll(sprite.vertices, v => (Vector3)v).ToList());
+            mesh.SetUVs(0, sprite.uv.ToList());
+            mesh.SetTriangles(Array.ConvertAll(sprite.triangles, t => (int)t), 0);
+            return mesh;
         }
 
 

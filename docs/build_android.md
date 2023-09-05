@@ -9,7 +9,7 @@
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
 | OS                   | Winidows 10            | Winidows 10 以上        |
-| Unity                | 2021.3.0f1             | 2021.3 以上             |
+| Unity                | 2022.3.2f1             | 2022.3 以上             |
 
 スマホ
 
@@ -17,6 +17,14 @@
 | -- | -- |
 | HUAWEI nova 5T         | Android 9 |
 | Xiaomi Mi Note 10 Lite | Android 10 |
+
+#### 互換性について
+
+Andorid 12 (API Level 31) より、[新しいBluetooth権限](https://developer.android.com/about/versions/12/features/bluetooth-permissions)が追加されました。
+
+toio SDK for Unity の Assets/Plugins/Android/AndroidManifest.xml は Android 12 に対応したため、Android 11 (API Level 30) 以下のSDKでビルドすると、エラーになります。
+
+Unity 2021 以下は内蔵の Android SDK がAndroid 11 (API Level 30) 以下になるので、[Android SDK をインストール](#-Android-SDK-をインストール) を参考に Android SDK をインストールするか、AndroidManifest.xml を [toio SDK for Unity v1.5.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.1) からAndroid 11 (API Level 30) 以下に対応する AndroidManifest.xml に置き換えてください。
 
 <br>
 
@@ -149,7 +157,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2021.3 だと、NDK 21 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2021.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 2022.3 だと、NDK 23 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2022.3/Manual/android-sdksetup.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 

@@ -1,4 +1,4 @@
-# How to operate Simulator
+# How to operate Simulator (Settings for mats and cubes, etc.)
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ Please refer to [Usage - Simulator](usage_simulator.md) in the technical documen
 
 ## Composition
 
-Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Resources/`.
+Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Prefabs/`.
 
 - Mat … Various imitations of [Play mat](https://toio.github.io/toio-spec/en/docs/hardware_position_id)
 - StandardID … Imitation of various [cards or sheets](https://toio.github.io/toio-spec/en/docs/hardware_standard_id) that can be read for Standard ID
@@ -43,9 +43,12 @@ Cube Prefab can be placed in Mat Prefab to get the coordinate position and orien
 
 You can place multiple Mat Prefab in a scene, at any position and angle, as long as they are horizontal.
 
-## Parameters in Inspector
+## Inspector
 
-<div align="center"><img src="res/usage_simulator/mat.png"></div>
+<div align="center">
+  <img src="res/usage_simulator/mat_inspector.png">
+  <img src="res/usage_simulator/mat_types.png">
+</div>
 
 In Unity's Inspector, from the "Type" list of the script Mat.cs
 
@@ -59,6 +62,7 @@ from the "Type" list of the script Mat.cs in Unity inspector to change the mat's
 
 For specifications of each type, please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_position_id)  and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
 
+For customization instructions, please refer to ["How to Use - Simulator"](usage_simulator.md#21-inspector).
 
 # 3. StandardID Prefab
 
@@ -68,7 +72,7 @@ If you place Cube Prefab on top of a StandardID Prefab, you can get the Standard
 
 You can place multiple StandardID Prefabs in a scene, at any position and angle.
 
-## Parameters in Inspector
+## Inspector
 
 <div align="center"><img src="res/usage_simulator/standardid.png"></div>
 
@@ -80,7 +84,6 @@ The supported "Titles" are as follows
 - Simple card
 
 For more information about "Type", please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_standard_id).
-
 
 # 4. Cube Prefab
 
