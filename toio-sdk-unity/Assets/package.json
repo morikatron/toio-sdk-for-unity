@@ -17,6 +17,21 @@
   },
   "samples": [
     {
+      "displayName": "Tutorials - 1.Basic",
+      "description": "Tutorials - 1.Basic",
+      "path": "toio-sdk/Tutorials~/1.Basic"
+    },
+    {
+      "displayName": "Tutorials - 2.Advanced-CubeHandle",
+      "description": "Tutorials - 2.Advanced-CubeHandle",
+      "path": "toio-sdk/Tutorials~/2.Advanced-CubeHandle"
+    },
+    {
+      "displayName": "Tutorials - 3.Advanced-Navigator",
+      "description": "Tutorials - 3.Advanced-Navigator",
+      "path": "toio-sdk/Tutorials~/3.Advanced-Navigator"
+    },
+    {
       "displayName": "Bluetooth",
       "description": "This sample uses BLE interface, a low-level module, directly to communicate with Cube.\nWhen run on a smart phone build, Cube will spin around.",
       "path": "toio-sdk/Samples~/Sample_Bluetooth"
