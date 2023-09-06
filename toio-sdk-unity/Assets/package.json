@@ -1,11 +1,19 @@
 {
   "name": "com.morikatron.toio-sdk-for-unity",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "displayName": "toio SDK for Unity",
   "description": "toio SDK for Unity is a Software Development Kit for controlling toio™ Core Cube (hereafter referred to as Cubes) in Unity.",
+  "unity": "2022.3",
+  "changelogUrl": "https://github.com/morikatron/toio-sdk-for-unity/blob/main/CHANGELOG.md",
+  "documentationUrl": "https://morikatron.github.io/toio-sdk-for-unity/",
+  "license": "MIT",
+  "hideInEditor": false,
   "author": {
     "name": "MORIKATRON Inc.",
     "url": "https://morikatron.com/"
+  },
+  "dependencies": {
+    "com.cysharp.unitask": "2.3.3"
   },
   "samples": [
     {
