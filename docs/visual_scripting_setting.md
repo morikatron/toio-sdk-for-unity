@@ -55,7 +55,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
       - [Toio]->[Simulator]から
          - Mat
       - [Toio]->[Navigation]から
-         - Navigator
+         - Cube Navigator
       - [(Enums)]から
          - Connect Type
       - [UnityEngine]から
