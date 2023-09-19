@@ -56,7 +56,7 @@ Click [Switch Platform] and wait a second,If you see the Unity icon next to [Win
       - [Toio]->[Simulator]
          - Mat
       - [Toio]->[Navigation]
-         - Navigator
+         - Cube Navigator
       - [(Enums)]
          - Connect Type
       - [UnityEngine]
