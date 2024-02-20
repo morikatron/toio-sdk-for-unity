@@ -237,14 +237,13 @@ namespace toio.Windows
             if (!s_isInitialized) { return; }
             // update scan devices
             int scanNum = DllInterface.ScanGetDeviceLength();
-            // Debug.Log("UpdateScanDeviceEvents " + scanNum);
             for (int i = 0; i < scanNum; ++i)
             {
                 ulong addr = DllInterface.ScanGetDeviceAddr(i);
                 var identifier = DeviceAddressDatabase.GetAddressStr(addr);
                 //Debug.Log("UpdateScanDeviceEvents identifier " + identifier);
-                var name = "";// DllInterface.ScanGetDeviceName(i);
-                //Debug.Log("UpdateScanDeviceEvents name " + name);
+                var name = DllInterface.ScanGetDeviceName(i);
+                // Debug.Log("UpdateScanDeviceEvents name " + name);
                 var rssi = DllInterface.ScanGetDeviceRssi(i);
                 //Debug.Log("UpdateScanDeviceEvents rssi " + rssi);
                 if (s_discoverAction != null)
