@@ -13,16 +13,16 @@ namespace toio.VisualScript
     {
         public BLEPeripheralInterface value { get; set; }
 
-        private NearestScanner scanner;
+        private CubeScanner scanner;
 
         public VisualScriptNearestScanner(ConnectType type = ConnectType.Auto)
         {
-            scanner = new NearestScanner(type);
+            scanner = new CubeScanner(type);
         }
 
         public async void Run()
         {
-            var peripheral = await scanner.Scan();
+            var peripheral = await scanner.NearestScan();
             value = peripheral;
             IsComplete = true;
         }
@@ -33,16 +33,18 @@ namespace toio.VisualScript
     {
         public BLEPeripheralInterface[] value { get; set; }
 
-        private NearScanner scanner;
+        private CubeScanner scanner;
+        private int satisfiedNum;
 
         public VisualScriptNearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto)
         {
-            scanner = new NearScanner(satisfiedNum, type);
+            this.scanner = new CubeScanner(type);
+            this.satisfiedNum = satisfiedNum;
         }
 
         public async void Run()
         {
-            var peripheral = await scanner.Scan();
+            var peripheral = await scanner.NearScan(this.satisfiedNum, 20);
             value = peripheral;
             IsComplete = true;
         }

@@ -58,10 +58,14 @@ public class Sample_Bluetooth : MonoBehaviour
                         device = _device;
                         string[] uuids = { SERVICE_UUID };
                         // 検索対象デバイスをtoioのサービスIDに絞って検索
-                        device.Scan(uuids, true, (_peripheral) =>
+                        device.Scan(uuids, true, (_peripherals) =>
                         {
+                            if (_peripherals.Length == 0)
+                            {
+                                return;
+                            }
                             // 一台発見したら接続モードへ変更
-                            peripheral = _peripheral;
+                            peripheral = _peripherals[0];
                             Debug.LogFormat("peripheral.device_name: {0}, peripheral.device_address: {1}", peripheral.device_name, peripheral.device_address);
                             device.StopScan();
                             SetState(State.Connect, 1f);

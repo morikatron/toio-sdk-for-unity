@@ -49,7 +49,7 @@ public class Sample_Sensor : MonoBehaviour
     private async UniTask Connect()
     {
         // Cube の接続
-        var peripheral = await new NearestScanner().Scan();
+        var peripheral = await new CubeScanner().NearestScan();
         cube = await new CubeConnecter().Connect(peripheral);
         // モーター速度の読み取りをオンにする
         await cube.ConfigMotorRead(true);

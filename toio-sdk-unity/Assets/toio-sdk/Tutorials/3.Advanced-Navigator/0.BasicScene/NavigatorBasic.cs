@@ -22,7 +22,7 @@ namespace toio.tutorial
             if (!useCubeManager) // Without CubeManager
             {
 
-                var peripheral = await new NearScanner(2).Scan();
+                var peripheral = await new CubeScanner().NearScan(2, 100);
                 var cubes = await new CubeConnecter().Connect(peripheral);
                 this.navigators = new List<CubeNavigator>();
                 foreach (var cube in cubes)

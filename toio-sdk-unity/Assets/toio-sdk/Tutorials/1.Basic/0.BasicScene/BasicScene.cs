@@ -16,7 +16,7 @@ namespace toio.tutorial
         async void Start()
         {
             // Bluetoothデバイスを検索
-            var peripheral = await new NearestScanner().Scan();
+            var peripheral = await new CubeScanner().NearestScan();
             // デバイスへ接続してCube変数を生成
             cube = await new CubeConnecter().Connect(peripheral);
         }

@@ -13,7 +13,7 @@ namespace toio.tutorial
         // Start is called before the first frame update
         async void Start()
         {
-            var peripheral = await new NearestScanner().Scan();
+            var peripheral = await new CubeScanner().NearestScan();
             cube = await new CubeConnecter().Connect(peripheral);
             // 最初にプリセットの音源を再生
             cube.PlayPresetSound(0);

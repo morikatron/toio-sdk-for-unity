@@ -11,6 +11,7 @@ namespace toio
         UniTask<Cube> Connect(BLEPeripheralInterface peripheral);
         UniTask<Cube[]> Connect(BLEPeripheralInterface[] peripherals);
         void Disconnect(Cube cube);
+        void Disconnect(BLEPeripheralInterface peripheral);
         [Obsolete("Deprecated. Please use ReConnect(Cube cube) instead.", false)]
         UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral);
         UniTask ReConnect(Cube cube);
@@ -54,6 +55,10 @@ namespace toio
         public void Disconnect(Cube cube)
         {
             this.impl.Disconnect(cube);
+        }
+        public void Disconnect(BLEPeripheralInterface peripheral)
+        {
+            this.impl.Disconnect(peripheral);
         }
         public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
         {
@@ -105,6 +110,10 @@ namespace toio
             public void Disconnect(Cube cube)
             {
                 (cube as CubeUnity).peripheral.Disconnect();
+            }
+            public void Disconnect(BLEPeripheralInterface peripheral)
+            {
+                peripheral.Disconnect();
             }
             public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
             {
@@ -227,6 +236,10 @@ namespace toio
             public void Disconnect(Cube cube)
             {
                 (cube as CubeReal).peripheral.Disconnect();
+            }
+            public void Disconnect(BLEPeripheralInterface peripheral)
+            {
+                peripheral.Disconnect();
             }
 
             public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
