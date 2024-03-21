@@ -1,3 +1,10 @@
+
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_ANDROID && !UNITY_EDITOR
+#define SCANNER_RETURN_LIST
+#endif
+
+#define TEST_RETURN_SINGLE
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -316,7 +323,8 @@ namespace toio
             // ble
             private BLEDeviceInterface device;
             private Dictionary<string, BLEPeripheralInterface> peripheralDatabase = new Dictionary<string, BLEPeripheralInterface>();
-            private List<string> scannedAddrs = new List<string>();
+            private Dictionary<string, float> scannedAddrTimes = new Dictionary<string, float>();
+            private readonly object locker = new object();
 
             public RealImpl()
             {
@@ -332,20 +340,22 @@ namespace toio
             {
                 get
                 {
-                    return this.scannedAddrs.ConvertAll(addr => this.peripheralDatabase[addr]);
+                    return this.scannedAddrTimes.Keys.ToList().ConvertAll(addr => this.peripheralDatabase[addr]);
                 }
             }
 
             public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds)
             {
                 if (this.isScanning) return null;
-                this.StartScanning(() => this.Scan());
+                this.isScanning = true;
+                await this.RequestDevice().Timeout(TimeSpan.FromSeconds(1));
+                this.Scan();
 
                 await UniTask.Delay(1000);
                 await UniTask.WhenAny(
                     UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
-                        return this.scannedAddrs.Count(addr=>!this.peripheralDatabase[addr].isConnected) > 0;
+                        return this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) > 0;
                     })
                 );
 
@@ -365,13 +375,15 @@ namespace toio
                 Debug.LogWarning("[CubeScanner]]NearScan doesn't run on the web");
 #endif
                 if (this.isScanning) return null;
-                this.StartScanning(() => this.Scan());
+                this.isScanning = true;
+                await this.RequestDevice().Timeout(TimeSpan.FromSeconds(1));
+                this.Scan();
 
                 await UniTask.Delay(1000);
                 await UniTask.WhenAny(
                     UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
-                        return this.scannedAddrs.Count(addr=>!this.peripheralDatabase[addr].isConnected) > satisfiedNum;
+                        return this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) > satisfiedNum;
                     })
                 );
 
@@ -390,7 +402,9 @@ namespace toio
             public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float timeoutSeconds = 10f)
             {
                 if (this.isScanning) return;
-                this.StartScanning(() => this.Scan(onScanUpdate));
+                this.isScanning = true;
+                await this.RequestDevice().Timeout(TimeSpan.FromSeconds(1));
+                this.Scan(onScanUpdate);
 
                 await UniTask.Delay((int)Mathf.Max(0, timeoutSeconds * 1000));
                 this.device?.StopScan();
@@ -401,12 +415,16 @@ namespace toio
             // --- private methods ---
             private void Scan(Action<BLEPeripheralInterface[]> onScanUpdate = null)
             {
+                this.scannedAddrTimes.Clear();
                 string[] uuids = { CubeReal.SERVICE_ID };
 
                 this.device.Scan(uuids, true, (peripherals) =>
                 {
                     if (!isScanning) return;
-                    this.scannedAddrs.Clear();
+#if SCANNER_RETURN_LIST && !TEST_RETURN_SINGLE
+                    // Plugin for windows and android returns whole list of peripherals
+                    this.scannedAddrTimes.Clear();
+#endif
                     foreach (var peri in peripherals) {
                         var peripheral = peri;
                         if (null == peripheral)
@@ -420,28 +438,63 @@ namespace toio
                         {
                             this.peripheralDatabase.Add(peripheral.device_address, peripheral);
                         }
-                        this.scannedAddrs.Add(peripheral.device_address);
+
+#if !SCANNER_RETURN_LIST || TEST_RETURN_SINGLE
+                        // Update scannedAddrTimes
+                        lock(locker) {
+                            if (!scannedAddrTimes.ContainsKey(peripheral.device_address)){
+                                scannedAddrTimes.Add(peripheral.device_address, Time.realtimeSinceStartup);
+                            } else {
+                                scannedAddrTimes[peripheral.device_address] = Time.realtimeSinceStartup;
+                            }
+                        }
+#else
+                        this.scannedAddrTimes.Add(peripheral.device_address, Time.realtimeSinceStartup);
+#endif
                     }
+#if !SCANNER_RETURN_LIST || TEST_RETURN_SINGLE
+                    // Remove overdated peripherals
+                    lock(locker) {
+                        foreach (var addr in scannedAddrTimes.Keys.ToArray()){
+                            if (Time.realtimeSinceStartup - scannedAddrTimes[addr] > 0.1f)
+                                this.scannedAddrTimes.Remove(addr);
+                        }
+                    }
+#endif
                     onScanUpdate?.Invoke(this.peripheralList.ToArray());
                 });
+
+                this.CleaningOverdated(onScanUpdate).Forget();
             }
 
-            private void StartScanning(Action foundCallback)
-            {
-                this.isScanning = true;
-                if (null == this.device)
-                {
-                    BLEService.Instance.RequestDevice((device) =>
-                    {
-                        this.device = device;
-                        foundCallback?.Invoke();
+            private async UniTask CleaningOverdated(Action<BLEPeripheralInterface[]> onScanUpdate) {
+                while (this.isScanning) {
+                    await UniTask.Delay(100);
+                    var changed = false;
+                    lock(locker) {
+                        foreach (var addr in scannedAddrTimes.Keys.ToArray()){
+                            if (Time.realtimeSinceStartup - scannedAddrTimes[addr] > 0.1f) {
+                                this.scannedAddrTimes.Remove(addr);
+                                changed = true;
+                            }
+                        }
                     }
-                    );
+                    if (changed) onScanUpdate?.Invoke(this.peripheralList.ToArray());
                 }
-                else
+            }
+
+            private async UniTask<BLEDeviceInterface> RequestDevice()
+            {
+                if (this.device != null)
+                    return await UniTask.FromResult(this.device);
+
+                var utcs = new UniTaskCompletionSource<BLEDeviceInterface>();
+                BLEService.Instance.RequestDevice((device) =>
                 {
-                    foundCallback?.Invoke();
-                }
+                    this.device = device;
+                    utcs.TrySetResult(device);
+                });
+                return await utcs.Task;
             }
 
         }
