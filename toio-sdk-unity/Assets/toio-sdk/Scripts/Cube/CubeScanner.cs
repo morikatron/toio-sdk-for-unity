@@ -456,7 +456,7 @@ namespace toio
                     // Remove overdated peripherals
                     lock(locker) {
                         foreach (var addr in scannedAddrTimes.Keys.ToArray()){
-                            if (Time.realtimeSinceStartup - scannedAddrTimes[addr] > 0.1f)
+                            if (Time.realtimeSinceStartup - scannedAddrTimes[addr] > 0.6f)
                                 this.scannedAddrTimes.Remove(addr);
                         }
                     }
@@ -473,7 +473,7 @@ namespace toio
                     var changed = false;
                     lock(locker) {
                         foreach (var addr in scannedAddrTimes.Keys.ToArray()){
-                            if (Time.realtimeSinceStartup - scannedAddrTimes[addr] > 0.1f) {
+                            if (Time.realtimeSinceStartup - scannedAddrTimes[addr] > 0.6f) {
                                 this.scannedAddrTimes.Remove(addr);
                                 changed = true;
                             }

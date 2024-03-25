@@ -106,14 +106,16 @@ public class Sample_ConnectName : MonoBehaviour
 
     async UniTask OnItemClick(GameObject item, BLEPeripheralInterface peripheral)
     {
-//         if (peripheral.isConnected) {
-// #if !(UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
-//             this.connecter.Disconnect(peripheral);
-//             await UniTask.Delay(200);
-//             item.GetComponentInChildren<Text>().text = peripheral.device_name + ": paired";
-// #endif
-//         }
-//         else{
+        if (peripheral.isConnected) {
+#if !(UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
+            // NOTE: On Windows, disconnecting a device causes crash
+            this.connecter.Disconnect(peripheral);
+            await UniTask.Delay(200);
+            if (item)
+                item.GetComponentInChildren<Text>().text = peripheral.device_name + ": paired";
+#endif
+        }
+        else{
             item.GetComponentInChildren<Button>().interactable = false;
             item.GetComponentInChildren<Text>().text = peripheral.device_name + ": connecting...";
             try {
@@ -135,7 +137,7 @@ public class Sample_ConnectName : MonoBehaviour
             }
             if (item)
                 item.GetComponentInChildren<Button>().interactable = true;
-        // }
+        }
     }
 
     void OnConnection(BLEPeripheralInterface peripheral)
