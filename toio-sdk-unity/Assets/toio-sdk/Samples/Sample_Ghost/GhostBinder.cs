@@ -11,9 +11,21 @@ public class GhostBinder
         AddForce,
     }
 
+    /// <summary>
+    /// The target simulator cube to represent the real cube.
+    /// </summary>
     public CubeSimulator ghost;
+    /// <summary>
+    /// Mat to place the ghost cube.
+    /// </summary>
     public Mat mat;
+    /// <summary>
+    /// Real cube to represent.
+    /// </summary>
     public Cube cube;
+    /// <summary>
+    /// Method to map the real cube to the ghost cube.
+    /// </summary>
     public Method mappingMethod = Method.AddForce;
 
 
