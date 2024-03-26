@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4627987793594368555}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: t4u_Mat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ Transform:
   m_Children:
   - {fileID: 801522278944725503}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &6385651707215231317
 MonoBehaviour:
@@ -112,10 +112,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   matType: 0
   developerMatType: 0
-  xMin: 45
-  xMax: 455
-  yMin: 45
-  yMax: 455
+  xMinCustom: 98
+  xMaxCustom: 402
+  yMinCustom: 142
+  yMaxCustom: 358
 --- !u!114 &2231951122369009258
 MonoBehaviour:
   m_ObjectHideFlags: 0

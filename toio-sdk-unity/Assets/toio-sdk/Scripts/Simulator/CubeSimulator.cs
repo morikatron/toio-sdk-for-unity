@@ -721,7 +721,7 @@ namespace toio.Simulator
             Ray ray = new Ray(gposSensor, -transform.up);
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < maxDistance){
-                    var mat = hit.transform.gameObject.GetComponent<Mat>();
+                    var mat = hit.transform.gameObject.GetComponentInParent<Mat>();
                     var deg = mat.UnityDeg2MatDegF(transform.eulerAngles.y);
                     var coordSensor = mat.UnityCoord2MatCoordF(gposSensor);
                     return (coordSensor, 0, deg);
