@@ -3,7 +3,7 @@
 #define SCANNER_RETURN_LIST
 #endif
 
-#define TEST_RETURN_SINGLE
+// #define TEST_RETURN_SINGLE
 
 using System;
 using System.Collections;
@@ -27,7 +27,7 @@ namespace toio
         bool isScanning { get; }
         UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f);
         UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3.0f);
-        UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float timeoutSeconds = 10f);
+        UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f);
     }
 
     public class CubeScanner : CubeScannerInterface
@@ -85,9 +85,9 @@ namespace toio
         /// <returns></returns>
         public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds) { return await this.impl.NearScan(satisfiedNum, waitSeconds); }
 
-        public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float timeoutSeconds = 10f)
+        public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f)
         {
-            await this.impl.StartScan(onScanUpdate, onScanEnd, timeoutSeconds);
+            await this.impl.StartScan(onScanUpdate, onScanEnd, waitSeconds);
         }
 
         /// <summary>
@@ -97,159 +97,95 @@ namespace toio
         {
             public bool isScanning { get; private set; }
             private Dictionary<string, BLEPeripheralInterface> peripheralDatabase = new Dictionary<string, BLEPeripheralInterface>();
-            private Dictionary<string, BLEPeripheralInterface> connectedPeripheralTable = new Dictionary<string, BLEPeripheralInterface>();
-            // connection async
-            private int satisfiedNumForAsync;
-            private MonoBehaviour coroutineObject;
-            private Action<BLEPeripheralInterface> callback;
-            private bool autoRunning;
+            private List<string> scannedAddrs = new List<string>();
+            private readonly object locker = new object();
 
             public SimImpl()
             {
                 this.isScanning = false;
             }
 
+            public List<BLEPeripheralInterface> peripheralList
+            {
+                get
+                {
+                    return this.scannedAddrs.ConvertAll(addr => this.peripheralDatabase[addr]);
+                }
+            }
+
             public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds)
             {
-                float start_time = Time.time;
-                List<BLEPeripheralInterface> peripheralList = new List<BLEPeripheralInterface>();
-                List<GameObject> foundObjs = new List<GameObject>();
+                if (this.isScanning) return null;
+                isScanning = true;
 
-                Action<GameObject> foundCallback = obj =>
-                {
-                    var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
-                    if (!this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
-                    {
-                        if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
-                        {
-                            peripheral = this.peripheralDatabase[peripheral.device_address];
-                        }
-                        else
-                        {
-                            this.peripheralDatabase.Add(peripheral.device_address, peripheral);
-                            peripheral.AddConnectionListener("CubeScanner.SimImpl", this.OnConnectionEvent);
-                        }
-                        peripheralList.Add(peripheral);
-                    }
-                };
+                this.Scan().Forget();
 
-                this.isScanning = true;
+                await UniTask.Delay(1000);
+                await UniTask.WhenAny(
+                    UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
+                    UniTask.WaitUntil(() => {
+                        return this.scannedAddrs.Count(addr=>!peripheralDatabase[addr].isConnected) > 0;
+                    })
+                );
 
-                // Scanning Loop
-                while (true)
-                {
-                    // Search for new cube object
-                    var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
-                    foreach (var obj in objs)
-                    {
-                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
-                        if (!foundObjs.Contains(obj))
-                        {
-                            foundObjs.Add(obj);
-                            foundCallback.Invoke(obj);
-                        }
-                    }
-
-                    // Scanned
-                    if (0 < peripheralList.Count) break;
-
-                    // Time out
-                    var elapsed = Time.time - start_time;
-                    if (waitSeconds > 0 && waitSeconds <= elapsed)
-                        return null;
-
-                    // Searching Period
-                    await UniTask.Delay(200);
-                }
+                this.isScanning = false;
+                await UniTask.Delay(200);
 
                 peripheralList.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
-                this.isScanning = false;
                 return peripheralList.Count > 0 ? peripheralList[0] : null;
             }
             public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
             {
-                var start_time = Time.time;
-                List<BLEPeripheralInterface> peripheralList = new List<BLEPeripheralInterface>();
-                List<GameObject> foundObjs = new List<GameObject>();
-
-                Action<GameObject> foundCallback = obj =>
-                {
-                    var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
-                    if (this.isScanning && peripheralList.Count < satisfiedNum &&
-                        !this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
-                    {
-                        if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
-                        {
-                            peripheral = this.peripheralDatabase[peripheral.device_address];
-                        }
-                        else
-                        {
-                            this.peripheralDatabase.Add(peripheral.device_address, peripheral);
-                            peripheral.AddConnectionListener("CubeScanner.SimImpl", this.OnConnectionEvent);
-                        }
-                        peripheralList.Add(peripheral);
-                    }
-                };
-
+                if (this.isScanning) return null;
                 isScanning = true;
 
-                // Scanning Loop
-                while (true)
-                {
-                    // Search for new cube object
-                    var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
-                    foreach (var obj in objs)
-                    {
-                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
-                        if (!foundObjs.Contains(obj))
-                        {
-                            foundObjs.Add(obj);
-                            foundCallback.Invoke(obj);
-                        }
-                    }
+                this.Scan().Forget();
 
-                    // 必要数に達したらスキャン終了
-                    if (satisfiedNum <= peripheralList.Count) break;
+                await UniTask.Delay(1000);
+                await UniTask.WhenAny(
+                    UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
+                    UniTask.WaitUntil(() => {
+                        return this.scannedAddrs.Count(addr=>!peripheralDatabase[addr].isConnected) >= satisfiedNum;
+                    })
+                );
 
-                    // Searching Period
-                    await UniTask.Delay(200);
-
-                    // 待機時間を超えた場合は一旦関数を終了する
-                    var elapsed = Time.time - start_time;
-                    if (waitSeconds <= elapsed) break;
-                }
-
-                peripheralList.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
-                var nearPeripherals = peripheralList.GetRange(0, Mathf.Min(satisfiedNum, peripheralList.Count)).ToArray();
                 this.isScanning = false;
+                await UniTask.Delay(200);
+
+                var peripherals = this.peripheralList;
+                peripherals.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
+                var nearPeripherals = peripherals.GetRange(0, Mathf.Min(satisfiedNum, peripherals.Count)).ToArray();
                 return nearPeripherals;
             }
-            public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
+            public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f)
             {
-                this.satisfiedNumForAsync = satisfiedNum;
-                this.coroutineObject = coroutineObject;
-                this.callback = callback;
-                this.autoRunning = autoRunning;
-                this.coroutineObject.StartCoroutine(this.ScanCoroutine(satisfiedNum, callback));
-            }
+                if (this.isScanning) return;
+                isScanning = true;
 
-            public async UniTask StartScan(Action<BLEPeripheralInterface[]> onPeripheralsUpdate, Action onScanEnd = null, float timeoutSeconds = 10f)
-            {
+                this.Scan(onScanUpdate).Forget();
 
+                await UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000));
+                this.isScanning = false;
+                await UniTask.Delay(200);
+                onScanEnd?.Invoke();
             }
 
             // --- private methods ---
-            private IEnumerator ScanCoroutine(int satisfiedNum, Action<BLEPeripheralInterface> callback)
+            private async UniTask Scan(Action<BLEPeripheralInterface[]> onScanUpdate = null)
             {
-                List<GameObject> foundObjs = new List<GameObject>();
-
-                Action<GameObject> foundCallback = obj =>
+                List<string> addrs = new List<string>();
+                while (this.isScanning)
                 {
-                    var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
-                    if (this.isScanning && foundObjs.Count < satisfiedNum &&
-                        !this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
+                    addrs.Clear();
+                    // Search for new cube object
+                    var objs = Array.ConvertAll(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
+                    foreach (var obj in objs)
                     {
-                        foundObjs.Add(obj);
+                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
+                        if (obj.GetComponent<CubeSimulator>().isConnected) continue;
+
+                        var peripheral = new UnityPeripheral(obj) as BLEPeripheralInterface;
+
                         if (this.peripheralDatabase.ContainsKey(peripheral.device_address))
                         {
                             peripheral = this.peripheralDatabase[peripheral.device_address];
@@ -257,60 +193,21 @@ namespace toio
                         else
                         {
                             this.peripheralDatabase.Add(peripheral.device_address, peripheral);
-                            peripheral.AddConnectionListener("CubeScanner.SimImpl", this.OnConnectionEvent);
                         }
-                        callback?.Invoke(peripheral);
-                    }
-                };
-
-                isScanning = true;
-
-                // Scanning Loop
-                while (true)
-                {
-                    // Search for new cube object
-                    var objs = Array.ConvertAll<CubeSimulator, GameObject>(GameObject.FindObjectsOfType<CubeSimulator>(), sim => sim.gameObject);
-                    foreach (var obj in objs)
-                    {
-                        if (!obj.GetComponent<CubeSimulator>().isRunning) continue;
-                        if (!foundObjs.Contains(obj))
-                        {
-                            foundCallback.Invoke(obj);
-                        }
+                        addrs.Add(peripheral.device_address);
                     }
 
-                    // 必要数に達したらスキャン終了
-                    if (satisfiedNum <= foundObjs.Count) break;
+                    lock (locker) {
+                        this.scannedAddrs.Clear();
+                        this.scannedAddrs.AddRange(addrs);
+                    }
+                    onScanUpdate?.Invoke(this.peripheralList.ToArray());
 
                     // Searching Period
-                    yield return new WaitForSeconds(0.2f);
-                }
-
-                isScanning = false;
-            }
-
-            private void OnConnectionEvent(BLEPeripheralInterface peripheral)
-            {
-                if (peripheral.isConnected)
-                {
-                    if (!this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
-                    {
-                        this.connectedPeripheralTable.Add(peripheral.device_address, peripheral);
-                    }
-                }
-                else
-                {
-                    if (this.connectedPeripheralTable.ContainsKey(peripheral.device_address))
-                    {
-                        this.connectedPeripheralTable.Remove(peripheral.device_address);
-                    }
-                    if (!this.isScanning && this.autoRunning)
-                    {
-                        if (this.coroutineObject != null)
-                            this.NearScanAsync(this.satisfiedNumForAsync, this.coroutineObject, this.callback, this.autoRunning);
-                    }
+                    await UniTask.Delay(200);
                 }
             }
+
         }
 
 
@@ -383,7 +280,7 @@ namespace toio
                 await UniTask.WhenAny(
                     UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
-                        return this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) > satisfiedNum;
+                        return this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) >= satisfiedNum;
                     })
                 );
 
@@ -399,14 +296,14 @@ namespace toio
 
             }
 
-            public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float timeoutSeconds = 10f)
+            public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f)
             {
                 if (this.isScanning) return;
                 this.isScanning = true;
                 await this.RequestDevice().Timeout(TimeSpan.FromSeconds(1));
                 this.Scan(onScanUpdate);
 
-                await UniTask.Delay((int)Mathf.Max(0, timeoutSeconds * 1000));
+                await UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000));
                 this.device?.StopScan();
                 this.isScanning = false;
                 onScanEnd?.Invoke();
