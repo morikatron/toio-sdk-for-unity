@@ -137,13 +137,6 @@ namespace toio
             return cubes.ToArray();
         }
 
-        public virtual void MultiConnectAsync(int cubeNum, MonoBehaviour coroutineObject, Action<Cube, CONNECTION_STATUS> connectedAction =null, bool autoRunning=true)
-        {
-            // @todo remove
-            this.connectedAction = connectedAction;
-            // this.scanner.NearScanAsync(cubeNum, coroutineObject, this.OnPeripheralScanned, autoRunning);
-        }
-
         public virtual void Disconnect(Cube cube)
         {
             this.connecter.Disconnect(cube);
