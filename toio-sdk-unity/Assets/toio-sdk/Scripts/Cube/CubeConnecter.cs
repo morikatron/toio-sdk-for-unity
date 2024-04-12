@@ -184,7 +184,6 @@ namespace toio
                         this.isConnecting = false;
                         return null;
                     }
-                    Debug.Log(version);
 
                     // Instantiate CubeReal
                     CubeReal cube = null;
