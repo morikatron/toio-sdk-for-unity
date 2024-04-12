@@ -74,7 +74,6 @@ namespace toio
                     float sinz_cosy = 2 * (w * z + x * y);
                     float cosz_cosy = 1 - 2 * (y * y + z * z);
                     eulers.z = Mathf.Atan2(sinz_cosy, cosz_cosy) * 180/Mathf.PI;
-                    Debug.Log(eulers);
 
                     if (q != this.quaternion)
                     {

@@ -5,6 +5,8 @@ using Cysharp.Threading.Tasks;
 
 public class Sample_Sensor : MonoBehaviour
 {
+    public ConnectType connectType = ConnectType.Real;
+
     Cube cube;
 
     Text textBattery;
@@ -49,8 +51,8 @@ public class Sample_Sensor : MonoBehaviour
     private async UniTask Connect()
     {
         // Cube の接続
-        var peripheral = await new CubeScanner(ConnectType.Real).NearestScan();
-        cube = await new CubeConnecter(ConnectType.Real).Connect(peripheral);
+        var peripheral = await new CubeScanner(connectType).NearestScan();
+        cube = await new CubeConnecter(connectType).Connect(peripheral);
         // モーター速度の読み取りをオンにする
         await cube.ConfigMotorRead(true);
 
