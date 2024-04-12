@@ -184,6 +184,7 @@ namespace toio
                         this.isConnecting = false;
                         return null;
                     }
+                    Debug.Log(version);
 
                     // Instantiate CubeReal
                     CubeReal cube = null;
@@ -201,6 +202,9 @@ namespace toio
                         case "2.3.0":
                             cube = new CubeReal_ver2_3_0(peripheral);
                             break;
+                        case "2.4.0":
+                            cube = new CubeReal_ver2_4_0(peripheral);
+                            break;
                         default:
                             // Basically, BLE protocol version has backward compatibility,
                             // so consider unknown version as the latest version.
@@ -208,7 +212,7 @@ namespace toio
                             // TODO:
                             // - patch(build) number can be ignored (should be?)
                             // - major number should be checked
-                            cube = new CubeReal_ver2_3_0(peripheral);
+                            cube = new CubeReal_ver2_4_0(peripheral);
                             break;
                     }
                     await cube.Initialize(characteristicTable);

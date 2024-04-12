@@ -87,6 +87,17 @@ namespace toio
         public override async UniTask ConfigAttitudeSensor(AttitudeFormat format, int intervalMs, AttitudeNotificationType notificationType,
             float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
         {
+            // Check format
+            if (format != AttitudeFormat.Eulers) {
+                Debug.LogWarning("Only Eulers format is supported in v2.3.0.");
+                format = AttitudeFormat.Eulers;
+            }
+            await this._ConfigAttitudeSensor(format, intervalMs, notificationType, timeOutSec, callback, order);
+        }
+
+        protected async UniTask _ConfigAttitudeSensor(AttitudeFormat format, int intervalMs, AttitudeNotificationType notificationType,
+            float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
             if (this.attitudeSensorRequest == null) this.attitudeSensorRequest = new RequestInfo(this);
             if (!this.isConnected || !this.isInitialized)
             {
@@ -102,7 +113,7 @@ namespace toio
             bool availabe = await this.attitudeSensorRequest.GetAccess(Time.time + timeOutSec, callback);
             if (!availabe) return;
 
-            this.attitudeFormat = format;
+            this.requestedAttitudeFormat = format;
 
             this.attitudeSensorRequest.request = () =>
             {
@@ -121,8 +132,15 @@ namespace toio
         {
             if (!this.isConnected) { return; }
 
-            byte[] buff = new byte[1];
-            buff[0] = 0x82;
+            // Check format
+            if (format != AttitudeFormat.Eulers) {
+                Debug.LogWarning("Only Eulers format is supported in v2.3.0.");
+                format = AttitudeFormat.Eulers;
+            }
+
+            byte[] buff = new byte[2];
+            buff[0] = 0x83;
+            buff[1] = (byte) format;
 
             this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "RequestMagneticSensor");
         }
@@ -157,11 +175,6 @@ namespace toio
                 if (this.attitudeSensorRequest != null)
                     this.attitudeSensorRequest.hasReceivedData = true;
                 AttitudeFormat format = (AttitudeFormat)data[1];
-                if (format != this.attitudeFormat)
-                {
-                    Debug.LogWarning("Received attitude foramt does not match this.attitudeSensorFormat.");
-                    this.attitudeFormat = format;
-                }
 
                 if (format == AttitudeFormat.Eulers)
                 {
@@ -169,47 +182,12 @@ namespace toio
                     int pitch = BitConverter.ToInt16(data, 4);
                     int yaw = BitConverter.ToInt16(data, 6);
                     Vector3 eulers = new Vector3(roll, pitch, yaw);
-                    // TODO ファームウェアからのオイラーとクォータニオンの座標系が不一致のため、変換しない
-                    // 仕様書により、「回転順序はYaw（ヨー/Z軸）、Pitch（ピッチ/Y軸）、Roll（ロール/X軸）の順です。」 ※仕様書の xyz は unity のzxy に相当する。
-                    // Quaternion.Euler の順序が zxy の為、仕様書通りの zyx を組むために掛け算をする。
-                    // Quaternion q = Quaternion.Euler(roll,0,0) * Quaternion.Euler(0,pitch,0) * Quaternion.Euler(0,0,yaw);
 
                     if (eulers != this.eulers)
                     {
                         this.eulers = eulers;
-                        this.quaternion = Quaternion.identity;
-                        this.attitudeCallback?.Notify(this);
-                    }
-                }
-                else if (format == AttitudeFormat.Quaternion)
-                {
-                    float w = BitConverter.ToInt16(data, 2) / 10000f;
-                    float x = BitConverter.ToInt16(data, 4) / 10000f;
-                    float y = BitConverter.ToInt16(data, 6) / 10000f;
-                    float z = BitConverter.ToInt16(data, 8) / 10000f;
-                    Quaternion q = new Quaternion(x, y, z, w);
-
-                    // TODO ファームウェアからのオイラーとクォータニオンの座標系が不一致のため、変換しない
-                    // Quaternion to ZYX-ordered eulers
-                    // Vector3 eulers = Vector3.zero;
-                    // float sinx_cosy = 2 * (w * x + y * z);
-                    // float cosx_cosy = 1 - 2 * (x * x + y * y);
-                    // eulers.x = Mathf.Atan2(sinx_cosy, cosx_cosy) * 180/Mathf.PI;
-
-                    // float siny = 2 * (w * y - z * x);
-                    // if (Mathf.Abs(siny) >= 1)
-                    //     eulers.y = 90 * Mathf.Sign(siny);
-                    // else
-                    //     eulers.y = Mathf.Asin(siny) * 180/Mathf.PI;
-
-                    // float sinz_cosy = 2 * (w * z + x * y);
-                    // float cosz_cosy = 1 - 2 * (y * y + z * z);
-                    // eulers.z = Mathf.Atan2(sinz_cosy, cosz_cosy) * 180/Mathf.PI;
-
-                    if (q != this.quaternion)
-                    {
-                        this.eulers = Vector3.zero;
-                        this.quaternion = q;
+                        // 仕様書により、「回転順序はYaw（ヨー/Z軸）、Pitch（ピッチ/Y軸）、Roll（ロール/X軸）の順です。」
+                        this.quaternion = Quaternion.Euler(0,0,yaw) *  Quaternion.Euler(0,pitch,0) * Quaternion.Euler(roll,0,0);
                         this.attitudeCallback?.Notify(this);
                     }
                 }
