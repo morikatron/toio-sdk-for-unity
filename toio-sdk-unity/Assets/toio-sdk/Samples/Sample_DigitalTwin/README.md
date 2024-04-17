@@ -3,8 +3,9 @@
 このサンプルはリアルキューブの動きをシミュレーターのキューブにリアルタイムに反映する、いわゆる「ディジタルツイン」を実現したものです。
 
 スクリプトが２つあります。
-- `DigitalTwinBinder.cs`：ゴースト機能を実装した再利用できるもの
-- `Sample_DigitalTwin.cs`：`DigitalTwinBinder.cs`を利用するサンプル
+- `DigitalTwinBinder.cs`：ゴースト機能を実装したスクリプト
+- `DigitalTwinConnector.cs`：キューブと接続するスクリプト
+- `Sample_DigitalTwin.cs`：メインスクリプト、接続したキューブを制御するスクリプト
 
 ### サンプルの使い方
 - リアルキューブと接続し、その動きをシミュレーター上のディジタルツインに反映する。
