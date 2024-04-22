@@ -69,7 +69,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 
 各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考してください。
 
-カスタマイズの方法は[「使い方 - シミュレータ」](usage_simulator.md#21-インスペクター)を参照してください。
+カスタマイズの方法は[「使い方 - シミュレータ」](usage_simulator.md#カスタマイズ)を参照してください。
 
 # 3. StandardID Prefab
 

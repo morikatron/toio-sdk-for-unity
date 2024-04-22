@@ -62,7 +62,7 @@ from the "Type" list of the script Mat.cs in Unity inspector to change the mat's
 
 For specifications of each type, please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_position_id)  and ["Developer's Mat (tentative name)"](https://toio.io/blog/detail/20200423-1.html).
 
-For customization instructions, please refer to ["How to Use - Simulator"](usage_simulator.md#21-inspector).
+For customization instructions, please refer to ["How to Use - Simulator"](usage_simulator.md#Customize).
 
 # 3. StandardID Prefab
 
