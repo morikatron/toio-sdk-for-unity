@@ -20,7 +20,6 @@ public class Sample_DigitalTwin : MonoBehaviour
 
         foreach (var cube in this.connector.cubes)
         {
-            Debug.Log(cube.localName);
             // Create CubeHandle for new cube
             if (!this.handles.ContainsKey(cube.addr))
                 this.handles.Add(cube.addr, new CubeHandle(cube));
