@@ -1,6 +1,9 @@
 ## Sample_ConnectName
 
-このサンプルはスキャンしたキューブのLocal Nameを画面にリストアップし、ユーザーが選択して接続できるものです。
+このサンプルは、Local Name指定してキューブと接続するものです。
+2通りの方法（シーン）が含まれています：
+- `Sample_ConnectNameProperty`：Unityエディタのプロパティで、名前を事前に設定し、対応キューブと接続する
+- `Sample_ConnectNameUI`：スキャンしたキューブのLocal Nameを画面にリストアップし、ユーザーが選択して接続・切断する
 
 ### 技術要点
 
@@ -12,7 +15,13 @@ this.scanner.StartScan(OnScanUpdate, OnScanEnd, 20).Forget();  // Forget は非�
 
 入力パラメータにある`OnScanUpdate`と`OnScanEnd`は、それぞれスキャンしたキューブの受取と、スキャン終了処理を行うコールバック関数です。
 
-本サンプルの `OnScanUpdate` はスキャン結果を一旦変数`scannedPeripherals`に保存し、`Update`関数でGUIのリストの更新を行っています。以下が主な更新コードです。
+#### Sample_ConnectNameProperty の場合
+
+スキャンしたキューブを設定した名前と比較して、マッチした場合は接続を行います。
+
+#### Sample_ConnectNameUI の場合
+
+スキャン結果を一旦変数`scannedPeripherals`に保存し、`Update`関数でGUIのリストの更新を行っています。以下が主な更新コードです。
 
 ```csharp
 void Update ()
@@ -42,6 +51,6 @@ void OnScanEnd()
 
 ### 注意事項
 
-スキャンされたキューブが電源オフにされた場合、すぐには`OnScanUpdate`が返答したリストから消えません。
+Sample_ConnectNameUI でスキャンされたキューブが電源オフにされた場合、すぐには`OnScanUpdate`が返答したリストから消えません。
 その状態で接続しようとしますと、基本的にタイムアウトになります。
 しかしiOS/MacOSの場合、2回タイムアウトするとBLEデバイス自体へのアクセスができなくなる不具合が発生する可能性があります。
