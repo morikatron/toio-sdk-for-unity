@@ -11,6 +11,7 @@ namespace toio
         UniTask<Cube> Connect(BLEPeripheralInterface peripheral);
         UniTask<Cube[]> Connect(BLEPeripheralInterface[] peripherals);
         void Disconnect(Cube cube);
+        void Disconnect(BLEPeripheralInterface peripheral);
         [Obsolete("Deprecated. Please use ReConnect(Cube cube) instead.", false)]
         UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral);
         UniTask ReConnect(Cube cube);
@@ -54,6 +55,10 @@ namespace toio
         public void Disconnect(Cube cube)
         {
             this.impl.Disconnect(cube);
+        }
+        public void Disconnect(BLEPeripheralInterface peripheral)
+        {
+            this.impl.Disconnect(peripheral);
         }
         public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
         {
@@ -105,6 +110,10 @@ namespace toio
             public void Disconnect(Cube cube)
             {
                 (cube as CubeUnity).peripheral.Disconnect();
+            }
+            public void Disconnect(BLEPeripheralInterface peripheral)
+            {
+                peripheral.Disconnect();
             }
             public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)
             {
@@ -192,6 +201,9 @@ namespace toio
                         case "2.3.0":
                             cube = new CubeReal_ver2_3_0(peripheral);
                             break;
+                        case "2.4.0":
+                            cube = new CubeReal_ver2_4_0(peripheral);
+                            break;
                         default:
                             // Basically, BLE protocol version has backward compatibility,
                             // so consider unknown version as the latest version.
@@ -199,7 +211,7 @@ namespace toio
                             // TODO:
                             // - patch(build) number can be ignored (should be?)
                             // - major number should be checked
-                            cube = new CubeReal_ver2_3_0(peripheral);
+                            cube = new CubeReal_ver2_4_0(peripheral);
                             break;
                     }
                     await cube.Initialize(characteristicTable);
@@ -227,6 +239,10 @@ namespace toio
             public void Disconnect(Cube cube)
             {
                 (cube as CubeReal).peripheral.Disconnect();
+            }
+            public void Disconnect(BLEPeripheralInterface peripheral)
+            {
+                peripheral.Disconnect();
             }
 
             public async UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral)

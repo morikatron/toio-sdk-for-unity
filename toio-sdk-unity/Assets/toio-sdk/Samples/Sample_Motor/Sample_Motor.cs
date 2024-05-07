@@ -11,7 +11,7 @@ public class Sample_Motor : MonoBehaviour
     async void Start()
     {
         // Cube の接続
-        var peripherals = await new NearScanner(2).Scan();
+        var peripherals = await new CubeScanner().NearScan(2, 20);
         cubes = await new CubeConnecter().Connect(peripherals);
 
         foreach (var cube in cubes)

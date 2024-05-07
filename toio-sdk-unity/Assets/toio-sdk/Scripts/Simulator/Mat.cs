@@ -145,6 +145,7 @@ namespace toio.Simulator
             return mesh;
         }
 
+        public bool IsUnityCoordInside(float x, float y) => x>=xMin && x<=xMax && y>=yMin && y<=yMax;
 
         // ==== 角度変換関数 ====
 

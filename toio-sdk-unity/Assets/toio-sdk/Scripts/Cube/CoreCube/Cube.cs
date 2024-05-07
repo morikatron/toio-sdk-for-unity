@@ -564,7 +564,7 @@ namespace toio
         // 姿勢角検出の設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-2
         public enum AttitudeFormat: byte
         {
-            Eulers = 1, Quaternion = 2
+            Eulers = 1, Quaternion = 2, PreciseEulers = 3,
         }
 
         // 姿勢角検出の設定 https://toio.github.io/toio-spec/docs/ble_configuration#通知条件-2

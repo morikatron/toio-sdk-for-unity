@@ -10,7 +10,7 @@ namespace toio.tutorial
 
         async void Start()
         {
-            var peripheral = await new NearestScanner().Scan();
+            var peripheral = await new CubeScanner().NearestScan();
             cube = await new CubeConnecter().Connect(peripheral);
             // コールバック登録
             cube.buttonCallback.AddListener("EventScene", OnPressButton);

@@ -5,11 +5,18 @@ namespace toio
 {
     public class BLEMobileDevice : BLEDeviceInterface
     {
-        public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action)
+        public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface[]> action)
         {
-            Ble.StartScan(serviceUUIDs, (device_address, device_name, rssi, bytes) =>
+            Ble.StartScan(serviceUUIDs, (infos) =>
             {
-                action(new BLEMobilePeripheral(serviceUUIDs, device_address, device_name, rssi));
+                // device_address, device_name, rssi, bytes
+                var peripherals = new BLEPeripheralInterface[infos.Length];
+                for (int i = 0; i < infos.Length; i++)
+                {
+                    var (device_address, device_name, rssi, bytes) = infos[i];
+                    peripherals[i] = new BLEMobilePeripheral(serviceUUIDs, device_address, device_name, rssi);
+                }
+                action(peripherals);
             });
         }
 

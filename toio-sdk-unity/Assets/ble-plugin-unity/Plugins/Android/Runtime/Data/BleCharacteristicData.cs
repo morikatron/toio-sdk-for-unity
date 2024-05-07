@@ -4,7 +4,7 @@
 #endif
 
 
-#if UNITY_ANDROID_RUNTIME
+#if UNITY_ANDROID_RUNTIME || MRK_DEV
 namespace toio.Android.Data
 {
     public struct BleCharacteristicData

@@ -9,7 +9,7 @@ public class Sample_UI_OneShot_OnWebGL : MonoBehaviour
 
     void Start()
     {
-        cubeManager = new CubeManager();
+        cubeManager = new CubeManager(ConnectType.Real);
     }
 
     public async void Connect()
