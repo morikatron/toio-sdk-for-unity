@@ -5,6 +5,8 @@ using Cysharp.Threading.Tasks;
 
 public class Sample_Sensor : MonoBehaviour
 {
+    public ConnectType connectType = ConnectType.Real;
+
     Cube cube;
 
     Text textBattery;
@@ -49,8 +51,8 @@ public class Sample_Sensor : MonoBehaviour
     private async UniTask Connect()
     {
         // Cube の接続
-        var peripheral = await new CubeScanner().NearestScan();
-        cube = await new CubeConnecter().Connect(peripheral);
+        var peripheral = await new CubeScanner(connectType).NearestScan();
+        cube = await new CubeConnecter(connectType).Connect(peripheral);
         // モーター速度の読み取りをオンにする
         await cube.ConfigMotorRead(true);
 
@@ -100,7 +102,7 @@ public class Sample_Sensor : MonoBehaviour
     int attitudeMode = 0;
     public async void OnSwitchAttitude()
     {
-        this.attitudeMode = (((int)this.attitudeMode + 1) % 3);
+        this.attitudeMode = ((int)this.attitudeMode + 1) % 4;
         if (attitudeMode == 0)
         {
             // The only way to Disable attitude notifications is to set interval to 0
@@ -110,21 +112,14 @@ public class Sample_Sensor : MonoBehaviour
             );
             this.textAttitude.text = "AttitudeSensor Off";
         }
-        else if (attitudeMode == 1)
+        else
         {
+            var format = (Cube.AttitudeFormat) attitudeMode;
             await cube.ConfigAttitudeSensor(
-                Cube.AttitudeFormat.Eulers, intervalMs: 500,                // 精度10ms
+                format, intervalMs: 500,                // 精度10ms
                 notificationType: Cube.AttitudeNotificationType.OnChanged
             );
-            cube.RequestAttitudeSensor(Cube.AttitudeFormat.Eulers);
-        }
-        else if (attitudeMode == 2)
-        {
-            await cube.ConfigAttitudeSensor(
-                Cube.AttitudeFormat.Quaternion, intervalMs: 500,            // 精度10ms
-                notificationType: Cube.AttitudeNotificationType.OnChanged
-            );
-            cube.RequestAttitudeSensor(Cube.AttitudeFormat.Quaternion);
+            cube.RequestAttitudeSensor(format);
         }
     }
 
@@ -272,9 +267,13 @@ public class Sample_Sensor : MonoBehaviour
         {
             this.textAttitude.text = "Eulers=" + eulers.ToString("F0");
         }
-        else
+        else if (this.attitudeMode == 2)
         {
             this.textAttitude.text = "Quat=" + q.ToString("F2");
+        }
+        else if (this.attitudeMode == 3)
+        {
+            this.textAttitude.text = "Eulers=" + eulers.ToString("F2");
         }
     }
 
