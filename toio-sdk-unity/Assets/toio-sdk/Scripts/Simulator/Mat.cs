@@ -97,7 +97,7 @@ namespace toio.Simulator
             var realW = (xMax-xMin)/DotPerM;
             var realH = (yMax-yMin)/DotPerM;
             var scaleW = sprite.pixelsPerUnit/(sprite.rect.width/realW);
-            var scaleH = sprite.pixelsPerUnit/(sprite.rect.width/realH);
+            var scaleH = sprite.pixelsPerUnit/(sprite.rect.height/realH);
             this.transform.localScale = new Vector3(scaleW, scaleH, 1);
         }
 
