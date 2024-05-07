@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
 using System.Linq;
 
-public class Sample_ConnectName : MonoBehaviour
+public class Sample_ConnectNameUI : MonoBehaviour
 {
     public GameObject cubeItemPrefab;
     public ConnectType connectType = ConnectType.Real;
