@@ -32,6 +32,8 @@ As a preliminary step, go to Apple menu in the upper left corner of the screen a
 If your OS version is <b>10.x</b> , <b>11.x</b> or <b>12.x</b>, please refer to [How to download a pre-built bundle file](usage_macble.md#how-to-download-a-pre-built-bundle-file).
 For other OS versions, please refer to [How to build the bundle file on your own PC](usage_macble.md#how-to-build-the-bundle-file-on-your-own-pc).
 
+Please configure Unity in the Bluetooth permission list in macOS security settings if it's not already included. (Reference: [macOS User Guide](https://support.apple.com/guide/mac-help/mchl211c911f/mac))
+
 <br>
 
 ### How to download a pre-built bundle file

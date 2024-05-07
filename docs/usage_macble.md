@@ -32,6 +32,8 @@ MacOS 用の BLE プラグインを利用する事で、アプリをビルドせ
 確認したOSバージョンが <b>10.x</b> <b>11.x</b> <b>12.x</b> の場合は、[ビルド済みのbundleファイルをダウンロードする方法](usage_macble.md#ビルド済みのbundleファイルをダウンロードする方法)を参考に作業を進めてください。
 それら以外のOSバージョンの場合は、[自分のPCでbundleファイルをビルドする方法](usage_macble.md#自分のpcでbundleファイルをビルドする方法)を参考に作業を進めてください。
 
+macOSのセキュリティ設定でBluetoothの許可リストにUnityが入っていない場合は設定してください。（参考：[macOSユーザガイド](https://support.apple.com/guide/mac-help/mchl211c911f/mac)）
+
 <br>
 
 ### ビルド済みのbundleファイルをダウンロードする方法

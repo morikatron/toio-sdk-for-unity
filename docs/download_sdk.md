@@ -25,7 +25,8 @@ toio SDK for Unity では、Unity に最適化された非同期処理ライブ�
 UniTask のインストールは以下の手順で行います（2023年7月20日現在。Unity 2022.3.2f1 LTS）。
 1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開き
 1. [+] アイコンから Add package from git URL... を選び
-1. https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask を追加する
+1. 以下のURLを追加する
+    - https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask
 
 以下のドキュメントには、UniTaskのインストール手順やスクリーンショットが掲載されていますので、参考にしてください。
 * [UniTask の Github リポジトリの説明文](https://github.com/Cysharp/UniTask#install-via-git-url)
