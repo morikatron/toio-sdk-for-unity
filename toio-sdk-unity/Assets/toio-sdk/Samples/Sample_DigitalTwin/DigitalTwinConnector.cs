@@ -1,54 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using toio;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 
-public class DigitalTwinConnector : MonoBehaviour
+
+namespace toio.Samples.Sample_DigitalTwin
 {
-    public ConnectType connectType = ConnectType.Real;
-
-    public List<string> localNamesToConnect;
-    public bool logScanned = true;
-
-
-    public List<Cube> cubes {get; private set;} = new List<Cube>();
-    private List<string> connectingNames = new List<string>();
-    private DigitalTwinBinder binder;
-
-    void Start()
+    public class DigitalTwinConnector : MonoBehaviour
     {
-        this.binder = GetComponent<DigitalTwinBinder>();
+        public ConnectType connectType = ConnectType.Real;
 
-        if (this.connectType != ConnectType.Real){
-            this.binder.enabled = false;
+        public List<string> localNamesToConnect;
+        public bool logScanned = true;
+
+
+        public List<Cube> cubes {get; private set;} = new List<Cube>();
+        private List<string> connectingNames = new List<string>();
+        private DigitalTwinBinder binder;
+
+        void Start()
+        {
+            this.binder = GetComponent<DigitalTwinBinder>();
+
+            if (this.connectType != ConnectType.Real){
+                this.binder.enabled = false;
+            }
+
+            new CubeScanner(this.connectType).StartScan(OnScan).Forget();
         }
 
-        new CubeScanner(this.connectType).StartScan(OnScan).Forget();
-    }
+        async void OnScan(BLEPeripheralInterface[] peripherals) {
+            if (peripherals.Length == 0) return;
+            if (logScanned) {
+                Debug.Log(
+                    "Scanned: " + string.Join(", ", peripherals.ToList().ConvertAll(p => p.device_name))
+                );
+            }
 
-    async void OnScan(BLEPeripheralInterface[] peripherals) {
-        if (peripherals.Length == 0) return;
-        if (logScanned) {
-            Debug.Log(
-                "Scanned: " + string.Join(", ", peripherals.ToList().ConvertAll(p => p.device_name))
-            );
-        }
+            foreach (var peri in peripherals) {
+                if (!this.localNamesToConnect.Contains(peri.device_name)) continue;
+                if (this.connectingNames.Contains(peri.device_name)) continue;
 
-        foreach (var peri in peripherals) {
-            if (!this.localNamesToConnect.Contains(peri.device_name)) continue;
-            if (this.connectingNames.Contains(peri.device_name)) continue;
+                // Connecting
+                this.connectingNames.Add(peri.device_name);
+                var cube = await new CubeConnecter(this.connectType).Connect(peri);
+                this.connectingNames.Remove(peri.device_name);
+                this.cubes.Add(cube);
 
-            // Connecting
-            this.connectingNames.Add(peri.device_name);
-            var cube = await new CubeConnecter(this.connectType).Connect(peri);
-            this.connectingNames.Remove(peri.device_name);
-            this.cubes.Add(cube);
-
-            // Bind real cubes
-            if (this.connectType == ConnectType.Real){
-                this.binder.cubes = this.cubes.ToArray();
+                // Bind real cubes
+                if (this.connectType == ConnectType.Real){
+                    this.binder.cubes = this.cubes.ToArray();
+                }
             }
         }
     }

@@ -1,43 +1,46 @@
 ﻿using UnityEngine;
-using toio;
 using toio.Navigation;
 using toio.MathUtils;
 
-public class Sample_Circling_OnWebGL : MonoBehaviour
+
+namespace toio.Samples.Sample_WebGL
 {
-    CubeManager cm;
-    public Navigator.Mode naviMode = Navigator.Mode.BOIDS;
-
-    void Start()
+    public class Sample_Circling_OnWebGL : MonoBehaviour
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        CubeManager cm;
+        public Navigator.Mode naviMode = Navigator.Mode.BOIDS;
 
-        cm = new CubeManager();
-    }
-
-    public async void Connect()
-    {
-        await cm.SingleConnect();
-
-        foreach (var navi in cm.navigators)
+        void Start()
         {
-            navi.usePred = true;
-            navi.mode = naviMode;
-            // navi.avoid.useSafety = false;
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
+
+            cm = new CubeManager();
         }
-    }
 
-    void Update()
-    {
-        var tar = Vector.fromRadMag(Time.time/1, 160) + new Vector(250, 250);
-        if (cm.synced){
+        public async void Connect()
+        {
+            await cm.SingleConnect();
 
-            for (int i=0; i<cm.navigators.Count; i++)
+            foreach (var navi in cm.navigators)
             {
-                var navi = cm.navigators[i];
+                navi.usePred = true;
                 navi.mode = naviMode;
-                var mv = navi.Navi2Target(tar, maxSpd:60).Exec();
+                // navi.avoid.useSafety = false;
+            }
+        }
+
+        void Update()
+        {
+            var tar = Vector.fromRadMag(Time.time/1, 160) + new Vector(250, 250);
+            if (cm.synced){
+
+                for (int i=0; i<cm.navigators.Count; i++)
+                {
+                    var navi = cm.navigators[i];
+                    navi.mode = naviMode;
+                    var mv = navi.Navi2Target(tar, maxSpd:60).Exec();
+                }
             }
         }
     }

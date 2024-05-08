@@ -1,44 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using toio;
 
-public class Sample_Scenes_scene1 : MonoBehaviour
+
+namespace toio.Samples.Sample_Scenes
 {
-    private CubeManager cm;
-
-    private static bool first = true;
-
-    async void Start()
+    public class Sample_Scenes_scene1 : MonoBehaviour
     {
-        if (Sample_Scenes_Preload.Keep_script)
+        private CubeManager cm;
+
+        private static bool first = true;
+
+        async void Start()
         {
-            gameObject.SetActive(false);
+            if (Sample_Scenes_Preload.Keep_script)
+            {
+                gameObject.SetActive(false);
+            }
+
+            cm = Sample_Scenes_Preload.cm;
+
+            if (first)
+            {
+                await cm.MultiConnect(4);
+                first = false;
+            }
+
+            Invoke("ChangeScene", 2f);
         }
 
-        cm = Sample_Scenes_Preload.cm;
-
-        if (first)
+        void Update()
         {
-            await cm.MultiConnect(4);
-            first = false;
+            if (cm!=null && cm.synced)
+            for (int i=0; i<cm.navigators.Count; i++)
+            {
+                cm.cubes[i].TurnLedOn(0, 255, 0, 1000);
+            }
         }
 
-        Invoke("ChangeScene", 2f);
-    }
-
-    void Update()
-    {
-        if (cm!=null && cm.synced)
-        for (int i=0; i<cm.navigators.Count; i++)
+        void ChangeScene()
         {
-            cm.cubes[i].TurnLedOn(0, 255, 0, 1000);
+            SceneManager.LoadScene("scene2");
         }
-    }
-
-    void ChangeScene()
-    {
-        SceneManager.LoadScene("scene2");
     }
 }
