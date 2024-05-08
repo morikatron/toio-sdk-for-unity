@@ -28,6 +28,7 @@ namespace toio
         UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f);
         UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3.0f);
         UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f);
+        void StopScan();
     }
 
     public class CubeScanner : CubeScannerInterface
@@ -89,6 +90,7 @@ namespace toio
         {
             await this.impl.StartScan(onScanUpdate, onScanEnd, waitSeconds);
         }
+        public void StopScan() { this.impl.StopScan(); }
 
         /// <summary>
         /// Impl for UnitySimulator.
@@ -168,6 +170,9 @@ namespace toio
                 this.isScanning = false;
                 await UniTask.Delay(200);
                 onScanEnd?.Invoke();
+            }
+            public void StopScan() {
+                this.isScanning = false;
             }
 
             // --- private methods ---
@@ -304,9 +309,13 @@ namespace toio
                 this.Scan(onScanUpdate);
 
                 await UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000));
+                this.StopScan();
+                onScanEnd?.Invoke();
+            }
+
+            public void StopScan() {
                 this.device?.StopScan();
                 this.isScanning = false;
-                onScanEnd?.Invoke();
             }
 
             // --- private methods ---
