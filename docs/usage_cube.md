@@ -25,7 +25,7 @@ Unity システム上で動くキューブ(以下シミュレータ) と 現実�
 
 現在(2023/07/20)、キューブのBLE プロトコルバージョンは 4 つです。
 
-`2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`
+`2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`　`2.4.0`
 
 toio SDK for Unity では、現実に動作するキューブクラス(Real 対応)、シミュレータで動作するキューブクラス(Sim 対応)の 2 つの内部実装が用意されています。それぞれ内部実装が異なっているため、対応状況に違いがあります。<br>
 以下に実装対応表を示します。
@@ -92,13 +92,28 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 
 | 機能タイプ          | 機能                                                                                                                                   | Real 対応状況 | Sim 対応状況 |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
-| 磁気センサー        | [磁力の検出](https://toio.github.io/toio-spec/docs/ble_magnetic_sensor#磁力の検出-)                                                     | o             | o            |
-| 姿勢角検出          | [姿勢角検出の要求](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角検出の要求)                                | o             | o            |
-|                    | [姿勢角情報の取得（オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得オイラー角での通知) | o        | o            |
-|                    | [姿勢角情報の取得（クォータニオンでの通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得クォータニオンでの通知) | o | o            |
-| 設定               | [磁気センサーの設定 (updated)](https://toio.github.io/toio-spec/docs/ble_configuration#磁気センサーの設定-)                               | o             | o            |
-|                    | [姿勢角検出の設定](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定-)                                            | o             | o            |
-|                    | [姿勢角検出の設定の応答](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定の応答-)                                 | o             | o            |
+| 磁気センサー        | [磁力の検出](https://toio.github.io/toio-spec/docs/2.3.0/ble_magnetic_sensor#磁力の検出-)                                                     | o             | o            |
+| 姿勢角検出          | [姿勢角検出の要求](https://toio.github.io/toio-spec/docs/2.3.0/ble_high_precision_tilt_sensor#姿勢角検出の要求)                                | o             | o            |
+|                    | [姿勢角情報の取得（オイラー角での通知）](https://toio.github.io/toio-spec/docs/2.3.0/ble_high_precision_tilt_sensor#姿勢角情報の取得オイラー角での通知) | o        | o            |
+| シリアライズ情報    | [シリアライズ情報](https://toio.github.io/toio-spec/docs/2.3.0/ble_serialized_information)                                                    | x             | x            |
+| 設定               | [磁気センサーの設定 (updated)](https://toio.github.io/toio-spec/docs/2.3.0/ble_configuration#磁気センサーの設定-)                               | o             | o            |
+|                    | [姿勢角検出の設定](https://toio.github.io/toio-spec/docs/2.3.0/ble_configuration#姿勢角検出の設定-)                                            | o             | o            |
+|                    | [姿勢角検出の設定の応答](https://toio.github.io/toio-spec/docs/2.3.0/ble_configuration#姿勢角検出の設定の応答-)                                 | o             | o            |
+
+#### BLE プロトコルバージョン 2.4.0
+
+| 機能タイプ  | 機能                                                                                                                                   | Real 対応状況 | Sim 対応状況 |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| 姿勢角検出  | [姿勢角検出の要求](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角検出の要求) (updated)                      | o             | o            |
+|            | [姿勢角情報の取得（オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得オイラー角での通知) | o        | o            |
+|            | [姿勢角情報の取得（高精度オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得高精度オイラー角での通知-) | o | o       |
+| 設定       | [姿勢角検出の設定](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定-) (updated)                                  | o             | o            |
+|            | [コネクションインターバル変更要求](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求-)               | x             | x            |
+|            | [コネクションインターバル要求値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得-)        | x             | x            |
+|            | [現在のコネクションインターバル値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得-)    | x             | x            |
+|            | [コネクションインターバル変更要求の応](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求の応-)        | x             | x            |
+|            | [コネクションインターバル要求値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得の応答-) | x         | x            |
+|            | [現在のコネクションインターバル値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得の応答-) | x     | x            |
 
 <br>
 
@@ -141,7 +156,7 @@ public class SimpleScene : MonoBehaviour
     async void Start()
     {
         // start a scanner to find the nearest cube
-        var peripheral = await new NearestScanner().Scan();
+        var peripheral = await new CubeScanner().NearestScan();
 
         // connect to the cube
         var cube = await new CubeConnecter().Connect(peripheral);
@@ -286,9 +301,7 @@ public Vector3 eulers { get; protected set; }
 
 // コアキューブのクォータニオン
 // コールバック機能：attitudeCallback
-// 現時点(2023.07.20)では、コアキューブから取得したクォータニオンは、オイラーと違う座標系のものになっていますので、ご注意ください。
-// （オイラーの方が仕様書通りの座標系になっています。）
-// また、仕様書に規定された座標系は Unity と違いますので、ご注意ください。
+// 仕様書に規定された座標系は Unity と違いますので、ご注意ください。
 public Quaternion quaternion { get; protected set; }
 ```
 
@@ -865,7 +878,7 @@ public UniTask ConfigAttitudeSensor(
 
 - format
   - 定義 : 通知内容の種類
-  - 種類 : Eulers, Quaternion
+  - 種類 : Eulers, Quaternion (2.4.0), PreciseEulers (2.4.0)
 - intervalMs
   - 定義 : 最小通知間隔(ミリ秒)
   - 範囲 : 0~2550、精度は 10ms、1 位が省略される
@@ -909,7 +922,7 @@ public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDE
 
 - format
   - 定義 : 通知内容の種類
-  - 種類 : Eulers, Quaternion
+  - 種類 : Eulers, Quaternion (2.4.0), PreciseEulers (2.4.0)
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
   - 種類 : Weak, Strong
@@ -938,10 +951,6 @@ public enum ConnectType
 ```
 
 ```csharp
-public NearestScanner(ConnectType type = ConnectType.Auto);
-
-public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto);
-
 public CubeScanner(ConnectType type = ConnectType.Auto);
 
 public CubeConnecter(ConnectType type = ConnectType.Auto);
