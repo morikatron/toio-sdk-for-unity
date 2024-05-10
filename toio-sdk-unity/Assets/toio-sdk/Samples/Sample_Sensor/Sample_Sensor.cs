@@ -116,7 +116,7 @@ namespace toio.Samples.Sample_Sensor
             }
             else
             {
-                var format = (Cube.AttitudeFormat) attitudeMode;
+                var format = (Cube.AttitudeFormat) this.attitudeMode;
                 await cube.ConfigAttitudeSensor(
                     format, intervalMs: 500,                // 精度10ms
                     notificationType: Cube.AttitudeNotificationType.OnChanged

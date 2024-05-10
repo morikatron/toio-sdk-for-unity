@@ -32,10 +32,11 @@ namespace toio.Simulator
             v2_0_0,
             v2_1_0,
             v2_2_0,
-            v2_3_0
+            v2_3_0,
+            v2_4_0
         }
         [SerializeField]
-        public Version version = Version.v2_3_0;
+        public Version version = Version.v2_4_0;
         [SerializeField]
         public bool powerStart = true;
         [SerializeField]
@@ -206,7 +207,8 @@ namespace toio.Simulator
                 case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
                 case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
                 case Version.v2_3_0 : this.impl = new CubeSimImpl_v2_3_0(this);break;
-                default : this.impl = new CubeSimImpl_v2_3_0(this);break;
+                case Version.v2_4_0 : this.impl = new CubeSimImpl_v2_4_0(this);break;
+                default : this.impl = new CubeSimImpl_v2_4_0(this);break;
             }
             this._InitPresetSounds();
         }
