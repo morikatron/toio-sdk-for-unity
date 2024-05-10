@@ -169,13 +169,26 @@ namespace toio.Simulator
         /// </summary>
         public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
 
+        // 2.3.0
         // ----- Magnetic Sensor -----
-
         [HideInInspector]
         internal bool isSimulateMagneticSensor = true;
+        /// <summary>
+        /// 磁石の状態
+        /// </summary>
         public Cube.MagnetState magnetState { get {return impl.magnetState;} }
+        /// <summary>
+        /// 磁場
+        /// </summary>
         public Vector3 magneticForce { get {return impl.magneticForce;} }
-
+        /// <summary>
+        /// オイラー角
+        /// </summary>
+        public Vector3 eulers { get {return impl.eulers;} }
+        /// <summary>
+        /// クォータニオン
+        /// </summary>
+        public Quaternion quaternion { get {return impl.quaternion;} }
 
         // ======== Objects ========
         private Rigidbody rb;

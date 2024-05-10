@@ -26,9 +26,9 @@ namespace toio.Simulator
             if (attitudeNotificationInterval > 0)
             {
                 if (attitudeFormat == Cube.AttitudeFormat.Eulers || attitudeFormat == Cube.AttitudeFormat.PreciseEulers)
-                    this.attitudeEulersCallback?.Invoke(this.attitudeEulers);
+                    this.attitudeEulersCallback?.Invoke(this.eulers);
                 else if (attitudeFormat == Cube.AttitudeFormat.Quaternion)
-                    this.attitudeQuatCallback?.Invoke(this.attitudeQuat);
+                    this.attitudeQuatCallback?.Invoke(this.quaternion);
                 this.attitudeNotificationLastTime = Time.time;
             }
         }
@@ -39,9 +39,9 @@ namespace toio.Simulator
             if (attitudeNotificationInterval > 0)
             {
                 if (format == Cube.AttitudeFormat.Eulers || format == Cube.AttitudeFormat.PreciseEulers)
-                    this.attitudeEulersCallback?.Invoke(this.attitudeEulers);
+                    this.attitudeEulersCallback?.Invoke(this.eulers);
                 else if (format == Cube.AttitudeFormat.Quaternion)
-                    this.attitudeQuatCallback?.Invoke(this.attitudeQuat);
+                    this.attitudeQuatCallback?.Invoke(this.quaternion);
                 this.attitudeNotificationLastTime = Time.time;
             }
         }

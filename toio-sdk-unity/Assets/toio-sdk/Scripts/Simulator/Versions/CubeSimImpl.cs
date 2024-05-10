@@ -140,7 +140,10 @@ namespace toio.Simulator
 
         // ---------- 2.3.0 ----------
         // Magnetic Force
-        public virtual void StartNotification_Attitude(System.Action<Vector3> actionE, System.Action<Quaternion> actionQ)
+        public virtual Vector3 magneticForce {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_MagneticForce(System.Action<Vector3> action)
         { NotSupportedWarning(); }
 
         // ============ Light ============
@@ -159,10 +162,13 @@ namespace toio.Simulator
 
         // ============ Attitude ============
         // ---------- 2.3.0 ----------
-        public virtual Vector3 magneticForce {
+        public virtual Vector3 eulers {
             get{ NotSupportedWarning(); return default; }
             protected set{ NotSupportedWarning(); }}
-        public virtual void StartNotification_MagneticForce(System.Action<Vector3> action)
+        public virtual Quaternion quaternion {
+            get{ NotSupportedWarning(); return default; }
+            protected set{ NotSupportedWarning(); }}
+        public virtual void StartNotification_Attitude(System.Action<Vector3> actionE, System.Action<Quaternion> actionQ)
         { NotSupportedWarning(); }
 
 
