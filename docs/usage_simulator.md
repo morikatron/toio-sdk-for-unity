@@ -351,6 +351,19 @@ public uint standardID { get; internal set; }   // 読み取った Standard ID
 public bool onMat { get; internal set; }        // Mat 上にあるか
 public bool onStandardID { get; internal set; }   // StandardID 上にあるか
 public bool isGrounded { get {return onMat || onStandardID; } } // Mat 又は StandardID 上にあるか
+public bool button { get; internal set; }       // ボタン
+public bool sloped { get; internal set; }       // 傾斜状態
+// 2.1.0
+public Cube.PoseType pose { get; internal set; } // 姿勢
+// 2.2.0
+public int shakeLevel { get; internal set; }    // シェイクされたか
+public int leftMotorSpeed { get; internal set; }  // 左タイヤの速度
+public int rightMotorSpeed { get; internal set; } // 右タイヤの速度
+// 2.3.0
+public Cube.MagnetState magnetState { get; internal set; } // 磁石の状態
+public Vector3 magneticForce { get; internal set; }        // 磁場
+public Vector3 eulers { get; internal set; }               // オイラー角
+public Quaternion quaternion { get; internal set; }        // クォータニオン
 ```
 
 ## 4.4. CubeSimulator のメソッド

@@ -695,7 +695,7 @@ protected virtual void SimulateMagneticForce(Vector3 force)
 
 ### 姿勢角検出
 
-> 2.3.0 の機能です。
+> 2.3.0 からの機能です。
 
 Cube Prefab の Unity 座標系でのオイラー角から、仕様書で定義された座標系のオイラー角に変換します。<br>
 また、起動時に Yaw 基準値の設定と、Yaw の誤差累積も実装されています。
@@ -724,21 +724,23 @@ internal Vector3 _GetIMU()
 ```
 
 仕様書座標系のオイラー角によって、CubeUnity クラスに送信するオイラー角とクォータニオンを作成します。<br>
-現時点（2023.07.20）では、リアルのコアキューブのクォータニオンがオイラーと別々の座標系のものになっていますので、シミュレーターでも同じく再現しています。（仕様書座標系に一致しているのはオイラーの方です。）
+
+オイラー角の範囲を調整して、クォータニオンにも換算しています。
 
 ```csharp
-// CubeSimImpl_v2_3_0.cs
-private float attitudeInitialYaw = 0;
+// CubeSimImpl_v2_4_0.cs
 protected virtual void SimulateAttitudeSensor()
 {
     var e = cube._GetIMU();
-    int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
-    var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
+    static int cvtInt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
+    static float cvt(float f) { return (f + 180) % 360 - 180; }
+    Vector3 eulers;
+    if (this.attitudeFormat == Cube.AttitudeFormat.Eulers)
+        eulers = new Vector3(cvtInt(e.x), cvtInt(e.y), cvtInt(e.z));
+    else
+        eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
 
-    // NOTE Reproducing real BLE protocol's BUG
-    var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
-    quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
-                            Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
+    var quat = Quaternion.Euler(0,0,e.z) *  Quaternion.Euler(0,e.y,0) * Quaternion.Euler(e.x,0,0);
 
     _SetAttitude(eulers, quat);
 }
