@@ -11,10 +11,26 @@ namespace toio
 
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
+        //      内部変数
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+        protected RequestInfo connectionIntervalRequest = null;
+        protected int requestedConnectionIntervalMin = 0xffff;
+        protected int requestedConnectionIntervalMax = 0xffff;
+
+        protected CallbackProvider<Cube> _connectionIntervalConfigCallback = new CallbackProvider<Cube>();
+        protected CallbackProvider<Cube> _connectionIntervalCallback = new CallbackProvider<Cube>();
+
+        //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      外部変数
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
 
         public override string version { get { return "2.4.0"; } }
+        public override int connectionIntervalMin { get; protected set; } = 0xffff;
+        public override int connectionIntervalMax { get; protected set; } = 0xffff;
+        public override int connectionInterval { get; protected set; } = 0xffff;
+        public override CallbackProvider<Cube> connectionIntervalCallback => _connectionIntervalCallback;
+        public override CallbackProvider<Cube> connectionIntervalConfigCallback => _connectionIntervalConfigCallback;
 
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -37,6 +53,62 @@ namespace toio
 
             this.Request(CHARACTERISTIC_SENSOR, buff, true, order, "RequestMagneticSensor");
         }
+
+        public override async UniTask ConfigConnectionInterval(int min, int max, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            if (this.connectionIntervalRequest == null) this.connectionIntervalRequest = new RequestInfo(this);
+            if (!this.isConnected || !this.isInitialized)
+            {
+                callback?.Invoke(false, this); return;
+            }
+#if !RELEASE
+            const float minTimeOut = 0.5f;
+            if (minTimeOut > timeOutSec)
+            {
+                Debug.LogWarningFormat("[CubeReal_ver2_4_0.ConfigConnectionInterval]誤作動を避けるため, タイムアウト時間は {0} 秒以上にして下さい.", minTimeOut);
+            }
+#endif
+            min = min == 0xffff? min: Mathf.Clamp(min, 0x0006, 0x0c80);
+            max = max == 0xffff? max: Mathf.Clamp(max, min, 0x0c80);
+
+            bool availabe = await this.connectionIntervalRequest.GetAccess(Time.time + timeOutSec, callback);
+            if (!availabe) return;
+
+            this.requestedConnectionIntervalMin = min;
+            this.requestedConnectionIntervalMax = max;
+
+            this.connectionIntervalRequest.request = () =>
+            {
+                byte[] buff = new byte[6];
+                buff[0] = 0x30;
+                buff[1] = 0;
+                buff[2] = BitConverter.GetBytes(min)[0];
+                buff[3] = BitConverter.GetBytes(min)[1];
+                buff[4] = BitConverter.GetBytes(max)[0];
+                buff[5] = BitConverter.GetBytes(max)[1];
+                this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigConnectionInterval", min, max, timeOutSec, callback, order);
+            };
+            await this.connectionIntervalRequest.Run();
+        }
+
+        public override void ObtainConnectionIntervalConfig(ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            if (!this.isConnected || !this.isInitialized) return;
+            byte[] buff = new byte[2];
+            buff[0] = 0x31;
+            buff[1] = 0;
+            this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ObtainConnectionIntervalConfig", order);
+        }
+
+        public override void ObtainConnectionInterval(ORDER_TYPE order = ORDER_TYPE.Strong)
+        {
+            if (!this.isConnected || !this.isInitialized) return;
+            byte[] buff = new byte[2];
+            buff[0] = 0x32;
+            buff[1] = 0;
+            this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ObtainConnectionIntervalConfig", order);
+        }
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      CoreCube API < recv >
@@ -97,6 +169,37 @@ namespace toio
                         this.attitudeCallback?.Notify(this);
                     }
                 }
+            }
+        }
+
+        protected override void Recv_config(byte[] data)
+        {
+            base.Recv_config(data);
+            int type = data[0];
+            if (0xb0 == type)   // ConfigConnectionInterval コネクションインターバル変更要求の応
+            {
+                this.connectionIntervalRequest.hasConfigResponse = true;
+                this.connectionIntervalRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+                if (this.connectionIntervalRequest.isConfigResponseSucceeded) {
+                    this.connectionIntervalMin = this.requestedConnectionIntervalMin;
+                    this.connectionIntervalMax = this.requestedConnectionIntervalMax;
+                }
+            }
+
+            else if (0xb1 == type)  // ObtainConnectionIntervalConfig コネクションインターバル要求値の取得の応答
+            {
+                int min = BitConverter.ToUInt16(data, 2);
+                int max = BitConverter.ToUInt16(data, 4);
+                this.connectionIntervalMin = min;
+                this.connectionIntervalMax = max;
+                this.connectionIntervalConfigCallback?.Notify(this);
+            }
+
+            else if (0xb2 == type)  // ObtainConnectionInterval 現在のコネクションインターバル値の取得の応答
+            {
+                int interval = BitConverter.ToUInt16(data, 2);
+                this.connectionInterval = interval;
+                this.connectionIntervalCallback?.Notify(this);
             }
         }
     }

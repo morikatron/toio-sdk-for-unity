@@ -96,6 +96,21 @@ namespace toio
             get{NotSupportedWarning(); return default;}
             protected set{NotSupportedWarning();}}
 
+        // ver2.4.0
+        // コネクションインターバル要求値
+        public virtual int connectionIntervalMin {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}
+        }
+        public virtual int connectionIntervalMax {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}
+        }
+        // 現在のコネクションインターバル値
+        public virtual int connectionInterval {
+            get{NotSupportedWarning(); return default;}
+            protected set{NotSupportedWarning();}
+        }
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      仮想関数
@@ -369,6 +384,30 @@ namespace toio
         /// <param name="order">命令の優先度</param>
         public virtual void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
+        /// <summary>
+        /// コネクションインターバル変更要求。0xFFFF（要求なし）または 6 ~ 3200 の間の値が指定できます。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル変更要求-
+        /// </summary>
+        /// <param name="minMs">接続間隔の最小値（1.25ミリ秒）</param>
+        /// <param name="maxMs">接続間隔の最大値（1.25ミリ秒）</param>
+        /// <param name="order">命令の優先度</param>
+        public virtual UniTask ConfigConnectionInterval(int minMs, int maxMs, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+
+        /// <summary>
+        /// コネクションインターバル要求値の取得。（ この値は実際のコネクションインターバル値ではありません。）
+        /// https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル要求値の取得-
+        /// </summary>
+        /// <param name="order">命令の優先度</param>
+        public virtual void ObtainConnectionIntervalConfig(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
+        /// <summary>
+        /// コネクションインターバル要求値の取得。（ この値は実際のコネクションインターバル値ではありません。）
+        /// https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル要求値の取得-
+        /// </summary>
+        /// <param name="order">命令の優先度</param>
+        public virtual void ObtainConnectionInterval(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
+
+
 
         //_/_/_/_/_/_/_/_/_/_/_/_/_/
         //      コールバック
@@ -413,6 +452,12 @@ namespace toio
 
         // 姿勢角検出コールバック
         public virtual CallbackProvider<Cube> attitudeCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+
+        // ver2.4.0
+        // コネクションインターバル要求値の取得の応答
+        public virtual CallbackProvider<Cube> connectionIntervalConfigCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
+        // 現在のコネクションインターバル値の取得の応答
+        public virtual CallbackProvider<Cube> connectionIntervalCallback { get { return CallbackProvider<Cube>.NotSupported.Get(this); } }
 
 
         public Cube()
