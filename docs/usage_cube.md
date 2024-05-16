@@ -108,12 +108,12 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |            | [姿勢角情報の取得（オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得オイラー角での通知) | o        | o            |
 |            | [姿勢角情報の取得（高精度オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得高精度オイラー角での通知-) | o | o       |
 | 設定       | [姿勢角検出の設定](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定-) (updated)                                  | o             | o            |
-|            | [コネクションインターバル変更要求](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求-)               | x             | x            |
-|            | [コネクションインターバル要求値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得-)        | x             | x            |
-|            | [現在のコネクションインターバル値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得-)    | x             | x            |
-|            | [コネクションインターバル変更要求の応](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求の応-)        | x             | x            |
-|            | [コネクションインターバル要求値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得の応答-) | x         | x            |
-|            | [現在のコネクションインターバル値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得の応答-) | x     | x            |
+|            | [コネクションインターバル変更要求](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求-)               | o             | x            |
+|            | [コネクションインターバル要求値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得-)        | o             | x            |
+|            | [現在のコネクションインターバル値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得-)    | o             | x            |
+|            | [コネクションインターバル変更要求の応](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求の応-)        | o             | x            |
+|            | [コネクションインターバル要求値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得の応答-) | o         | x            |
+|            | [現在のコネクションインターバル値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得の応答-) | o     | x            |
 
 <br>
 
@@ -303,6 +303,15 @@ public Vector3 eulers { get; protected set; }
 // コールバック機能：attitudeCallback
 // 仕様書に規定された座標系は Unity と違いますので、ご注意ください。
 public Quaternion quaternion { get; protected set; }
+
+// ver2.4.0
+// コネクションインターバル要求値
+// コールバック機能：connectionIntervalConfigCallback
+public virtual int connectionIntervalMin { get; protected set; }
+public virtual int connectionIntervalMax { get; protected set; }
+// 現在のコネクションインターバル値
+// コールバック機能：connectionIntervalCallback
+public virtual int connectionInterval { get; protected set; }
 ```
 
 <br>
@@ -929,6 +938,66 @@ public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDE
 
 <br>
 
+### ConfigConnectionInterval
+
+```csharp
+public virtual UniTask ConfigConnectionInterval(
+  int minMs,
+  int maxMs,
+  float timeOutSec = 0.5f,
+  Action<bool,Cube> callback = null,
+  ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+コネクションインターバル変更要求。0xFFFF（要求なし）または 6 ~ 3200 の間の値が指定できます。(v2.4.0から対応)<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル変更要求-)
+
+- min
+  - 定義 : 接続間隔の最小値
+  - 範囲 : 6 ~ 3200、1.25ミリ秒単位；0xFFFF：要求なし
+- max
+  - 定義 : 接続間隔の最大値
+  - 範囲 : 6 ~ 3200、1.25ミリ秒単位；0xFFFF：要求なし
+- timeOutSec
+  - 定義 : タイムアウト(秒)
+  - 範囲 : 0.5~
+- callback
+  - 定義 : 終了コールバック(設定成功フラグ, キューブ)
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### ObtainConnectionIntervalConfig
+
+```csharp
+public void ObtainConnectionIntervalConfig(ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+コネクションインターバル要求値の取得。1.25ミリ秒単位。（ この値は実際のコネクションインターバル値ではありません。）<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル要求値の取得-)
+
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
+
+### ObtainConnectionInterval
+
+```csharp
+public void ObtainConnectionInterval(ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+現在のコネクションインターバル値の取得。1.25ミリ秒単位。<br>
+[toio™コア キューブ 技術仕様（通信仕様）](https://toio.github.io/toio-spec/docs/ble_configuration/#現在のコネクションインターバル値の取得-)
+
+- order
+  - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
+  - 種類 : Weak, Strong
+
+<br>
 
 
 # 4. Cubeの接続設定

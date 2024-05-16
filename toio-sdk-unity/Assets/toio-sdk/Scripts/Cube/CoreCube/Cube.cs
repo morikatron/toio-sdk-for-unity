@@ -385,24 +385,24 @@ namespace toio
         public virtual void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
-        /// コネクションインターバル変更要求。0xFFFF（要求なし）または 6 ~ 3200 の間の値が指定できます。
+        /// コネクションインターバル変更要求。0xFFFF（要求なし）または 6 ~ 3200 の間の値が指定できます。1.25ミリ秒単位。
         /// https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル変更要求-
         /// </summary>
-        /// <param name="minMs">接続間隔の最小値（1.25ミリ秒）</param>
-        /// <param name="maxMs">接続間隔の最大値（1.25ミリ秒）</param>
+        /// <param name="min">接続間隔の最小値（1.25ミリ秒）</param>
+        /// <param name="max">接続間隔の最大値（1.25ミリ秒）</param>
         /// <param name="order">命令の優先度</param>
-        public virtual UniTask ConfigConnectionInterval(int minMs, int maxMs, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
+        public virtual UniTask ConfigConnectionInterval(int min, int max, float timeOutSec = 0.5f, Action<bool,Cube> callback = null, ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); return UniTask.CompletedTask; }
 
         /// <summary>
-        /// コネクションインターバル要求値の取得。（ この値は実際のコネクションインターバル値ではありません。）
+        /// コネクションインターバル要求値の取得。1.25ミリ秒単位。（ この値は実際のコネクションインターバル値ではありません。）
         /// https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル要求値の取得-
         /// </summary>
         /// <param name="order">命令の優先度</param>
         public virtual void ObtainConnectionIntervalConfig(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
 
         /// <summary>
-        /// コネクションインターバル要求値の取得。（ この値は実際のコネクションインターバル値ではありません。）
-        /// https://toio.github.io/toio-spec/docs/ble_configuration/#コネクションインターバル要求値の取得-
+        /// 現在のコネクションインターバル値の取得。1.25ミリ秒単位。
+        /// https://toio.github.io/toio-spec/docs/ble_configuration/#現在のコネクションインターバル値の取得-
         /// </summary>
         /// <param name="order">命令の優先度</param>
         public virtual void ObtainConnectionInterval(ORDER_TYPE order = ORDER_TYPE.Strong) { NotSupportedWarning(); }
