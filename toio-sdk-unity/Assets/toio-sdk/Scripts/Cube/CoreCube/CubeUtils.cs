@@ -45,7 +45,7 @@ namespace toio
             return true;
         }
 
-        public async UniTask Run()
+        public async UniTask Run(int retryIntervalMs = 500)
         {
             this.isRequesting = true;
             bool responded = true;
@@ -65,7 +65,7 @@ namespace toio
 
                 this.request?.Invoke();
                 await UniTask.WhenAny(
-                    UniTask.Delay(500),
+                    UniTask.Delay(retryIntervalMs),
                     UniTask.WaitUntil(()=> this.hasConfigResponse || deadline < Time.time)
                 );
             }

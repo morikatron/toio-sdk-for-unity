@@ -202,10 +202,10 @@ namespace toio
             int type = data[0];
             if (0x9d == type)       // Attitude
             {
-                this.attitudeSensorRequest.hasConfigResponse = true;
                 this.attitudeSensorRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 if (this.attitudeSensorRequest.isConfigResponseSucceeded)
                     this.attitudeFormat = this.requestedAttitudeFormat;
+                this.attitudeSensorRequest.hasConfigResponse = true;
             }
         }
 

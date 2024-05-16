@@ -73,9 +73,13 @@ namespace toio.Samples.Sample_Sensor
             cube.magnetStateCallback.AddListener("Sample_Sensor", OnMagnetState);      // Magnet State
             cube.magneticForceCallback.AddListener("Sample_Sensor", OnMagForce);       // Magnetic Force
             cube.attitudeCallback.AddListener("Sample_Sensor", OnAttitude);            // Attitude
+            cube.connectionIntervalCallback.AddListener("Sample_Sensor", OnConnectionInterval);  // Connection Interval
 
             await cube.ConfigIDNotification(500);       // 精度10ms
             await cube.ConfigIDMissedNotification(500); // 精度10ms
+            await cube.ConfigConnectionInterval(100, 200, timeOutSec: 2f, callback: OnConfigConnectionInterval); // 125ms ~ 250ms
+            await UniTask.Delay(500);
+            cube.ObtainConnectionInterval();
         }
 
         public async void OnBtnConnect() { await Connect(); }
@@ -277,6 +281,16 @@ namespace toio.Samples.Sample_Sensor
             {
                 this.textAttitude.text = "Eulers=" + eulers.ToString("F2");
             }
+        }
+
+        public void OnConfigConnectionInterval(bool success, Cube c)
+        {
+            Debug.Log("Config Connection Interval success: " + success.ToString());
+        }
+
+        public void OnConnectionInterval(Cube c)
+        {
+            Debug.Log("Current Connection Interval: " + (c.connectionInterval * 1.25f).ToString() + "ms");
         }
 
     }

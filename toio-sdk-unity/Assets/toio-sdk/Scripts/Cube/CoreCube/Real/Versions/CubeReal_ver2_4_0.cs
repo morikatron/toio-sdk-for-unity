@@ -88,7 +88,7 @@ namespace toio
                 buff[5] = BitConverter.GetBytes(max)[1];
                 this.Request(CHARACTERISTIC_CONFIG, buff, true, order, "ConfigConnectionInterval", min, max, timeOutSec, callback, order);
             };
-            await this.connectionIntervalRequest.Run();
+            await this.connectionIntervalRequest.Run(1500);
         }
 
         public override void ObtainConnectionIntervalConfig(ORDER_TYPE order = ORDER_TYPE.Strong)
@@ -178,12 +178,12 @@ namespace toio
             int type = data[0];
             if (0xb0 == type)   // ConfigConnectionInterval コネクションインターバル変更要求の応
             {
-                this.connectionIntervalRequest.hasConfigResponse = true;
                 this.connectionIntervalRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 if (this.connectionIntervalRequest.isConfigResponseSucceeded) {
                     this.connectionIntervalMin = this.requestedConnectionIntervalMin;
                     this.connectionIntervalMax = this.requestedConnectionIntervalMax;
                 }
+                this.connectionIntervalRequest.hasConfigResponse = true;
             }
 
             else if (0xb1 == type)  // ObtainConnectionIntervalConfig コネクションインターバル要求値の取得の応答
