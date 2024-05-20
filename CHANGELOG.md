@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ★ **Upgraded to Unity 2022.3.2f1 LTS**
 
+### Added
+
+- [Cube] Support toio core cube BLE protocol version 2.4.0.
+  - APIs for connection interval.
+  - APIs for posture detection: high precision eulers and quaternions.
+- [Simulator] Implement toio core cube BLE protocol version 2.4.0.
+  - APIs for posture detection: high precision eulers and quaternions.
+- [BLE] Add methods `CubeScanner.StartScan`, `CubeScanner.StopScan`.
+- [Sample] Add Sample_ConnectName, Sample_DigitalTwin.
+
 ### Changed
 
 - [BLE] Update `AndroidManifest.xml` for Android 12 (API level 31). This update is **NOT backward-compatible**.
@@ -24,6 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - [BLE] Fix WebGL BLE plugin not working after scene switching issue. [issue#258](https://github.com/morikatron/toio-sdk-for-unity/issues/258)
+- [Simulator] Fix Custom Mat size calculation issue.
+
+### Removed
+
+- [BLE] Remove deprecated `NearestScanner`, `NearScanner`.
+- [BLE] Remove `CubeScanner.NearScanAsync`. Remove corresponding `CubeManager.MultiConnectAsync`.
 
 ## [1.5.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2022-04-25
 
