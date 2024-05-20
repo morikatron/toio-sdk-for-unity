@@ -96,6 +96,7 @@ For details on installation, tutorials, sample introductions, and feature explan
 ## Sample applications
 
 - [CubeMarker](https://github.com/morikatron/toio-cube-marker): an online battle game (Japanese)
+- [toio-AI-meicu](https://github.com/morikatron/toio-AI-meicu)：AI Experience Content "Challenge the AI Robot 'Maze Cube' at the Toio AI Gym (Beta Version)" (Japanese)
 
 ## License
 

@@ -96,6 +96,7 @@ public class Hello_Toio : MonoBehaviour
 ## サンプルアプリ
 
 - [CubeMarker](https://github.com/morikatron/toio-cube-marker)：オンライン対戦サンプルプログラム
+- [toio-AI-meicu](https://github.com/morikatron/toio-AI-meicu)：AI体験コンテンツ『toioのAIジム　AIロボ「迷キュー」に挑戦（ベータ版）』
 
 ## ライセンス
 
