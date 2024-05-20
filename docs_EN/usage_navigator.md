@@ -175,8 +175,7 @@ Remove all walls.
 public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500);
 ```
 
-If you want to add a border to the mat, the method is to create a wall on the east, west, north, south, and west all at the same time.<br>
-When CubeNavigator is instantiated, `AddBorder(70);` is automatically called.
+If you want to add a border to the mat, the method is to create a wall on the east, west, north, south, and west all at the same time.
 
 - width
   - Definition: half the thickness of a wall

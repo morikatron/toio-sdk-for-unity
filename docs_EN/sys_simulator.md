@@ -280,6 +280,7 @@ There are three scripts implemented in Cube Prefab.
   - `CubeSimImpl_v2_2_0.cs`：Implementation to support version 2.2.0
 - `CubeSimulatorEditor.cs`：A customized version of the `CubeSimulator.cs` inspector
 - `CubeInteraction.cs`：Implemented operations of pushing and grabbing Cube objects on Simulator.
+- `AudioAssetLoader.cs`：Material loader
 
 This chapter introduces the implementation of each version of `CubeSimulator`.
 
@@ -691,7 +692,7 @@ protected virtual void SimulateMagneticForce(Vector3 force)
 
 ### Attitude detection
 
-> This is a feature of 2.3.0.
+> This is a feature from 2.3.0.
 
 Converts a Cube Prefab from Euler angles in the Unity coordinate system to Euler angles in the coordinate system defined in the specification. <br>
 It also sets the Yaw reference value at startup and implements Yaw error accumulation.
@@ -719,23 +720,24 @@ internal Vector3 _GetIMU()
 }
 ```
 
-The Euler angles and quaternions to be sent to the CubeUnity class are created by the Euler angles of the specification coordinate system. <br>
-At the moment (2023.07.20), the quaternions of the real core cube are in a separate coordinate system from the Euler, so we reproduce them in the simulator as well. (Euler's is the one that matches the spec coordinate system.
+The Euler angles and quaternions to be sent to the CubeUnity class are created by the Euler angles of the specification coordinate system.
+The range of Euler angles is adjusted and converted to a quaternion.
 
 ```csharp
-// CubeSimImpl_v2_3_0.cs
+// CubeSimImpl_v2_4_0.cs
 private float attitudeInitialYaw = 0;
 protected virtual void SimulateAttitudeSensor()
 {
     var e = cube._GetIMU();
-    int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
-    var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
+    static int cvtInt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
+    static float cvt(float f) { return (f + 180) % 360 - 180; }
+    Vector3 eulers;
+    if (this.attitudeFormat == Cube.AttitudeFormat.Eulers)
+        eulers = new Vector3(cvtInt(e.x), cvtInt(e.y), cvtInt(e.z));
+    else
+        eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
 
-    // NOTE Reproducing real BLE protocol's BUG
-    var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
-    quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
-                            Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
-
+    var quat = Quaternion.Euler(0,0,e.z) *  Quaternion.Euler(0,e.y,0) * Quaternion.Euler(e.x,0,0);
     _SetAttitude(eulers, quat);
 }
 ```

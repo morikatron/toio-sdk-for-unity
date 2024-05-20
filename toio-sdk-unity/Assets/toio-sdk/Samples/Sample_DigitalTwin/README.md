@@ -8,6 +8,7 @@
 - `Sample_DigitalTwin.cs`：メインスクリプト、接続したキューブを制御するスクリプト
 
 ### サンプルの使い方
+
 - リアルキューブと接続し、その動きをシミュレーター上のディジタルツインに反映する。
   - `Sample_DigitalTwin.cs` の `Connect Type` を `Real` にする
   - `Local Names To Connect` に接続したいキューブのローカルネームを追加する

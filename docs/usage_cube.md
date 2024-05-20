@@ -23,7 +23,7 @@ Unity システム上で動くキューブ(以下シミュレータ) と 現実�
 
 ### Real/Sim 機能表
 
-現在(2023/07/20)、キューブのBLE プロトコルバージョンは 4 つです。
+現在(2024/05/20)、キューブのBLE プロトコルバージョンは 5 つです。
 
 `2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`　`2.4.0`
 
@@ -105,7 +105,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 | 機能タイプ  | 機能                                                                                                                                   | Real 対応状況 | Sim 対応状況 |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
 | 姿勢角検出  | [姿勢角検出の要求](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角検出の要求) (updated)                      | o             | o            |
-|            | [姿勢角情報の取得（オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得オイラー角での通知) | o        | o            |
+|            | [姿勢角情報の取得（クォータニオンでの通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得クォータニオンでの通知-) | o        | o            |
 |            | [姿勢角情報の取得（高精度オイラー角での通知）](https://toio.github.io/toio-spec/docs/ble_high_precision_tilt_sensor#姿勢角情報の取得高精度オイラー角での通知-) | o | o       |
 | 設定       | [姿勢角検出の設定](https://toio.github.io/toio-spec/docs/ble_configuration#姿勢角検出の設定-) (updated)                                  | o             | o            |
 |            | [コネクションインターバル変更要求](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求-)               | o             | x            |
@@ -942,8 +942,8 @@ public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDE
 
 ```csharp
 public virtual UniTask ConfigConnectionInterval(
-  int minMs,
-  int maxMs,
+  int min,
+  int max,
   float timeOutSec = 0.5f,
   Action<bool,Cube> callback = null,
   ORDER_TYPE order = ORDER_TYPE.Strong);
