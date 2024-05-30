@@ -1,4 +1,4 @@
-## Sample_BasicUI
+## Sample_ConnectName_BasicUI
 
 このサンプルは、スキャンしたキューブのLocal Nameを画面にリストアップし、ユーザーが選択して接続・切断するサンプルです。
 

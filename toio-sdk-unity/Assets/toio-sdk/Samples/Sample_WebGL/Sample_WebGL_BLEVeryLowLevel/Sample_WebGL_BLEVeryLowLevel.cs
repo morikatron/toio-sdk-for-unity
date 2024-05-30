@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace toio.Samples.Sample_WebGL
 {
-    public class Sample_WebPlugin_VeryLowLevel : MonoBehaviour
+    public class Sample_WebGL_BLEVeryLowLevel : MonoBehaviour
     {
         enum State
         {

@@ -1,4 +1,4 @@
-## Sample_BasicUI
+## Sample_ConnectName_BasicUI
 
 This sample lists the Local Names of the scanned cubes on the screen, allowing the user to select, connect, and disconnect.
 

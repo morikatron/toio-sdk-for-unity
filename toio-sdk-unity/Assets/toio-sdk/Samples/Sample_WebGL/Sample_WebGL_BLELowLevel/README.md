@@ -1,4 +1,4 @@
-# Sample_WebBluetooth_LowLevel
+# Sample_WebGL_BLELowLevel
 
 > ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/web-bluetooth)です。
 

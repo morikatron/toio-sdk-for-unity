@@ -85,6 +85,10 @@
 
   接続設定の違いによって、シミュレータとリアルで接続設定が変わるか確認するサンプルです。
 
+- [Sample_ConnectName](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectName/)
+
+  指定した Local Name のキューブと接続するサンプル集です。
+
 - [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/)
 
   CubeNavigator のモードの違いによって、多数台のキューブの挙動がどのように変わるか確認するサンプルです。
@@ -122,6 +126,10 @@
 - [Sample_Scenes](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/)
 
   リアルのキューブとの接続・シミュレータ上のキューブと相関インスタンスを維持したままに、シーン遷移を扱うサンプルです。
+
+- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/)
+
+  リアルキューブの動きをシミュレーターのキューブにリアルタイムに反映する、いわゆる「ディジタルツイン」を実現したサンプルです。
 
 <br>
 

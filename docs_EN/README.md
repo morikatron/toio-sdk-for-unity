@@ -84,6 +84,10 @@
 
   This sample is to check if the connection settings are different between Simulator and the real environment.
 
+- [Sample_ConnectName](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectName/README_EN.md)
+
+  This is a collection of samples for connecting to a cube with the specified Local Name.
+
 - [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/README_EN.md)
 
   This is a sample to see how the behavior of many Cubes changes depending on the mode of CubeNavigator.
@@ -121,6 +125,10 @@
 - [Sample_Scenes](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/README_EN.md)
 
   This sample handles scene transitions while maintaining the connection with the real Cube and the correlated instance with Cube on Simulator.
+
+- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/README_EN.md)
+
+  These samples demonstrate a "Digital Twin," where the movements of a real cube are reflected in real-time on a simulator cube.
 
 <br>
 

@@ -1,4 +1,4 @@
-# Sample_UI on WebGL
+# Sample_WebGL_UI
 
 > ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/ui)です。
 

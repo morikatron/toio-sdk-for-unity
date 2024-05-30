@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace toio.Samples.Sample_ConnectName
 {
-    public class Sample_BasicUI : MonoBehaviour
+    public class Sample_ConnectName_BasicUI : MonoBehaviour
     {
         public GameObject cubeItemPrefab;
         public ConnectType connectType = ConnectType.Real;

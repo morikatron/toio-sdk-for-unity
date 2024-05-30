@@ -1,4 +1,4 @@
-# Sample_WebPlugin_VeryLowLevel
+# Sample_WebGL_BLEVeryLowLevel
 
 > ※ このページのウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/sample/webgl/web-plugin)です。
 

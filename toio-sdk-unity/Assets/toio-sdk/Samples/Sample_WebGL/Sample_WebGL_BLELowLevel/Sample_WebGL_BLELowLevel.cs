@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace toio.Samples.Sample_WebGL
 {
-    public class Sample_WebBluetooth_LowLevel : MonoBehaviour
+    public class Sample_WebGL_BLELowLevel : MonoBehaviour
     {
         enum State
         {

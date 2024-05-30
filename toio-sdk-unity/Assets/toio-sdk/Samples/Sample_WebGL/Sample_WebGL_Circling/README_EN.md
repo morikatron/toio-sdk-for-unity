@@ -1,4 +1,4 @@
-## Sample_Circling
+## Sample_WebGL_Circling
 
 > The web app sample on this page is [[here](https://morikatron.github.io/t4u/sample/webgl/circling)].
 

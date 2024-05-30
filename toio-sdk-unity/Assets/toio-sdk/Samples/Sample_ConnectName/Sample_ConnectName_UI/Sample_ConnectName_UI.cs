@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace toio.Samples.Sample_ConnectName
 {
-    public class Sample_UI : MonoBehaviour
+    public class Sample_ConnectName_UI : MonoBehaviour
     {
         public GameObject cubeItemPrefab;
         public RectTransform panelConnect;

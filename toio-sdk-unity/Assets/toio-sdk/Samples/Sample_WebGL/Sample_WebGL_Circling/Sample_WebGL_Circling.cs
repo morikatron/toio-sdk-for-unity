@@ -5,7 +5,7 @@ using toio.MathUtils;
 
 namespace toio.Samples.Sample_WebGL
 {
-    public class Sample_Circling_OnWebGL : MonoBehaviour
+    public class Sample_WebGL_Circling : MonoBehaviour
     {
         CubeManager cm;
         public Navigator.Mode naviMode = Navigator.Mode.BOIDS;
