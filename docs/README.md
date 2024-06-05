@@ -53,7 +53,7 @@
 - [11. UI の作成](tutorials_UI.md)
 - [12. Unity Visual Scriptingでの利用方法](tutorials_visual_scriptings.md)
 
-### 便利な移動機能 - CubeHandle
+### キューブの移動操作を簡単に制御 - CubeHandle
 
 - [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-cubemanager-を使ったキューブの同期制御)
 - [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)

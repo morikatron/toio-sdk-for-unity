@@ -52,7 +52,7 @@
 - [10. Connection/disconnection on the way](tutorials_basic.md#10-connectiondisconnection-on-the-way)
 - [11. Creating UI](tutorials_UI.md)
 - [12. How to use in Visual Scripting](tutorials_visual_scriptings.md)
-### Useful movement functions - CubeHandle
+### Easily control the movement of the cube - CubeHandle
 
 - [1. Synchronized control of cubes using CubeManager](tutorials_cubehandle.md#1-synchronized-control-of-cubes-using-cubemanager)
 - [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
