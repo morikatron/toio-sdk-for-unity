@@ -176,7 +176,7 @@ async void Start()
 
 <br>
 
-For those of you who want to get a quick overview, here is a quick diagram of the program.<br>Since this program runs on multiple platforms, there are two internal implementations (real implementation/simulator implementation) for the Scanner module and the Connector module respectively.
+For those of you who want to get a quick overview, here is a quick diagram of the program.<br>Since this program runs on multiple platforms, there are two internal implementations (real implementation/simulator implementation) for the Scanner module and the Connecter module respectively.
 
 <br>
 

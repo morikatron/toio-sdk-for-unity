@@ -218,7 +218,7 @@ public interface BLECharacteristicInterface
 
 ### 接続
 
-接続には Connector クラスを使用します。[cube ドキュメント](sys_cube.md#32-接続connecter)に殆ど書かれています、ご参照下さい。
+接続には Connecter クラスを使用します。[cube ドキュメント](sys_cube.md#32-接続connecter)に殆ど書かれています、ご参照下さい。
 
 BLE 処理として追記するべき点は以下です。
 

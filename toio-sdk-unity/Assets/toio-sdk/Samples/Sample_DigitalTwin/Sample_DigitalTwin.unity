@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 815486384}
   - component: {fileID: 815486383}
   m_Layer: 0
-  m_Name: Connector
+  m_Name: Connecter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,7 +356,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectType: 2
   localNamesToConnect:
-  - toio-t5E
   - Cube
   - Cube2
   logScanned: 1
@@ -509,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865bb5287c78f4874ab940f0a04d11ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connector: {fileID: 815486383}
+  connecter: {fileID: 0}
 --- !u!43 &1154838316
 Mesh:
   m_ObjectHideFlags: 0

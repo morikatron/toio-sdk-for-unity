@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace toio.Samples.Sample_DigitalTwin
 {
-    public class DigitalTwinConnector : MonoBehaviour
+    public class DigitalTwinConnecter : MonoBehaviour
     {
         public ConnectType connectType = ConnectType.Real;
 
