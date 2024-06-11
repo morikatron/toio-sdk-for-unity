@@ -65,16 +65,14 @@
 
 ### 集団制御 - Navigator
 
-- [1. CubeNavigator](tutorials_navigator.md#1-cubenavigator)
-  - [1.1. CubeManager を使って CubeNavigator を利用する](tutorials_navigator.md#11-cubemanager-を使って-cubenavigator-を利用する)
-    - [1.1.1. 非同期でキューブを制御する場合](tutorials_navigator.md#111-非同期でキューブを制御する場合)
-    - [1.1.2. 同期でキューブを制御する場合](tutorials_navigator.md#112-同期でキューブを制御する場合)
-    - [1.1.3. CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#113-cubemanager-を使わないで-cubenavigator-を利用する)
-  - [1.2. CubeNavigator による衝突回避](tutorials_navigator.md#12-cubenavigator-による衝突回避)
-    - [1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#121-衝突を回避しつつ目標に移動する-navi2target-関数)
-    - [1.2.2. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#122-目標から離れる-naviawaytarget-関数)
-  - [1.3. ボイドによる集団制御](tutorials_navigator.md#13-ボイドによる集団制御)
-  - [1.4. ボイド + 衝突回避](tutorials_navigator.md#14-ボイド--衝突回避)
+- [1. 概要](tutorials_navigator.md#1-概要)
+- [2. 基本的な使い方](tutorials_navigator.md#2-基本的な使い方)
+- [3. CubeNavigator による衝突回避](tutorials_navigator.md#3-cubenavigator-による衝突回避)
+    - [3.1. 基本設定](tutorials_navigator.md#31-基本設定)
+    - [3.2. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#32-衝突を回避しつつ目標に移動する-navi2target-関数)
+    - [3.3. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#33-目標から離れる-naviawaytarget-関数)
+- [4. ボイドによる集団制御](tutorials_navigator.md#4-ボイドによる集団制御)
+- [5. ボイド + 衝突回避](tutorials_navigator.md#5-ボイド--衝突回避)
 
 <br>
 

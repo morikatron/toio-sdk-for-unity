@@ -3,10 +3,7 @@
 ## 目次
 
 - [1. 概要](tutorials_navigator.md#1-概要)
-- [2. CubeManager を使って CubeNavigator を利用する](tutorials_navigator.md#2-cubemanager-を使って-cubenavigator-を利用する)
-    - [2.1. 非同期でキューブを制御する場合](tutorials_navigator.md#21-非同期でキューブを制御する場合)
-    - [2.2. 同期でキューブを制御する場合](tutorials_navigator.md#22-同期でキューブを制御する場合)
-    - [2.3. CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#23-cubemanager-を使わないで-cubenavigator-を利用する)
+- [2. 基本的な使い方](tutorials_navigator.md#2-基本的な使い方)
 - [3. CubeNavigator による衝突回避](tutorials_navigator.md#3-cubenavigator-による衝突回避)
     - [3.1. 基本設定](tutorials_navigator.md#31-基本設定)
     - [3.2. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#32-衝突を回避しつつ目標に移動する-navi2target-関数)
@@ -21,14 +18,67 @@ CubeNavigator を使うことで、複数のキューブがお互いの動きを
 
 本チュートリアルは基本的な機能のみを紹介しますので、詳細については[【コチラ】](usage_navigator.md)を参照してください。
 
-## 2. CubeManager を使って CubeNavigator を利用する
+## 2. 基本的な使い方
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/0.BasicScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/basic/)です。
 
-CubeNavigator は CubeManager がキューブ接続時に自動的に作成してメンバ変数のリストに入れています。
+以下のサンプルコードが示したように、CubeNavigator を使うには主に４つのステップがあります。
+1. 作成：CubeHandle オブジェクトを引数として、CubeNavigator を作成する。一対一の関係になります。
+1. 制御の間隔：Cube クラスの制御と同じように、間隔を設ける必要があります。
+1. `Update`：一連の制御を行う前に、必ず`Update`関数を呼んでください。これは Cube と CubeHanlde から情報を取得し、内部状態の更新を行うためです。
+1. 制御：`Navi2Target` など実際に制御を行う関数を呼出します。詳細は次の章で紹介します。
 
-### 2.1. 非同期でキューブを制御する場合
+```csharp
+public class NavigatorBasic : MonoBehaviour
+{
+    float intervalTime = 0.05f;
+    float elapsedTime = 0;
+    List<CubeNavigator> navigators;
+    bool started = false;
+
+    async void Start()
+    {
+        var peripheral = await new NearScanner(2).Scan();
+        var cubes = await new CubeConnecter().Connect(peripheral);
+
+        // create navigators
+        this.navigators = new List<CubeNavigator>();
+        foreach (var cube in cubes)
+            // create navigator and add to navigators
+            this.navigators.Add(new CubeNavigator(cube));
+
+        this.started = true;
+    }
+
+    void Update()
+    {
+        if (!started) return;
+
+        elapsedTime += Time.deltaTime;
+
+        if (intervalTime < elapsedTime)
+        {
+            foreach (var navigator in this.navigators)
+                // update state of navigator (including internal handle)
+                navigator.Update();
+
+            foreach (var navigator in this.navigators)
+                // use internal handle to rotate cube
+                navigator.handle.MoveRaw(-50, 50, 1000);
+
+            elapsedTime = 0.0f;
+        }
+    }
+}
+```
+
+### CubeManager で簡略化
+
+CubeNavigator は CubeManager がキューブ接続時に自動的に作成してメンバ変数のリストに入れています。
+また、制御間隔の管理も求められているので、CubeManager を用いて上記コードを簡略化することができます。
+
+#### 非同期でキューブを制御する場合
 
 下記のサンプルコードでは、 Update の中で、CubeNavigator の制御可能状態を確認してから、制御を行っています。
 
@@ -59,7 +109,7 @@ public class NavigatorBasic : MonoBehaviour
 
 制御可能状態は皆それぞれなので、「非同期」になります。
 
-### 2.2. 同期でキューブを制御する場合
+#### 同期でキューブを制御する場合
 
 以下のようにすると、すべての navigator が、50ms ごとの同じフレームで制御されます。
 
@@ -112,53 +162,7 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-### 2.3. CubeManager を使わないで CubeNavigator を利用する
-
-CubeManager を使わない場合には、以下のように Cube クラスを使って CubeNavigator インスタンスを作成してください。
-
-```csharp
-public class NavigatorBasic : MonoBehaviour
-{
-    float intervalTime = 0.05f;
-    float elapsedTime = 0;
-    List<CubeNavigator> navigators;
-    bool started = false;
-
-    async void Start()
-    {
-        var peripheral = await new NearScanner(2).Scan();
-        var cubes = await new CubeConnecter().Connect(peripheral);
-
-        // create navigators
-        this.navigators = new List<CubeNavigator>();
-        foreach (var cube in cubes)
-            // create navigator and add to navigators
-            this.navigators.Add(new CubeNavigator(cube));
-
-        this.started = true;
-    }
-
-    void Update()
-    {
-        if (!started) return;
-
-        elapsedTime += Time.deltaTime;
-
-        if (intervalTime < elapsedTime)
-        {
-            foreach (var navigator in this.navigators)
-                // update state of navigator (including internal handle)
-                navigator.Update();
-
-            foreach (var navigator in this.navigators)
-                // use internal handle to rotate cube
-                navigator.handle.MoveRaw(-50, 50, 1000);
-
-            elapsedTime = 0.0f;
-        }
-    }
-}
-```
+<br>
 
 ## 3. CubeNavigator による衝突回避
 

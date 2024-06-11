@@ -62,7 +62,7 @@ public class HandleBasic : MonoBehaviour
 
 ### CubeManager で簡略化
 
-CubeManager は自動的に、接続した Cube から CubeHandle を作成して、メンバー変数のリストに入れています。<br>
+CubeManager は自動的に、接続した Cube から CubeHandle を作成して、メンバー変数のリストに入れています。
 また、制御間隔の管理も求められているので、CubeManager を用いて上記コードを簡略化することができます。
 
 #### 非同期でキューブを制御する場合

@@ -65,10 +65,7 @@
 ### Group control - Navigator
 
 - [1. Overview](tutorials_navigator.md#1-overview)
-- [2. Using CubeManager with CubeNavigator](tutorials_navigator.md#2-using-cubemanager-with-cubenavigator)
-    - [2.1. Want to control Cube asynchronously](tutorials_navigator.md#21-want-to-control-cube-asynchronously)
-    - [2.2. Want to control Cube synchronously](tutorials_navigator.md#22-want-to-control-cube-synchronously)
-    - [2.3. Using CubeNavigator without CubeManager](tutorials_navigator.md#23-using-cubenavigator-without-cubemanager)
+- [2. Basic Usage](tutorials_navigator.md#2-Basic-Usage)
 - [3. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#3-avoiding-collisions-with-cubenavigator)
     - [3.1. Basic Settings](tutorials_navigator.md#31-Basic-Settings)
     - [3.2. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#32-navi2target-function-to-move-to-the-target-while-avoiding-collision)

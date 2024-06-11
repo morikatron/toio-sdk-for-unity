@@ -3,10 +3,7 @@
 ## Table of Contents
 
 - [1. Overview](tutorials_navigator.md#1-overview)
-- [2. Using CubeManager with CubeNavigator](tutorials_navigator.md#2-using-cubemanager-with-cubenavigator)
-    - [2.1. Want to control Cube asynchronously](tutorials_navigator.md#21-want-to-control-cube-asynchronously)
-    - [2.2. Want to control Cube synchronously](tutorials_navigator.md#22-want-to-control-cube-synchronously)
-    - [2.3. Using CubeNavigator without CubeManager](tutorials_navigator.md#23-using-cubenavigator-without-cubemanager)
+- [2. Basic Usage](tutorials_navigator.md#2-Basic-Usage)
 - [3. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#3-avoiding-collisions-with-cubenavigator)
     - [3.1. Basic Settings](tutorials_navigator.md#31-Basic-Settings)
     - [3.2. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#32-navi2target-function-to-move-to-the-target-while-avoiding-collision)
@@ -20,14 +17,69 @@ By using CubeNavigator, multiple Cubes can be successfully moved all together wh
 
 For more information about CubeNavigator, click [here](usage_navigator.md).
 
-## 2. Using CubeManager with CubeNavigator
+## 2. Basic Usage
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-Navigator/0.BasicScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/navi/basic/).
 
-CubeNavigator is automatically created by CubeManager when Cube is connected and put in the list of member variables.
+As shown in the sample code below, there are four main steps to using a CubeNavigator:
 
-### 2.1. Want to control Cube asynchronously
+1. Creation: Create a CubeNavigator using a CubeHandle object as an argument. This establishes a one-to-one relationship.
+1. Control Interval: Similar to the Cube class control, an interval is required.
+1. Update: Always call the `Update` function before performing a series of controls. This function retrieves information from the Cube and updates the internal state.
+1. Control: Call functions such as `Navi2Target` to actually perform the control. Details are provided in the next chapter.
+
+
+```csharp
+public class NavigatorBasic : MonoBehaviour
+{
+    float intervalTime = 0.05f;
+    float elapsedTime = 0;
+    List<CubeNavigator> navigators;
+    bool started = false;
+
+    async void Start()
+    {
+        var peripheral = await new NearScanner(2).Scan();
+        var cubes = await new CubeConnecter().Connect(peripheral);
+
+        // create navigators
+        this.navigators = new List<CubeNavigator>();
+        foreach (var cube in cubes)
+            // create navigator and add to navigators
+            this.navigators.Add(new CubeNavigator(cube));
+
+        this.started = true;
+    }
+
+    void Update()
+    {
+        if (!started) return;
+
+        elapsedTime += Time.deltaTime;
+
+        if (intervalTime < elapsedTime)
+        {
+            foreach (var navigator in this.navigators)
+                // update state of navigator (including internal handle)
+                navigator.Update();
+
+            foreach (var navigator in this.navigators)
+                // use internal handle to rotate cube
+                navigator.handle.MoveRaw(-50, 50, 1000);
+
+            elapsedTime = 0.0f;
+        }
+    }
+}
+```
+
+### Simplification using CubeManager
+
+CubeManager automatically creates CubeHandle from the connected Cube and puts it in the list of member variables.
+Additionally, since managing control intervals is required, you can simplify the above code by using the CubeManager.
+
+#### Want to control Cube asynchronously
 
 In the following sample code, CubeNavigator is controlled after confirming its controllable status in Update.
 
@@ -58,7 +110,7 @@ public class NavigatorBasic : MonoBehaviour
 
 Since everyone's controllable state is different, it is "asynchronous".
 
-### 2.2. Want to control Cube synchronously
+#### Want to control Cube synchronously
 
 If you do the following, all navigator will be controlled by the same frame every 50ms.
 
@@ -111,53 +163,7 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-### 2.3. Using CubeNavigator without CubeManager
-
-If you do not use CubeManager, create CubeNavigator instance using Cube class as shown below.
-
-```csharp
-public class NavigatorBasic : MonoBehaviour
-{
-    float intervalTime = 0.05f;
-    float elapsedTime = 0;
-    List<CubeNavigator> navigators;
-    bool started = false;
-
-    async void Start()
-    {
-        var peripheral = await new NearScanner(2).Scan();
-        var cubes = await new CubeConnecter().Connect(peripheral);
-
-        // create navigators
-        this.navigators = new List<CubeNavigator>();
-        foreach (var cube in cubes)
-            // create navigator and add to navigators
-            this.navigators.Add(new CubeNavigator(cube));
-
-        this.started = true;
-    }
-
-    void Update()
-    {
-        if (!started) return;
-
-        elapsedTime += Time.deltaTime;
-
-        if (intervalTime < elapsedTime)
-        {
-            foreach (var navigator in this.navigators)
-                // update state of navigator (including internal handle)
-                navigator.Update();
-
-            foreach (var navigator in this.navigators)
-                // use internal handle to rotate cube
-                navigator.handle.MoveRaw(-50, 50, 1000);
-
-            elapsedTime = 0.0f;
-        }
-    }
-}
-```
+<br>
 
 ## 3. Avoiding Collisions with CubeNavigator
 
