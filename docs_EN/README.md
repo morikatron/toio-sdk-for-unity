@@ -54,25 +54,27 @@
 - [12. How to use in Visual Scripting](tutorials_visual_scriptings.md)
 ### Easily control the movement of the cube - CubeHandle
 
-- [1. Synchronized control of cubes using CubeManager](tutorials_cubehandle.md#1-synchronized-control-of-cubes-using-cubemanager)
-- [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
-  - [2.1. CubeHandle's Move function and MoveRaw function](tutorials_cubehandle.md#21-cubehandles-move-function-and-moveraw-function)
-  - [2.2. One-shot method to reduce the amount of communication with Cube](tutorials_cubehandle.md#22-one-shot-method-to-reduce-the-amount-of-communication-with-cube)
-  - [2.3. Closed-Loop method to reach the specified coordinates/direction](tutorials_cubehandle.md#23-closed-loop-method-to-reach-the-specified-coordinatesdirection)
+- [1. Basic Usage](tutorials_cubehandle.md#1-Basic-Usage)
+- [2. Functions](tutorials_cubehandle.md#2-Functions)
+  - [2.1. Basic Settings](tutorials_cubehandle.md#21-Basic-Settings)
+  - [2.2. CubeHandle's Move function and MoveRaw function](tutorials_cubehandle.md#22-cubehandles-move-function-and-moveraw-function)
+  - [2.3. One-shot method to reduce the amount of communication with Cube](tutorials_cubehandle.md#23-one-shot-method-to-reduce-the-amount-of-communication-with-cube)
+  - [2.4. Closed-Loop method to reach the specified coordinates/direction](tutorials_cubehandle.md#24-closed-loop-method-to-reach-the-specified-coordinatesdirection)
 - [3. Follow TargetPole Demo](tutorials_cubehandle.md#3-follow-targetpole-demo)
 
 ### Group control - Navigator
 
-- [1. CubeNavigator](tutorials_navigator.md#1-CubeNavigator)
-  - [1.1. Using CubeManager with CubeNavigator](tutorials_navigator.md#11-using-cubemanager-with-cubenavigator)
-    - [1.1.1. If you are controlling Cube asynchronously](tutorials_navigator.md#111-if-you-are-controlling-the-cube-asynchronously)
-    - [1.1.2. When controlling Cube with synchronization](tutorials_navigator.md#112-want-to-control-cube-synchronously)
-    - [1.1.3. Using CubeNavigator without CubeManager](tutorials_navigator.md#113-using-cubenavigator-without-cubemanager)
-  - [1.2. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#12-avoiding-collisions-with-cubenavigator)
-    - [1.2.1. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#121-navi2target-function-to-move-to-the-target-while-avoiding-collision)
-    - [1.2.2. Move away from the target NaviAwayTarget function](tutorials_navigator.md#122-move-away-from-the-target-naviawaytarget-function)
-  - [1.3. Population Control with Boids](tutorials_navigator.md#13-population-control-with-boids)
-  - [1.4. Boids + Conflict Avoidance](tutorials_navigator.md#14-boids--conflict-avoidance)
+- [1. Overview](tutorials_navigator.md#1-overview)
+- [2. Using CubeManager with CubeNavigator](tutorials_navigator.md#2-using-cubemanager-with-cubenavigator)
+    - [2.1. Want to control Cube asynchronously](tutorials_navigator.md#21-want-to-control-cube-asynchronously)
+    - [2.2. Want to control Cube synchronously](tutorials_navigator.md#22-want-to-control-cube-synchronously)
+    - [2.3. Using CubeNavigator without CubeManager](tutorials_navigator.md#23-using-cubenavigator-without-cubemanager)
+- [3. Avoiding Collisions with CubeNavigator](tutorials_navigator.md#3-avoiding-collisions-with-cubenavigator)
+    - [3.1. Basic Settings](tutorials_navigator.md#31-Basic-Settings)
+    - [3.2. Navi2Target function to move to the target while avoiding collision](tutorials_navigator.md#32-navi2target-function-to-move-to-the-target-while-avoiding-collision)
+    - [3.3. Move away from the target NaviAwayTarget function](tutorials_navigator.md#33-Move-away-from-the-target-NaviAwayTarget-function)
+- [4. Population Control with Boids](tutorials_navigator.md#4-population-control-with-boids)
+- [5. Boids + Conflict Avoidance](tutorials_navigator.md#5-boids--conflict-avoidance)
 
 <br>
 
