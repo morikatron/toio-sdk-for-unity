@@ -1,21 +1,37 @@
 ## Sample_DigitalTwin
 
-This sample implements a so-called "Digital Twin," which reflects the movements of a real cube in real time to a simulator cube.
+This sample implements a so-called "Digital Twin", which reflects the movements of a real cube in real time to a simulator cube.
+
+<div align="center">
+<img src="../../../../../docs/res/samples/digitaltwin_demo.gif">
+</div>
+<br>
 
 There are three scripts:
-- `DigitalTwinBinder.cs`: Script implementing the ghost function
-- `DigitalTwinConnector.cs`: Script for connecting to the cube
+- `DigitalTwinBinder.cs`: Script implementing the "Digital Twin" function
+- `DigitalTwinConnecter.cs`: Script for connecting to the cube
 - `Sample_DigitalTwin.cs`: Main script controlling the connected cube
 
 ### Usage of the Sample
 
-- Connect to a real cube and reflect its movements on the digital twin in the simulator.
-  - Set `Connect Type` in `Sample_DigitalTwin.cs` to `Real`
-  - Add the local names of the cubes you want to connect to in `Local Names To Connect`
-  - (Optional) Configure the settings for specifying and mapping simulator cubes to be used as digital twins in `DigitalTwinBinder.cs`.
-- Connect to a simulator cube without using a digital twin
-  - Set `Connect Type` in `Sample_DigitalTwin.cs` to `Simulator`
-  - Add the local names (object names) of the cubes you want to connect to in `Local Names To Connect`
+#### Case A: Connect to a real cube and reflect its movements on the digital twin in the simulator.
+1. Set `Connect Type` in `Sample_DigitalTwin.cs` to `Real`
+1. Add the local names of the cubes you want to connect to in `Local Names To Connect`
+1. (Optional) Configure the settings for specifying and mapping simulator cubes to be used as digital twins in `DigitalTwinBinder.cs`.
+
+#### Case B: Connect to a simulator cube without using a digital twin
+1. Set `Connect Type` in `Sample_DigitalTwin.cs` to `Simulator`
+1. Add the local names (object names) of the cubes you want to connect to in `Local Names To Connect`
+
+#### Example
+
+In this diagram, a real cube named "toio-t5E" and simulator cubes named "Cube" and "Cube2" are added as connection targets. At the same time, the simulator cubes "Cube" and "Cube2" are set as digital twins to reflect the movements of the real cube. When the Connect Type is Real, it connects to "toio-t5E" and only "Cube" acts as a digital twin. However, when the Connect Type is Simulator, both "Cube" and "Cube2" are connected.
+
+<div align="center">
+<img src="../../../../../docs/res/samples/digitaltwin_prop.png">
+</div>
+<br>
+
 
 ### Parameters of `DigitalTwinBinder.cs`
 

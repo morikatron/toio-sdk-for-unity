@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87806b0d8527b047b7eaea5faf93fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectType: 1
+  connectType: 2
   localNamesToConnect:
   - CubeSimA
   logScanned: 1
