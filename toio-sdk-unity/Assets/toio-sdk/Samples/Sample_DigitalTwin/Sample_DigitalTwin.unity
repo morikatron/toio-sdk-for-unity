@@ -508,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865bb5287c78f4874ab940f0a04d11ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connecter: {fileID: 0}
+  connecter: {fileID: 815486383}
 --- !u!43 &1154838316
 Mesh:
   m_ObjectHideFlags: 0
