@@ -74,6 +74,10 @@
 - [4. ボイドによる集団制御](tutorials_navigator.md#4-ボイドによる集団制御)
 - [5. ボイド + 衝突回避](tutorials_navigator.md#5-ボイド--衝突回避)
 
+### テンプレート集
+
+- [1. ローカルネームで接続、CubeHandleで制御](tutorials_templates.md#1-ローカルネームで接続、CubeHandleで制御)
+
 <br>
 
 ## サンプル

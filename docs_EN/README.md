@@ -73,6 +73,10 @@
 - [4. Population Control with Boids](tutorials_navigator.md#4-population-control-with-boids)
 - [5. Boids + Conflict Avoidance](tutorials_navigator.md#5-boids--conflict-avoidance)
 
+### Templates
+
+- [1. Connecting with Local Name and Controlling with CubeHandle](tutorials_templates.md#1-Connecting-with-Local-Name-and-Controlling-with-CubeHandle)
+
 <br>
 
 ## Sample
