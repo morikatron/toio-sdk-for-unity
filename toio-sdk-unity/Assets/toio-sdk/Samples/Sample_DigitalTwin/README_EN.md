@@ -15,13 +15,13 @@ There are three scripts:
 ### Usage of the Sample
 
 #### Case A: Connect to a real cube and reflect its movements on the digital twin in the simulator.
-1. Set `Connect Type` in `Sample_DigitalTwin.cs` to `Real`
-1. Add the local names of the cubes you want to connect to in `Local Names To Connect`
+1. Set `Connect Type` in `Sample_DigitalTwin.cs` to `Real`.
+1. Add the local names of the cubes you want to connect to in `Local Names To Connect`.
 1. (Optional) Configure the settings for specifying and mapping simulator cubes to be used as digital twins in `DigitalTwinBinder.cs`.
 
 #### Case B: Connect to a simulator cube without using a digital twin
-1. Set `Connect Type` in `Sample_DigitalTwin.cs` to `Simulator`
-1. Add the local names (object names) of the cubes you want to connect to in `Local Names To Connect`
+1. Set `Connect Type` in `Sample_DigitalTwin.cs` to `Simulator`.
+1. Add the local names (object names) of the cubes you want to connect to in `Local Names To Connect`.
 
 #### Example
 

@@ -16,13 +16,13 @@
 
 #### リアルキューブと接続し、その動きをシミュレーター上のディジタルツインに反映する場合
 
-1. `Sample_DigitalTwin.cs` の `Connect Type` を `Real` にする
-1. `Local Names To Connect` に接続したいキューブのローカルネームを追加する
-1. （任意）`DigitalTwinBinder.cs` でディジタルツインとして使いたいシミュレーターキューブの指定やマッピング方法の設定をする
+1. `Sample_DigitalTwin.cs` の `Connect Type` を `Real` にします。
+1. `Local Names To Connect` に接続したいキューブのローカルネームを追加します。
+1. （任意）`DigitalTwinBinder.cs` でディジタルツインとして使いたいシミュレーターキューブの指定やマッピング方法の設定をします。
 
 #### シミュレーターキューブと接続し、ディジタルツインは使用しない
-1. `Sample_DigitalTwin.cs` の `Connect Type` を `Simulator` にする
-1. `Local Names To Connect` に接続したいキューブのローカルネーム（オブジェクト名）を追加する
+1. `Sample_DigitalTwin.cs` の `Connect Type` を `Simulator` にします。
+1. `Local Names To Connect` に接続したいキューブのローカルネーム（オブジェクト名）を追加します。
 
 #### 例
 
