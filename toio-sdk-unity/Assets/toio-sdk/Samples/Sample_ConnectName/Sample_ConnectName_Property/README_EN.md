@@ -7,7 +7,12 @@ This sample sets the Local Name of the cube to connect to in the Unity editor's 
 </div>
 <br>
 
-In the Inspector's "Local Names To Connect" section, you can add the Local Name of the cube you want to connect to. (The Local Name of a simulator cube will be the name of the game object.)
+Before play or build:
+- Set `ConnectType` in the inspector. For `ConnectType`, refer to [Sample_ConnectType](../../Sample_ConnectType/README_EN.md).
+- In the Inspector's "Local Names To Connect" section, you can add the Local Name of the cube you want to connect to. (The Local Name of a simulator cube will be the name of the game object.)
+
+Runtime:
+- On startup, this app automatically connects to the cubes specified if scanned.
 
 ### Technical Highlights
 

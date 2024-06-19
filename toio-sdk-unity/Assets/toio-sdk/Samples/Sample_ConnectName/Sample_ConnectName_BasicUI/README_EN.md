@@ -7,11 +7,14 @@ This sample lists the Local Names of the scanned cubes on the screen, allowing t
 </div>
 <br>
 
-Press the 【Scan】 button to start scanning for cubes.
-The scan continues for about 10 seconds. The scanned cubes are displayed in the list.
-If a cube is turned off or otherwise becomes unavailable, it will be removed from the list.
+Before play or build:
+- Set `ConnectType` in the inspector. For `ConnectType`, refer to [Sample_ConnectType](../../Sample_ConnectType/README_EN.md).
 
-You can connect to the cube with the corresponding Local Name by clicking on the list item of the scanned cubes.
+Runtime:
+1. Press the "Scan" button to start scanning for cubes.
+    - The scan continues for about 10 seconds. The scanned cubes are displayed in the list.
+    - If a cube is turned off or otherwise becomes unavailable, it will be removed from the list.k
+1. You can connect to the cube with the corresponding Local Name by clicking on the list item of the scanned cubes.
 
 ### Technical Highlights
 

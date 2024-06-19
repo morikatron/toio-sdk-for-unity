@@ -18,7 +18,10 @@ namespace toio.Samples.Sample_ConnectName
 
         void Start()
         {
-            new CubeScanner(this.connectType).StartScan(OnScan).Forget();
+            var scanner = new CubeScanner(this.connectType);
+            scanner.StartScan(OnScan).Forget();
+
+            Debug.Log("Scanning " + (scanner.actualType == ConnectType.Real ? "real" : "simulator") + " cubes.");
         }
 
         async void OnScan(BLEPeripheralInterface[] peripherals) {

@@ -8,8 +8,8 @@ namespace toio.Samples.Sample_ConnectName
 {
     public class Sample_ConnectName_BasicUI : MonoBehaviour
     {
-        public GameObject cubeItemPrefab;
         public ConnectType connectType = ConnectType.Real;
+        public GameObject cubeItemPrefab;
         public Button scanButton;
         public RectTransform listContent;
 
@@ -30,6 +30,8 @@ namespace toio.Samples.Sample_ConnectName
         {
             this.scanner = new CubeScanner(this.connectType);
             this.connecter = new CubeConnecter(this.connectType);
+
+            Debug.Log("This app is for " + (this.scanner.actualType == ConnectType.Real ? "real" : "simulator") + " cubes.");
         }
 
         void Update ()

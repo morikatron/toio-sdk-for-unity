@@ -48,9 +48,23 @@ namespace toio
             }
         }
 
+        public ConnectType actualType
+        {
+            get
+            {
+                if (connectType == ConnectType.Auto)
+                {
+                    return actualTypeOfAuto;
+                }
+                return connectType;
+            }
+        }
+
+        private ConnectType connectType = ConnectType.Auto;
         private CubeScannerInterface impl;
         public CubeScanner(ConnectType type = ConnectType.Auto)
         {
+            this.connectType = type;
             if (ConnectType.Auto == type)
             {
 #if (UNITY_EDITOR || UNITY_STANDALONE)

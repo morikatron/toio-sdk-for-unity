@@ -7,7 +7,12 @@
 </div>
 <br>
 
-インスペクターの「Local Names To Connect」項目で、接続したいキューブの Local Name を追加できます。（シミュレーターキューブの Local Name はゲームオブジェクトの名称になります。）
+実行・ビルド前に：
+- インスペクターで接続先`ConnectType`を設定します。`ConnectType`に関しては[Sample_ConnectType](../../Sample_ConnectType/README.md)を参照してください。
+- インスペクターの「Local Names To Connect」項目で、接続したいキューブの Local Name を追加できます。（シミュレーターキューブの Local Name はゲームオブジェクトの名称になります。）
+
+実行時：
+- 実行開始時に自動的に設定したLocal Nameのキューブを検索して接続します。
 
 ### 技術要点
 
