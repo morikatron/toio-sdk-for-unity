@@ -8,35 +8,23 @@
 <br>
 
 スクリプトが3つあります。
-- `DigitalTwinBinder.cs`：リアルキューブの動きをシミュレーターに反映することを実装したスクリプト
-- `DigitalTwinConnecter.cs`：キューブと接続するスクリプト
+- `DigitalTwinBinder.cs`：接続するリアルキューブのローカルネームと対応シミュレーターの指定と、動きの反映を実装したスクリプト
 - `Sample_DigitalTwin.cs`：メインスクリプト、接続したキューブを制御するスクリプト
 
 ### サンプルの使い方
-
-#### リアルキューブと接続し、その動きをシミュレーター上のディジタルツインに反映する場合
-
-1. `Sample_DigitalTwin.cs` の `Connect Type` を `Real` にします。
-1. `Local Names To Connect` に接続したいキューブのローカルネームを追加します。
-1. （任意）`DigitalTwinBinder.cs` でディジタルツインとして使いたいシミュレーターキューブの指定やマッピング方法の設定をします。
-
-#### シミュレーターキューブと接続し、ディジタルツインは使用しない
-1. `Sample_DigitalTwin.cs` の `Connect Type` を `Simulator` にします。
-1. `Local Names To Connect` に接続したいキューブのローカルネーム（オブジェクト名）を追加します。
-
-#### 例
-
-この図では、「toio-t5E」という名前のリアルキューブと、「Cube」「Cube2」という名前のシミュレーターキューブを接続ターゲットとして追加しています。同時にシミュレーターの「Cube」と「Cube2」はリアルキューブの動きを反映するディジタルツインとして設定しています。 `Connect Type` が `Real` の場合、「toio-t5E」と接続し、「Cube」のみがディジタルツインとなりますが、 `Connect Type` が `Simulator` の場合、「Cube」と「Cube2」が接続されるようになります。
 
 <div align="center">
 <img src="../../../../../docs/res/samples/digitaltwin_prop.png">
 </div>
 <br>
 
+ゲームオブジェクト`Binder`のインスペクターで、`Binding Table` に接続したいリアルキューブのローカルネームと、動きを再現させたいシミュレーターキューブを設定します。（この図の場合、`toio-t5E` というローカルネームのリアルキューブと接続し、その動きを `Cube` という名前のシミュレーターキューブに再現させます）
+
+他のパラメータ（次節を参照）を任意に設定して実行・ビルドします。
 
 ### `DigitalTwinBinder.cs` のパラメータ
 
-- `Simulators`：リアルキューブを再現するシミュレータキューブ
+- `Binding Table`：接続するリアルキューブのローカルネームと、動きを再現するシミュレータキューブのテーブル
 - `Mat`：シミュレータキューブが置かれるマット
 - `Mapping Method`：座標と角度をマッピングする方法
   - `Direct`：リアルキューブの座標と角度をそのままシミュレータキューブに設定する

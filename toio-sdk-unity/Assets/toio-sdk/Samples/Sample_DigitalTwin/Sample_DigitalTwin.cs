@@ -6,7 +6,7 @@ namespace toio.Samples.Sample_DigitalTwin
 {
     public class Sample_DigitalTwin : MonoBehaviour
     {
-        public DigitalTwinConnecter connecter;
+        public DigitalTwinBinder binder;
 
         Dictionary<string, CubeHandle> handles = new Dictionary<string, CubeHandle>();
         float elapsedTime = 0;
@@ -17,7 +17,7 @@ namespace toio.Samples.Sample_DigitalTwin
             if (elapsedTime < 0.05f) return;
             elapsedTime = 0;
 
-            foreach (var cube in this.connecter.cubes)
+            foreach (var cube in this.binder.cubes)
             {
                 // Create CubeHandle for new cube
                 if (!this.handles.ContainsKey(cube.addr))

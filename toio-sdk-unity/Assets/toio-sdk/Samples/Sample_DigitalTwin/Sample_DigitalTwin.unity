@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -334,31 +333,13 @@ GameObject:
   m_Component:
   - component: {fileID: 815486385}
   - component: {fileID: 815486384}
-  - component: {fileID: 815486383}
   m_Layer: 0
-  m_Name: Connecter
+  m_Name: Binder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &815486383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815486382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1844a7138b00a3b48b32d56158ec4557, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  connectType: 2
-  localNamesToConnect:
-  - Cube
-  - Cube2
-  logScanned: 1
 --- !u!114 &815486384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,11 +352,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2097a692105d9498294c5417b183c53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simulators:
-  - {fileID: 678647617}
-  - {fileID: 1208939862}
+  bindingTable:
+    _localNameSimulatorPairList:
+    - localName: toio-t5E
+      digitalTwin: {fileID: 678647617}
   mat: {fileID: 295603513}
   mappingMethod: 1
+  logScanned: 0
 --- !u!4 &815486385
 Transform:
   m_ObjectHideFlags: 0
@@ -383,13 +366,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815486382}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &840845203
 PrefabInstance:
@@ -488,13 +471,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030505187}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0016218605, y: 0.022214841, z: -0.0023503024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1030505190
 MonoBehaviour:
@@ -508,7 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865bb5287c78f4874ab940f0a04d11ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connecter: {fileID: 815486383}
+  binder: {fileID: 815486384}
 --- !u!43 &1154838316
 Mesh:
   m_ObjectHideFlags: 0
@@ -674,15 +657,12 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1208939862 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 327783822250526593, guid: 8bd6ea65c87536d49ac5878fd9e412fe,
-    type: 3}
-  m_PrefabInstance: {fileID: 840845203}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11db91d6fc205dedaa64396bef9937c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 295603512}
+  - {fileID: 670415726}
+  - {fileID: 840845203}
+  - {fileID: 815486385}
+  - {fileID: 1030505189}
