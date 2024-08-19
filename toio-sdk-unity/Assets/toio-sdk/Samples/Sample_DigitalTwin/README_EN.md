@@ -18,7 +18,9 @@ There are three scripts:
 </div>
 <br>
 
-In the inspector of the GameObject `Binder`, set the local name of the real cube you want to connect to in the `Binding Table`, along with the simulator cube where you want to replicate its movements. (In this example, connect to a real cube named `toio-t5E` and replicate its movements to a simulator cube named `Cube`.)
+In the inspector of the GameObject `Binder`, set the local name of the real cube you want to connect to in the `Binding Table`, along with the simulator cube where you want to replicate its movements.
+
+In this example, if you can connect to a real cube with the local name `toio-e4h`, its movements will be replicated in a simulator cube named `Cube`; if you can connect to `toio-n0Q`, the movements will be replicated in `Cube2`. If a connection cannot be established, the corresponding simulator will not move. It will not connect to cubes with local names not listed in the settings.
 
 Set other parameters (refer to the next section) as desired and execute/build.
 
