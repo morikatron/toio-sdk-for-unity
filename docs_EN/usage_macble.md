@@ -20,7 +20,7 @@ We have confirmed that it works in the following environment. You don't necessar
 | Tools and Software | Confirmed version | Recommended version |
 | ------------------ | ---------------------- | ----------------------- |
 | OS                 | MacOS 13.4.1 | MacOS 11 or higher |
-| Unity              | 2022.3.2f1 | 2022.3 or higher |
+| Unity              | 2022.3.44f1 | 2022.3 or higher |
 | Device             | MacBook Pro 2017 | N/A |
 
 <br>

@@ -9,7 +9,7 @@ The following environments have been tested. You don't necessarily have to match
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Winidows 10 | Winidows 10 or higher |
-| Unity | 2022.3.2f1 | 2022.3 or higher |
+| Unity | 2022.3.44f1 | 2022.3 or higher |
 
 Mobile Phone
 

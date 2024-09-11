@@ -35,7 +35,7 @@ The following environments have been tested. You don't necessarily have to match
 | -------------------- | ---------------------- | ----------------------- |
 | OS | MacOS 13.4.1 | macOS 11 or higher |
 | Bluetooth® | 4.2 | 4.2 or higher |
-| Unity | 2022.3.2f1 | 2022.3 or higher |
+| Unity | 2022.3.44f1 | 2022.3 or higher |
 | Browser (Chrome) | 114.0.5735.133 | 56 or higher |
 
 To check the version of BlueTooth®, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
@@ -46,7 +46,7 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Windows 10 Pro 64bit 1903 | Windows 10 |
 | Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher |
-| Unity | 2022.3.2f1 | 2022.3 or higher |
+| Unity | 2022.3.44f1 | 2022.3 or higher |
 | Browser (Edge) | 114.0.1823.82 | 79 or higher |
 | Browser (Chrome) | 114.0.5735.199 | 56 or higher |
 

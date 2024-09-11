@@ -9,7 +9,7 @@ The following environments have been tested. You don't necessarily have to match
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS    | macOS 13.4.1 | macOS 11 or higher |
-| Unity | 2022.3.2f1 | 2022.3 or higher |
+| Unity | 2022.3.44f1 | 2022.3 or higher |
 | Xcode | 14.3.1 (14E300c) | 13 or higher |
 | iOS   | 12.3.1, 13.2.2 | 11 or higher |
 

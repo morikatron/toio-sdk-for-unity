@@ -22,7 +22,7 @@ Unity が立ち上がった事を確認しましょう。
 
 toio SDK for Unity では、Unity に最適化された非同期処理ライブラリ [UniTask](https://github.com/Cysharp/UniTask) を使用しています。したがって本Unity プロジェクトには UniTask (2.1.0 以降) をインストールする必要があります。<br>
 
-UniTask のインストールは以下の手順で行います（2023年7月20日現在。Unity 2022.3.2f1 LTS）。
+UniTask のインストールは以下の手順で行います（2024年9月11日現在。Unity 2022.3.44f1 LTS）。
 1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開き
 1. [+] アイコンから Add package from git URL... を選び
 1. 以下のURLを追加する
