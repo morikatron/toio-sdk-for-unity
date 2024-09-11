@@ -63,7 +63,9 @@ namespace toio.Samples.Sample_ConnectName
                 // Create list item
                 var item = Instantiate(this.cubeItemPrefab, this.listContent);
                 item.GetComponent<Button>().onClick.AddListener(async () => await OnItemClick(peri));
-                item.GetComponentInChildren<Text>().text = peri.device_name;
+                var name = peri.device_name;
+                if (name.Length == 0) name = "Unknown";
+                item.GetComponentInChildren<Text>().text = name;
                 this.cubeItems.Add(peri.device_address, item);
             }
         }
