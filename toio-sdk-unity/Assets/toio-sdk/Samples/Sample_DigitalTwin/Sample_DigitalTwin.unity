@@ -356,6 +356,8 @@ MonoBehaviour:
     _localNameSimulatorPairList:
     - localName: toio-t5E
       digitalTwin: {fileID: 678647617}
+    - localName: toio-e4h
+      digitalTwin: {fileID: 840845204}
   mat: {fileID: 295603513}
   mappingMethod: 1
   logScanned: 0
@@ -447,6 +449,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bd6ea65c87536d49ac5878fd9e412fe, type: 3}
+--- !u!114 &840845204 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 327783822250526593, guid: 8bd6ea65c87536d49ac5878fd9e412fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 840845203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11db91d6fc205dedaa64396bef9937c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1030505187
 GameObject:
   m_ObjectHideFlags: 0
