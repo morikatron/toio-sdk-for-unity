@@ -17,7 +17,7 @@ namespace toio.tutorial
         async void Start()
         {
             // モジュールを直接利用した場合:
-            var peripheral = await new NearestScanner().Scan();
+            var peripheral = await new CubeScanner().NearestScan();
             connecter = new CubeConnecter();
             cube = await connecter.Connect(peripheral);
 

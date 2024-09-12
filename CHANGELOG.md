@@ -7,11 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
+## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2024-09-12
+
+★ **Upgraded to Unity 2022.3.44f1 LTS**
+
+### Added
+
+- [Cube] Support toio core cube BLE protocol version 2.4.0.
+  - APIs for connection interval.
+  - APIs for posture detection: high precision eulers and quaternions.
+- [Simulator] Implement toio core cube BLE protocol version 2.4.0.
+  - APIs for posture detection: high precision eulers and quaternions.
+- [BLE] Add methods `CubeScanner.StartScan`, `CubeScanner.StopScan`.
+- [Sample] Add Sample_ConnectName, Sample_DigitalTwin.
+
+### Changed
+
+- [BLE] Update `AndroidManifest.xml` for Android 12 (API level 31). This update is **NOT backward-compatible**.
+- [Simulator] Get rid of `Resources` folder. All assets of simulator are now static. Thus, **if you are using `Resource.Load` to dynamically load simulator assets (e.g. Cube prefab or texture of mat), you need to replace it with static links.**
+- [Navigator] Now, no border is set by default. Corresponding samples are also updated. (However, you should still care for CubeHandle's border.)
+- [Docs] Upgrade to google analysis 4.
+- [Docs] Improve documents on `ConnectType` and visual scripting.
+
 ## [1.5.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.1) - 2022-10-05
 
 ### Fixed
 
 - [BLE] Fix WebGL BLE plugin not working after scene switching issue. [issue#258](https://github.com/morikatron/toio-sdk-for-unity/issues/258)
+- [Simulator] Fix Custom Mat size calculation issue.
+
+### Removed
+
+- [BLE] Remove deprecated `NearestScanner`, `NearScanner`.
+- [BLE] Remove `CubeScanner.NearScanAsync`. Remove corresponding `CubeManager.MultiConnectAsync`.
 
 ## [1.5.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2022-04-25
 

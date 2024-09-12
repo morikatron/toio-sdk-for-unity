@@ -218,7 +218,7 @@ The scan roughly follows the steps below.
 
 ### Connect
 
-The Connector class is used for the connection. Please refer to the [cube documentation](sys_cube.md#32-connecter), which describes most of the details.
+The Connecter class is used for the connection. Please refer to the [cube documentation](sys_cube.md#32-connecter), which describes most of the details.
 
 The following points should be added to BLE process.
 

@@ -2,26 +2,72 @@
 
 ## Table of Contents
 
-- [1. Synchronized control of cubes using CubeManager](tutorials_cubehandle.md#1-synchronized-control-of-cubes-using-cubemanager)
-- [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
-  - [2.1. CubeHandle's Move function and MoveRaw function](tutorials_cubehandle.md#21-cubehandles-move-function-and-moveraw-function)
-  - [2.2. One-shot method to reduce the amount of communication with Cube](tutorials_cubehandle.md#22-one-shot-method-to-reduce-the-amount-of-communication-with-cube)
-  - [2.3. Closed-Loop method to reach the specified coordinates/direction](tutorials_cubehandle.md#23-closed-loop-method-to-reach-the-specified-coordinatesdirection)
+- [1. Basic Usage](tutorials_cubehandle.md#1-Basic-Usage)
+- [2. Functions](tutorials_cubehandle.md#2-Functions)
+  - [2.1. Basic Settings](tutorials_cubehandle.md#21-Basic-Settings)
+  - [2.2. CubeHandle's Move function and MoveRaw function](tutorials_cubehandle.md#22-cubehandles-move-function-and-moveraw-function)
+  - [2.3. One-shot method to reduce the amount of communication with Cube](tutorials_cubehandle.md#23-one-shot-method-to-reduce-the-amount-of-communication-with-cube)
+  - [2.4. Closed-Loop method to reach the specified coordinates/direction](tutorials_cubehandle.md#24-closed-loop-method-to-reach-the-specified-coordinatesdirection)
 - [3. Follow TargetPole Demo](tutorials_cubehandle.md#3-follow-targetpole-demo)
 
-## 1. Synchronized control of cubes using CubeManager
+## 1. Basic Usage
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/0.BasicScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/basic/).
 
-CubeManager described in the basic tutorial controls multiple cubes at arbitrary timing (asynchronous).<br>
-This kind of asynchronous communication is sometimes a problem when controlling the movement of Cube, and there are times when you want to control Cube at a certain timing (synchronization) that you specify.
+As shown in the sample code below, there are four main steps to using a CubeHandle:
 
-CubeManager provides a mechanism to perform such synchronization control.
+1. Creation: Create a CubeHandle using a Cube object as an argument. This establishes a one-to-one relationship.
+1. Control Interval: Similar to the Cube class control, an interval is required (because internally CubeHandle calls the Cube functions).
+1. Update: Always call the Update function before performing a series of controls. This function retrieves information from the Cube and updates the internal state.
+1. Control: Call functions such as MoveRaw, Move, or Move2Target to actually perform the control. Details are provided in the next chapter.
 
-### If you are controlling Cube asynchronously
+```csharp
+public class HandleBasic : MonoBehaviour
+{
+    float elapsedTime = 0;
+    List<CubeHandle> handles;
+    bool started = false;
 
-CubeManager automatically creates CubeHandle from the connected Cube and puts it in the list of member variables.<br>
+    async void Start()
+    {
+        // Connect Cube
+        var peripheral = await new CubeScanner().NearScan(2, 100);
+        var cubes = await new CubeConnecter().Connect(peripheral);
+        // Create CubeHanlde
+        this.handles = new List<CubeHandle>();
+        foreach (var cube in cubes)
+            this.handles.Add(new CubeHandle(cube));  // (1) Create from Cube
+
+        this.started = true;
+    }
+
+    void Update()
+    {
+        if (!started) return;
+        elapsedTime += Time.deltaTime;
+
+        if (0.05f < elapsedTime)  // (2) Access CubeHandle every 0.05f seconds
+        {
+            foreach (var handle in this.handles)
+                handle.Update();    // (3) Fetch data from Cube, and do some pre-calculation inside
+
+            foreach (var handle in this.handles)
+                handle.MoveRaw(-50, 50, 1000);   // (4) Control
+
+            elapsedTime = 0.0f;
+        }
+    }
+}
+```
+
+### Simplification using CubeManager
+
+CubeManager automatically creates CubeHandle from the connected Cube and puts it in the list of member variables.
+Additionally, since managing control intervals is required, you can simplify the above code by using the CubeManager.
+
+#### If you are controlling Cube asynchronously
+
 In the following sample code, the controllable state of CubeHandle held by CubeManager is checked in Update before controlling it.
 
 ```csharp
@@ -51,7 +97,7 @@ public class HandleBasic : MonoBehaviour
 
 In this sample, everyone has their own controllable state, so it is "asynchronous".
 
-### When controlling Cube with synchronization
+#### When controlling Cube with synchronization
 
 If you do the following, all handles will be controlled by the same frame every 50ms.
 
@@ -104,7 +150,7 @@ public class HandleBasic : MonoBehaviour
 }
 ```
 
-## 2. CubeHandle
+## 2. Functions
 
 Cube class, which controlled the movement of Cube in the basic tutorial, is a class that provides basic functions according to the [toio™ Core Cube Technical Specification](https://toio.github.io/toio-spec/), and Cube movement is controlled by the left and right motors.
 Since it is very difficult to perform complex movement by only controlling such a motor, toio SDK for Unity provides CubeHandle class that makes cube movement control easier to handle.
@@ -117,7 +163,32 @@ CubeHandle class provides the following movement control.
 
 For more information on CubeHandle, see [[here]](cubehandle.md).
 
-### 2.1. CubeHandle's Move function and MoveRaw function
+### 2.1. Basic Settings
+
+> If you are using the "Play mat (sumo ring)", settings are not mandatory, so feel free to proceed directly to the next section.
+
+#### Border
+
+CubeHandle can automatically limit the output to the cube's motor to prevent it from going beyond the border. The border can be set as follows:
+
+```csharp
+cubeHandle.borderRect = new RectInt(65, 65, 370, 370);
+```
+
+The default value is `RectInt(65, 65, 370, 370)`, which corresponds to the "Play mat (sumo ring)", so be sure to set it if you are using a different mat.
+
+If the cube gets stuck on (goes beyond) the border, it cannot move forward towards the outside of the border, but it can rotate. If you make the cube move towards the inside of the border before moving forward, you can bring it back inside the border.
+
+#### Delay
+
+CubeHandle calculates to eliminate the impact considering communication delay. If you want to improve control accuracy, it's crucial to measure and set the delay value. The `lag` variable of CubeHandle is set to the value that combines the delay when obtaining information from the cube and the delay from sending motor commands until the cube receives them.
+
+```csharp
+cubeHandle.lag = 0.13;  // seconds
+```
+
+
+### 2.2. CubeHandle's Move function and MoveRaw function
 
 > The sample files for this chapter can be found in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/1.MoveScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/move/).
@@ -227,7 +298,7 @@ mv.Exec();
 handle.Move(mv);
 ```
 
-### 2.2. One-shot method to reduce the amount of communication with Cube
+### 2.3. One-shot method to reduce the amount of communication with Cube
 
 > The sample files for this chapter are located in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/2.OneShotScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/oneshot/).
@@ -291,7 +362,7 @@ void Update()
 }
 ```
 
-### 2.3. Closed-Loop method to reach the specified coordinates/direction
+### 2.4. Closed-Loop method to reach the specified coordinates/direction
 
 > The sample files for this chapter are located in "Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/3.ToTargetScene/".<br>
 > The web app sample for this chapter is [[here]](https://morikatron.github.io/t4u/cubehandle/to_target/).

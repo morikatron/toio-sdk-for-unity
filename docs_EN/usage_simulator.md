@@ -4,12 +4,13 @@
 
 - [1. Outline](usage_simulator.md#1-outline)
 - [2. Mat Prefab](usage_simulator.md#2-mat-prefab)
-  - [2.1. Parameters in the Inspector](usage_simulator.md#21-parameters-in-the-inspector)
+  - [2.1. Inspector](usage_simulator.md#21-inspector)
   - [2.2. Constants](usage_simulator.md#22-constants)
   - [2.3. Enumerated types](usage_simulator.md#23-enumerated-types)
   - [2.4. Methods](usage_simulator.md#24-methods)
 - [3. StandardID Prefab](usage_simulator.md#3-standardid-prefab)
-  - [3.1. Parameters in the Inspector](usage_simulator.md#31-parameters-in-the-inspector)
+  - [3.1. Inspector](usage_simulator.md#31-inspector)
+  - [3.2. Methods](usage_simulator.md#32-methods)
 - [4. Cube Prefab](usage_simulator.md#4-cube-prefab)
   - [4.1. Inspector in CubeSimulator](usage_simulator.md#41-inspector-in-cubesimulator)
   - [4.2. CubeSimulator Constants](usage_simulator.md#42-cubesimulator-constants)
@@ -28,7 +29,7 @@
 
 Simulator is a virtual environment for testing smart device applications that communicate with toio™ Core Cube (Cube).
 
-Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Resources/`.
+Simulator consists of the following four prefabs under `Assets/toio-sdk/Scripts/Simulator/Prefabs/`.
 
 - Mat ... Imitation of various play mats
 - StandardID ... Imitates various types of cards/sheets that can read StandardID
@@ -45,9 +46,14 @@ Cube Prefab can be placed in Mat Prefab to get the coordinate position and orien
 
 You can place multiple Mat Prefabs in the scene, at any position and angle, as long as they are horizontal.
 
-## 2.1. Parameters in the Inspector
+## 2.1. Inspector
 
-<div align="center"><img src="res/usage_simulator/mat.png"></div>
+<div align="center">
+  <img src="res/usage_simulator/mat_inspector.png">
+  <img src="res/usage_simulator/mat_types.png">
+</div>
+
+### Mat type
 
 In Unity's Inspector, you can change the look and coordinates of the mat by selecting one of the following in the "Type" list of the script Mat.cs
 
@@ -55,11 +61,33 @@ In Unity's Inspector, you can change the look and coordinates of the mat by sele
 - Play mat (colored tiles)
 - Simple mat,toio play mat for development 1~6
 - toio play mat for development (back side)
+- Gesundroid
 - Customize
 
  > The surface of toio play mat for development #1 ~ #6 has the same specifications as Simple mat, so they are combined into one type "Simple mat,toio play mat for development1~6".
 
 Please refer to [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_position_id) and [toio play mat for development](https://toio.io/blog/detail/20200423-1.html) for the specifications of each type.
+
+### Customize
+
+When the "Type" is set to "Customize", you can manually set the range of mat coordinates as follows. The size of the mat in Unity is calculated based on this range and automatically adjusted.
+
+<div align="center">
+  <img src="res/usage_simulator/mat_custom.png">
+</div>
+
+In the `MatAssetLoader` component, it's also possible to change the texture (image) of the mat. (However, it's recommended not to change anything other than "Custom".) Changing the image for the "Custom" type is done as follows:
+
+1. Import the image file into the project.
+2. On the Inspector of the respective image, set the "Texture Type" to "Sprite (2D and UI)" and click the "Apply" button.
+
+<div align="center">
+  <img src="res/usage_simulator/mat_custom_image.png">
+</div>
+
+3. The image you've selected will appear in the list of target images for the "Custom" option in the Mat Prefab. Select it.
+
+(If no image is set for "Custom," a blank mat will be displayed.)
 
 ## 2.2. Constants
 
@@ -79,7 +107,8 @@ toio_collection_front = 0,  // Play mat(sumo ring)
 toio_collection_back = 1,   // Play mat(Colored tiles)
 simple_playmat = 2,         // Simple mat
 developer = 3,              // toio play mat for development
-custom = 4                  // Customize the coordinate range.
+gesundroid = 4,             // Gesundroid
+custom = 5                  // Customize the coordinate range.
 ```
 
 ### DeveloperMatType
@@ -176,21 +205,31 @@ If you put Cube Prefab on top of the StandardID Prefab, you can get the Standard
 
 Multiple StandardID Prefabs can be placed in a scene at any position and angle.
 
-## 3.1. Parameters in the Inspector
+## 3.1. Inspector
 
 <div align="center"><img src="res/usage_simulator/standardid.png"></div>
 
+### StandardID type
+
 In Unity inspector, you can switch StandardIDs by selecting the "Title" of the script Mat.cs and then selecting a card sheet of a particular "Type".
 
-The following "titles" can be supported.
+The following titles are supported.
 
 - toio collection
 - Simple card
 
-See [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_standard_id) for "type".
+See [toio™ Core Cube Technical Specifications](https://toio.github.io/toio-spec/en/docs/hardware_standard_id) for details.
+
+### Refresh button
+
+Clicking the "Refresh" button will update the visual appearance.
+
+In the Inspector, when you change the texture (image) corresponding to the current "Type" in the `StandardIDAssetLoader` component or undo a change in the "Type", the appearance of the StandardID is not automatically updated. In such cases, you need to manually press the "Refresh" button to apply the changes.
+
+However, when switching the "Type", the update is performed automatically, so there is no need to click the "Refresh" button.
 
 
-## 3.2. Method
+## 3.2. Methods
 
 ### UnityDeg2MatDeg
 

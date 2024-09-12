@@ -4,12 +4,13 @@
 
 - [1. 概説](usage_simulator.md#1-概説)
 - [2. Mat Prefab](usage_simulator.md#2-mat-prefab)
-  - [2.1. インスペクターでのパラメーター](usage_simulator.md#21-インスペクターでのパラメーター)
+  - [2.1. インスペクター](usage_simulator.md#21-インスペクター)
   - [2.2. 定数](usage_simulator.md#22-定数)
   - [2.3. 列挙型](usage_simulator.md#23-列挙型)
   - [2.4. メソッド](usage_simulator.md#24-メソッド)
 - [3. StandardID Prefab](usage_simulator.md#3-standardid-prefab)
-  - [ 3.1. インスペクターでのパラメーター](usage_simulator.md#31-インスペクターでのパラメーター)
+  - [3.1. インスペクター](usage_simulator.md#31-インスペクター)
+  - [3.2. メソッド](usage_simulator.md#32-メソッド)
 - [4. Cube Prefab](usage_simulator.md#4-cube-prefab)
   - [4.1. CubeSimulator のインスペクター](usage_simulator.md#41-cubesimulator-のインスペクター)
   - [4.2. CubeSimulator の定数](usage_simulator.md#42-cubesimulator-の定数)
@@ -28,7 +29,7 @@
 
 Simulator は、toio™コア キューブ (以降、キューブ) と通信するスマートデバイスのアプリを開発していく際、Unity Editor 上で手軽に動作チェックができるように作られたテスト用の仮想環境です。
 
-Simulator は `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つの prefab から構成されています。
+Simulator は `Assets/toio-sdk/Scripts/Simulator/Prefabs/` の下にある、以下の 4 つの prefab から構成されています。
 
 - Mat … 各種プレイマットを模したもの
 - StandardID … Standard ID を読み取れる各種のカード・シートを模したもの
@@ -45,9 +46,14 @@ Cube Prefab は Mat Prefab に置くと、 Mat の座標位置と方向を取得
 
 Mat Prefab はシーンの中に複数枚、水平であれば位置と角度任意で置けます。
 
-## 2.1. インスペクターでのパラメーター
+## 2.1. インスペクター
 
-<div align="center"><img src="res/usage_simulator/mat.png"></div>
+<div align="center">
+  <img src="res/usage_simulator/mat_inspector.png">
+  <img src="res/usage_simulator/mat_types.png">
+</div>
+
+### Mat タイプ
 
 Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リストに、
 
@@ -55,6 +61,7 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 - トイコレ付属マット（色タイル面）
 - 簡易マット・開発用マット（表面）1~6
 - 開発用マット（裏面）
+- ゲズンロイド
 - カスタマイズ
 
 のいずれかを選択すると、マットの見た目と座標を変えられます。
@@ -65,10 +72,33 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 | トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) |
 | 簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
 | 開発用マット | toio™開発用プレイマット（仮称） |
+| ゲズンロイド | 工作生物 ゲズンロイド付属のプレイマット |
 
  > ※ toio™開発用プレイマット（仮称）#1 ~ #6 の表面は、toio™コア キューブ（単体）付属の簡易プレイマットと同じ仕様なので、一つのタイプ「簡易マット・開発用マット（表面）1~6」にまとめています。
 
 各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考にしてください。
+
+
+### カスタマイズ
+
+「タイプ」が「カスタマイズ」に設定された場合、以下のようにマット座標の範囲を自分で設定することが可能です。
+マットの（Unityにおいての）サイズはこの範囲によって換算され、自動的に設定されます。
+
+<div align="center">
+  <img src="res/usage_simulator/mat_custom.png">
+</div>
+
+`MatAssetLoader` コンポネントで、マットのテクスチャ（画像）を変更することも可能です。（ただし「カスタム」以外のものを変更することはおすすめしません。） 「カスタム」の画像変更は以下のように行います。
+1. 画像ファイルをプロジェクトにインポートする
+2.  対象の画像の「インスペクター」上で「テキスチャタイプ」を「スプライト（2DとUI）」に設定し、「適用する」ボタンをクリックする
+
+<div align="center">
+  <img src="res/usage_simulator/mat_custom_image.png">
+</div>
+
+3.  Mat Prefabの「カスタム」の画像対象一覧に上記の画像が表示されるようになるため、選択する
+
+（「カスタム」に画像が設定されていない場合は、空白のマットが表示されます。）
 
 ## 2.2. 定数
 
@@ -88,7 +118,8 @@ toio_collection_front = 0,  // トイコレ付属マット（土俵面）
 toio_collection_back = 1,   // トイコレ付属マット（色タイル面）
 simple_playmat = 2,         // キューブ（単体）付属簡易マット
 developer = 3,              // 開発用マット
-custom = 4                  // 座標範囲をカスタマイズ
+gesundroid = 4,             // ゲズンロイド
+custom = 5                  // 座標範囲をカスタマイズ
 ```
 
 ### DeveloperMatType
@@ -185,9 +216,11 @@ Cube Prefab を StandardID Prefab の上に載せると、Standard ID と方向�
 
 StandardID Prefab はシーンの中に複数枚、位置と角度任意で置けます。
 
-## 3.1. インスペクターでのパラメーター
+## 3.1. インスペクター
 
 <div align="center"><img src="res/usage_simulator/standardid.png"></div>
+
+### StandardID タイプ
 
 Unity のインスペクターで、スクリプト Mat.cs の「タイトル」を選択してから、特定の「タイプ」のカード・シートを選択して、StandardID を切り替えることが出来ます。
 
@@ -318,6 +351,19 @@ public uint standardID { get; internal set; }   // 読み取った Standard ID
 public bool onMat { get; internal set; }        // Mat 上にあるか
 public bool onStandardID { get; internal set; }   // StandardID 上にあるか
 public bool isGrounded { get {return onMat || onStandardID; } } // Mat 又は StandardID 上にあるか
+public bool button { get; internal set; }       // ボタン
+public bool sloped { get; internal set; }       // 傾斜状態
+// 2.1.0
+public Cube.PoseType pose { get; internal set; } // 姿勢
+// 2.2.0
+public int shakeLevel { get; internal set; }    // シェイクされたか
+public int leftMotorSpeed { get; internal set; }  // 左タイヤの速度
+public int rightMotorSpeed { get; internal set; } // 右タイヤの速度
+// 2.3.0
+public Cube.MagnetState magnetState { get; internal set; } // 磁石の状態
+public Vector3 magneticForce { get; internal set; }        // 磁場
+public Vector3 eulers { get; internal set; }               // オイラー角
+public Quaternion quaternion { get; internal set; }        // クォータニオン
 ```
 
 ## 4.4. CubeSimulator のメソッド

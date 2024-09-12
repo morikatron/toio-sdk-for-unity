@@ -29,7 +29,7 @@ The environment can be established by following the steps below.
 
 1. Click [File] -> [New Scene] to create a new scene.
 2. Remove Main Camera and Directional Light from the hierarchy.
-3. Open the "Assets/toio-sdk/Scripts/Simulator/Resources" folder in the project window.
+3. Open the "Assets/toio-sdk/Scripts/Simulator/Prefabs" folder in the project window.
 4. Drag and drop Cube Prefab file and the Stage Prefab file into the hierarchy.<br>
    You can also move Cube object by switching to the Scene View and using the mouse.
 5. Right-click on the hierarchy, click "Create Empty Object" from the right-click menu, and name it "scene" (you can name it whatever you want).
@@ -52,7 +52,8 @@ Here, we explain how to connect and rotate the cubes using the sample from `\Ass
 - [2. Connect to the cubes](#2-connect-to-the-cubes)
 - [3 Check to see if the connection has been made in Update.](#3-check-to-see-if-the-connection-has-been-made-in-update)
 - [4. Move Cubes](#4-move-cubes)
-- [5. Run a program](#5-run-a-program)
+- [5. Run a program(Simulator)](#5-run-a-programsimulator)
+- [6. Run a program(Real)](#6-run-a-programreal)
 
 ## 1. Initialization of variables
 First, open a graph view and initialize variables from Blackboard.
@@ -131,12 +132,24 @@ After added nodes, connect as follows, including the process created in 「3.Che
 
 The process of Update is now complete.
 
-## 5. Run a program
-Finally, go back to the Unity editor, press the play button, and actually move in the Unity editor.
+## 5. Run a program(Simulator)
+Then, go back to the Unity editor, press the play button, and actually move in the Unity editor.
 
 If it works as follows, you have done it correctly.
 
 <div align="center"><img width=200 src="res/tutorial_visual_scriptings/simplescene.gif"></div>
+
+## 6. Run a program(Real)
+Finally, let's connect to the real cube instead of the cube in the simulator and try to move it.
+
+Go back to the graph view and set the value of [Connect Type] of [Visual Scripting Connect Cube] node placed in [2. Connect to the cubes](#2-connect-to-the-cubes) to [Real] by selecting it from the tab.
+
+<div align="center"><img src="res/tutorial_visual_scriptings/connect_real.png"></div>
+
+Then turn on the power of the real cube and press the play button in the Unity editor.
+
+If the real cube is connected and the real cube moves in the same way as in [5. Run a program(Simulator)](#5-run-a-programsimulator), it is working correctly.
+
 
 The basics are the same for the other tutorials.
 

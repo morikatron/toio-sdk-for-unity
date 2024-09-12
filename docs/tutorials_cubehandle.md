@@ -2,26 +2,71 @@
 
 ## 目次
 
-- [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-cubemanager-を使ったキューブの同期制御)
-- [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
-  - [2.1. CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#21-cubehandle-の-move-関数と-moveraw-関数)
-  - [2.2. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#22-キューブとの通信量を抑える-one-shot-メソッド)
-  - [2.3. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#23-指定した座標方向に到達する-closed-loop-メソッド)
+- [1. 基本的な使い方](tutorials_cubehandle.md#1-基本的な使い方)
+- [2. 主な機能](tutorials_cubehandle.md#2-主な機能)
+  - [2.1. 基本設定](tutorials_cubehandle.md#21-基本設定)
+  - [2.2. Move 関数と MoveRaw 関数](tutorials_cubehandle.md#22-move-関数と-moveraw-関数)
+  - [2.3. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#23-キューブとの通信量を抑える-one-shot-メソッド)
+  - [2.4. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#24-指定した座標方向に到達する-closed-loop-メソッド)
 - [3. Follow TargetPole デモ](tutorials_cubehandle.md#3-follow-targetpole-デモ)
 
-## 1. CubeManager を使ったキューブの同期制御
+## 1. 基本的な使い方
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/0.BasicScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/basic/)です。
 
-チュートリアル基本編で説明した CubeManager は複数のキューブをそれぞれ任意のタイミング(非同期)で制御するものです。<br>
-このような非同期の通信はキューブの移動制御を行う上で問題になる時があり、キューブを指定した一定のタイミング(同期)で制御したい場合があります。
+以下のサンプルコードが示したように、CubeHandleを使うには主に４つのステップがあります。
+1. 作成：Cubeオブジェクトを引数として、CubeHandleを作成する。一対一の関係になります。
+1. 制御の間隔：Cubeクラスの制御と同じように、（実際CubeHandleの内部ではCubeの関数を呼出しているため、）間隔を設ける必要があります。
+1. `Update`：一連の制御を行う前に、必ず`Update`関数を呼んでください。これはCubeから情報を取得し、内部状態の更新を行うためです。
+1. 制御：`MoveRaw`、`Move`、`Move2Target` など実際に制御を行う関数を呼出します。詳細は次の章で紹介します。
 
-そのような同期制御を行うための仕組みが CubeManager には用意されています。
+```csharp
+public class HandleBasic : MonoBehaviour
+{
+    float elapsedTime = 0;
+    List<CubeHandle> handles;
+    bool started = false;
 
-### 非同期でキューブを制御する場合
+    async void Start()
+    {
+        // Connect Cube
+        var peripheral = await new CubeScanner().NearScan(2, 100);
+        var cubes = await new CubeConnecter().Connect(peripheral);
+        // Create CubeHanlde
+        this.handles = new List<CubeHandle>();
+        foreach (var cube in cubes)
+            this.handles.Add(new CubeHandle(cube));  // (1) Create from Cube
 
-CubeManager は自動的に、接続した Cube から CubeHandle を作成して、メンバー変数のリストに入れています。<br>
+        this.started = true;
+    }
+
+    void Update()
+    {
+        if (!started) return;
+        elapsedTime += Time.deltaTime;
+
+        if (0.05f < elapsedTime)  // (2) Access CubeHandle every 0.05f seconds
+        {
+            foreach (var handle in this.handles)
+                handle.Update();    // (3) Fetch data from Cube, and do some pre-calculation inside
+
+            foreach (var handle in this.handles)
+                handle.MoveRaw(-50, 50, 1000);   // (4) Control
+
+            elapsedTime = 0.0f;
+        }
+    }
+}
+```
+
+### CubeManager で簡略化
+
+CubeManager は自動的に、接続した Cube から CubeHandle を作成して、メンバー変数のリストに入れています。
+また、制御間隔の管理も求められているので、CubeManager を用いて上記コードを簡略化することができます。
+
+#### 非同期でキューブを制御する場合
+
 下記のサンプルコードでは、 Update の中で CubeManager が保持している CubeHandle の制御可能状態を確認してから、制御を行っています。
 
 ```csharp
@@ -51,7 +96,7 @@ public class HandleBasic : MonoBehaviour
 
 このサンプルでは制御可能状態は皆それぞれなので、「非同期」になります。
 
-### 同期でキューブを制御する場合
+#### 同期でキューブを制御する場合
 
 以下のようにすると、すべての handle が、50ms ごとの同じフレームで制御されます。
 
@@ -104,7 +149,9 @@ public class HandleBasic : MonoBehaviour
 }
 ```
 
-## 2. CubeHandle
+<br>
+
+## 2. 主な機能
 
 チュートリアル基本編でキューブの移動制御を行っていた Cube クラスは [toio™コア キューブ技術仕様](https://toio.github.io/toio-spec/) に従った基礎機能を提供するクラスで、キューブの移動は左右のモーター制御となっています。
 このようなモーターの制御だけで複雑な移動を行うのは大変なので toio SDK for Unity ではキューブの移動制御をより扱いやすくした CubeHandle クラスを用意しています。
@@ -117,7 +164,34 @@ CubeHandle クラスは、以下のような移動制御を提供します。
 
 CubeHandle の詳細については[【コチラ】](usage_cubehandle.md)を参照してください。
 
-### 2.1. CubeHandle の Move 関数と MoveRaw 関数
+### 2.1. 基本設定
+
+> 「トイコレ付属マット（土俵面）」をお使いの場合、設定は必須ではないので、直接に次節に進めても構いません。
+
+#### ボーダー
+
+ボーダーから出ないように、CubeHandleはCubeのモーターへの出力を自動的に制限できます。
+ボーダーの設定は以下のようにできます。
+
+```csharp
+cubeHandle.borderRect = new RectInt(65, 65, 370, 370);
+```
+
+既定値は「トイコレ付属マット（土俵面）」に合わせた `RectInt(65, 65, 370, 370)` なので、違うマットを利用する場合は必ず設定を行ってください。
+
+ボーダーに引っかかった（行き過ぎた）場合は、ボーダー外に向かって前進できないが、回転することはできます。キューブをボーダー内へ向かわせてから前進させれば、ボーダー内に戻すことができます。
+
+#### 遅延
+
+CubeHandle は通信遅延を考慮してその影響をなくすように計算しています。
+制御の精度を高めたい場合は、遅延の値を実測して設定するのが重要なポイントになります。
+CubeHandle の `lag` 変数は、キューブから情報取得する際の遅延とモーター指令を送信してからキューブが受信するまでの遅延を合わせた値に設定します。
+
+```csharp
+cubeHandle.lag = 0.13;  // seconds
+```
+
+### 2.2. Move 関数と MoveRaw 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/1.MoveScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/move/)です。
@@ -229,7 +303,7 @@ mv.Exec();
 handle.Move(mv);
 ```
 
-### 2.2. キューブとの通信量を抑える One-shot メソッド
+### 2.3. キューブとの通信量を抑える One-shot メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/2.OneShotScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/oneshot/)です。
@@ -293,7 +367,7 @@ void Update()
 }
 ```
 
-### 2.3. 指定した座標/方向に到達する Closed-Loop メソッド
+### 2.4. 指定した座標/方向に到達する Closed-Loop メソッド
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-CubeHandle/3.ToTargetScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/cubehandle/to_target/)です。

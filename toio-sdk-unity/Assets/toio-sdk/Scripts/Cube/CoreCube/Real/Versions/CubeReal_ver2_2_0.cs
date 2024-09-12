@@ -364,31 +364,31 @@ namespace toio
             int type = data[0];
             if (0x9c == type)   // Motoer Read
             {
-                this.motorReadRequest.hasConfigResponse = true;
                 this.motorReadRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 if (this.motorReadRequest.isConfigResponseSucceeded)
                     this.motorReadValid = this.requestedMotorReadValid;
+                this.motorReadRequest.hasConfigResponse = true;
                 this.motorSpeedCallback.Notify(this);
             }
 
             else if (0x98 == type)  // ID Notification
             {
-                this.idNotificationRequest.hasConfigResponse = true;
                 this.idNotificationRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+                this.idNotificationRequest.hasConfigResponse = true;
             }
 
             else if (0x99 == type)  // ID Missed Notification
             {
-                this.idMissedNotificationRequest.hasConfigResponse = true;
                 this.idMissedNotificationRequest.isConfigResponseSucceeded = (0x00 == data[2]);
+                this.idMissedNotificationRequest.hasConfigResponse = true;
             }
 
             else if (0x9b == type)   // Mag
             {
-                this.magneticSensorRequest.hasConfigResponse = true;
                 this.magneticSensorRequest.isConfigResponseSucceeded = (0x00 == data[2]);
                 if (this.magneticSensorRequest.isConfigResponseSucceeded)
                     this.magneticMode = this.requestedMagneticMode;
+                this.magneticSensorRequest.hasConfigResponse = true;
             }
         }
    }

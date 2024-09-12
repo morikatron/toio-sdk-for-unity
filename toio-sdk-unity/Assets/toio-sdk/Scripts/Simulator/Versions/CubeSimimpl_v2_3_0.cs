@@ -10,7 +10,6 @@ namespace toio.Simulator
         public  CubeSimImpl_v2_3_0(CubeSimulator cube) : base(cube){}
 
 
-
         // ============ Magnetic Sensor ============
         public override Vector3 magneticForce { get; protected set; }
         protected Cube.MagneticNotificationType magneticNotificationType = Cube.MagneticNotificationType.OnChanged;
@@ -114,14 +113,14 @@ namespace toio.Simulator
 
 
         // ============ Attitude Sensor ============
-        protected Vector3 attitudeEulers;
-        protected Quaternion attitudeQuat;
-        Cube.AttitudeFormat attitudeFormat = Cube.AttitudeFormat.Eulers;
-        Cube.AttitudeNotificationType attitudeNotificationType = Cube.AttitudeNotificationType.OnChanged;
+        public override Vector3 eulers { get; protected set; }
+        public override  Quaternion quaternion { get; protected set; }
+        protected Cube.AttitudeFormat attitudeFormat = Cube.AttitudeFormat.Eulers;
+        protected Cube.AttitudeNotificationType attitudeNotificationType = Cube.AttitudeNotificationType.OnChanged;
         protected int attitudeNotificationInterval = 0;     // x10ms
-        private float attitudeNotificationLastTime = 0;
+        protected float attitudeNotificationLastTime = 0;
 
-        private Action<bool> configAttitudeSensorCallback = null;
+        protected Action<bool> configAttitudeSensorCallback = null;
         public override void StartNotification_ConfigAttitudeSensor(Action<bool> action)
         {
             this.configAttitudeSensorCallback = action;
@@ -129,30 +128,22 @@ namespace toio.Simulator
 
         public override void ConfigAttitudeSensor(Cube.AttitudeFormat format, int intervalMs, Cube.AttitudeNotificationType notificationType)
         {
-            this.attitudeFormat = format;
+            this.attitudeFormat = Cube.AttitudeFormat.Eulers;
             this.attitudeNotificationInterval = Mathf.Clamp(intervalMs/10, 0, 255);
             this.attitudeNotificationType = notificationType;
             this.configAttitudeSensorCallback?.Invoke(true);
         }
 
-        private Action<Vector3> attitudeEulersCallback = null;
-        private Action<Quaternion> attitudeQuatCallback = null;
+        protected Action<Vector3> attitudeEulersCallback = null;
+        protected Action<Quaternion> attitudeQuatCallback = null;
         public override void StartNotification_Attitude(Action<Vector3> actionE, Action<Quaternion> actionQ)
         {
             this.attitudeEulersCallback = actionE;
             this.attitudeQuatCallback = actionQ;
             if (attitudeNotificationInterval > 0)
             {
-                if (attitudeFormat == Cube.AttitudeFormat.Eulers)
-                {
-                    this.attitudeEulersCallback?.Invoke(this.attitudeEulers);
-                    this.attitudeNotificationLastTime = Time.time;
-                }
-                if (attitudeFormat == Cube.AttitudeFormat.Quaternion)
-                {
-                    this.attitudeQuatCallback?.Invoke(this.attitudeQuat);
-                    this.attitudeNotificationLastTime = Time.time;
-                }
+                this.attitudeEulersCallback?.Invoke(this.eulers);
+                this.attitudeNotificationLastTime = Time.time;
             }
         }
 
@@ -161,29 +152,17 @@ namespace toio.Simulator
             SimulateAttitudeSensor();
             if (attitudeNotificationInterval > 0)
             {
-                if (format == Cube.AttitudeFormat.Eulers)
-                {
-                    this.attitudeEulersCallback?.Invoke(this.attitudeEulers);
-                    this.attitudeNotificationLastTime = Time.time;
-                }
-                if (format == Cube.AttitudeFormat.Quaternion)
-                {
-                    this.attitudeQuatCallback?.Invoke(this.attitudeQuat);
-                    this.attitudeNotificationLastTime = Time.time;
-                }
+                this.attitudeEulersCallback?.Invoke(this.eulers);
+                this.attitudeNotificationLastTime = Time.time;
             }
         }
 
         protected virtual void SimulateAttitudeSensor()
         {
             var e = cube._GetIMU();
-            int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
+            static int cvt(float f) { return (Mathf.RoundToInt(f) + 180) % 360 - 180; }
             var eulers = new Vector3(cvt(e.x), cvt(e.y), cvt(e.z));
-
-            // NOTE Reproducing real BLE protocol's BUG
-            var quat = Quaternion.Euler(0, 0, -e.z) * Quaternion.Euler(0, -e.y, 0) * Quaternion.Euler(e.x+180, 0, 0);
-            quat = new Quaternion(Mathf.Floor(quat.x*10000)/10000f, Mathf.Floor(quat.y*10000)/10000f,
-                                    Mathf.Floor(quat.z*10000)/10000f, Mathf.Floor(quat.w*10000)/10000f);
+            var quat = Quaternion.Euler(0,0,e.z) *  Quaternion.Euler(0,e.y,0) * Quaternion.Euler(e.x,0,0);
 
             _SetAttitude(eulers, quat);
         }
@@ -198,20 +177,20 @@ namespace toio.Simulator
                 isToNotify_Type = true;
             else if (this.attitudeNotificationType == Cube.AttitudeNotificationType.OnChanged)
             {
-                if (this.attitudeFormat == Cube.AttitudeFormat.Eulers)
-                    isToNotify_Type = eulers != this.attitudeEulers;
-                if (this.attitudeFormat == Cube.AttitudeFormat.Quaternion)
-                    isToNotify_Type = quat != this.attitudeQuat;
+                if (this.attitudeFormat == Cube.AttitudeFormat.Eulers || this.attitudeFormat == Cube.AttitudeFormat.PreciseEulers)
+                    isToNotify_Type = eulers != this.eulers;
+                else if (this.attitudeFormat == Cube.AttitudeFormat.Quaternion)
+                    isToNotify_Type = quat != this.quaternion;
             }
 
             if (isToNotify_Interval && isToNotify_Type)
             {
-                if (this.attitudeFormat == Cube.AttitudeFormat.Eulers)
+                if (this.attitudeFormat == Cube.AttitudeFormat.Eulers || this.attitudeFormat == Cube.AttitudeFormat.PreciseEulers)
                     this.attitudeEulersCallback?.Invoke(eulers);
-                if (this.attitudeFormat == Cube.AttitudeFormat.Quaternion)
+                else if (this.attitudeFormat == Cube.AttitudeFormat.Quaternion)
                     this.attitudeQuatCallback?.Invoke(quat);
-                this.attitudeEulers = eulers;
-                this.attitudeQuat = quat;
+                this.eulers = eulers;
+                this.quaternion = quat;
                 this.attitudeNotificationLastTime = Time.time;
             }
         }
@@ -223,8 +202,8 @@ namespace toio.Simulator
             this.attitudeFormat = Cube.AttitudeFormat.Eulers;
             this.configAttitudeSensorCallback = null;
 
-            this.attitudeEulers = Vector3.zero;
-            this.attitudeQuat = Quaternion.identity;
+            this.eulers = Vector3.zero;
+            this.quaternion = Quaternion.identity;
             this.attitudeEulersCallback = null;
             this.attitudeQuatCallback = null;
         }

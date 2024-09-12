@@ -13,7 +13,7 @@ namespace toio.tutorial
         // Start is called before the first frame update
         async void Start()
         {
-            var peripheral = await new NearestScanner().Scan();
+            var peripheral = await new CubeScanner().NearestScan();
             cube = await new CubeConnecter().Connect(peripheral);
             // 最初に単発発光命令
             cube.TurnLedOn(255, 0, 0, 2000);

@@ -42,15 +42,14 @@ Cube  +-------------------------------+ Cube-root directory
 │   │   ├── Versions  +---------------+ Version directory of real implementation
 │   │   │   ├── CubeReal_ver2_0_0.cs  + 2.0.0 Real Implementation Class
 │   │   │   ├── CubeReal_ver2_1_0.cs  + 2.1.0 Real Implementation Class
-│   │   │   └── CubeReal_ver2_2_0.cs  + 2.2.0 Real Implementation Class
+│   │   │   ├── CubeReal_ver2_2_0.cs  + 2.2.0 Real Implementation Class
+│   │   │   ├── CubeReal_ver2_3_0.cs  + 2.3.0 Real Implementation Class
+│   │   │   └── CubeReal_ver2_4_0.cs  + 2.4.0 Real Implementation Class
 │   │   └── CubeReal.cs  +------------+ Real implementation abstract class
 │   ├── Sim    +----------------------+ Simulator Implementation Directory
 │   │   └── CubeUnity.cs  +-----------+ Simulator implementation class
 │   ├── Cube.cs  +--------------------+ Cube abstract class
 │   └── CubeOrderBalancer.cs  +-------+ Instruction send control class
-├── Scanner  +------------------------+ Search directory (v1.0.0~v1.2.1)
-│   ├── NearScanner.cs  +-------------+ Multi-unit search class (v1.0.0~v1.2.1)
-│   └── NearestScanner.cs  +----------+ Single-unit search class (v1.0.0~v1.2.1)
 ├── CubeConnecter.cs  +---------------+ Connection class
 ├── CubeHandle.cs  +------------------+ Extended functionality class
 ├── CubeManager.cs  +-----------------+ Code Simplification Class
@@ -105,6 +104,16 @@ Implementation Code:[CubeReal.cs](https://github.com/morikatron/toio-sdk-for-uni
 - Implementation Code:[CubeReal_ver2_2_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_2_0.cs)
 - Communication Specifications: https://toio.github.io/toio-spec/en/docs/2.2.0/about
 
+<b>ver2_3_0:</b>
+
+- Implementation code: [CubeReal_ver2_3_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_3_0.cs)
+- Communication specifications: https://toio.github.io/toio-spec/en/docs/2.3.0/about
+
+<b>ver2_4_0:</b>
+
+- Implementation code: [CubeReal_ver2_4_0.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CoreCube/Real/Versions/CubeReal_ver2_4_0.cs)
+- Communication specifications: https://toio.github.io/toio-spec/en/docs/about
+
 <br>
 
 # 3. How the Connection Works
@@ -128,7 +137,7 @@ public class SimpleScene : MonoBehaviour
     async void Start()
     {
       	// Search for Bluetooth devices
-        var peripheral = await new NearestScanner().Scan();
+        var peripheral = await new CubeScanner().NearestScan();
        	// Connect to devices and generate Cube variables
         cube = await new CubeConnecter().Connect(peripheral);
     }
@@ -159,7 +168,7 @@ In this chapter, we will discuss the search connection program part.
 async void Start()
 {
   // Search for Bluetooth devices (3.1. Search)
-  var peripheral = await new NearestScanner().Scan();
+  var peripheral = await new CubeScanner().NearestScan();
   // Connect to the device and create Cube variables (3.2. Connect)
   cube = await new CubeConnecter().Connect(peripheral);
 }
@@ -167,7 +176,7 @@ async void Start()
 
 <br>
 
-For those of you who want to get a quick overview, here is a quick diagram of the program.<br>Since this program runs on multiple platforms, there are two internal implementations (real implementation/simulator implementation) for the Scanner module and the Connector module respectively.
+For those of you who want to get a quick overview, here is a quick diagram of the program.<br>Since this program runs on multiple platforms, there are two internal implementations (real implementation/simulator implementation) for the Scanner module and the Connecter module respectively.
 
 <br>
 
@@ -220,21 +229,8 @@ toio SDK for Unity has one module to search for Bluetooth devices.
 CubeScanner class:
 - NearestScan function:The device with the highest signal strength is returned synchronously as the return value.
 - NearScan function:It synchronously returns multiple devices specified in order of increasing signal strength as the return value.
-- NearScanAsync function:Asynchronously calls back multiple devices specified in order of increasing signal strength.
-
-> <u>Up to v1.2.1</u>
->
-> There are two Bluetooth device search modules in toio SDK for Unity.<br>
-> Use is deprecated, but the implementation is left in place to maintain compatibility.
->- NearestScanner class:
->  - Scan function: Returns the device with the highest signal strength <b>synchronously</b> as the return value.
->- NearScanner class:
->  - Scan function:Returns <b>synchronously</b> the specified <b>multiple</b> devices in the order of increasing signal strength as the return value.
->  - ScanAsync function:Callbacks <b>asynchronously</b> to <b>multiple</b> devices specified in order of increasing signal strength.
->
-> The sample code shown at the beginning of Chapter 2 uses NearestScanner.Scan to scan synchronously.
-
-<br>
+- StartScan function: Initiates an asynchronous and continuous scan. The results are returned via a callback.
+- StopScan function: Interrupts the scan that was started with StartScan.
 
 ### <u>CubeScanner</u>
 
@@ -242,7 +238,9 @@ By calling the <b>NearestScan function</b>, the device with the highest signal s
 
 Calling the <b>NearScan function</b> will return <b>synchronously</b> a specified number of devices in the order of increasing signal strength (satisfiedNum) as the return value. This is the same as the synchronous process.
 
-By calling the <b>NearScanAsync function</b>, we can <b>asynchronously</b> call back a specified number of devices in the order of increasing signal strength (satisfiedNum), and by using Unity coroutine function, we can run the scan across frames and call the specified function. This function supports connect/disconnect at any time. By using the "autoRunning=true" argument, it will automatically restart the scan when the connection to Cube is lost.
+The <b>StartScan function</b> is an asynchronous function that can run scans in the background if called without awaiting. The list of scanned cubes is received and processed in the form of a callback.
+
+Calling the <b>StopScan function</b> will interrupt the scan.
 
 The internal implementation is divided into simulator implementation and real implementation, and the connection method can be specified by the constructor parameters. In the basic configuration, the internal implementation automatically changes depending on the build target, so you do not need to write separate code for each platform. If you want to specify the connection method explicitly, please refer to [Cube Connection Settings](usage_cube.md#4-cube-connection-settings).<br>
 It is implemented by inheriting the interface for the purpose of extensibility to [CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs).
@@ -255,123 +253,19 @@ Real Implementation:
 
 - Search for Bluetooth devices
 
-Summary Code
+Interface Code
 
 ```csharp
 public interface CubeScannerInterface
 {
     bool isScanning { get; }
-    UniTask<BLEPeripheralInterface> NearestScan();
+    UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f);
     UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3.0f);
-    void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning = true);
-}
-
-public class CubeScanner : CubeScannerInterface
-{
-    private CubeScannerInterface impl;
-    public CubeScanner(ConnectType type = ConnectType.Auto)
-    {
-        if (ConnectType.Auto == type)
-        {
-#if (UNITY_EDITOR || UNITY_STANDALONE)
-            this.impl = new SimImpl();
-#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
-            this.impl = new RealImpl();
-#endif
-        }
-        else if (ConnectType.Simulator == type)
-        {
-            this.impl = new SimImpl();
-        }
-        else if (ConnectType.Real == type)
-        {
-            this.impl = new RealImpl();
-        }
-    }
-    public bool isScanning { get { return this.impl.isScanning; } }
-    public async UniTask<BLEPeripheralInterface> NearestScan()
-    {
-        return await this.impl.NearestScan();
-    }
-    public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
-    {
-        return await this.impl.NearScan(satisfiedNum, waitSeconds);
-    }
-    public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
-    {
-        this.impl.NearScanAsync(satisfiedNum, coroutineObject, callback, autoRunning);
-    }
-}
-
-public class SimImpl : CubeScannerInterface
-{
-    public bool isScanning { get { /* Abbreviation */ } }
-    public async UniTask<BLEPeripheralInterface> NearestScan()
-    {
-        /* return await UnityPeripheral */
-    }
-    public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
-    {
-        /* return await UnityPeripherals */
-    }
-    public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
-    {
-        /* callback(UnityPeripheral) */
-    }
-}
-
-public class RealImpl : CubeScannerInterface
-{
-    public RealImpl()
-    {
-#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID)
-        BLEService.Instance.SetImplement(new BLEMobileService());
-#elif UNITY_WEBGL
-        BLEService.Instance.SetImplement(new BLEWebService());
-#endif
-    }
-    public bool isScanning { get { /* Abbreviation */ } }
-    public async UniTask<BLEPeripheralInterface> NearestScan()
-    {
-        /* return await BLEMobilePeripheral or BLEWebPeripheral */
-    }
-    public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
-    {
-        /* return await BLEMobilePeripherals or BLEWebPeripherals */
-    }
-    public void NearScanAsync(int satisfiedNum, MonoBehaviour coroutineObject, Action<BLEPeripheralInterface> callback, bool autoRunning)
-    {
-        /* callback(BLEMobilePeripheral or BLEWebPeripheral) */
-    }
+    UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f);
+    void StopScan();
 }
 
 ```
-
-<br>
-
-### <u>NearestScanner</u>
-
-> This class was used in v1.2.1 and earlier. Although the implementation is retained to maintain compatibility, it is recommended to use [CubeScanner](sys_cube.md#cubescanner) after v1.3.0.
-
-By calling the <b>Scan function</b>, the device with the highest signal strength is synchronously returned as the return value.
-Please refer to [CubeScanner NearestScan function](sys_cube.md#cubescanner) for the internal implementation.
-
-Implementation Code:
-
-- [NearestScanner.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearestScanner.cs)
-
-<br>
-
-### <u>NearScanner</u>
-
-> This class was used in v1.2.1 and earlier. Although the implementation is retained to maintain compatibility, it is recommended to use [CubeScanner](sys_cube.md#cubescanner) after v1.3.0.
-
-Calling the <b>Scan function</b> returns <b>synchronously</b> the specified number of devices (satisfiedNum) in the order of increasing signal strength as the return value. Please refer to [CubeScanner NeareScan Function](sys_cube.md#cubescanner) for the internal implementation.<br>
-Calling the <b>ScanAsync function</b> will <b>asynchronously</b> call back a specified number of devices (satisfiedNum) in order of increasing signal strength. This function supports connect/disconnect as needed. By running it with the argument "autoRunning=true", it will automatically resume scanning when the connection to Cube is lost. For the internal implementation, please refer to [CubeScanner NearScanAsync function](sys_cube.md#cubescanner).
-
-Implementation Code:
-
-- [NearScanner.cs](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/Scanner/NearScanner.cs)
 
 <br>
 

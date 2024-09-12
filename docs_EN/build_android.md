@@ -9,7 +9,7 @@ The following environments have been tested. You don't necessarily have to match
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Winidows 10 | Winidows 10 or higher |
-| Unity | 2021.3.0f1 | 2021.3 or higher |
+| Unity | 2022.3.44f1 | 2022.3 or higher |
 
 Mobile Phone
 
@@ -17,6 +17,14 @@ Mobile Phone
 | -- | -- |
 | HUAWEI nova 5T | Android 9 |
 | Xiaomi Mi Note 10 Lite | Android 10 |
+
+#### Compatibility:
+
+Starting from Android 12 (API Level 31), [new Bluetooth permissions](https://developer.android.com/about/versions/12/features/bluetooth-permissions) have been added.
+
+The AndroidManifest.xml in toio SDK for Unity's Assets/Plugins/Android has been updated to support Android 12. Therefore, if you build with an SDK version lower than Android 11 (API Level 30), you will encounter an error.
+
+For Unity 2021 and earlier versions, the built-in Android SDK is lower than Android 11 (API Level 30). To resolve this, please refer to [Install the Android SDK](#Install-the-Android-SDK) and install Android SDK, or replace the AndroidManifest.xml with the one that supports Android 11 (API Level 30) or below from [toio SDK for Unity v1.5.1](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.1).
 
 <br>
 
@@ -40,7 +48,7 @@ Wait a few seconds, and when Unity icon appears to the right of Android, the swi
 
 ## Smart Phone Settings
 
-There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2021.3/Documentation/Manual/android-sdksetup.html).
+There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2022.3/Documentation/Manual/android-sdksetup.html).
 
 ### Enable Developer Options
 
@@ -143,7 +151,7 @@ Under [SDK Platforms], check the version you need.
 Next, switch to the [SDK Tools] tab.<br>
 Check [Show Package Details] in the lower right corner.<br>
 Check the appropriate version under [NDK (Side by Side)].<br>
-(For Unity version 2021.3, select NDK 21. [Refer to here](https://docs.unity3d.com/2021.3/Documentation/Manual/android-sdksetup.html))
+(For Unity version 2022.3, select NDK 23. [Refer to here](https://docs.unity3d.com/2022.3/Documentation/Manual/android-sdksetup.html))
 <br>
 Press "OK" to proceed and the installation will begin.
 

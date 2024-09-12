@@ -420,35 +420,35 @@ namespace toio
 
         protected void Recv_ConfigMotorRead(bool success)
         {
-            this.configMotorReadRequest.hasConfigResponse = true;
             this.configMotorReadRequest.isConfigResponseSucceeded = true;
             this.motorReadValid = this.requestedMotorReadValid;
+            this.configMotorReadRequest.hasConfigResponse = true;
             this.motorSpeedCallback.Notify(this);
         }
 
         protected void Recv_ConfigIDNotification(bool success)
         {
-            this.configIDNotificationRequest.hasConfigResponse = true;
             this.configIDNotificationRequest.isConfigResponseSucceeded = true;
+            this.configIDNotificationRequest.hasConfigResponse = true;
         }
 
         protected void Recv_ConfigIDMissedNotification(bool success)
         {
-            this.configIDMissedNotificationRequest.hasConfigResponse = true;
             this.configIDMissedNotificationRequest.isConfigResponseSucceeded = true;
+            this.configIDMissedNotificationRequest.hasConfigResponse = true;
         }
 
         protected void Recv_ConfigMagneticSensor(bool success)
         {
-            this.configMagneticSensorRequest.hasConfigResponse = true;
             this.configMagneticSensorRequest.isConfigResponseSucceeded = true;
             this.magneticMode = this.requestedMagneticMode;
+            this.configMagneticSensorRequest.hasConfigResponse = true;
         }
 
         protected void Recv_ConfigAttitudeSensor(bool success)
         {
-            this.configAttitudeSensorRequest.hasConfigResponse = true;
             this.configAttitudeSensorRequest.isConfigResponseSucceeded = true;
+            this.configAttitudeSensorRequest.hasConfigResponse = true;
         }
 
         #endregion

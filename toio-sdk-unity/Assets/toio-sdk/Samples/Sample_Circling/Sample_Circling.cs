@@ -1,41 +1,44 @@
 ﻿using UnityEngine;
-using toio;
 using toio.Navigation;
 using toio.MathUtils;
 
-public class Sample_Circling : MonoBehaviour
+namespace toio.Samples.Sample_Circling
 {
-    CubeManager cm;
-    int N = 16;
-
-    public Navigator.Mode naviMode = Navigator.Mode.BOIDS;
-
-    async void Start()
+    public class Sample_Circling : MonoBehaviour
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        CubeManager cm;
+        int N = 16;
 
-        cm = new CubeManager();
-        await cm.MultiConnect(N);
+        public Navigator.Mode naviMode = Navigator.Mode.BOIDS;
 
-        foreach (var navi in cm.navigators)
+        async void Start()
         {
-            navi.usePred = true;
-            navi.mode = naviMode;
-            // navi.avoid.useSafety = false;
-        }
-    }
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
 
-    void Update()
-    {
-        var tar = Vector.fromRadMag(Time.time/1, 160) + new Vector(250, 250);
-        if (cm.synced){
+            cm = new CubeManager();
+            await cm.MultiConnect(N);
 
-            for (int i=0; i<cm.navigators.Count; i++)
+            foreach (var navi in cm.navigators)
             {
-                var navi = cm.navigators[i];
+                navi.AddBorder(20);
+                navi.usePred = true;
                 navi.mode = naviMode;
-                var mv = navi.Navi2Target(tar, maxSpd:60).Exec();
+                // navi.avoid.useSafety = false;
+            }
+        }
+
+        void Update()
+        {
+            var tar = Vector.fromRadMag(Time.time/1, 160) + new Vector(250, 250);
+            if (cm.synced){
+
+                for (int i=0; i<cm.navigators.Count; i++)
+                {
+                    var navi = cm.navigators[i];
+                    navi.mode = naviMode;
+                    var mv = navi.Navi2Target(tar, maxSpd:60).Exec();
+                }
             }
         }
     }

@@ -79,12 +79,12 @@ public class Hello_Toio : MonoBehaviour
 
 - toio™コア キューブ
 - toio™専用マット（トイオ・コレクション付属のプレイマット／toio™コア キューブ（単体）付属の簡易プレイマット／toio 開発用プレイマット）
-- Mac（macOS ver.10.14以上）
+- Mac（macOS ver.11以上）
 - Windows 10（64 ビット版のみ）
 - iOS端末（iOS ver.12以上）
 - Android端末(Android OS 9.0以上)
-- Unity（2021.3.0f1LTS）
-- Unity Visual Scripting(ver 1.7.6)
+- Unity（2022.3.44f1LTS）
+- Unity Visual Scripting(ver 1.8.0)
 
 ## ドキュメント
 
@@ -96,6 +96,7 @@ public class Hello_Toio : MonoBehaviour
 ## サンプルアプリ
 
 - [CubeMarker](https://github.com/morikatron/toio-cube-marker)：オンライン対戦サンプルプログラム
+- [toio-AI-meicu](https://github.com/morikatron/toio-AI-meicu)：AI体験コンテンツ『toioのAIジム　AIロボ「迷キュー」に挑戦（ベータ版）』
 
 ## ライセンス
 

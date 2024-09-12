@@ -79,12 +79,12 @@ public class Hello_Toio : MonoBehaviour
 
 - toio™ Core Cube
 - Mat for toio™Core Cube (Play mat included in toio Collection, Simple play mat included in toio™Core Cube (single package), toio play mat for development)
-- Mac (macOS ver. 10.14 or higher)
+- Mac (macOS ver. 11 or higher)
 - Windows 10 (64 bit version only)
 - iOS devices (iOS ver. 12 or higher)
 - Android device (Android OS 9.0 or higher)
-- Unity（2021.3.0f1LTS）
-- Unity Visual Scripting(ver 1.7.6)
+- Unity（2022.3.44f1LTS）
+- Unity Visual Scripting(ver 1.8.0)
 
 ## Documentation
 
@@ -96,6 +96,7 @@ For details on installation, tutorials, sample introductions, and feature explan
 ## Sample applications
 
 - [CubeMarker](https://github.com/morikatron/toio-cube-marker): an online battle game (Japanese)
+- [toio-AI-meicu](https://github.com/morikatron/toio-AI-meicu)：AI Experience Content "Challenge the AI Robot 'Maze Cube' at the Toio AI Gym (Beta Version)" (Japanese)
 
 ## License
 
