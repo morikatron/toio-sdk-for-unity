@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
-## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - TBD
+## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2024-09-12
 
 ★ **Upgraded to Unity 2022.3.44f1 LTS**
 
