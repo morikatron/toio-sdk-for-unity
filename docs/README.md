@@ -13,20 +13,26 @@
 
 ### 【 2 】開発
 
-1. 開発前に確認する [→「シミュレータの操作方法」](development_simulator.md)
+1. 開発前に確認する [→「シミュレータの操作方法（マットやキューブの設定等）」](development_simulator.md)
 2. Assets フォルダの下に開発用フォルダを作成する [→「スクリプトの依存関係」](development_basics.md#1-スクリプトの依存関係)
 3. 新しいシーンを作って、シミュレータの Prefab を読み込む [→「シーン作成」](tutorials_basic.md#2-シーン作成)
-4. Unity Editor で Play してシミュレータで動作確認しながらプログラムを作っていく `★A`
-5. Unity Editor で Play して実機と接続して動作確認 `★B` <br>
-（Macの場合は[BLEプラグインの導入](usage_macble.md)が必要）（実機と接続する方法はサンプル [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)を参照）
+4. プログラムを作っていく
 <br><br>
 
-### 【 3 】ビルド
+### 【 3 】Unity Editor で動作確認（シミュレータまたは実機に接続）
 
-1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認 `★C`
+1. 再生ボタンを押してシミュレータで動作確認する
+2. ConnectType を Real (実機)に設定し、再生ボタンを押して実機と接続して動作確認する
+    - Macの場合は[BLEプラグインの導入](usage_macble.md)が必要
+    - ConnectType の仕様と設定方法についてはサンプル [ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/) を参照
+3. 開発とUnity Editorでの動作確認を繰り返し、効率良くプログラムを仕上げていく
+<br><br>
+
+### 【 4 】ビルド
+
+1. スマートデバイス向けにビルドしてアプリを作り、端末で動作確認
     - [「 iOS ビルド」](build_ios.md) | [「 Android ビルド」](build_android.md) | [「 WebGL ビルド」](build_web.md)
-    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2021.3/Manual/PublishingBuilds.html)を参照してください
-2. `★A` `★B` `★C` を繰り返してプログラムを仕上げていく
+    - Mac と Windows 10 のビルドは[Unity公式ドキュメント](https://docs.unity3d.com/ja/2022.3/Manual/PublishingBuilds.html)を参照してください
 
 <br>
 
@@ -47,27 +53,30 @@
 - [11. UI の作成](tutorials_UI.md)
 - [12. Unity Visual Scriptingでの利用方法](tutorials_visual_scriptings.md)
 
-### 便利な移動機能 - CubeHandle
+### キューブの移動操作を簡単に制御 - CubeHandle
 
-- [1. CubeManager を使ったキューブの同期制御](tutorials_cubehandle.md#1-cubemanager-を使ったキューブの同期制御)
-- [2. CubeHandle](tutorials_cubehandle.md#2-cubehandle)
-  - [2.1. CubeHandle の Move 関数と MoveRaw 関数](tutorials_cubehandle.md#21-cubehandle-の-move-関数と-moveraw-関数)
-  - [2.2. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#22-キューブとの通信量を抑える-one-shot-メソッド)
-  - [2.3. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#23-指定した座標方向に到達する-closed-loop-メソッド)
+- [1. 基本的な使い方](tutorials_cubehandle.md#1-基本的な使い方)
+- [2. 主な機能](tutorials_cubehandle.md#2-主な機能)
+  - [2.1. 基本設定](tutorials_cubehandle.md#21-基本設定)
+  - [2.2. Move 関数と MoveRaw 関数](tutorials_cubehandle.md#22-move-関数と-moveraw-関数)
+  - [2.3. キューブとの通信量を抑える One-shot メソッド](tutorials_cubehandle.md#23-キューブとの通信量を抑える-one-shot-メソッド)
+  - [2.4. 指定した座標/方向に到達する Closed-Loop メソッド](tutorials_cubehandle.md#24-指定した座標方向に到達する-closed-loop-メソッド)
 - [3. Follow TargetPole デモ](tutorials_cubehandle.md#3-follow-targetpole-デモ)
 
 ### 集団制御 - Navigator
 
-- [1. CubeNavigator](tutorials_navigator.md#1-cubenavigator)
-  - [1.1. CubeManager を使って CubeNavigator を利用する](tutorials_navigator.md#11-cubemanager-を使って-cubenavigator-を利用する)
-    - [1.1.1. 非同期でキューブを制御する場合](tutorials_navigator.md#111-非同期でキューブを制御する場合)
-    - [1.1.2. 同期でキューブを制御する場合](tutorials_navigator.md#112-同期でキューブを制御する場合)
-    - [1.1.3. CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#113-cubemanager-を使わないで-cubenavigator-を利用する)
-  - [1.2. CubeNavigator による衝突回避](tutorials_navigator.md#12-cubenavigator-による衝突回避)
-    - [1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#121-衝突を回避しつつ目標に移動する-navi2target-関数)
-    - [1.2.2. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#122-目標から離れる-naviawaytarget-関数)
-  - [1.3. ボイドによる集団制御](tutorials_navigator.md#13-ボイドによる集団制御)
-  - [1.4. ボイド + 衝突回避](tutorials_navigator.md#14-ボイド--衝突回避)
+- [1. 概要](tutorials_navigator.md#1-概要)
+- [2. 基本的な使い方](tutorials_navigator.md#2-基本的な使い方)
+- [3. CubeNavigator による衝突回避](tutorials_navigator.md#3-cubenavigator-による衝突回避)
+    - [3.1. 基本設定](tutorials_navigator.md#31-基本設定)
+    - [3.2. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#32-衝突を回避しつつ目標に移動する-navi2target-関数)
+    - [3.3. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#33-目標から離れる-naviawaytarget-関数)
+- [4. ボイドによる集団制御](tutorials_navigator.md#4-ボイドによる集団制御)
+- [5. ボイド + 衝突回避](tutorials_navigator.md#5-ボイド--衝突回避)
+
+### テンプレート集
+
+- [1. ローカルネームで接続、CubeHandleで制御](tutorials_templates.md#1-ローカルネームで接続、CubeHandleで制御)
 
 <br>
 
@@ -78,6 +87,10 @@
 - [Sample_ConnectType](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectType/)
 
   接続設定の違いによって、シミュレータとリアルで接続設定が変わるか確認するサンプルです。
+
+- [Sample_ConnectName](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_ConnectName/)
+
+  指定した Local Name のキューブと接続するサンプル集です。
 
 - [Sample_Circling](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Circling/)
 
@@ -116,6 +129,10 @@
 - [Sample_Scenes](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_Scenes/)
 
   リアルのキューブとの接続・シミュレータ上のキューブと相関インスタンスを維持したままに、シーン遷移を扱うサンプルです。
+
+- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/)
+
+  リアルキューブの動きをシミュレーターのキューブにリアルタイムに反映する、いわゆる「ディジタルツイン」を実現したサンプルです。
 
 <br>
 

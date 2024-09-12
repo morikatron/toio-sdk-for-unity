@@ -57,9 +57,19 @@ namespace toio.Navigation{
     {
         public Cube cube{ get; private set; }
         public CubeHandle handle{ get; private set; }
+        /// <summary>
+        /// Saved result of the last time navigation calculation.
+        /// </summary>
         public NaviResult result{ get; private set; }
+        /// <summary>
+        /// All instances of CubeNavigator.
+        /// </summary>
         private static List<Navigator> gNavigators = new List<Navigator>();
 
+        /// <summary>
+        /// CubeHandleの（通信遅延を考慮した）予測位置を利用するかどうか。使うと制御の安全性が向上するが、デッドロックも起こりやすくなる。
+        /// Whether to use predicted position (considering communication latency) from CubeHandle. Use this for more safety but also more posibility of dead-lock.
+        /// </summary>
         public bool usePred = false;
 
         public CubeNavigator(Cube cube, Mode mode=Mode.AVOID)
@@ -68,9 +78,6 @@ namespace toio.Navigation{
             this.handle = new CubeHandle(cube);
             this.ego = new CubeEntity(handle);
             this.boids = new Boids(ego); this.avoid = new HLAvoid(ego);
-
-            // Add borders
-            AddBorder(20);
 
             // Auto appending of others' _other
             foreach (var o in gNavigators)
@@ -84,9 +91,6 @@ namespace toio.Navigation{
             this.handle = handle;
             this.ego = new CubeEntity(handle);
             this.boids = new Boids(ego); this.avoid = new HLAvoid(ego);
-
-            // Add borders
-            AddBorder(20);
 
             // Auto appending of others' _other
             foreach (var o in gNavigators)

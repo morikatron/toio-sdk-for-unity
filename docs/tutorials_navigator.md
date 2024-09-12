@@ -2,31 +2,83 @@
 
 ## 目次
 
-- [1. CubeNavigator](tutorials_navigator.md#1-cubenavigator)
-  - [1.1. CubeManager を使って CubeNavigator を利用する](tutorials_navigator.md#11-cubemanager-を使って-cubenavigator-を利用する)
-    - [1.1.1. 非同期でキューブを制御する場合](tutorials_navigator.md#111-非同期でキューブを制御する場合)
-    - [1.1.2. 同期でキューブを制御する場合](tutorials_navigator.md#112-同期でキューブを制御する場合)
-    - [1.1.3. CubeManager を使わないで CubeNavigator を利用する](tutorials_navigator.md#113-cubemanager-を使わないで-cubenavigator-を利用する)
-  - [1.2. CubeNavigator による衝突回避](tutorials_navigator.md#12-cubenavigator-による衝突回避)
-    - [1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#121-衝突を回避しつつ目標に移動する-navi2target-関数)
-    - [1.2.2. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#122-目標から離れる-naviawaytarget-関数)
-  - [1.3. ボイドによる集団制御](tutorials_navigator.md#13-ボイドによる集団制御)
-  - [1.4. ボイド + 衝突回避](tutorials_navigator.md#14-ボイド--衝突回避)
+- [1. 概要](tutorials_navigator.md#1-概要)
+- [2. 基本的な使い方](tutorials_navigator.md#2-基本的な使い方)
+- [3. CubeNavigator による衝突回避](tutorials_navigator.md#3-cubenavigator-による衝突回避)
+    - [3.1. 基本設定](tutorials_navigator.md#31-基本設定)
+    - [3.2. 衝突を回避しつつ目標に移動する Navi2Target 関数](tutorials_navigator.md#32-衝突を回避しつつ目標に移動する-navi2target-関数)
+    - [3.3. 目標から離れる NaviAwayTarget 関数](tutorials_navigator.md#33-目標から離れる-naviawaytarget-関数)
+- [4. ボイドによる集団制御](tutorials_navigator.md#4-ボイドによる集団制御)
+- [5. ボイド + 衝突回避](tutorials_navigator.md#5-ボイド--衝突回避)
 
-# 1. CubeNavigator
+
+## 1. 概要
 
 CubeNavigator を使うことで、複数のキューブがお互いの動きを考慮しながら一斉にうまく移動することが出来ます。
 
-CubeNavigator の詳細については[【コチラ】](usage_navigator.md)を参照してください。
+本チュートリアルは基本的な機能のみを紹介しますので、詳細については[【コチラ】](usage_navigator.md)を参照してください。
 
-## 1.1. CubeManager を使って CubeNavigator を利用する
+## 2. 基本的な使い方
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/0.BasicScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/basic/)です。
 
-CubeNavigator は CubeManager がキューブ接続時に自動的に作成してメンバ変数のリストに入れています。
+以下のサンプルコードが示したように、CubeNavigator を使うには主に４つのステップがあります。
+1. 作成：CubeHandle オブジェクトを引数として、CubeNavigator を作成する。一対一の関係になります。
+1. 制御の間隔：Cube クラスの制御と同じように、間隔を設ける必要があります。
+1. `Update`：一連の制御を行う前に、必ず`Update`関数を呼んでください。これは Cube と CubeHanlde から情報を取得し、内部状態の更新を行うためです。
+1. 制御：`Navi2Target` など実際に制御を行う関数を呼出します。詳細は次の章で紹介します。
 
-### 1.1.1. 非同期でキューブを制御する場合
+```csharp
+public class NavigatorBasic : MonoBehaviour
+{
+    float intervalTime = 0.05f;
+    float elapsedTime = 0;
+    List<CubeNavigator> navigators;
+    bool started = false;
+
+    async void Start()
+    {
+        var peripheral = await new NearScanner(2).Scan();
+        var cubes = await new CubeConnecter().Connect(peripheral);
+
+        // create navigators
+        this.navigators = new List<CubeNavigator>();
+        foreach (var cube in cubes)
+            // create navigator and add to navigators
+            this.navigators.Add(new CubeNavigator(cube));
+
+        this.started = true;
+    }
+
+    void Update()
+    {
+        if (!started) return;
+
+        elapsedTime += Time.deltaTime;
+
+        if (intervalTime < elapsedTime)
+        {
+            foreach (var navigator in this.navigators)
+                // update state of navigator (including internal handle)
+                navigator.Update();
+
+            foreach (var navigator in this.navigators)
+                // use internal handle to rotate cube
+                navigator.handle.MoveRaw(-50, 50, 1000);
+
+            elapsedTime = 0.0f;
+        }
+    }
+}
+```
+
+### CubeManager で簡略化
+
+CubeNavigator は CubeManager がキューブ接続時に自動的に作成してメンバ変数のリストに入れています。
+また、制御間隔の管理も求められているので、CubeManager を用いて上記コードを簡略化することができます。
+
+#### 非同期でキューブを制御する場合
 
 下記のサンプルコードでは、 Update の中で、CubeNavigator の制御可能状態を確認してから、制御を行っています。
 
@@ -57,7 +109,7 @@ public class NavigatorBasic : MonoBehaviour
 
 制御可能状態は皆それぞれなので、「非同期」になります。
 
-### 1.1.2. 同期でキューブを制御する場合
+#### 同期でキューブを制御する場合
 
 以下のようにすると、すべての navigator が、50ms ごとの同じフレームで制御されます。
 
@@ -110,57 +162,47 @@ public class NavigatorBasic : MonoBehaviour
 }
 ```
 
-### 1.1.3. CubeManager を使わないで CubeNavigator を利用する
+<br>
 
-CubeManager を使わない場合には、以下のように Cube クラスを使って CubeNavigator インスタンスを作成してください。
+## 3. CubeNavigator による衝突回避
+
+### 3.1. 基本設定
+
+> 設定は必須ではないので、直接に次節に進めても構いません。
+
+詳細は[【コチラ】](usage_navigator.md#2-cubenavigator-クラス-API) を参照してください。
+
+#### マットの種類に合わせてボーダーを設定・壁を設定
+
+CubeNavigator は虚構な壁を設置し、それを回避させることができます。
+
+マットの四周にボーダーを設定したい場合は、マットの座標範囲にあわせて、`AddBorder`で設定できます。
+例えば次のコードは、「トイコレ付属マット（土俵面）」を使う場合、(40, 40) と (460, 460) を頂点とした矩形の位置に、厚み 20 の壁を作ります。（矩形の辺を中央とし、両面に20単位で膨らむので、実際には合わせて40の厚みになります。）
 
 ```csharp
-public class NavigatorBasic : MonoBehaviour
-{
-    float intervalTime = 0.05f;
-    float elapsedTime = 0;
-    List<CubeNavigator> navigators;
-    bool started = false;
-
-    async void Start()
-    {
-        var peripheral = await new NearScanner(2).Scan();
-        var cubes = await new CubeConnecter().Connect(peripheral);
-
-        // create navigators
-        this.navigators = new List<CubeNavigator>();
-        foreach (var cube in cubes)
-            // create navigator and add to navigators
-            this.navigators.Add(new CubeNavigator(cube));
-
-        this.started = true;
-    }
-
-    void Update()
-    {
-        if (!started) return;
-
-        elapsedTime += Time.deltaTime;
-
-        if (intervalTime < elapsedTime)
-        {
-            foreach (var navigator in this.navigators)
-                // update state of navigator (including internal handle)
-                navigator.Update();
-
-            foreach (var navigator in this.navigators)
-                // use internal handle to rotate cube
-                navigator.handle.MoveRaw(-50, 50, 1000);
-
-            elapsedTime = 0.0f;
-        }
-    }
-}
+// （前略）cubeManager接続後
+cubeManager.navigators[0].AddBorder(width:20, x1:40, x2:460, y1:40, y2:460);
 ```
 
-## 1.2. CubeNavigator による衝突回避
+CubeHandleにもボーダー設定がありますが、CubeNavigatorのボーダーよりも内側にある場合は、キューブがCubeHandleのボーダーの外側に行こうとして引っかかる可能性がありますので、ご注意ください。
 
-### 1.2.1. 衝突を回避しつつ目標に移動する Navi2Target 関数
+`AddBorder`は一気に4枚の壁を作る便利機能ですが、`AddWall` で任意の壁を一枚だけ設定することも可能です。
+
+#### マージン（安全距離）
+
+衝突回避の計算に使うキューブ自身のサイズを設定できます。
+カスタマイズしたキューブのサイズに合わせて設定したり、サイズを余分に取ることで高速運転時の安全性を高めたりなどのユースケースが考えられます。
+
+衝突回避とボイドはそれぞれマージン設定がありますので、以下のように各々設定します。
+
+```csharp
+// （前略）cubeManager接続後
+cubeManager.navigators[0].avoid.margin = 25;
+cubeManager.navigators[0].boids.margin = 30;
+```
+
+
+### 3.2. 衝突を回避しつつ目標に移動する Navi2Target 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/1.Navi2TargetScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi2target/)です。
@@ -276,7 +318,7 @@ async void Start()
 }
 ```
 
-### 1.2.2. 目標から離れる NaviAwayTarget 関数
+### 3.3. 目標から離れる NaviAwayTarget 関数
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/2.NaviAwayTargetScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/navi_away_target/)です。二台以上に接続してください。
@@ -312,6 +354,19 @@ public class NaviAwayTargetTutorial : MonoBehaviour
         // But you can also manually make a navigator "blind"
         cubeManager.navigators[0].ClearOther();
         cubeManager.navigators[1].ClearOther();
+
+        cubeManager.navigators[0].AddBorder(20);
+        cubeManager.navigators[1].AddBorder(20);
+
+        // Corner is easy to stuck, so add some 45° walls in corners.
+        Navigation.Wall[] walls = {
+            new Navigation.Wall(50, 150, 150, 50, 10),
+            new Navigation.Wall(450, 350, 350, 450, 10),
+            new Navigation.Wall(50, 350, 150, 450, 10),
+            new Navigation.Wall(450, 150, 350, 50, 10),
+        };
+        cubeManager.navigators[0].AddWall(walls.ToList());
+        cubeManager.navigators[1].AddWall(walls.ToList());
     }
 
     void Update()
@@ -331,7 +386,7 @@ public class NaviAwayTargetTutorial : MonoBehaviour
 }
 ```
 
-### 1.3. ボイドによる集団制御
+## 4. ボイドによる集団制御
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/3.BoidsScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids/)です。二台以上に接続してください。
@@ -449,7 +504,7 @@ async void Start()
 > BOIDS モードのキューブは ボイドでないキューブを回避することが出来ません。<br>
 > そのため、複雑の構成で BOIDS モードを使うことはおすすめしません。 後述する BOIDS_AVOID モードの仕様を検討してください。
 
-### 1.4. ボイド + 衝突回避
+## 5. ボイド + 衝突回避
 
 > ※ この章のサンプルファイルは、「Assets/toio-sdk/Tutorials/2.Advanced-Navigator/4.BoidsAvoidScene/」 にあります。<br>
 > ※ この章のウェブアプリサンプルは[【コチラ】](https://morikatron.github.io/t4u/navi/boids_avoid/)です。二台以上に接続してください。

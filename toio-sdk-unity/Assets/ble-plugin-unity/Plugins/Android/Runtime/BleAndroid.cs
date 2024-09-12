@@ -4,7 +4,7 @@
 #endif
 
 
-#if UNITY_ANDROID_RUNTIME
+#if UNITY_ANDROID_RUNTIME || MRK_DEV
 
 using UnityEngine;
 using System;
@@ -18,7 +18,7 @@ namespace toio.Android
     {
         private static BleBehaviour behaviour;
         private static BleJavaWrapper javaWrapper;
-        private static Action<string, string, int, byte[]> s_discoveredAction;
+        private static Action<(string, string, int, byte[])[]> s_discoveredAction;
         private static Dictionary<string, BleDiscoverEvents> s_deviceDiscoverEvents = new Dictionary<string, BleDiscoverEvents>();
         private static Dictionary<BleCharastericsKeyInfo, BleDeviceDataEvents> s_deviceDataEvents = new Dictionary<BleCharastericsKeyInfo, BleDeviceDataEvents>();
 
@@ -55,7 +55,7 @@ namespace toio.Android
 
 
         public static void StartScan(string[] serviceUUIDs, 
-            Action<string, string, int, byte[]> discoveredAction = null)
+            Action<(string, string, int, byte[])[]> discoveredAction = null)
         {
 
             if (javaWrapper == null) { return; }
@@ -206,10 +206,13 @@ namespace toio.Android
             if (s_discoveredAction != null)
             {
                 var scanDevices = javaWrapper.GetScannedDevices();
-                foreach (var device in scanDevices)
+                var infos = new (string, string, int, byte[])[scanDevices.Count];
+                for (var i = 0; i < scanDevices.Count; i++)
                 {
-                    s_discoveredAction(device.address, device.name, device.rssi, null);
+                    var device = scanDevices[i];
+                    infos[i] = (device.address, device.name, device.rssi, null);
                 }
+                s_discoveredAction(infos);
             }
         }
         private static void UpdateDeviceFoundEvents()

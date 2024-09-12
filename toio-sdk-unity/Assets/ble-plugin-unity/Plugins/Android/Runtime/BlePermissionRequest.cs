@@ -3,7 +3,7 @@
 #define UNITY_ANDROID_RUNTIME
 #endif
 
-#if UNITY_ANDROID_RUNTIME
+#if UNITY_ANDROID_RUNTIME || MRK_DEV
 using System.Collections.Generic;
 using System.Collections;
 using System;

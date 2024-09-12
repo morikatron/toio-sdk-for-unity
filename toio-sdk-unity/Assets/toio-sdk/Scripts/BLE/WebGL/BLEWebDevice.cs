@@ -12,7 +12,7 @@ namespace toio
         public BLEWebDevice()
         {
         }
-        public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface> action)
+        public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface[]> action)
         {
 #if UNITY_WEBGL
             WebBluetoothScript.RequestDevice(serviceUUIDs[0].ToLower(), (deviceID, uuid, name) => {

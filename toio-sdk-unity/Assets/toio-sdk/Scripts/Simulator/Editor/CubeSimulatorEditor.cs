@@ -11,7 +11,7 @@ namespace toio.Simulator
 
         string[] poseNames = new string[6]{"up", "down", "front", "back", "right", "left"};
         string[] magnetStateNames = new string[7]{"None", "S Center", "N Center", "S Right", "N Right", "S Left", "N Left"};
-        string[] versionNames = new string[4]{"2.0.0", "2.1.0", "2.2.0", "2.3.0"};
+        string[] versionNames = new string[5]{"2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"};
 
         public override void OnInspectorGUI()
         {

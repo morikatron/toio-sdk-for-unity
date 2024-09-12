@@ -32,10 +32,11 @@ namespace toio.Simulator
             v2_0_0,
             v2_1_0,
             v2_2_0,
-            v2_3_0
+            v2_3_0,
+            v2_4_0
         }
         [SerializeField]
-        public Version version = Version.v2_3_0;
+        public Version version = Version.v2_4_0;
         [SerializeField]
         public bool powerStart = true;
         [SerializeField]
@@ -168,13 +169,26 @@ namespace toio.Simulator
         /// </summary>
         public int rightMotorSpeed{ get {return impl.rightMotorSpeed;} }
 
+        // 2.3.0
         // ----- Magnetic Sensor -----
-
         [HideInInspector]
         internal bool isSimulateMagneticSensor = true;
+        /// <summary>
+        /// 磁石の状態
+        /// </summary>
         public Cube.MagnetState magnetState { get {return impl.magnetState;} }
+        /// <summary>
+        /// 磁場
+        /// </summary>
         public Vector3 magneticForce { get {return impl.magneticForce;} }
-
+        /// <summary>
+        /// オイラー角
+        /// </summary>
+        public Vector3 eulers { get {return impl.eulers;} }
+        /// <summary>
+        /// クォータニオン
+        /// </summary>
+        public Quaternion quaternion { get {return impl.quaternion;} }
 
         // ======== Objects ========
         private Rigidbody rb;
@@ -206,7 +220,8 @@ namespace toio.Simulator
                 case Version.v2_1_0 : this.impl = new CubeSimImpl_v2_1_0(this);break;
                 case Version.v2_2_0 : this.impl = new CubeSimImpl_v2_2_0(this);break;
                 case Version.v2_3_0 : this.impl = new CubeSimImpl_v2_3_0(this);break;
-                default : this.impl = new CubeSimImpl_v2_3_0(this);break;
+                case Version.v2_4_0 : this.impl = new CubeSimImpl_v2_4_0(this);break;
+                default : this.impl = new CubeSimImpl_v2_4_0(this);break;
             }
             this._InitPresetSounds();
         }
@@ -721,7 +736,7 @@ namespace toio.Simulator
             Ray ray = new Ray(gposSensor, -transform.up);
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.transform.gameObject.tag == "t4u_Mat" && hit.distance < maxDistance){
-                    var mat = hit.transform.gameObject.GetComponent<Mat>();
+                    var mat = hit.transform.gameObject.GetComponentInParent<Mat>();
                     var deg = mat.UnityDeg2MatDegF(transform.eulerAngles.y);
                     var coordSensor = mat.UnityCoord2MatCoordF(gposSensor);
                     return (coordSensor, 0, deg);
@@ -779,9 +794,10 @@ namespace toio.Simulator
                 playingSoundId = soundId;
                 int octave = (int)(soundId/12);
                 int idx = (int)(soundId%12);
-                var aCubeOnSlot = Resources.Load("Octave/" + (octave*12+9)) as AudioClip;
+                var loader = GetComponent<AudioAssetLoader>();
+                if (!loader) return;
+                audioSource.clip = loader.GetAudioCLip(octave);
                 audioSource.pitch = (float)Math.Pow(2, ((float)idx-9)/12);
-                audioSource.clip = aCubeOnSlot;
             }
             audioSource.volume = (float)volume/256 * 0.5f;
             if (!audioSource.isPlaying)

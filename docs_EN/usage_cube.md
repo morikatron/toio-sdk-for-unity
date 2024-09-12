@@ -22,9 +22,9 @@ In real Cube, you control real Cube through Bluetooth communication from Unity p
 
 ### Real/Sim Performance Meter
 
-Currently (09/01/2021), there are 4 BLE protocol versions in Cube.
+Currently (07/20/2023), there are 5 BLE protocol versions in Cube.
 
-`2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`
+`2.0.0`　`2.1.0`　`2.2.0`　`2.3.0`　`2.4.0`
 
 toio SDK for Unity has two internal implementations: Cube class that runs in real life (Real-compatible) and Cube class that runs in Simulator (Sim-compatible). Since the internal implementations are different, there are differences in the support status.<br>
 The following table shows the implementation correspondence.
@@ -97,13 +97,28 @@ The following table shows the implementation correspondence.
 
 | Function Type      | Function                                                                                                                              | Real Support Status | Sim Support Status |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
-| Magnetic sensor    | [Magnetic force detection](https://toio.github.io/toio-spec/en/docs/ble_sensor#magnetic-force-detection-)                                   | o             | o            |
-| Posture Angle      | [Requesting posture angle detection](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#requesting-posture-angle-detection) | o        | o            |
-|                    | [Obtaining posture angle information (notifications in Euler angles)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-euler-angles) | o | o |
-|                    | [Obtaining posture angle information (notifications in quaternions)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-quaternions) | o | o |
-| Configuration      | [Magnetic sensor settings(updated)](https://toio.github.io/toio-spec/en/docs/ble_configuration#magnetic-sensor-settings-)                   | o             | o            |
-|                    | [Posture angle detection settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#posture-angle-detection-settings-)            | o             | o            |
-|                    | [Responses to posture angle detection settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-posture-angle-detection-settings-) | o | o         |
+| Magnetic sensor    | [Magnetic force detection](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_sensor#magnetic-force-detection-)                                   | o             | o            |
+| Posture Angle      | [Requesting posture angle detection](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_high_precision_tilt_sensor#requesting-posture-angle-detection) | o        | o            |
+|                    | [Obtaining posture angle information (notifications in Euler angles)](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-euler-angles) | o | o |
+|                    | [Obtaining posture angle information (notifications in quaternions)](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-quaternions) | o | o |
+| Configuration      | [Magnetic sensor settings(updated)](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_configuration#magnetic-sensor-settings-)                   | o             | o            |
+|                    | [Posture angle detection settings](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_configuration#posture-angle-detection-settings-)            | o             | o            |
+|                    | [Responses to posture angle detection settings](https://toio.github.io/toio-spec/en/docs/2.3.0/ble_configuration#responses-to-posture-angle-detection-settings-) | o | o         |
+
+#### BLE protocol version 2.4.0
+
+| Function Type      | Function                                                                                                                              | Real Support Status | Sim Support Status |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| Posture Angle detection | [Requesting posture angle detection](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#requesting-posture-angle-detection) (updated)                      | o             | o            |
+|            | [Obtaining posture angle information (notifications in quaternions) ](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-quaternions-) | o | o       |
+|            | [Obtaining posture angle information (notifications in high precision Euler angles)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#obtaining-posture-angle-information-notifications-in-high-precision-euler-angles-) | o | o       |
+| Configuration | [Posture angle detection settings](https://toio.github.io/toio-spec/en/docs/ble_configuration#posture-angle-detection-settings-) (updated)                                  | o             | o            |
+|            | [Request to change connection interval](https://toio.github.io/toio-spec/en/docs/ble_configuration#request-to-change-connection-interval-)               | o             | x            |
+|            | [Obtaining the requested connection interval value](https://toio.github.io/toio-spec/en/docs/ble_configuration#obtaining-the-requested-connection-interval-value-)        | o             | x            |
+|            | [Obtaining the actual connection interval value](https://toio.github.io/toio-spec/en/docs/ble_configuration#obtaining-the-actual-connection-interval-value-)    | o             | x            |
+|            | [Responses to request to change connection interval](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-request-to-change-connection-interval-)        | o             | x            |
+|            | [Responses to obtain the requested connection interval value](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-obtain-the-requested-connection-interval-value-) | o         | x            |
+|            | [Responses to obtain the actual connection interval value](https://toio.github.io/toio-spec/en/docs/ble_configuration#responses-to-obtain-the-actual-connection-interval-value-) | o     | x            |
 
 <br>
 
@@ -145,7 +160,7 @@ public class SimpleScene : MonoBehaviour
     async void Start()
     {
         // start a scanner to find the nearest cube
-        var peripheral = await new NearestScanner().Scan();
+        var peripheral = await new CubeScanner().NearestScan();
 
         // connect to Cube
         var cube = await new CubeConnecter().Connect(peripheral);
@@ -290,8 +305,17 @@ public Vector3 eulers { get; protected set; }
 
 // Attitude of Cube in quaternion
 // Callback function: attitudeCallback
-// Currently (2021.09.01), the coordinates of quaternion is different from euler's. The euler's is correct to the specification.
+// Please note that the coordinate system specified in the specifications is different from Unity's.
 public Quaternion quaternion { get; protected set; }
+
+// ver2.4.0
+// Requested connection interval value
+// Callback function：connectionIntervalConfigCallback
+public virtual int connectionIntervalMin { get; protected set; }
+public virtual int connectionIntervalMax { get; protected set; }
+// Actual connection interval value
+// Callback function：connectionIntervalCallback
+public virtual int connectionInterval { get; protected set; }
 ```
 
 <br>
@@ -865,7 +889,7 @@ Enables or disables the cube's attitude angle detection feature. It is disabled 
 
 - format
   - Definition : Type of notification content
-  - Type : Eulers, Quaternion
+  - Type : Eulers, Quaternion (2.4.0), PreciseEulers (2.4.0)
 - intervalMs
   - Definition : Minimum notification interval (in milliseconds)
   - Range : 0~2550, precision is 10ms, ones place is omitted.
@@ -902,20 +926,78 @@ Requests the cube to notify the magnetic sensor information once. <br>
 
 ```csharp
 public void RequestAttitudeSensor(AttitudeFormat format, ORDER_TYPE order = ORDER_TYPE.Strong);
-````
+```
 
 Requests that the cube be notified once of the specified type of attitude angle detection information. <br>
 [toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_high_precision_tilt_sensor#requesting-posture-angle-detection)
 
 - format
   - Definition : Type of notification content
-  - Type : Eulers, Quaternion
+  - Type : Eulers, Quaternion (2.4.0), PreciseEulers (2.4.0)
 - order
   - Definition : [instruction priority](sys_cube.md#4-Send-Command)
   - Type : Weak, Strong
 
+### ConfigConnectionInterval
+
+```csharp
+public virtual UniTask ConfigConnectionInterval(
+  int min,
+  int max,
+  float timeOutSec = 0.5f,
+  Action<bool,Cube> callback = null,
+  ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+Request to change the connection interval. Values between 0xFFFF (no request) or 6 to 3200 can be specified. (Supported from v2.4.0)<br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#request-to-change-connection-interval-)
+
+- min
+  - Definition: Minimum connection interval
+  - Range: 6 ~ 3200, in 1.25 ms units; 0xFFFF: no request
+- max
+  - Definition: Maximum connection interval
+  - Range: 6 ~ 3200, in 1.25 ms units; 0xFFFF: no request
+- timeOutSec
+  - Definition: Timeout (seconds)
+  - Range: 0.5 ~
+- callback
+  - Definition: Completion callback (success flag, cube)
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type: Weak, Strong
+
 <br>
 
+### ObtainConnectionIntervalConfig
+
+```csharp
+public void ObtainConnectionIntervalConfig(ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+Retrieve the requested connection interval value. In 1.25 ms units. (This value is not the actual connection interval value.)<br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#obtaining-the-requested-connection-interval-value-)
+
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type: Weak, Strong
+
+<br>
+
+### ObtainConnectionInterval
+
+```csharp
+public void ObtainConnectionInterval(ORDER_TYPE order = ORDER_TYPE.Strong);
+```
+
+Get the actual connection interval value between the cube and the central device by writing the following data. <br>
+[toio™ Core Cube Technical Specifications (Communication Specifications)](https://toio.github.io/toio-spec/en/docs/ble_configuration/#obtaining-the-actual-connection-interval-value-)
+
+- order
+  - Definition : [instruction priority](sys_cube.md#4-Send-Command)
+  - Type: Weak, Strong
+
+<br>
 
 # 4. Cube connection settings
 
@@ -937,10 +1019,6 @@ public enum ConnectType
 ```
 
 ```csharp
-public NearestScanner(ConnectType type = ConnectType.Auto);
-
-public NearScanner(int satisfiedNum, ConnectType type = ConnectType.Auto);
-
 public CubeScanner(ConnectType type = ConnectType.Auto);
 
 public CubeConnecter(ConnectType type = ConnectType.Auto);

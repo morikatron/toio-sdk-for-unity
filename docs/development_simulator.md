@@ -1,4 +1,4 @@
-# シミュレータの操作方法
+# シミュレータの操作方法（マットやキューブの設定等）
 
 ## 目次
 
@@ -20,7 +20,7 @@
 
 ## 構成
 
-シミュレータは `Assets/toio-sdk/Scripts/Simulator/Resources/` の下にある、以下の 4 つのプリハブから構成されています。
+シミュレータは `Assets/toio-sdk/Scripts/Simulator/Prefabs/` の下にある、以下の 4 つのプリハブから構成されています。
 
 - Mat … 各種[プレイマット](https://toio.github.io/toio-spec/docs/hardware_position_id)を模したもの
 - StandardID … Standard ID を読み取れる各種の[カードやシート](https://toio.github.io/toio-spec/docs/hardware_standard_id)を模したもの
@@ -43,9 +43,12 @@ Cube Prefab は Mat Prefab に置くと、 Mat の座標位置と方向を取得
 
 Mat Prefab はシーンの中に複数枚、水平であれば位置と角度任意で置けます。
 
-## インスペクターでのパラメーター
+## インスペクター
 
-<div align="center"><img src="res/usage_simulator/mat.png"></div>
+<div align="center">
+  <img src="res/usage_simulator/mat_inspector.png">
+  <img src="res/usage_simulator/mat_types.png">
+</div>
 
 Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リストに、
 
@@ -60,12 +63,13 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイプ」リ
 | Unity Editor 上での表記 | 正式名称 |
 | :-- | :-- |
 | トイコレ付属マット（土俵面） | トイオ・コレクション付属のプレイマット(土俵の面) |
-| トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) | 
+| トイコレ付属マット（色タイル面） | トイオ・コレクション付属のプレイマット(色付きタイルの面) |
 | キューブ（単体）付属簡易マット | toio™コア キューブ（単体）付属の簡易プレイマット |
 | 開発用マット | toio™開発用プレイマット（仮称） |
 
 各タイプの仕様は、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_position_id) と [『開発者向けマット（仮称）』](https://toio.io/blog/detail/20200423-1.html) を参考してください。
 
+カスタマイズの方法は[「使い方 - シミュレータ」](usage_simulator.md#カスタマイズ)を参照してください。
 
 # 3. StandardID Prefab
 
@@ -75,7 +79,7 @@ Cube Prefab を StandardID Prefab の上に載せると、Standard ID と方向�
 
 StandardID Prefab はシーンの中に複数枚、位置と角度任意で置けます。
 
-## インスペクターでのパラメーター
+## インスペクター
 
 <div align="center"><img src="res/usage_simulator/standardid.png"></div>
 
@@ -87,7 +91,6 @@ Unity のインスペクターで、スクリプト Mat.cs の「タイトル」
 - 簡易カード
 
 「タイプ」については、[toio™コア キューブ 技術仕様](https://toio.github.io/toio-spec/docs/hardware_standard_id)を参照してください。
-
 
 # 4. Cube Prefab
 

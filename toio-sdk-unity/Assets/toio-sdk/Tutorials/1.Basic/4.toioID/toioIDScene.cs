@@ -14,7 +14,7 @@ namespace toio.tutorial
 
         async void Start()
         {
-            var peripheral = await new NearestScanner().Scan();
+            var peripheral = await new CubeScanner().NearestScan();
             cube = await new CubeConnecter().Connect(peripheral);
             started = true;
         }

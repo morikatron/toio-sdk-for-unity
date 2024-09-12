@@ -67,7 +67,7 @@ namespace toio.Windows
 
     public class DllInterface
     {
-        const string pluginName = "BlePluginWinows";
+        const string pluginName = "BlePluginWindows";
 
         public enum EBluetoothStatus : int
         {
@@ -181,10 +181,12 @@ namespace toio.Windows
         }
 
         [DllImport(pluginName)]
-        private static extern string _BlePluginScanGetDeviceName(int idx);
+        // [return: MarshalAs(UnmanagedType.LPStr)]
+        private static extern IntPtr _BlePluginScanGetDeviceName(int idx);
         public static string ScanGetDeviceName(int idx)
         {
-            return _BlePluginScanGetDeviceName(idx);
+            IntPtr ptr = _BlePluginScanGetDeviceName(idx);
+            return Marshal.PtrToStringAnsi(ptr);
         }
         [DllImport(pluginName)]
         private static extern int _BlePluginScanGetDeviceRssi(int idx);

@@ -101,7 +101,7 @@ namespace toio
         //
         // DiscoveredAction
         //
-        private static Action<string, string, int, byte[]> DiscoveredAction = null;
+        private static Action<(string, string, int, byte[])[]> DiscoveredAction = null;
         private delegate void DiscoveredActionDelegate(string identifier, string name, string rssi, string base64ManufacturerData);
         [AOT.MonoPInvokeCallback(typeof(DiscoveredActionDelegate))]
         private static void DiscoveredActionCallback(string identifier, string name, string rssi, string base64ManufacturerData)
@@ -121,7 +121,9 @@ namespace toio
                 }
                 catch { }
 
-                DiscoveredAction(identifier, name, iRssi, data);
+                var infos = new (string, string, int, byte[])[1];
+                infos[0] = (identifier, name, iRssi, data);
+                DiscoveredAction(infos);
             }
         }
 
@@ -298,7 +300,7 @@ namespace toio
         {
         }
 
-        public static void StartScan(string[] serviceUUIDs, Action<string, string, int, byte[]> discoveredAction = null)
+        public static void StartScan(string[] serviceUUIDs, Action<(string, string, int, byte[])[]> discoveredAction = null)
         {
 #if UNITY_IOS
         DiscoveredAction = discoveredAction;

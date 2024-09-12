@@ -62,7 +62,6 @@ namespace toio.Navigation
         {
             this.ego = ego; this.mode = mode;
             boids = new Boids(ego); avoid = new HLAvoid(ego);
-            AddBorder();
         }
 
         /// <summary>

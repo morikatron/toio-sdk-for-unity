@@ -25,14 +25,14 @@ namespace toio
 
         public async UniTask<bool> GetAccess(float deadline, Action<bool, Cube> callback)
         {
-            while (this.isRequesting)
+            await UniTask.WhenAny(
+                UniTask.WaitUntil(() => deadline < Time.time),
+                UniTask.WaitUntil(() => !this.isRequesting)
+            );
+            if (this.isRequesting)
             {
-                if (deadline < Time.time)
-                {
-                    callback?.Invoke(false, this.cube);
-                    return false;
-                }
-                await UniTask.Delay(50);
+                callback?.Invoke(false, this.cube);
+                return false;
             }
 
             // Get Access
@@ -45,7 +45,7 @@ namespace toio
             return true;
         }
 
-        public async UniTask Run()
+        public async UniTask Run(int retryIntervalMs = 500)
         {
             this.isRequesting = true;
             bool responded = true;
@@ -64,7 +64,10 @@ namespace toio
                 }
 
                 this.request?.Invoke();
-                await UniTask.Delay(200);
+                await UniTask.WhenAny(
+                    UniTask.Delay(retryIntervalMs),
+                    UniTask.WaitUntil(()=> this.hasConfigResponse || deadline < Time.time)
+                );
             }
 
             this.isRequesting = false;

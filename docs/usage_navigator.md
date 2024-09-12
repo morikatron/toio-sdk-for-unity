@@ -175,8 +175,7 @@ public void ClearWall();
 public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500);
 ```
 
-マットにボーダー付けたい場合、東西南北に壁を一斉に作るメソッドです。<br>
-CubeNavigator をインスタンス化する際、自動的に `AddBorder(70);` が呼ばれます。
+マットにボーダー付けたい場合、東西南北に壁を一斉に作るメソッドです。
 
 - width
   - 定義：壁の厚さの半分

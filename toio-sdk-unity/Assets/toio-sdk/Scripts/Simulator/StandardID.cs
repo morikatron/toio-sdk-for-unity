@@ -146,10 +146,13 @@ namespace toio.Simulator
         internal void ApplyStandardIDType()
         {
             // Load Sprite
-            string spritePath = "StandardID/"+title.ToString()+"/";
-            if (title == Title.toio_collection) spritePath += toioColleType.ToString();
-            else if (title == Title.simple_card) spritePath += simpleCardType.ToString();
-            var sprite = (Sprite)Resources.Load<Sprite>(spritePath);
+            var loader = GetComponent<StandardIDAssetLoader>();
+            if (!loader) return;
+            Sprite sprite = null;
+            if (title == Title.toio_collection)
+                sprite = loader.GetSprite(toioColleType);
+            else if (title == Title.simple_card)
+                sprite = loader.GetSprite(simpleCardType);
             GetComponent<SpriteRenderer>().sprite = sprite;
 
             // Create Mesh
