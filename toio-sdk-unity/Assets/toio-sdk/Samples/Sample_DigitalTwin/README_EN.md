@@ -7,7 +7,7 @@ This sample implements a so-called "Digital Twin", which reflects the movements 
 </div>
 <br>
 
-There are three scripts:
+There are 2 scripts:
 - `DigitalTwinBinder.cs`: Script implementing the connection of real cube's local name and specified simulator, and reflecting its movements
 - `Sample_DigitalTwin.cs`: Main script controlling the connected cube
 
