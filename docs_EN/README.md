@@ -129,7 +129,7 @@
 
   This sample handles scene transitions while maintaining the connection with the real Cube and the correlated instance with Cube on Simulator.
 
-- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/README_EN.md)
+- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_DigitalTwin/README_EN.md)
 
   These samples demonstrate a "Digital Twin," where the movements of a real cube are reflected in real-time on a simulator cube.
 
