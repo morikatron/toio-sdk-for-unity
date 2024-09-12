@@ -130,7 +130,7 @@
 
   リアルのキューブとの接続・シミュレータ上のキューブと相関インスタンスを維持したままに、シーン遷移を扱うサンプルです。
 
-- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_MultiMat/)
+- [Sample_DigitalTwin](../toio-sdk-unity/Assets/toio-sdk/Samples/Sample_DigitalTwin/)
 
   リアルキューブの動きをシミュレーターのキューブにリアルタイムに反映する、いわゆる「ディジタルツイン」を実現したサンプルです。
 
