@@ -161,6 +161,11 @@ namespace toio.Samples.Sample_ConnectName
             this.bleStatus[peripheral] = peripheral.isConnected ? BLEStatus.Connected : BLEStatus.Disconnected;
             if (this.cubeItems.ContainsKey(peripheral.device_address))
                 this.cubeItems[peripheral.device_address].GetComponentInChildren<Text>().text = peripheral.device_name + (peripheral.isConnected? ": connected" : ": disconnected");
+            
+            #if UNITY_IOS
+            if (!peripheral.isConnected)
+                this.bleStatus.Remove(peripheral);
+            #endif
         }
     }
 }
