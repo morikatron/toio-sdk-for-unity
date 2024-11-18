@@ -25,8 +25,8 @@ namespace toio
     public interface CubeScannerInterface
     {
         bool isScanning { get; }
-        UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f);
-        UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3.0f);
+        UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 3f);
+        UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3f);
         UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f);
         void StopScan();
     }
@@ -90,7 +90,7 @@ namespace toio
         /// </summary>
         /// <param name="waitSeconds"></param>
         /// <returns></returns>
-        public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 0f) { return await this.impl.NearestScan(waitSeconds); }
+        public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 3f) { return await this.impl.NearestScan(waitSeconds); }
 
         /// <summary>
         /// Scan for 1 nearest cube.
@@ -98,7 +98,7 @@ namespace toio
         /// </summary>
         /// <param name="waitSeconds"></param>
         /// <returns></returns>
-        public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds) { return await this.impl.NearScan(satisfiedNum, waitSeconds); }
+        public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3f) { return await this.impl.NearScan(satisfiedNum, waitSeconds); }
 
         public async UniTask StartScan(Action<BLEPeripheralInterface[]> onScanUpdate, Action onScanEnd = null, float waitSeconds = 10f)
         {
@@ -129,7 +129,7 @@ namespace toio
                 }
             }
 
-            public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds)
+            public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 3f)
             {
                 if (this.isScanning) return null;
                 isScanning = true;
@@ -138,7 +138,7 @@ namespace toio
 
                 await UniTask.Delay(1000);
                 await UniTask.WhenAny(
-                    UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
+                    UniTask.Delay((int)Mathf.Max(1000, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
                         return this.scannedAddrs.Count(addr=>!peripheralDatabase[addr].isConnected) > 0;
                     })
@@ -150,7 +150,7 @@ namespace toio
                 peripheralList.Sort((a, b) => b.rssi > a.rssi ? 1 : -1);
                 return peripheralList.Count > 0 ? peripheralList[0] : null;
             }
-            public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
+            public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3f)
             {
                 if (this.isScanning) return null;
                 isScanning = true;
@@ -159,7 +159,7 @@ namespace toio
 
                 await UniTask.Delay(1000);
                 await UniTask.WhenAny(
-                    UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
+                    UniTask.Delay((int)Mathf.Max(1000, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
                         return this.scannedAddrs.Count(addr=>!peripheralDatabase[addr].isConnected) >= satisfiedNum;
                     })
@@ -180,7 +180,7 @@ namespace toio
 
                 this.Scan(onScanUpdate).Forget();
 
-                await UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000));
+                await UniTask.Delay((int)Mathf.Max(1000, waitSeconds * 1000));
                 this.isScanning = false;
                 await UniTask.Delay(200);
                 onScanEnd?.Invoke();
@@ -260,7 +260,7 @@ namespace toio
                 }
             }
 
-            public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds)
+            public async UniTask<BLEPeripheralInterface> NearestScan(float waitSeconds = 3f)
             {
                 if (this.isScanning) return null;
                 this.isScanning = true;
@@ -269,7 +269,7 @@ namespace toio
 
                 await UniTask.Delay(1000);
                 await UniTask.WhenAny(
-                    UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
+                    UniTask.Delay((int)Mathf.Max(1000, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
                         return this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) > 0;
                     })
@@ -285,7 +285,7 @@ namespace toio
                 return peris.Count > 0 ? peris[0] : null;
             }
 
-            public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds)
+            public async UniTask<BLEPeripheralInterface[]> NearScan(int satisfiedNum, float waitSeconds = 3f)
             {
 #if !UNITY_EDITOR && UNITY_WEBGL
                 Debug.LogWarning("[CubeScanner]]NearScan doesn't run on the web");
@@ -297,7 +297,7 @@ namespace toio
 
                 await UniTask.Delay(1000);
                 await UniTask.WhenAny(
-                    UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000 - 1100)),
+                    UniTask.Delay((int)Mathf.Max(1000, waitSeconds * 1000 - 1100)),
                     UniTask.WaitUntil(() => {
                         return this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) >= satisfiedNum;
                     })
@@ -322,7 +322,7 @@ namespace toio
                 await this.RequestDevice().Timeout(TimeSpan.FromSeconds(1));
                 this.Scan(onScanUpdate);
 
-                await UniTask.Delay((int)Mathf.Max(0, waitSeconds * 1000));
+                await UniTask.Delay((int)Mathf.Max(1000, waitSeconds * 1000));
                 this.StopScan();
                 onScanEnd?.Invoke();
             }

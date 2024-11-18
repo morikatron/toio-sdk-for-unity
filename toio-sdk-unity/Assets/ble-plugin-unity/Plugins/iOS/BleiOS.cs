@@ -304,7 +304,7 @@ namespace toio
         {
 #if UNITY_IOS
         DiscoveredAction = discoveredAction;
-        _uiOSStartDeviceScan(serviceUUIDs, DiscoveredActionCallback, false);
+        _uiOSStartDeviceScan(serviceUUIDs, DiscoveredActionCallback, true);
 #endif
         }
 
