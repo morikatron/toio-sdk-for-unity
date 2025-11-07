@@ -106,7 +106,7 @@ CubeHandle does the following. (See usage_cubehandle.md for details.)
 
 - `CubeHandle.Update` method gets information about Cube and predicts its state
 - `CubeHandle.Move2Target` The method takes the target as input and computes the move instruction.
-- Execute the output move instruction with the `CubeHandle.Move` or `Movemnet.Exec` method.
+- Execute the output move instruction with the `CubeHandle.Move` or `Movement.Exec` method.
 
 ### 3.1.2. Control block diagram of CubeNavigator
 
@@ -120,7 +120,7 @@ CubeNavigator uses a combination of Navigator and CubeHandle to control Cube usi
 1. Call the `CubeHandle.Update` method to set the prediction result and source information to CubeEntity (`CubeNavigator.Update` method)
 2. Running the Navigator's navigation algorithm
 3. Give the navigation result (waypoint coordinates, speed) to the `CubeHandle.Move2Target` method to calculate the move instruction (`CubeNavigator.Navi2Target, CubeNavigator.NaviAwayTarget` methods)
-4. Execute the output move instruction with the `CubeHandle.Move` or `Movemnet.Exec` method.
+4. Execute the output move instruction with the `CubeHandle.Move` or `Movement.Exec` method.
 
 ## 3.2. Explanation of internal processing
 

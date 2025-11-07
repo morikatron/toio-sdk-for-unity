@@ -108,7 +108,7 @@ CubeHandle では以下のようなことを行います。 (詳細は usage_cub
 
 - `CubeHandle.Update` メソッドが Cube の情報を取得し、状態予測を行う
 - `CubeHandle.Move2Target` メソッドが、 目標 を入力として受けとり、移動命令を計算する
-- 出力された移動命令を `CubeHandle.Move` メソッドもしくは `Movemnet.Exec` メソッドで実行する
+- 出力された移動命令を `CubeHandle.Move` メソッドもしくは `Movement.Exec` メソッドで実行する
 
 ### 3.1.2. CubeNavigator の制御ブロック図
 
@@ -122,7 +122,7 @@ CubeNavigator では、 Navigator と CubeHandle を組み合わせて
 1. `CubeHandle.Update` メソッドを呼び出し、予測結果と元情報を CubeEntity にセットする (`CubeNavigator.Update` メソッド)
 2. Navigator のナビゲーションアルゴリズムを実行する
 3. ナビゲーションの結果（ウェイポイント座標、速度）を `CubeHandle.Move2Target` メソッドに与えて移動命令を計算する (`CubeNavigator.Navi2Target, CubeNavigator.NaviAwayTarget` メソッド)
-4. 出力された移動命令を `CubeHandle.Move` メソッドもしくは `Movemnet.Exec` メソッドで実行する
+4. 出力された移動命令を `CubeHandle.Move` メソッドもしくは `Movement.Exec` メソッドで実行する
 
 という手順でキューブを制御しています。
 
