@@ -33,10 +33,10 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools & Software | Confirmed Version | Recommended Version |
 | -------------------- | ---------------------- | ----------------------- |
-| OS | MacOS 13.4.1 | macOS 11 or higher |
+| OS | MacOS 26.1 | macOS 15.6 or higher |
 | Bluetooth® | 4.2 | 4.2 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
-| Browser (Chrome) | 114.0.5735.133 | 56 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
+| Browser (Chrome) | 148.0.7778.179 | 56 or higher |
 
 To check the version of BlueTooth®, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
 
@@ -44,17 +44,15 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 
 | Tools & Software | Confirmed Version | Recommended Version |
 | -------------------- | ---------------------- | ----------------------- |
-| OS | Windows 10 Pro 64bit 1903 | Windows 10 |
+| OS | Windows 11 Pro 25H2 | Windows 10 (64bit) or higher |
 | Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher |
 | Unity | 2022.3.44f1 | 2022.3 or higher |
-| Browser (Edge) | 114.0.1823.82 | 79 or higher |
-| Browser (Chrome) | 114.0.5735.199 | 56 or higher |
+| Browser (Chrome) | 148.0.7778.179 | 56 or higher |
 
 <br>
 
 For other browsers, please refer to [WebGL](https://developer.mozilla.org/docs/Web/API/WebGL_API) and [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/).
 - WebGL
-  - [WebGL Browser Compatibility](https://docs.unity3d.com/2022.3/Documentation/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)

@@ -33,10 +33,10 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 | ツール・ソフトウェア | 確認バージョン | 推奨バージョン |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | MacOS 13.4.1 | macOS 11 以上 |
+| OS                   | MacOS 26.1 | macOS 15.6 以上 |
 | Bluetooth®           | 4.2 | 4.2 以上 |
-| Unity                | 2022.3.44f1 | 2022.3 以上 |
-| ブラウザ(Chrome)      | 114.0.5735.133 | 56 以上 |
+| Unity                | 6000.3.14f1 | 6000.3 以上 |
+| ブラウザ(Chrome)      | 148.0.7778.179 | 56 以上 |
 
 > Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
 
@@ -44,17 +44,15 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | Windows 10 Pro 64bit 1903 | Windows 10 |
+| OS                   | Windows 11 Pro 25H2 | Windows 10 (64bit) 以上 |
 | Bluetooth®           | 5.0(LMP 9.256) | 4.2 以上 |
-| Unity                | 2022.3.44f1 | 2022.3 以上 |
-| ブラウザ(Edge)        | 114.0.1823.82 | 79 以上 |
-| ブラウザ(Chrome)      | 114.0.5735.199 | 56 以上 |
+| Unity                | 6000.3.14f1 | 6000.3 以上 |
+| ブラウザ(Chrome)      | 148.0.7778.179 | 56 以上 |
 
 <br>
 
 その他ブラウザでのウェブアプリ動作環境ついては、依存モジュールとなる [WebGL](https://developer.mozilla.org/ja/docs/Web/API/WebGL_API) および [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) のサポート対象をご確認ください。
 - WebGL
-  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2022.3/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)

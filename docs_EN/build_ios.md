@@ -8,10 +8,10 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
-| OS    | macOS 13.4.1 | macOS 11 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
-| Xcode | 14.3.1 (14E300c) | 13 or higher |
-| iOS   | 12.3.1, 13.2.2 | 11 or higher |
+| OS    | macOS 26.1 | macOS 26 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
+| Xcode | 26.1 | 26 or higher |
+| iOS   | 18.7.8 | 15 or higher |
 
 ## Check Unity's iOS Build Support
 

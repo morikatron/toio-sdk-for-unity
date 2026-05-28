@@ -8,8 +8,8 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
-| OS | Winidows 10 | Winidows 10 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
+| OS | Windows 11 Pro 25H2 | Winidows 10 (64bit) or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
 
 Mobile Phone
 
