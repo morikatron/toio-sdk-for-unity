@@ -55,6 +55,12 @@ namespace toio.Samples.Sample_Sensor
             // Cube の接続
             var peripheral = await new CubeScanner(connectType).NearestScan();
             cube = await new CubeConnecter(connectType).Connect(peripheral);
+            if (cube == null)
+            {
+                Debug.LogWarning("Connection Canceled");
+                return;
+            }
+
             // モーター速度の読み取りをオンにする
             await cube.ConfigMotorRead(true);
 
