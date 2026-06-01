@@ -42,6 +42,20 @@ UniTask のインストールは以下の手順で行います（2024年9月11�
 
 <img width=500 src="res/download_sdk/import_sdk.png">
 
+#### Universal Render Pipeline (URP) への移行
+
+従来の Built-in Render Pipeline を使用しているプロジェクトに、バージョン 1.7.0 以降の 【toio-sdk-for-unity.unitypackage】 を導入すると、シミュレーターのキューブプレハブなどのマテリアルが正しく表示されない（ピンク色になるなど）現象が発生します。これを解決するため、プロジェクト全体を Universal Render Pipeline (URP) へ移行することをおすすめします。
+
+主な移行手順は以下の通りです。
+
+- URP のインストール: Package Manager から Universal RP パッケージをインストールします。
+- アセットの変換: Window -> Rendering -> Render Pipeline Converter を開き、ビルトインフォーマットのマテリアルなどのアセットを検索して変換を実行します。
+- URP の設定: プロジェクト設定（Graphics や Quality）で URP Asset を割り当てます。
+- 微調整: 移行後、必要に応じてライトの強度やマテリアルのパラメータを調整します。
+
+詳細な手順については、Unity の[公式ドキュメント](https://docs.unity3d.com/ja/6000.0/Manual/urp/upgrading-from-birp.html)をご参照ください。
+
+
 ### 3.サンプルの実行、動作確認
 Unity プロジェクトに読み込まれたら、`Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/`までフォルダを移動し、`0.BasicScene シーンファイル`をダブルクリックで開きます。
 

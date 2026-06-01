@@ -42,6 +42,19 @@ After opening the downloaded folder, drag and drop **[toio-sdk-for-unity.unitypa
 
 <img src="res/download_sdk/import_sdk.png">
 
+#### Migrating to the Universal Render Pipeline (URP)
+
+If you import [toio-sdk-for-unity.unitypackage] (version 1.7.0 or later) into a project that uses the legacy Built-in Render Pipeline, materials such as the simulator's cube prefab will not render correctly (e.g., appearing pink). To resolve this issue, we recommend migrating your entire project to the Universal Render Pipeline (URP).
+
+The general migration steps are as follows:
+
+- Install URP: Install the Universal RP package from the Package Manager.
+- Convert Assets: Open `Window -> Rendering -> Render Pipeline` Converter, search for assets using the built-in format, and convert them.
+- Configure URP: Assign the URP Asset in your project settings (Graphics and Quality).
+- Fine-tuning: Adjust parameters such as light intensity and material settings as needed after the migration.
+
+For more detailed instructions, please refer to the [Official Unity Documentation](https://docs.unity3d.com/Manual/urp/upgrading-from-birp.html).
+
 ### 3.Run samples and check operation
 Once loaded into your Unity project, navigate to the `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` folder and double-click on `0.BasicScene scene file` to open it.
 
