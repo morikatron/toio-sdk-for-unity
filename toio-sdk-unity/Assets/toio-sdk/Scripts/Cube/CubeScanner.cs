@@ -271,7 +271,6 @@ namespace toio
                     cancelled = true;
                 });
 
-                await UniTask.Delay(1000);
                 await UniTask.WaitUntil(() => cancelled || this.scannedAddrTimes.Count(kv=>!this.peripheralDatabase[kv.Key].isConnected) > 0);
 #else
                 this.Scan();
@@ -400,7 +399,9 @@ namespace toio
                     onScanUpdate?.Invoke(this.peripheralList.ToArray());
                 }, errorAction);
 
+#if !UNITY_WEBGL
                 this.CleaningOverdated(onScanUpdate).Forget();
+#endif
             }
 
             private async UniTask CleaningOverdated(Action<BLEPeripheralInterface[]> onScanUpdate) {
