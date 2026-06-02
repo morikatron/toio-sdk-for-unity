@@ -20,7 +20,7 @@ namespace toio.tutorial.Template_ConnectName_CubeHandle
 
         void OnDisable()
         {
-            EnhancedTouchSupport.Disable();
+            // EnhancedTouchSupport is global; don't disable it here because other systems may rely on it.
         }
 
         void Update()
