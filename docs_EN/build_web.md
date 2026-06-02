@@ -46,7 +46,7 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 | -------------------- | ---------------------- | ----------------------- |
 | OS | Windows 11 Pro 25H2 | Windows 10 (64bit) or higher |
 | Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
 | Browser (Chrome) | 148.0.7778.179 | 56 or higher |
 
 <br>

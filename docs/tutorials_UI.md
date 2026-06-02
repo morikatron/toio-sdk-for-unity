@@ -199,9 +199,9 @@ public class MySimUI : MonoBehaviour
 ```
 
 上記スクリプトでは、以下の三つを実装しています。
-    1. シミュレータでのみ実行したい処理なので、#if [UNITY_EDITOR](https://docs.unity3d.com/ja/current/Manual/PlatformDependentCompilation.html) の中でクラスの全ての実装を記述しています。
+    1. シミュレータでのみ実行したい処理なので、#if [UNITY_EDITOR] の中でクラスの全ての実装を記述しています。
     2. シミュレータの画面を少し右側に寄せたいため、カメラを左へ移動しています。
-    3. 「UI」―「Canvas」の親を「SimCanvas」に設定してから、左端へ移動します。（[Transform.SetParent](https://docs.unity3d.com/ScriptReference/Transform.SetParent.html) を利用）
+    3. 「UI」―「Canvas」の親を「SimCanvas」に設定してから、左端へ移動します。（[Transform.SetParent] を利用）
 
 ## 11.4. ボタンの作成と動作対応
 最後に操作パネルの各ボタンを作成します。

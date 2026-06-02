@@ -10,7 +10,7 @@
 # 1. 概要
 Unity Visual ScriptingはUnity2021から標準機能として採用されたビジュアルプログラミング言語です。
 
-toio SDK for UnityにおけるVisual Scriptingは現在(2022年3月29日)、チュートリアルで利用する全ての機能に対応しております。
+toio SDK for UnityにおけるVisual Scriptingはチュートリアルで利用する全ての機能に対応しております。
 
 toio SDK for UnityをVisual Scriptingで利用することで、
 - C#の知識なしでキューブを動かすプログラムを作成できる。

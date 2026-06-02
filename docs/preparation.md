@@ -2,19 +2,19 @@
 
 toio SDK for Unity を使うためや、このドキュメントのサンプルやチュートリアルを行ううえで必要となるものの準備をします。具体的には以下の３つのソフトウェアが必要となります。
 
-- Unity（2022.3.44f1 LTS）
-- Xcode（13 以降）
+- Unity（6000.3.41f1 LTS）
+- Xcode（26 以降）
 - git
 
 ## Unity のインストール
 
 Unity のインストールや動作環境については以下の公式のドキュメントを参考にしてください。
 
-- [Installing Unity \- Unity マニュアル](https://docs.unity3d.com/ja/2022.3/Manual/GettingStartedInstallingUnity.html)
+- [Installing Unity \- Unity マニュアル](https://docs.unity3d.com/ja/current/Manual/GettingStartedInstallingUnity.html)
 （リンク先ページの右矢印→をクリックすると、システム要件やインストール方法の詳細が表示されます）
 
 Unity Hub を使うとバージョンの異なる Unity を複数インストールすることができるのでおすすめです。
-Unity のバージョンは **Unity 2022.3.44f1LTS** を利用してください。（Unity 2022.3.44f1LTS にて動作確認を行っております。もっと新しい Unity を使いたい場合は、各々の責任でお試しください。Unity 2020LTSを使いたい場合はtoio SDK for Unity v1.4を利用してください。Unity 2021LTSを使いたい場合はtoio SDK for Unity v1.5を利用してください。）
+Unity のバージョンは **Unity 6000.3.14f1 LTS** を利用してください。（Unity 6000.3.14f1 LTS にて動作確認を行っております。もっと新しい Unity を使いたい場合は、各々の責任でお試しください。Unity 2020LTSを使いたい場合はtoio SDK for Unity v1.4を利用してください。Unity 2021LTSを使いたい場合はtoio SDK for Unity v1.5を利用してください。）
 
 また、インストール時に **iOS Build Support**、**Android Build Support** または **WebGL Build Support** のモジュールを需要に応じて追加しておくと対応プラットフォームでのビルドが可能になります（モジュールは、あとでUnity Hubを使って追加することもできます）。
 

@@ -18,7 +18,7 @@
 
 以下のメソッドを使えば、ゲームオブジェクトをシーンに依存しない共通のスペースに移動し、保持することが出来ます。
 
-> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/ja/current/ScriptReference/Object.DontDestroyOnLoad.html)
+> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/ScriptReference/Object.DontDestroyOnLoad.html)
 
 ```c#
 // Smaple_Scenes_Preload.cs

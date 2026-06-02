@@ -157,7 +157,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2022.3 だと、NDK 23 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2022.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 6000.3 だと、NDK 27 を選びます。[ここを参考に](https://docs.unity3d.com/6000.3/Documentation/Manual/android-supported-dependency-versions.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 
