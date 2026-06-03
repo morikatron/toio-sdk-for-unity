@@ -46,6 +46,14 @@ Wait a few seconds, and when Unity icon appears to the right of Android, the swi
 
 <br>
 
+## Project Settings
+
+Open `Project Settings -> Player -> Other Settings`, under `Application Entry Point` unchek `Game Activity` and check `Activity`.
+
+<img src="res/build_android/2b.png">
+
+<br>
+
 ## Smart Phone Settings
 
 There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/Manual/android-sdksetup.html).

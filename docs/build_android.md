@@ -46,6 +46,14 @@ Unity をインストールする時に Android Build Support モジュールを
 
 <br>
 
+## プロジェクト設定
+
+`Project Settings -> プレイヤー -> その他の設定` を開き、 `アプリケーションエントリーポイント` の設定で `Game Activity` のチェックを外し、`Activity` にチェックを入れてください。
+
+<img src="res/build_android/2b.png">
+
+<br>
+
 ## スマートフォンの設定
 
 スマートフォンの設定はバリエーションが多いので、[Unity公式ページのAndroid環境の設定](https://docs.unity3d.com/ja/current/Manual/android-sdksetup.html)から引用します。
