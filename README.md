@@ -79,12 +79,12 @@ public class Hello_Toio : MonoBehaviour
 
 - toio™コア キューブ
 - toio™専用マット（トイオ・コレクション付属のプレイマット／toio™コア キューブ（単体）付属の簡易プレイマット／toio 開発用プレイマット）
-- Mac（macOS ver.15.6 以上）
-- Windows 10（64 ビット版のみ）
-- iOS端末（iOS ver.15 以上）
-- Android端末(Android OS 9.0以上)
-- Unity（2026.3.14f1 LTS）
-- Unity Visual Scripting(ver 1.9)
+- Mac (macOS ver.15.6 以上)
+- Windows 10 (64 ビット版のみ)
+- iOS端末 (iOS ver.15 以上)
+- Android端末 (Android OS 9.0以上)
+- Unity (6000.3.14f1 LTS)
+- Unity Visual Scripting ver 1.9
 
 ## ドキュメント
 

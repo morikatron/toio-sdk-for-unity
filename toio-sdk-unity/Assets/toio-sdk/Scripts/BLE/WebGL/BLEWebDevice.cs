@@ -24,6 +24,7 @@ namespace toio
             }, (errMsg) => {
                 Debug.LogFormat("[BLEWebDevice.Scan]Error: {0}", errMsg);
                 errorAction?.Invoke(errMsg);
+                action.Invoke(new BLEPeripheralInterface[0]);
             });
 #endif
         }

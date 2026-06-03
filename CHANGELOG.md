@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - [BLE] Fix WebGL BLE error with selector dialog.
-- [VS] Fix visual scirpting issue relating to `Cooldown` block.
+- [VS] Fix visual scripting issue relating to `Cooldown` block.
 
 ## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.6.0) - 2024-09-12
 

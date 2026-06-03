@@ -24,10 +24,10 @@ We assume that version of Unity Visual Scripting is 1.7.6.
 The installation is complete if Visual Scripting is exist in the [Packages:in Project] state.
 
 ## 2.Make build platform PC
-Set Build Profiles to PC.Without this setting, some nodes, such as the Cube class, will not be displayed.
+Set Build Profiles to PC. Without this setting, some nodes, such as the Cube class, will not be displayed.
 Builds can be done on IOS, android, and WebGL, but if you are programming with Visual Scripting, please make sure that the build platform is PC.
-1. Click [File]->[Build Setting]
-2. Select [Windows], [Mac] or [Linux] from list of [Platform] and Click [Swithc Platform]
+1. Click [File]-> [Build Setting]
+2. Select [Windows], [Mac] or [Linux] from list of [Platform] and Click [Switch Platform]
 <img src="res/visual_scripting_setting/change_platform.png">
 
 Click [Switch Platform] and wait a second,If you see the Unity icon next to [Windows], [Mac] or [Linux], you have succeeded.

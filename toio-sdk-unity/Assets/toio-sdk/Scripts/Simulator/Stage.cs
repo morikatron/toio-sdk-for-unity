@@ -33,25 +33,28 @@ namespace toio.Simulator
 
         void Update()
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame && CubeInteraction.GetSCA(false,true,false))
+            if (Mouse.current != null)
             {
-                if (CubeInteraction.current==null)
-                    OnLeftDown();
-            }
-            else if (Mouse.current.rightButton.wasPressedThisFrame && CubeInteraction.GetSCA(false,true,false))
-            {
-                if (CubeInteraction.current==null)
+                if (Mouse.current.leftButton.wasPressedThisFrame && CubeInteraction.GetSCA(false,true,false))
                 {
-                    OnRightDown();
-                    CubeInteraction.current = this;
+                    if (CubeInteraction.current==null)
+                        OnLeftDown();
                 }
-            }
-            else if (Mouse.current.rightButton.wasReleasedThisFrame)
-            {
-                if (CubeInteraction.current==this)
+                else if (Mouse.current.rightButton.wasPressedThisFrame && CubeInteraction.GetSCA(false,true,false))
                 {
-                    OnRightUp();
-                    CubeInteraction.current = null;
+                    if (CubeInteraction.current==null)
+                    {
+                        OnRightDown();
+                        CubeInteraction.current = this;
+                    }
+                }
+                else if (Mouse.current.rightButton.wasReleasedThisFrame)
+                {
+                    if (CubeInteraction.current==this)
+                    {
+                        OnRightUp();
+                        CubeInteraction.current = null;
+                    }
                 }
             }
 

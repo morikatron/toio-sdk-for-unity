@@ -69,7 +69,7 @@ namespace toio.Simulator
         {
             if (current==this)
             {
-                if (Mouse.current.rightButton.wasPressedThisFrame)
+                if (Mouse.current?.rightButton.wasPressedThisFrame ?? false)
                 {
                     if (isDragging)
                     {
@@ -124,11 +124,11 @@ namespace toio.Simulator
         }
 
         protected static bool isShift {get{
-            return Keyboard.current[Key.LeftShift].isPressed || Keyboard.current[Key.RightShift].isPressed;}}
+            return Keyboard.current == null ? false : Keyboard.current[Key.LeftShift].isPressed || Keyboard.current[Key.RightShift].isPressed;}}
         protected static bool isCtrl {get{
-            return Keyboard.current[Key.LeftCtrl].isPressed || Keyboard.current[Key.RightCtrl].isPressed;}}
+            return Keyboard.current == null ? false : Keyboard.current[Key.LeftCtrl].isPressed || Keyboard.current[Key.RightCtrl].isPressed;}}
         protected static bool isAlt {get{
-            return Keyboard.current[Key.LeftAlt].isPressed || Keyboard.current[Key.RightAlt].isPressed;}}
+            return Keyboard.current == null ? false : Keyboard.current[Key.LeftAlt].isPressed || Keyboard.current[Key.RightAlt].isPressed;}}
         public static bool GetSCA(bool shift, bool ctrl, bool alt)
         {
             return shift==isShift && ctrl==isCtrl && alt==isAlt;
