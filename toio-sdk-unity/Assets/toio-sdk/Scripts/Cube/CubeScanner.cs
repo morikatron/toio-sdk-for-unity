@@ -40,10 +40,10 @@ namespace toio
         {
             get
             {
-#if (UNITY_EDITOR || UNITY_STANDALONE)
+#if (UNITY_EDITOR)
                 return ConnectType.Simulator;
-#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
-            return ConnectType.Real;
+#else
+                return ConnectType.Real;
 #endif
             }
         }
@@ -67,9 +67,9 @@ namespace toio
             this.connectType = type;
             if (ConnectType.Auto == type)
             {
-#if (UNITY_EDITOR || UNITY_STANDALONE)
+#if (UNITY_EDITOR)
                 this.impl = new SimImpl();
-#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
+#else
                 this.impl = new RealImpl();
 #endif
             }
