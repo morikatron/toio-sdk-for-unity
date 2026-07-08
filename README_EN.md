@@ -57,7 +57,7 @@ public class Hello_Toio : MonoBehaviour
   - One useful set of mats, lights, and cameras for simulator
 - BLE communication module
   - Communicate with Cube via iOS app
-  - Communicating with Cube via Web App
+  - Communicate with Cube via Web App
   - Communicate with Cube in Android app
   - Communicate with Cube when playing in Unity Editor on Mac
 - Cube

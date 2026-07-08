@@ -190,4 +190,4 @@ If the app has been built correctly, the screen on your phone will look like thi
 
 <img width=92 src="res/build_ios/7.png">
 
-When you start the application for the first time, the "Allow use of Bluetooth? dialog will be displayed. If you allow it in the dialog, the application will start communicating with Cube and Cube will start running.
+When you start the application for the first time, the "Allow use of Bluetooth?" dialog will be displayed. If you allow it in the dialog, the application will start communicating with Cube and Cube will start running.
