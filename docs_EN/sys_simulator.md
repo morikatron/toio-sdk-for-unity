@@ -16,6 +16,7 @@
 - [5. Stage Prefab](sys_simulator.md#5-stage-prefab)
   - [5.1 Target pole](sys_simulator.md#51-target-pole)
   - [5.2 Focus on Cube](sys_simulator.md#52-focus-on-cube)
+- [6. Magnet Prefab](sys_simulator.md#6-magnet-prefab)
 
 # 1. Overview
 

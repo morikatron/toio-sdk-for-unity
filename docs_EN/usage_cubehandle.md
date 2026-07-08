@@ -368,7 +368,7 @@ Calculates the Movement to move to the target coordinates.
   - Definition: target x coordinates
   - Range: Any
 - tarY
-  - Definition: target x coordinates
+  - Definition: target y coordinates
   - Range: Any
 - maxSpd
   - Definition: maximum speed indication
@@ -432,7 +432,7 @@ public Movement Rotate2Deg(double tarDeg, int rotateTime = 400, double tolerance
 
 Calculates the Movement to rotate to the specified angle (degrees).
 
-- tarRad
+- tarDeg
   - Definition: Target angle (degree)
   - Range: Any
 - rotateTime

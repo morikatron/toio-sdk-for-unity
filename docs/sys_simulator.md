@@ -16,7 +16,7 @@
 - [5. Stage Prefab](sys_simulator.md#5-stage-prefab)
   - [5.1 ターゲットポール](sys_simulator.md#51-ターゲットポール)
   - [5.2 キューブをフォーカス](sys_simulator.md#52-キューブをフォーカス)
-- [6. Stage Prefab](sys_simulator.md#6-magnet-prefab)
+- [6. Magnet Prefab](sys_simulator.md#6-magnet-prefab)
 
 # 1. 概説
 
