@@ -2,17 +2,17 @@
 
 ## Unity プロジェクト作成
 
-Unity Hub を開き、右上にある【新規作成】をクリック。
+Unity Hub を開き、右上にある【新しいプロジェクト】をクリック。
 
 <img width=500 src="res/download_sdk/new_project1.png">
 
 プロジェクト作成画面が開かれたら、以下の設定にします。
 
-- テンプレート：3D
-- プロジェクト名：なんでも可(ここでは New toio Project)
+- テンプレート： `Universal 3D`
+- プロジェクト名：なんでも可(ここでは My Project)
 - 保存先：なんでも可(ここではデスクトップ)
 
-設定が完了したら、【作成】をクリック。
+設定が完了したら、【プロジェクトを作成】をクリック。
 
 <img width=500 src="res/download_sdk/new_project2.png">
 

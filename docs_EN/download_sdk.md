@@ -2,17 +2,17 @@
 
 ## Unity Project Creation
 
-Open Unity Hub and click [New] in the upper right corner.
+Open Unity Hub and click [New project] in the upper right corner.
 
 <img width=500 src="res/download_sdk/new_project1.png">
 
 When the project creation screen opens, set the following settings.
 
-- Template: 3D
-- Project Name: Anything is possible (in this case New toio Project)
+- Template: `Universal 3D`
+- Project Name: Anything is possible (in this case My Project)
 - Save in: Anything is possible (in this case, Desktop)
 
-After completing the settings, click [Create].
+After completing the settings, click [Create project].
 
 <img width=500 src="res/download_sdk/new_project2.png">
 
