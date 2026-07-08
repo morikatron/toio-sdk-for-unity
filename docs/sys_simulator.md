@@ -339,7 +339,7 @@ protected virtual void SimulateIDSensor()
         {
             var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
             var deg = stdID.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-            _SetSandardID(stdID.id, deg);
+            _SetStandardID(stdID.id, deg);
         }
         else _SetOffGround();
     }
@@ -366,7 +366,7 @@ Standard ID と角度をセットするメソッド `_SetStandardID` は、変�
 
 ```csharp
 // CubeSimImpl_v2_0_0.cs
-protected void _SetSandardID(uint stdID, int deg)
+protected void _SetStandardID(uint stdID, int deg)
 {
     if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
         this.standardIDCallback?.Invoke(stdID, deg);

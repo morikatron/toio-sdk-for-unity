@@ -172,28 +172,28 @@ Remove all walls.
 #### AddBorder
 
 ```csharp
-public void AddBorder(int width=60, int x1=0, int x2=500, int y1=0, int y2=500);
+public void AddBorder(int width=20, int x1=40, int x2=460, int y1=40, int y2=460);
 ```
 
 If you want to add a border to the mat, the method is to create a wall on the east, west, north, south, and west all at the same time.
 
 - width
   - Definition: half the thickness of a wall
-  - Default value: 60
+  - Default value: 20
 - x1
   - Definition: x-coordinate of the center of the first wall in the y-direction
-  - Default value: 0
+  - Default value: 40
 - x2
   - Definition: x-coordinate of the center of the second wall in the y-direction
-  - Default value: 500
+  - Default value: 460
 - y1
   - Definition: y-coordinate of the center of the first wall in the x-direction
-  - Default value: 0
+  - Default value: 40
 - y2
   - Definition: y-coordinate of the center of the second wall in the x direction
-  - Default value: 500
+  - Default value: 460
 
-Using the default values as an example, the x-coordinates -60 ~ 60, 440 ~ 560 and y-coordinates -60 ~ 60, 440 ~ 560 will be walled off and avoided by the navigator.
+Using the default values as an example, the x-coordinates 20 ~ 60, 440 ~ 480 and y-coordinates 20 ~ 60, 440 ~ 480 will be walled off and avoided by the navigator.
 
 ```csharp
 public void AddBorder(int width, RectInt rect);
