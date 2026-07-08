@@ -26,7 +26,7 @@ CubeNavigator を使うことで、複数のキューブがお互いの動きを
 以下のサンプルコードが示したように、CubeNavigator を使うには主に４つのステップがあります。
 1. 作成：CubeHandle オブジェクトを引数として、CubeNavigator を作成する。一対一の関係になります。
 1. 制御の間隔：Cube クラスの制御と同じように、間隔を設ける必要があります。
-1. `Update`：一連の制御を行う前に、必ず`Update`関数を呼んでください。これは Cube と CubeHanlde から情報を取得し、内部状態の更新を行うためです。
+1. `Update`：一連の制御を行う前に、必ず`Update`関数を呼んでください。これは Cube と CubeHandle から情報を取得し、内部状態の更新を行うためです。
 1. 制御：`Navi2Target` など実際に制御を行う関数を呼出します。詳細は次の章で紹介します。
 
 ```csharp
@@ -128,7 +128,7 @@ public class NavigatorBasic : MonoBehaviour
         // 同期
         if (cubeManager.synced)
         {
-            // navigator の Update も synced の呼び出し際に内部でやってくれる。
+            // navigator の Update も synced の呼び出す際に内部でやってくれる。
             // 個別の navigator を操作できる。
             cubeManager.navigators[0].handle.MoveRaw(-50, 50, 1000);
         }
@@ -155,7 +155,7 @@ public class NavigatorBasic : MonoBehaviour
         // すべてのキューブが controllable になったら、syncNavigators が navigators を提供
         foreach (var navigator in cubeManager.syncNavigators)
         {
-            // navigator の Update も syncNavigators の呼び出し際に内部でやってくれる。
+            // navigator の Update も syncNavigators の呼び出す際に内部でやってくれる。
             navigator.handle.MoveRaw(-50, 50, 1000);
         }
     }
@@ -441,7 +441,7 @@ public class BoidsTutorial : MonoBehaviour
 }
 ```
 
-> 散らがっていたキューブ達は群がって一緒に目標に向かう事ができましたが、うまく停止できていません。
+> 散らばっていたキューブ達は群がって一緒に目標に向かう事ができましたが、うまく停止できていません。
 
 #### 例 2:　ボイドでないキューブを追加して、より群れらしく行動させる
 
@@ -502,7 +502,7 @@ async void Start()
 ボイドでない赤いキューブがまっすぐに目標に前進し、隣の緑のキューブが後ろの仲間達を少し待ってから目標に向かうようになり、より自然な群れの動きとなりました。<br>
 
 > BOIDS モードのキューブは ボイドでないキューブを回避することが出来ません。<br>
-> そのため、複雑の構成で BOIDS モードを使うことはおすすめしません。 後述する BOIDS_AVOID モードの仕様を検討してください。
+> そのため、複雑な構成で BOIDS モードを使うことはおすすめしません。 後述する BOIDS_AVOID モードの仕様を検討してください。
 
 ## 5. ボイド + 衝突回避
 

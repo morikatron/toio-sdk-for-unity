@@ -72,7 +72,7 @@ CubeHandleとCubeNavigatorはそれぞれボーダーを設定できます。キ
 
 必須ではありません。
 
-[ドキュメント](usage_simulator.md#5-stage-prefab) で紹介したように、マット、カメラ、操作に必要なコンポネント等をセットにしたものです。Stage Prefab と Cube Prefab をシーンに入れれば、迅速に基本の開発環境を整えることができます。
+[ドキュメント](usage_simulator.md#5-stage-prefab) で紹介したように、マット、カメラ、操作に必要なコンポーネント等をセットにしたものです。Stage Prefab と Cube Prefab をシーンに入れれば、迅速に基本の開発環境を整えることができます。
 
 ### Stage Prefab を使わない場合に注意することはありますか
 > Keywords: Stage

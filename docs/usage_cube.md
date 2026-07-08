@@ -111,7 +111,7 @@ toio SDK for Unity では、現実に動作するキューブクラス(Real 対�
 |            | [コネクションインターバル変更要求](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求-)               | o             | x            |
 |            | [コネクションインターバル要求値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得-)        | o             | x            |
 |            | [現在のコネクションインターバル値の取得](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得-)    | o             | x            |
-|            | [コネクションインターバル変更要求の応](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求の応-)        | o             | x            |
+|            | [コネクションインターバル変更要求の応答](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル変更要求の応答-)        | o             | x            |
 |            | [コネクションインターバル要求値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#コネクションインターバル要求値の取得の応答-) | o         | x            |
 |            | [現在のコネクションインターバル値の取得の応答](https://toio.github.io/toio-spec/docs/ble_configuration#現在のコネクションインターバル値の取得の応答-) | o     | x            |
 

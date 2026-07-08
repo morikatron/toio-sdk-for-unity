@@ -38,7 +38,7 @@ UniTask のインストールは以下の手順で行います（2026年6月1日
 [【コチラ】](https://github.com/morikatron/toio-sdk-for-unity/releases/)の最新リリース版の【▼Assets】を開いて【toio-sdk-for-unity.unitypackage】を探し、ダウンロードしてください。
 
 ### 2. Unity のプロジェクトにドラッグ&ドロップ
-ダウンロードしたフォルダを開いたら、 **【Assets】** フォルダに **【toio-sdk-for-unity.unitypackage】** をドラック&ドロップします。
+ダウンロードしたフォルダを開いたら、 **【Assets】** フォルダに **【toio-sdk-for-unity.unitypackage】** をドラッグ&ドロップします。
 
 <img width=500 src="res/download_sdk/import_sdk.png">
 

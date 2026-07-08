@@ -8,7 +8,7 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
-| OS | Windows 11 Pro 25H2 | Winidows 10 (64bit) or higher |
+| OS | Windows 11 Pro 25H2 | Windows 10 (64bit) or higher |
 | Unity | 6000.3.14f1 | 6000.3 or higher |
 
 Mobile Phone

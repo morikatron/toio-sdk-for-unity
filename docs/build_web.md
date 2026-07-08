@@ -76,7 +76,7 @@ Unity のメニュー【ファイル】→【ビルドプロファイル】を�
 
 数十秒待ち、WebGL の右に Unity のアイコンが表示されたら、切り替え完成です。
 
-### WebGLTemplate の適応
+### WebGLTemplate の適用
 
 用意された WebGL プラグインを使用するために、Unity の Javascript テンプレートを変更します。
 

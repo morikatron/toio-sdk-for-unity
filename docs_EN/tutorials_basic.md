@@ -107,7 +107,7 @@ Move method of Cube class can be used to control the motors of Cube.
 // left       | Left motor speed | Range (0~100)
 // right      | Right motor speed | Range (0~100)
 // durationMs | Duration | Range(0~2550)
-// order      | Degree of relative priority | Type (Week, Strong)
+// order      | Degree of relative priority | Type (Weak, Strong)
 cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
@@ -198,7 +198,7 @@ For more information about the sound effects available, see [[here]](https://toi
 
 // soundID | ID    | Range (0~10)
 // volume  | Volume (sound) | Range (0~255)
-// order   | Degree of relative priority | Type (Week, Strong)
+// order   | Degree of relative priority | Type (Weak, Strong)
 cube.PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -217,7 +217,7 @@ new Cube.SoundOperation(int durationMs=0, byte volume=0, byte note_number=0);
 
 // repeatCount | Number of repetitions | Range (0~255)
 // operations  | Instruction array　　 | Number of pieces (1~59)
-// order       | Priority　　　 | Type (Week, Strong)
+// order       | Priority　　　 | Type (Weak, Strong)
 cube.PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -300,7 +300,7 @@ The TurnLedOn method of Cube class can be used to control the LED on the bottom 
 // green | Color Intensity | Range (0~255)
 // blue  | Color Intensity | Range (0~255)
 // durationMs | Duration | Range(10~2550)
-// order | Priority　 | Type (Week, Strong)
+// order | Priority　 | Type (Weak, Strong)
 cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -318,7 +318,7 @@ new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte b
 
 // repeatCount | Number of repetitions | Range (0~255)
 // operations  | Instruction array　　 | Number of pieces (1~59)
-// order       | Priority　　　 | Type (Week, Strong)
+// order       | Priority　　　 | Type (Weak, Strong)
 cube.TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong)
 ```
 
@@ -572,7 +572,7 @@ public class EventScene : MonoBehaviour
 
     void OnMissedID(Cube cube)
     {
-        Debug.LogFormat("Postion ID Missed.");
+        Debug.LogFormat("Position ID Missed.");
     }
 
     void OnMissedStandardID(Cube c)

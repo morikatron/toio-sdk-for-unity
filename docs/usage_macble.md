@@ -87,8 +87,8 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 
 ### Bluetooth の許可
 
-Unity Editor で直接接続行いたい場合は、Unity に Bluetooth の許可を与える必要があります。
-アプリにビルドして接続行いたい場合は、ビルドしたアプリに Bluetooth の許可を与える必要があります。
+Unity Editor で直接接続を行いたい場合は、Unity に Bluetooth の許可を与える必要があります。
+アプリをビルドして接続を行いたい場合は、ビルドしたアプリに Bluetooth の許可を与える必要があります。
 
 アップルメニューから `システム設定 > プライバシーとセキュリティ > Bluetooth` まで開き、`+` ボタンをクリックし、リストでアプリを選択してから、「開く」をクリックします。 （参考：[macOSユーザガイド](https://support.apple.com/guide/mac-help/mchl211c911f/mac)）
 

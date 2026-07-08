@@ -365,7 +365,7 @@ CubeInteraction class is based on Unity's EventSystem and implements operations 
 - Make sure that the scene contains one `EventSystem`;
   - To create it: Press GameObject > UI > Event System in the menu.
 - Add a `Physics Raycaster` component to the camera
-  - How to add: In the Camera inspector, under Add Compnent, find and add `Physics Raycaster`.
+  - How to add: In the Camera inspector, under Add Component, find and add `Physics Raycaster`.
 
 ### Left-click on Cube object to press
 

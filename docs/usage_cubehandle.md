@@ -221,7 +221,7 @@ public Movement Move(
   - 説明：ボーダー制限によって小さくなる可能性があります
 - border
   - 定義：ボーダー制限のありなし
-  - 説明：ボーダーの範囲は CubeHanlde のパブリック変数で設定できます。<br>
+  - 説明：ボーダーの範囲は CubeHandle のパブリック変数で設定できます。<br>
     `public int RangeX = 370;` `public int RangeY = 370;`
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)

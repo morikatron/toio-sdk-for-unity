@@ -18,7 +18,7 @@ We assume that version of Unity Visual Scripting is 1.7.6.
 
 ### How to install Visual Scripting
 1. Open the Package Manager by selecting [Package Manager] from the [Window] menu in Unity.
-1. Click [Packages:in Project] in the upper left tab and select [Unity Registory].
+1. Click [Packages:in Project] in the upper left tab and select [Unity Registry].
 1. Click Visual Scripting, then click the [install] button in the lower right corner.
 
 The installation is complete if Visual Scripting is exist in the [Packages:in Project] state.

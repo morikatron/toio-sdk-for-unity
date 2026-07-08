@@ -1,4 +1,4 @@
-# 技術ドキュメント - 機能説明 - BLE(Bluetooth Low Enegy)
+# 技術ドキュメント - 機能説明 - BLE(Bluetooth Low Energy)
 
 ## 目次
 
@@ -16,7 +16,7 @@
 
 <br>
 
-BLE モジュール群は、Bluetooth Low Enegy(BLE)の通信機能をインタフェースを介して抽象的に提供するモジュール群です。
+BLE モジュール群は、Bluetooth Low Energy(BLE)の通信機能をインタフェースを介して抽象的に提供するモジュール群です。
 全ての BLE クラスをインタフェースを介して実装する事で、通信アーキテクチャとは独立した形で toio™ プログラミングが可能になります。
 そのため新たに継承クラスを独自開発する事で BLE 以外の通信モジュールに差し替える事も可能です
 
@@ -71,7 +71,7 @@ BLE  +---------------------------------+ BLEルートディレクトリ
 #### BLEService
 
 BLE 機能の最初の窓口となるシングルトンクラス<br>
-<u>BLEService.Instance.SetImplement()</u>関数で実装インタンスを入れる事で<br>
+<u>BLEService.Instance.SetImplement()</u>関数で実装インスタンスを入れる事で<br>
 内部実装クラスを設定する
 
 実装コード

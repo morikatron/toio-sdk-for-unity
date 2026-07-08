@@ -8,7 +8,7 @@
 
 | ツール・ソフトウェア | 確認バージョン | 推奨バージョン |
 | ------------------ | --------------------- | ------------------------ |
-| OS | Windows 11 Pro 25H2 | Winidows 10 (64bit) 以上 |
+| OS | Windows 11 Pro 25H2 | Windows 10 (64bit) 以上 |
 | Unity | 6000.3.14f1 | 6000.3 以上 |
 
 スマホ
@@ -20,7 +20,7 @@
 
 #### 互換性について
 
-Andorid 12 (API Level 31) より、[新しいBluetooth権限](https://developer.android.com/about/versions/12/features/bluetooth-permissions)が追加されました。
+Android 12 (API Level 31) より、[新しいBluetooth権限](https://developer.android.com/about/versions/12/features/bluetooth-permissions)が追加されました。
 
 toio SDK for Unity の Assets/Plugins/Android/AndroidManifest.xml は Android 12 に対応したため、Android 11 (API Level 30) 以下のSDKでビルドすると、エラーになります。
 
@@ -107,7 +107,7 @@ Mono より効率のいい IL2CPP をおすすめします。
 
 ## Unity 内蔵の環境でビルド
 
-Unity をインストール際に選択した Android Build Support にすでにすべての環境が内蔵されています。<br>
+Unity をインストールする際に選択した Android Build Support にすでにすべての環境が内蔵されています。<br>
 が、動く場合と動かない場合がありますので、とりあえず試してみましょう。
 
 ### パッケージ名を設定
