@@ -26,7 +26,7 @@ The installation is complete if Visual Scripting is exist in the [Packages:in Pr
 ## 2.Make build platform PC
 Set Build Profiles to PC. Without this setting, some nodes, such as the Cube class, will not be displayed.
 Builds can be done on IOS, android, and WebGL, but if you are programming with Visual Scripting, please make sure that the build platform is PC.
-1. Click [File]-> [Build Profile]
+1. Click [File]-> [Build Profiles]
 2. Select [Windows], [Mac] or [Linux] from list of [Platform] and Click [Switch Platform]
 <img src="res/visual_scripting_setting/change_platform.png">
 
@@ -34,7 +34,7 @@ Click [Switch Platform] and wait a second,If you see the Unity icon next to [Win
 
 ## 3. Make toio SDK for Unity available to Unity Visual Scripting
 
-1. Click [Edit]->[Project Setting]->[Visual Scripting].
+1. Click [Edit]->[Project Settings]->[Visual Scripting].
 2. Add [toio-sdk-scripts] to Node Library.
    1. Click [Node Library] to see the list of currently available libraries and press the [+] icon.
    2. A tab labeled (No Asseembly) will be added, click on it and select [toio-sdk-scripts].<br>
