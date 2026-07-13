@@ -23,7 +23,7 @@ Make sure that Unity is up and running.
 toio SDK for Unity uses Unity-optimized asynchronous processing library [UniTask](https://github.com/Cysharp/UniTask) . Therefore, you need to install UniTask (2.1.0 or later) in this Unity project.<br>
 
 To install UniTask, follow the steps below (as of June 1, 2026; Unity 6000.3.14f1 LTS).
-1. In Unity, go to the [Window] menu and select [Package Manager] to open the Package Manager.
+1. In Unity, go to the [Window] -> [Pacakge Management] menu and select [Package Manager] to open the Package Manager.
 1. Click the [+] icon and select [Add package from git URL...]
 1. Add the url below
     - https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask

@@ -11,13 +11,13 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
   - [4. Visual Scripting版のサンプルの実行、動作確認](#4-visual-scripting版のサンプルの実行動作確認)
 
 ## 1. Unity Visual Scriptingの確認
-1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開く。
+1. Unity の [ウィンドウ] -> [Package Management] メニューから [パッケージマネジャー] を選んでパッケージマネジャーを開く。
 1. 左上が[Packages:in Project]の状態のときに[Visual Scripting]がインストールされていることを確認する。
 
 <img src="res/visual_scripting_setting/visual_scripting_installed.png">
 
 ### Visual Scriptingがインストールされていない場合
-1. Unity の [ウィンドウ] メニューから [Package Manager] を選んでPackage Managerを開く。
+1. Unity の [ウィンドウ] -> [Package Management] メニューから [パッケージマネジャー] を選んでパッケージマネジャーを開く。
 1. 左上の[Packages:in Project]アイコンをクリックし、[Unity Registry]を選択する。
 1. Visual Scriptingをクリックし、右下の[install] ボタンをクリックする。
 
@@ -26,7 +26,7 @@ Unity Visual Scriptingのバージョンは1.7.6で動作を確認していま�
 ## 2. ビルドのプラットフォームをPCにする
 ビルドプロファイルをPCに設定します。この設定を行わないとCubeクラス等、一部表示されないノードがあります。
 ビルド自体はios,android,WebGLでも可能ですが、Visual Scriptingでプログラムを作成している際はビルド時のプラットフォームをPCにしてください。
-1. [File]->[Build Setting]をクリックする。
+1. [File]->[Build Profile]をクリックする。
 1. [Platform]のリストから[Windows]、[Mac]または[Linux]を選択して[ターゲットの切り替え]をクリックする。
 <img src="res/visual_scripting_setting/change_platform.png">
 
