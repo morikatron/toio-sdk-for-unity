@@ -8,7 +8,7 @@
 - `scene2`：普通のシーン。
 
 実行・ビルドするには
-- 「Build Settings」で、上記三つのシーンを追加し、'preload'を0番にしてください。
+- 「Build Profiles」で、上記三つのシーンを追加し、'preload'を0番にしてください。
 
 ### 技術要点
 
@@ -18,7 +18,7 @@
 
 以下のメソッドを使えば、ゲームオブジェクトをシーンに依存しない共通のスペースに移動し、保持することが出来ます。
 
-> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/ja/current/ScriptReference/Object.DontDestroyOnLoad.html)
+> [DontDestroyOnLoad(UnityEngine.Object object)](https://docs.unity3d.com/ScriptReference/Object.DontDestroyOnLoad.html)
 
 ```c#
 // Smaple_Scenes_Preload.cs

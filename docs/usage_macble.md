@@ -16,12 +16,12 @@ MacOS 用の BLE プラグインを利用することで、ビルドした Mac �
 
 以下の環境で動作確認しています。必ずしも合わせる必要はありませんが、自分の環境でうまく行かない場合は参考にしてください。
 
-| ツール・ソフトウェア   | 確認バージョン          | 推奨バージョン          |
+| ツール・ソフトウェア   | 確認バージョン | 推奨バージョン |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | macOS 13.4.1           | macOS 11 以上           |
-| Unity                | 2022.3.44f1            | 2022.3 以上             |
-| XCode                | 14.3.1                 | 14 以上                 |
-| デバイス              | MacBook Pro 2017       | N/A                    |
+| OS | macOS 26.1 | macOS 26 以上 |
+| Unity | 6000.3.14f1 | 6000.3 以上 |
+| XCode | 26.1.1 | 26 以上 |
+| デバイス | MacBook Air M4 | [macOS 26 対応機種](https://support.apple.com/ja-jp/122867) |
 
 <br>
 
@@ -29,8 +29,8 @@ MacOS 用の BLE プラグインを利用することで、ビルドした Mac �
 
 事前作業として、画面の左上にあるAppleメニューから「この Mac について」をクリックし、OSバージョンを確認してください。
 
-確認したOSバージョンが <b>10.x</b> <b>11.x</b> <b>12.x</b> の場合は、[ビルド済みのbundleファイルをダウンロードする方法](usage_macble.md#ビルド済みのbundleファイルをダウンロードする方法)を参考に作業を進めてください。
-それら以外のOSバージョンの場合は、[自分のPCでbundleファイルをビルドする方法](usage_macble.md#自分のpcでbundleファイルをビルドする方法)を参考に作業を進めてください。
+確認したOSバージョンが <b>10.x</b> 以上の場合は、[ビルド済みのbundleファイルをダウンロードする方法](usage_macble.md#ビルド済みのbundleファイルをダウンロードする方法)を参考に作業を進めてください。
+それら以外の OS バージョン、もしくは動作しなかった場合は、[自分のPCでbundleファイルをビルドする方法](usage_macble.md#自分のpcでbundleファイルをビルドする方法)を参考に作業を進めてください。
 
 <br>
 
@@ -38,9 +38,9 @@ MacOS 用の BLE プラグインを利用することで、ビルドした Mac �
 
 #### 1. bundleファイル のダウンロード
 
-[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> または <b>12.x</b> の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
+[toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) を開き、事前作業で確認したOSバージョンが <b>10.x</b> の場合は`bleplugin_10.bundle.zip`を、<b>11.x</b> 以上の場合は`bleplugin_11.bundle.zip`をクリックしてダウンロードします。
 
-> 本SDKが v1.5.1 時点では、toio/ble-plugin-unity v1.0.0 リリースを対象にしています。
+> 本SDKが v1.7.0 時点では、toio/ble-plugin-unity v1.0.0 リリースを対象にしています。
 
 #### 2. bundleファイル をUnityプロジェクトにドラッグ&ドロップ
 
@@ -87,8 +87,8 @@ Unityプロジェクトを開き、`Assets > ble-plugin-unity > Plugins` まで�
 
 ### Bluetooth の許可
 
-Unity Editor で直接接続行いたい場合は、Unity に Bluetooth の許可を与える必要があります。
-アプリにビルドして接続行いたい場合は、ビルドしたアプリに Bluetooth の許可を与える必要があります。
+Unity Editor で直接接続を行いたい場合は、Unity に Bluetooth の許可を与える必要があります。
+アプリをビルドして接続を行いたい場合は、ビルドしたアプリに Bluetooth の許可を与える必要があります。
 
 アップルメニューから `システム設定 > プライバシーとセキュリティ > Bluetooth` まで開き、`+` ボタンをクリックし、リストでアプリを選択してから、「開く」をクリックします。 （参考：[macOSユーザガイド](https://support.apple.com/guide/mac-help/mchl211c911f/mac)）
 

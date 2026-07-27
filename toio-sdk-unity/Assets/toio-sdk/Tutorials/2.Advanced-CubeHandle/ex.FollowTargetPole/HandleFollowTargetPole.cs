@@ -14,7 +14,7 @@ namespace toio.tutorial
             await cubeManager.SingleConnect();
 
             // Get stage
-            stage = GameObject.FindObjectOfType<Stage>();
+            stage = FindFirstObjectByType<Stage>();
         }
 
         bool reached = false;

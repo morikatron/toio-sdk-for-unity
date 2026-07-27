@@ -6,10 +6,10 @@
 
 以下の環境で動作確認をしています。必ずしも合わせる必要はありませんが、自分の環境でうまく行かない場合の参考にしてください。
 
-| ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
-| -------------------- | ---------------------- | ----------------------- |
-| OS                   | Winidows 10            | Winidows 10 以上        |
-| Unity                | 2022.3.44f1             | 2022.3 以上             |
+| ツール・ソフトウェア | 確認バージョン | 推奨バージョン |
+| ------------------ | --------------------- | ------------------------ |
+| OS | Windows 11 Pro 25H2 | Windows 10 (64bit) 以上 |
+| Unity | 6000.3.14f1 | 6000.3 以上 |
 
 スマホ
 
@@ -20,7 +20,7 @@
 
 #### 互換性について
 
-Andorid 12 (API Level 31) より、[新しいBluetooth権限](https://developer.android.com/about/versions/12/features/bluetooth-permissions)が追加されました。
+Android 12 (API Level 31) より、[新しいBluetooth権限](https://developer.android.com/about/versions/12/features/bluetooth-permissions)が追加されました。
 
 toio SDK for Unity の Assets/Plugins/Android/AndroidManifest.xml は Android 12 に対応したため、Android 11 (API Level 30) 以下のSDKでビルドすると、エラーになります。
 
@@ -38,11 +38,19 @@ Unity をインストールする時に Android Build Support モジュールを
 
 ここでは、[toio SDK for Unity のインストール](download_sdk.md)の最後から続けて `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` を開いているものとして説明を進めます。
 
-まず、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。【Build Settings】の【プラットフォーム】のリストから Android を選択し、右下の 【Switch Platform】 ボタンを押してください。
+まず、Unity のメニュー【ファイル】→【ビルドプロファイル】を選択してください。【ビルドプロファイル】の【プラットフォーム】のリストから Android を選択し、右下の 【ターゲットの切り替え】 ボタンを押してください。
 
 <img width=500 src="res/build_android/2.png">
 
 数秒待ち、 Android の右にUnityのアイコンが表示されたら、切り替えが完成です。
+
+<br>
+
+## プロジェクト設定
+
+`Project Settings -> プレイヤー -> その他の設定` を開き、 `アプリケーションエントリーポイント` の設定で `Game Activity` のチェックを外し、`Activity` にチェックを入れてください。
+
+<img src="res/build_android/2b.png">
 
 <br>
 
@@ -66,7 +74,7 @@ USB でコンピューターに接続すると、Android はデバッグモー�
 
 ### 接続の確認
 
-先程の【Build Settings】の右側で、【Refresh】ボタンを押してください。<br>
+先程の【ビルドプロファイル】の右側で、【Refresh】ボタンを押してください。<br>
 その左のデバイスリストに、自分のデバイスがあるかを確認し、選択してください。
 
 <img width=400 src="res/build_android/3.png">
@@ -80,7 +88,7 @@ IL2CPP の設定は必須ではないのですが、<br>
 キューブの運動制御などの計算量がかなり多いので、<br>
 Mono より効率のいい IL2CPP をおすすめします。
 
-【Build Settings】の左下にある【プレーヤー設定...】を開いてください。<br>
+【ビルドプロファイル】の左下にある【プレーヤー設定...】を開いてください。<br>
 （或いは、メニュー【編集】→【プロジェクト設定...】を開き、左側の【player】を選んでください）。<br>
 アンドロイドのアイコンが表示されるタブを選んでください。
 
@@ -99,7 +107,7 @@ Mono より効率のいい IL2CPP をおすすめします。
 
 ## Unity 内蔵の環境でビルド
 
-Unity をインストール際に選択した Android Build Support にすでにすべての環境が内蔵されています。<br>
+Unity をインストールする際に選択した Android Build Support にすでにすべての環境が内蔵されています。<br>
 が、動く場合と動かない場合がありますので、とりあえず試してみましょう。
 
 ### パッケージ名を設定
@@ -114,7 +122,7 @@ Unity をインストール際に選択した Android Build Support にすでに
 
 ### ビルド
 
-【Build Settings】を開き、右下の【ビルドして実行】を押せば、<br>
+【ビルドプロファイル】を開き、右下の【ビルドして実行】を押せば、<br>
 Unity が ビルドし、アプリを端末にインストールし実行するはずです。
 
 成功したら、本マニュアルはここで終わります。おつかれさまです。<br>
@@ -157,7 +165,7 @@ SDKのパスをメモしておいてください。<br>
 次に【SDK Tools】タブに切り替えます。<br>
 右下の【Show Package Details】をチェックしてください。<br>
 【NDK(Side by Side)】の下の妥当なバージョンをチェックしてください。<br>
-（Unity バージョン 2022.3 だと、NDK 23 を選びます。[ここを参考に](https://docs.unity3d.com/ja/2022.3/Manual/android-sdksetup.html)）<br>
+（Unity バージョン 6000.3 だと、NDK 27 を選びます。[ここを参考に](https://docs.unity3d.com/6000.3/Documentation/Manual/android-supported-dependency-versions.html)）<br>
 【OK】を押して進めばインストールが始まります。
 
 
@@ -184,7 +192,7 @@ SDKのパスをメモしておいてください。<br>
 
 ### ビルド
 
-【Build Settings】を開き、右下の【ビルドして実行】を押せば、<br>
+【ビルドプロファイル】を開き、右下の【ビルドして実行】を押せば、<br>
 Unity が ビルドし、アプリを端末にインストールし実行するはずです。
 
 アプリが正しくビルドされていれば、スマホの画面はこのようになります。

@@ -33,10 +33,10 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 | ツール・ソフトウェア | 確認バージョン | 推奨バージョン |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | MacOS 13.4.1 | macOS 11 以上 |
+| OS                   | MacOS 26.1 | macOS 15.6 以上 |
 | Bluetooth®           | 4.2 | 4.2 以上 |
-| Unity                | 2022.3.44f1 | 2022.3 以上 |
-| ブラウザ(Chrome)      | 114.0.5735.133 | 56 以上 |
+| Unity                | 6000.3.14f1 | 6000.3 以上 |
+| ブラウザ(Chrome)      | 148.0.7778.179 | 56 以上 |
 
 > Bluetooth®のバージョン確認については、Appleメニューから[この Mac について] > [システムレポート] > [Bluetooth] > [LMPのバージョン]で確認できます。
 
@@ -44,17 +44,15 @@ iOS ビルドと同様に、対象プラットフォームを WebGL にしてビ
 
 | ツール・ソフトウェア | 確認バージョン         | 推奨バージョン          |
 | -------------------- | ---------------------- | ----------------------- |
-| OS                   | Windows 10 Pro 64bit 1903 | Windows 10 |
+| OS                   | Windows 11 Pro 25H2 | Windows 10 (64bit) 以上 |
 | Bluetooth®           | 5.0(LMP 9.256) | 4.2 以上 |
-| Unity                | 2022.3.44f1 | 2022.3 以上 |
-| ブラウザ(Edge)        | 114.0.1823.82 | 79 以上 |
-| ブラウザ(Chrome)      | 114.0.5735.199 | 56 以上 |
+| Unity                | 6000.3.14f1 | 6000.3 以上 |
+| ブラウザ(Chrome)      | 148.0.7778.179 | 56 以上 |
 
 <br>
 
 その他ブラウザでのウェブアプリ動作環境ついては、依存モジュールとなる [WebGL](https://developer.mozilla.org/ja/docs/Web/API/WebGL_API) および [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) のサポート対象をご確認ください。
 - WebGL
-  - [WebGL のブラウザー間での互換性](https://docs.unity3d.com/ja/2022.3/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
@@ -72,17 +70,17 @@ Unity Hub を開いて、[インストール] タブで、相応のバージョ�
 
 ここでは、[toio SDK for Unity のインストール](download_sdk.md)が完了して`Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`を開いているものとして進めます。
 
-Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【プラットフォーム】リストの中、WebGL を選択し、右下の 【Switch Platform】 ボタンを押してください。
+Unity のメニュー【ファイル】→【ビルドプロファイル】を選択してください。次に【ビルドプロファイル】の【プラットフォーム】リストの中、WebGL を選択し、右下の 【ターゲットの切り替え】 ボタンを押してください。
 
 <img width=600 src="res/build_webgl/1.png">
 
 数十秒待ち、WebGL の右に Unity のアイコンが表示されたら、切り替え完成です。
 
-### WebGLTemplate の適応
+### WebGLTemplate の適用
 
 用意された WebGL プラグインを使用するために、Unity の Javascript テンプレートを変更します。
 
-1. Build Settings より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。
+1. ビルドプロファイル より、【プレイヤー設定】をクリックして設定ウィンドウを開きます。
 
 <img width=600 src="res/build_webgl/7.png">
 
@@ -94,11 +92,15 @@ Unity のメニュー【ファイル】→【ビルド設定...】を選択し�
 
 ### ウェブアプリをビルド
 
-ビルドに含みたいシーンファイルを開いている状態で、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【シーンを追加】ボタンを押します。
+ビルドに含みたいシーンファイルを開いている状態で、Unity のメニュー【ファイル】→【ビルドプロファイル】を選択してください。【シーンリスト】を開き、【開いているシーンを追加】ボタンを押します。
 
 <img width=600 src="res/build_webgl/2.png">
 
-すると【ビルドに含まれるシーン】のリストに Sample_UI が登録されます。続けて【ビルドして実行】をクリックします。
+他のシーンのチェックを外し、追加したシーンのみをチェックします。
+
+<img width=600 src="res/build_webgl/2b.png">
+
+続けてプラットフォームの【Web】に戻って、【ビルドして実行】をクリックします。
 
 <img width=600 src="res/build_webgl/3.png">
 
@@ -142,7 +144,7 @@ but web server hosting the content was misconfigured to not serve the file with
 HTTP Response Header "Content-Encoding: gzip" present...
 ```
 
-その場合は、【ファイル】→【ビルド設定...】→【プレイヤー設定...】→【公開設定】→【圧縮形式】を「無効」に変更してください。
+その場合は、【ファイル】→【ビルドプロファイル】→【プレイヤー設定...】→【公開設定】→【圧縮形式】を「無効」に変更してください。
 
 <br>
 

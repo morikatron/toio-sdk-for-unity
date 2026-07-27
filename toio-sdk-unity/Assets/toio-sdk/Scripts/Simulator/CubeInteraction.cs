@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 
 namespace toio.Simulator
@@ -68,7 +69,7 @@ namespace toio.Simulator
         {
             if (current==this)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (Mouse.current?.rightButton.wasPressedThisFrame ?? false)
                 {
                     if (isDragging)
                     {
@@ -123,11 +124,11 @@ namespace toio.Simulator
         }
 
         protected static bool isShift {get{
-            return Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);}}
+            return Keyboard.current == null ? false : Keyboard.current[Key.LeftShift].isPressed || Keyboard.current[Key.RightShift].isPressed;}}
         protected static bool isCtrl {get{
-            return Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);}}
+            return Keyboard.current == null ? false : Keyboard.current[Key.LeftCtrl].isPressed || Keyboard.current[Key.RightCtrl].isPressed;}}
         protected static bool isAlt {get{
-            return Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);}}
+            return Keyboard.current == null ? false : Keyboard.current[Key.LeftAlt].isPressed || Keyboard.current[Key.RightAlt].isPressed;}}
         public static bool GetSCA(bool shift, bool ctrl, bool alt)
         {
             return shift==isShift && ctrl==isCtrl && alt==isAlt;
@@ -224,7 +225,7 @@ namespace toio.Simulator
         {
             // Stop the cube
             rb.useGravity = false;
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
             // Lift up the cube
@@ -249,15 +250,16 @@ namespace toio.Simulator
         void DragCube()
         {
             // Mouse Wheel to rotate cube
+            var scrollDelta = Mouse.current.scroll.ReadValue();
             transform.eulerAngles = new Vector3(
                 cube.transform.eulerAngles.x,
-                cube.transform.eulerAngles.y + Input.mouseScrollDelta.y*20,
+                cube.transform.eulerAngles.y + scrollDelta.y*20,
                 cube.transform.eulerAngles.z);
             cubeIndicator.eulerAngles = cube.transform.eulerAngles;
 
             // Following mouse
             var camera = targetCamera != null ? targetCamera : Camera.main;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
             var hits = Physics.RaycastAll(ray);
             System.Array.Sort(hits, (x,y) => x.distance.CompareTo(y.distance));
 
@@ -347,7 +349,7 @@ namespace toio.Simulator
         void PullCube()
         {
             var camera = targetCamera != null ? targetCamera : Camera.main;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
             var t = (pullInitialY - ray.origin.y) / ray.direction.y;
             Vector3 dragEndPos = new Vector3(
                 ray.origin.x + ray.direction.x * t,

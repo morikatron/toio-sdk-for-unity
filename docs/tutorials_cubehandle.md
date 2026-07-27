@@ -33,7 +33,7 @@ public class HandleBasic : MonoBehaviour
         // Connect Cube
         var peripheral = await new CubeScanner().NearScan(2, 100);
         var cubes = await new CubeConnecter().Connect(peripheral);
-        // Create CubeHanlde
+        // Create CubeHandle
         this.handles = new List<CubeHandle>();
         foreach (var cube in cubes)
             this.handles.Add(new CubeHandle(cube));  // (1) Create from Cube
@@ -115,7 +115,7 @@ public class HandleBasic : MonoBehaviour
         // 同期
         if (cubeManager.synced)
         {
-            // handle の Update も synced の呼び出し際に内部でやってくれる。
+            // handle の Update も synced の呼び出す際に内部でやってくれる。
             // 個別の handle を操作できる。
             cubeManager.handles[0].MoveRaw(-50, 50, 1000);
         }
@@ -142,7 +142,7 @@ public class HandleBasic : MonoBehaviour
         // すべてのキューブが controllable になったら、syncHandles が handles を提供
         foreach (var handle in cubeManager.syncHandles)
         {
-            // handle の Update も syncHandles の呼び出し際に内部でやってくれる。
+            // handle の Update も syncHandles の呼び出す際に内部でやってくれる。
             handle.MoveRaw(-50, 50, 1000);
         }
     }

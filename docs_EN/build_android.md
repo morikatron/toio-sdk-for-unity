@@ -8,8 +8,8 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
-| OS | Winidows 10 | Winidows 10 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
+| OS | Windows 11 Pro 25H2 | Windows 10 (64bit) or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
 
 Mobile Phone
 
@@ -38,7 +38,7 @@ If you didn't add the Android Build Support module when you installed Unity, ope
 
 In this section, we will assume that you have opened `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` by continuing from the end of [Installing toio SDK for Unity](download_sdk.md).
 
-First, select [File] -> [Build Settings...] from Unity menu. in Unity menu. Under Build Settings, select Android from the Platform list and click the Switch Platform button on the bottom right.
+First, select [File] -> [Build Profiles] from Unity menu. in Unity menu. Under Build Profiles, select Android from the Platform list and click the Switch Platform button on the bottom right.
 
 <img width=500 src="res/build_android/2.png">
 
@@ -46,9 +46,17 @@ Wait a few seconds, and when Unity icon appears to the right of Android, the swi
 
 <br>
 
+## Project Settings
+
+Open `Project Settings -> Player -> Other Settings`, under `Application Entry Point` unchek `Game Activity` and check `Activity`.
+
+<img src="res/build_android/2b.png">
+
+<br>
+
 ## Smart Phone Settings
 
-There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/2022.3/Documentation/Manual/android-sdksetup.html).
+There are many variations of smartphone settings, so I will quote from [Android environment settings on the official Unity page](https://docs.unity3d.com/Manual/android-sdksetup.html).
 
 ### Enable Developer Options
 
@@ -66,7 +74,7 @@ Go to Settings > Developer options (or, if this does not work, on some devices t
 
 ### Check the connection
 
-On the right side of the Build Settings window, click the Refresh button.<br>
+On the right side of the Build Profiles window, click the Refresh button.<br>
 Check if your device is in the device list on the left and select it.
 
 <img width=400 src="res/build_android/3.png">
@@ -78,7 +86,7 @@ Check if your device is in the device list on the left and select it.
 
 Setting IL2CPP is not mandatory, but we recommend IL2CPP, which is more efficient than Mono, since it is quite computationally intensive for controlling the motion of Cube.
 
-Open [Player Settings...] in the lower left corner of [Build Settings]. at the bottom left of [Build Settings].<br>
+Open [Player Settings...] in the lower left corner of [Build Profiles]. at the bottom left of [Build Profiles].<br>
 (Or, open the menu [Edit] -> [Project Settings...]) and select "player" on the left side).<br>
 Select the tab with the Android icon.
 
@@ -111,7 +119,7 @@ Same as [Configure IL2CPP](build_android.md#configure-il2cpp), in [Project Setti
 
 ### Build
 
-Open [Build Settings] and click [Build and Run] on the bottom right corner. Unity will build and install the app on your device and run it.
+Open [Build Profiles] and click [Build and Run] on the bottom right corner. Unity will build and install the app on your device and run it.
 
 If successful, this manual will end here. Thank you for your time.<br>
 If it fails, let's move on.
@@ -151,7 +159,7 @@ Under [SDK Platforms], check the version you need.
 Next, switch to the [SDK Tools] tab.<br>
 Check [Show Package Details] in the lower right corner.<br>
 Check the appropriate version under [NDK (Side by Side)].<br>
-(For Unity version 2022.3, select NDK 23. [Refer to here](https://docs.unity3d.com/2022.3/Documentation/Manual/android-sdksetup.html))
+(For Unity version 6000.3, select NDK 27. [Refer to here](https://docs.unity3d.com/6000.3/Documentation/Manual/android-supported-dependency-versions.html))
 <br>
 Press "OK" to proceed and the installation will begin.
 
@@ -176,10 +184,10 @@ Uncheck [Android NDK Installed with Unity(recommended)] and set the [SDK path] /
 
 ### Build
 
-Open [Build Settings] and click [Build and Run] on the bottom right corner. Unity will build and install the app on your device and run it.
+Open [Build Profiles] and click [Build and Run] on the bottom right corner. Unity will build and install the app on your device and run it.
 
 If the app has been built correctly, the screen on your phone will look like this.
 
 <img width=92 src="res/build_ios/7.png">
 
-When you start the application for the first time, the "Allow use of Bluetooth? dialog will be displayed. If you allow it in the dialog, the application will start communicating with Cube and Cube will start running.
+When you start the application for the first time, the "Allow use of Bluetooth?" dialog will be displayed. If you allow it in the dialog, the application will start communicating with Cube and Cube will start running.

@@ -8,10 +8,10 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools/Software | Confirmed Version | Recommended Version
 | -------------------- | ---------------------- | ----------------------- |
-| OS    | macOS 13.4.1 | macOS 11 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
-| Xcode | 14.3.1 (14E300c) | 13 or higher |
-| iOS   | 12.3.1, 13.2.2 | 11 or higher |
+| OS    | macOS 26.1 | macOS 26 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
+| Xcode | 26.1 | 26 or higher |
+| iOS   | 18.7.8 | 15 or higher |
 
 ## Check Unity's iOS Build Support
 
@@ -21,7 +21,7 @@ If you did not add the iOS Build Support module when you installed Unity, open U
 
 We will assume that you have opened `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` by continuing from the end of [Installing toio SDK for Unity](download_sdk.md).
 
-First, select [File] -> [Build Settings...] from Unity menu.In [Build Settings], select [iOS] from the [Platform] list and click the [Switch Platform] button on the bottom right.
+First, select [File] -> [Build Profiles] from Unity menu.In [Build Profiles], select [iOS] from the [Platform] list and click the [Switch Platform] button on the bottom right.
 
 <img width=632 src="res/build_ios/1.png">
 
@@ -29,7 +29,7 @@ Wait for a while, and when Unity icon appears to the right of iOS, the switch is
 
 ## Build the Xcode project
 
-With the scene file you want to include in the build open, select [File] -> [Build Settings...] from Unity menu. Next, click the [Add Open Scenes] button.
+With the scene file you want to include in the build open, select [File] -> [Build Profiles] from Unity menu. Next, click the [Add Open Scenes] button.
 
 <img width=632 src="res/build_ios/3.png">
 
@@ -49,7 +49,7 @@ Open the project file (SimpleScene/Unity-iPhone.xcodeproj in this example) in Xc
 
 Configure the Xcode project settings and provisioning profile settings with reference to the following Unity official page.
 
-- [Developing Games for iOS - Unity Manual](https://docs.unity3d.com/2022.3/Documentation/Manual/iphone-GettingStarted.html)
+- [Developing Games for iOS - Unity Manual](https://docs.unity3d.com/Manual/iphone-GettingStarted.html)
 
 ## Xcode Build
 

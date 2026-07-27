@@ -16,7 +16,7 @@
 - [5. Stage Prefab](sys_simulator.md#5-stage-prefab)
   - [5.1 ターゲットポール](sys_simulator.md#51-ターゲットポール)
   - [5.2 キューブをフォーカス](sys_simulator.md#52-キューブをフォーカス)
-- [6. Stage Prefab](sys_simulator.md#6-magnet-prefab)
+- [6. Magnet Prefab](sys_simulator.md#6-magnet-prefab)
 
 # 1. 概説
 
@@ -276,7 +276,7 @@ private Mesh SpriteToMesh(Sprite sprite)
 Cube Prefab には３つのスクリプトが実装されています。
 - `CubeSimulator.cs`：実際のキューブのシミュレーションを実装したもの
   - `CubeSimImpl.cs`：CubeSimulator のバージョン毎の実装のベースクラスとなるもの
-  - `CubeSimImpl_v2_0_0.cs`：バージョン 2.0.0 を対応する実装
+  - `CubeSimImpl_v2_0_0.cs`：バージョン 2.0.0 に対応する実装
   - `CubeSimImpl_v2_1_0.cs`：バージョン 2.1.0 を対応する実装
   - `CubeSimImpl_v2_2_0.cs`：バージョン 2.2.0 を対応する実装
 - `CubeSimulatorEditor.cs`：`CubeSimulator.cs`のインスペクターをカスタマイズしたもの
@@ -339,7 +339,7 @@ protected virtual void SimulateIDSensor()
         {
             var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
             var deg = stdID.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-            _SetSandardID(stdID.id, deg);
+            _SetStandardID(stdID.id, deg);
         }
         else _SetOffGround();
     }
@@ -366,7 +366,7 @@ Standard ID と角度をセットするメソッド `_SetStandardID` は、変�
 
 ```csharp
 // CubeSimImpl_v2_0_0.cs
-protected void _SetSandardID(uint stdID, int deg)
+protected void _SetStandardID(uint stdID, int deg)
 {
     if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
         this.standardIDCallback?.Invoke(stdID, deg);

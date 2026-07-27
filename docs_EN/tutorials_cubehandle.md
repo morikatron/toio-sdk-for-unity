@@ -34,7 +34,7 @@ public class HandleBasic : MonoBehaviour
         // Connect Cube
         var peripheral = await new CubeScanner().NearScan(2, 100);
         var cubes = await new CubeConnecter().Connect(peripheral);
-        // Create CubeHanlde
+        // Create CubeHandle
         this.handles = new List<CubeHandle>();
         foreach (var cube in cubes)
             this.handles.Add(new CubeHandle(cube));  // (1) Create from Cube

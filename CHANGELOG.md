@@ -7,7 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/morikatron/toio-sdk-for-unity/tree/develop)
 
-## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.5.0) - 2024-09-12
+## [1.7.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.7.0) - 2026-TBD
+
+★ **Upgraded to Unity 6000.3.14f1 LTS**
+
+### Updated
+
+- Migrate to `Input System`.
+- Migrate to `Universal Render Pipeline`.
+
+### Fixed
+
+- [BLE] Fix WebGL BLE error with selector dialog.
+- [VS] Fix visual scripting issue relating to `Cooldown` block.
+
+### Removed
+
+- Removed deprecated `CubeConnecterInterface` method overload `UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral);`.
+
+## [1.6.0](https://github.com/morikatron/toio-sdk-for-unity/tree/v1.6.0) - 2024-09-12
 
 ★ **Upgraded to Unity 2022.3.44f1 LTS**
 

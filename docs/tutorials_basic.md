@@ -34,7 +34,7 @@
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
 2. ヒエラルキー上から「Main Camera」と「Directional Light」を削除
 3. プロジェクトウィンドウで「Assets/toio-sdk/Scripts/Simulator/Prefabs」フォルダを開きます。
-4. 「Cube」Prefabファイルと「Stage」Prefabファイルをヒエラルキーにドラック&ドロップします。<br>
+4. 「Cube」Prefabファイルと「Stage」Prefabファイルをヒエラルキーにドラッグ&ドロップします。<br>
    ※「シーンビュー」に切り替えてマウス操作すれば「Cube」オブジェクトの移動も出来ます。<br>
    ※マットを変更する場合はHierarchyウィンドウで「Stage→Mat」を選択し、Inspectorウィンドウの「Mat → Type」で利用するプレイマットを選択することができます。詳しい操作方法は[【こちら】](development_simulator.md#2-mat-prefab)を参照してください。
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします(※名前は自由です)。
@@ -107,7 +107,7 @@ Cube クラスの Move メソッドでキューブのモーターを制御する
 // left       | 左モーター速度 | 範囲(0~100)
 // right      | 右モーター速度 | 範囲(0~100)
 // durationMs | 持続時間　　　 | 範囲(0~2550)
-// order      | 優先度　　　　 | 種類(Week, Strong)
+// order      | 優先度　　　　 | 種類(Weak, Strong)
 cube.Move(int left, int right, int durationMs, ORDER_TYPE order=ORDER_TYPE.Weak);
 ```
 
@@ -198,7 +198,7 @@ Cube クラスの PlayPresetSound メソッドでキューブからあらかじ�
 
 // soundID | ID    | 範囲(0~10)
 // volume  | 音量　 | 範囲(0~255)
-// order   | 優先度 | 種類(Week, Strong)
+// order   | 優先度 | 種類(Weak, Strong)
 cube.PlayPresetSound(int soundId, int volume=255, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -217,11 +217,11 @@ new Cube.SoundOperation(int durationMs=0, byte volume=0, byte note_number=0);
 
 // repeatCount | 繰り返し回数 | 範囲(0~255)
 // operations  | 命令配列　　 | 個数(1~59)
-// order       | 優先度　　　 | 種類(Week, Strong)
+// order       | 優先度　　　 | 種類(Weak, Strong)
 cube.PlaySound(int repeatCount, SoundOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
-※ Unity でシミューレータ実行すると音が鳴ります。
+※ Unity でシミュレータ実行すると音が鳴ります。
 
 実行コード
 
@@ -300,7 +300,7 @@ Cube クラスの TurnLedOn メソッドでキューブ底面についている 
 // green | 色の強さ | 範囲(0~255)
 // blue  | 色の強さ | 範囲(0~255)
 // durationMs | 持続時間 | 範囲(10~2550)
-// order | 優先度　 | 種類(Week, Strong)
+// order | 優先度　 | 種類(Weak, Strong)
 cube.TurnLedOn(int red, int green, int blue, int durationMs, ORDER_TYPE order=ORDER_TYPE.Strong);
 ```
 
@@ -318,7 +318,7 @@ new Cube.LightOperation(int durationMs = 0, byte red = 0, byte green = 0, byte b
 
 // repeatCount | 繰り返し回数 | 範囲(0~255)
 // operations  | 命令配列　　 | 個数(1~59)
-// order       | 優先度　　　 | 種類(Week, Strong)
+// order       | 優先度　　　 | 種類(Weak, Strong)
 cube.TurnOnLightWithScenario(int repeatCount, Cube.LightOperation[] operations, ORDER_TYPE order=ORDER_TYPE.Strong)
 ```
 
@@ -571,7 +571,7 @@ public class EventScene : MonoBehaviour
 
     void OnMissedID(Cube cube)
     {
-        Debug.LogFormat("Postion ID Missed.");
+        Debug.LogFormat("Position ID Missed.");
     }
 
     void OnMissedStandardID(Cube c)
@@ -926,7 +926,7 @@ NearScanner クラスの ScanAsync メソッドを呼ぶ事で、非同期検索
 nearScanner.ScanAsync(coroutineObject, callback, autoRunning);
 ```
 
-NearScanner クラスを直接利用した場合様々な処理を追加する必要がありますが、<br>
+NearScanner クラスを直接利用した場合は様々な処理を追加する必要がありますが、<br>
 CubeManager クラス内部で必要な処理を実行する事により、<br>
 分かりやすい形で非同期に接続/切断を実装する事が出来ます。
 

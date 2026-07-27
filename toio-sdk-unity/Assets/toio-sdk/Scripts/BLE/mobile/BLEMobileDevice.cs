@@ -5,7 +5,7 @@ namespace toio
 {
     public class BLEMobileDevice : BLEDeviceInterface
     {
-        public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface[]> action)
+        public void Scan(String[] serviceUUIDs, bool rssiOnly, Action<BLEPeripheralInterface[]> action, Action<string> errorAction = null)
         {
             Ble.StartScan(serviceUUIDs, (infos) =>
             {

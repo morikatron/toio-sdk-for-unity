@@ -769,7 +769,7 @@ namespace toio.Simulator
         {
             this.rb.angularVelocity = transform.up * (float)((speedL - speedR) / TireWidthM);
             var vel = transform.forward * (speedL + speedR) / 2;
-            var dv = vel - this.rb.velocity;
+            var dv = vel - this.rb.linearVelocity;
             this.rb.AddForce(dv, ForceMode.VelocityChange);
         }
 

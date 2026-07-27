@@ -276,7 +276,7 @@ public interface CubeScannerInterface
 </div>
 <br>
 
-CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>BLE プロトコルバージョンの適応(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
+CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>BLE プロトコルバージョンの適用(※リアル実装のみ)</u></b>です。<br>内部実装はシミュレータ実装 と リアル実装で分かれており、ビルド対象に応じて内部実装が自動的に変わるため、プラットフォーム毎に別々のコードを書かなくても動作します。async/await キーワードで接続終了待ちする事で、呼び出し側から見ると同期処理と同じになります。<br>
 [CubeManager](https://github.com/morikatron/toio-sdk-for-unity/blob/main/toio-sdk-unity/Assets/toio-sdk/Scripts/Cube/CubeManager.cs)に拡張性を持たせる目的で、インタフェースを継承して実装されています。
 
 <b>Connect 関数</b>を呼ぶ事でキューブに接続します。<br>
@@ -292,7 +292,7 @@ CubeConnecter の役割は、BLE デバイスへの接続 と <b><u>BLE プロ�
 
 1. Peripheral(Bluetooth デバイス)へ接続して Characteristic(機能)配列を取得
 2. BLE プロトコルバージョンを取得
-3. 事前に追加しておいたバージョンテーブルを参照、ファームウェアに適応した Cube 変数(CubeReal_verX_X_X)を生成
+3. 事前に追加しておいたバージョンテーブルを参照、ファームウェアに対応した Cube 変数(CubeReal_verX_X_X)を生成
 
 <br>
 
@@ -385,7 +385,7 @@ public class CubeConnecter : CubeConnecterInterface
 
 <br>
 
-全ての Cube クラスへの関数呼び出しは、継承により内部実装が異なります。<br>シミュレータ用 Cube クラスである CubeUntiy は、CubeSimulator に対して命令を送ります。<br>BLE 通信用 Cube クラスである CubeReal 派生クラスは、BLE に対して byte 配列を送信するように命令を送ります。<br>CubeUnity / CubeReal 派生クラスで内部実装は異なっていますが、<br>共通して命令送信を<b>CubeOrderBalancer</b>クラスに委ねています。
+全ての Cube クラスへの関数呼び出しは、継承により内部実装が異なります。<br>シミュレータ用 Cube クラスである CubeUnity は、CubeSimulator に対して命令を送ります。<br>BLE 通信用 Cube クラスである CubeReal 派生クラスは、BLE に対して byte 配列を送信するように命令を送ります。<br>CubeUnity / CubeReal 派生クラスで内部実装は異なっていますが、<br>共通して命令送信を<b>CubeOrderBalancer</b>クラスに委ねています。
 
 大まかには以下の手順で命令送信します。
 

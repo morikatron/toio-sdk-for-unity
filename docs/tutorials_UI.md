@@ -41,7 +41,7 @@ Unity Editor で実行した場合はUIとシミュレータが並列表示さ�
 1. 「ファイル > 新しいシーン」をクリックして、新しいシーンを作成します。
 2. ヒエラルキーにある「Main Camera」と「Directional Light」を削除
 3. プロジェクトウィンドウで「Assets/toio-sdk/Scripts/Simulator/Prefabs」フォルダを開きます
-4. 「Cube」Prefab ファイル と 「Stage」Prefab ファイルをヒエラルキーにドラック&ドロップします。<br>
+4. 「Cube」Prefab ファイル と 「Stage」Prefab ファイルをヒエラルキーにドラッグ&ドロップします。<br>
 ※ シーン上でマウス操作すれば「Cube」オブジェクトの移動も出来ます。
 5. ヒエラルキー上で右クリック、右クリックメニューから「空のオブジェクトを作成」をクリックし、「scene」という名前にします。
 6. 「scene」オブジェクトを選択し、インスペクター上の「コンポーネントを追加」をクリックします。
@@ -83,7 +83,7 @@ public class MyUIScript : MonoBehaviour
     public void PlayPresetSound1() { cube.PlayPresetSound(1); }
     public void PlayPresetSound2() { cube.PlayPresetSound(2); }
     public void LedOn()
-    //ここは三角関数により、色を変化できる機能コード。好きな色を試してみても良い、このままコピーしでも良いです。
+    //ここは三角関数により、色を変化できる機能コード。好きな色を試してみても良い、このままコピーしても良いです。
     {
         List<Cube.LightOperation> scenario = new List<Cube.LightOperation>();
         float rad = (Mathf.Deg2Rad * (360.0f / 29.0f));
@@ -199,9 +199,9 @@ public class MySimUI : MonoBehaviour
 ```
 
 上記スクリプトでは、以下の三つを実装しています。
-    1. シミュレータでのみ実行したい処理なので、#if [UNITY_EDITOR](https://docs.unity3d.com/ja/current/Manual/PlatformDependentCompilation.html) の中でクラスの全ての実装を記述しています。
+    1. シミュレータでのみ実行したい処理なので、#if [UNITY_EDITOR] の中でクラスの全ての実装を記述しています。
     2. シミュレータの画面を少し右側に寄せたいため、カメラを左へ移動しています。
-    3. 「UI」―「Canvas」の親を「SimCanvas」に設定してから、左端へ移動します。（[Transform.SetParent](https://docs.unity3d.com/ScriptReference/Transform.SetParent.html) を利用）
+    3. 「UI」―「Canvas」の親を「SimCanvas」に設定してから、左端へ移動します。（[Transform.SetParent] を利用）
 
 ## 11.4. ボタンの作成と動作対応
 最後に操作パネルの各ボタンを作成します。
@@ -248,7 +248,7 @@ Button6  | X:0 　　Y:-500 |Sound1 | 48 | PlayPresetSound1()  | なし(No Funct
 Button7  | X:-150　Y:-350 |Sound2  | 48 | PlayPresetSound2()  | なし(No Function) |
 
 
-ここまで、ボタンの作成は完了します。ヒエラルキーとゲームビューは、下のようになるなずです。
+ここまで、ボタンの作成は完了します。ヒエラルキーとゲームビューは、下のようになるはずです。
 
 <div  align="center">
 <img src="res/tutorial_UI/complete.png">

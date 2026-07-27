@@ -388,7 +388,7 @@ Sample Code:
 
 <br>
 
-All function calls to Cube class have different internal implementations depending on inheritance.<br>CubeUntiy, Cube class for simulator, sends instructions to CubeSimulator.<br>CubeReal derived class, which is Cube class for BLE communication, sends commands to BLE to send byte arrays.<br>Although the internal implementations of CubeUnity / CubeReal derived classes are different, they commonly delegate instruction transmission to the <b>CubeOrderBalancer</b> class.
+All function calls to Cube class have different internal implementations depending on inheritance.<br>CubeUnity, Cube class for simulator, sends instructions to CubeSimulator.<br>CubeReal derived class, which is Cube class for BLE communication, sends commands to BLE to send byte arrays.<br>Although the internal implementations of CubeUnity / CubeReal derived classes are different, they commonly delegate instruction transmission to the <b>CubeOrderBalancer</b> class.
 
 Roughly speaking, the following procedure is used to send commands.
 

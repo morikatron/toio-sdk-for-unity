@@ -221,7 +221,7 @@ public Movement Move(
   - 説明：ボーダー制限によって小さくなる可能性があります
 - border
   - 定義：ボーダー制限のありなし
-  - 説明：ボーダーの範囲は CubeHanlde のパブリック変数で設定できます。<br>
+  - 説明：ボーダーの範囲は CubeHandle のパブリック変数で設定できます。<br>
     `public int RangeX = 370;` `public int RangeY = 370;`
 - order
   - 定義 : [命令の優先度](sys_cube.md#4-命令送信)
@@ -373,10 +373,10 @@ public Movement Move2Target(
 目標座標に移動する Movement を計算します。
 
 - tarX
-  - 定義：目標ｘ座標
+  - 定義：目標x座標
   - 範囲：任意
 - tarY
-  - 定義：目標ｘ座標
+  - 定義：目標y座標
   - 範囲：任意
 - maxSpd
   - 定義：最大速度の指示値
@@ -440,7 +440,7 @@ public Movement Rotate2Deg(double tarDeg, int rotateTime = 400, double tolerance
 
 指定角度（度）に回転する Movement を計算します。
 
-- tarRad
+- tarDeg
   - 定義：目標角度（度）
   - 範囲：任意
 - rotateTime
@@ -464,10 +464,10 @@ public Movement Rotate2Target(double tarX, double tarY, int rotateTime = 400, do
 指定座標の方向に回転する Movement を計算します。
 
 - tarX
-  - 定義：目標ｘ座標
+  - 定義：目標x座標
   - 範囲：任意
 - tarY
-  - 定義：目標ｙ座標
+  - 定義：目標y座標
   - 範囲：任意
 - rotateTime
   - 定義：希望回転時間（ms）

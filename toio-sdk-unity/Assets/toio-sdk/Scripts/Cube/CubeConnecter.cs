@@ -12,8 +12,6 @@ namespace toio
         UniTask<Cube[]> Connect(BLEPeripheralInterface[] peripherals);
         void Disconnect(Cube cube);
         void Disconnect(BLEPeripheralInterface peripheral);
-        [Obsolete("Deprecated. Please use ReConnect(Cube cube) instead.", false)]
-        UniTask ReConnect(Cube cube, BLEPeripheralInterface peripheral);
         UniTask ReConnect(Cube cube);
     }
 
@@ -28,9 +26,9 @@ namespace toio
         {
             if (ConnectType.Auto == type)
             {
-#if (UNITY_EDITOR || UNITY_STANDALONE)
+#if (UNITY_EDITOR)
                 this.impl = new SimImpl();
-#elif (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL)
+#else
                 this.impl = new RealImpl();
 #endif
             }
@@ -162,6 +160,7 @@ namespace toio
 
             public async UniTask<Cube> Connect(BLEPeripheralInterface peripheral)
             {
+                if (peripheral == null) return null;
                 try
                 {
                     // Wait for previous connection

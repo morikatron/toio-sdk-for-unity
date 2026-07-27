@@ -8,10 +8,10 @@
 
 | ツール・ソフトウェア | 確認バージョン | 推奨バージョン |
 | -------------------- | ---------------------- | ----------------------- |
-| OS    | macOS 13.4.1 | macOS 11 以上 |
-| Unity | 2022.3.44f1 | 2022.3 以上 |
-| Xcode | 14.3.1 (14E300c) | 13 以上 |
-| iOS   | 12.3.1, 13.2.2 | 11 以上 |
+| OS    | macOS 26.1 | macOS 26 以上 |
+| Unity | 6000.3.14f1 | 6000.3 以上 |
+| Xcode | 26.1 | 26 以上 |
+| iOS   | 18.7.8 | 15 以上 |
 
 ## Unity の iOS Build Support をチェック
 
@@ -21,7 +21,7 @@ Unity をインストールする時に iOS Build Support モジュールを追�
 
 ここでは、[toio SDK for Unity のインストール](download_sdk.md)の最後から続けて `Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/` を開いているものとして説明を進めます。
 
-まず、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。【Build Settings】の【プラットフォーム】のリストから iOS を選択し、右下の 【Switch Platform】 ボタンを押してください。
+まず、Unity のメニュー【ファイル】→【ビルドプロファイル】を選択してください。【ビルドプロファイル】の【プラットフォーム】のリストから iOS を選択し、右下の 【ターゲットの切り替え】 ボタンを押してください。
 
 <img width=632 src="res/build_ios/1.png">
 
@@ -29,7 +29,7 @@ Unity をインストールする時に iOS Build Support モジュールを追�
 
 ## Xcode プロジェクトのビルド
 
-ビルドに含みたいシーンファイルを開いている状態で、Unity のメニュー【ファイル】→【ビルド設定...】を選択してください。次に【Build Settings】の【シーンを追加】ボタンを押します。
+ビルドに含みたいシーンファイルを開いている状態で、Unity のメニュー【ファイル】→【ビルドプロファイル】を選択してください。次に【ビルドプロファイル】の【シーンを追加】ボタンを押します。
 
 <img width=632 src="res/build_ios/3.png">
 
@@ -49,7 +49,7 @@ iOS 用のビルドをするために Xcode でプロジェクトファイル（
 
 以下の Unity 公式ページを参考に、Xcode プロジェクトの設定やプロビジョニングプロファイルの設定を行います。
 
-- [iOS 用ゲームの開発について \- Unity マニュアル](https://docs.unity3d.com/ja/2022.3/Manual/iphone-GettingStarted.html)
+- [iOS 用ゲームの開発について \- Unity マニュアル](https://docs.unity3d.com/ja/current/Manual/iphone-GettingStarted.html)
 
 ## Xcode ビルド
 
