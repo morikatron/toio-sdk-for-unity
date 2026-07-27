@@ -4,9 +4,6 @@ var WebBLEPlugin =
 
     InitMethods: function(return_RequestDevice, return_Connect, callback_Disconnected, return_getCharacteristic, return_getCharacteristics, return_ReadValue, callback_StartNotifications)
     {
-        // "Runtime" removed on Unity 2021.2, this is for backwards compatibility
-        if (typeof Runtime === "undefined") Runtime = { dynCall : dynCall };
-
         // "UTF8ToString" is replaced by "UTF8ToString" on Unity 2021.2, this is for backwards compatibility
         if (typeof UTF8ToString === "undefined") UTF8ToString = Pointer_stringify;
 
@@ -22,6 +19,58 @@ var WebBLEPlugin =
     InitErrorMethods: function(error_RequestDevice)
     {
         unityMethods.error_RequestDevice = error_RequestDevice;
+    },
+
+    // Invoke IL2CPP callbacks across Unity/Emscripten versions.
+    $invokeUnityCallback: function(sig, callbackPtr, args)
+    {
+        if (!callbackPtr)
+        {
+            console.error("invokeUnityCallback: callback pointer is null for signature", sig);
+            return;
+        }
+
+        if (typeof dynCall === "function")
+        {
+            dynCall(sig, callbackPtr, args);
+            return;
+        }
+
+        if (typeof Runtime !== "undefined" && typeof Runtime.dynCall === "function")
+        {
+            Runtime.dynCall(sig, callbackPtr, args);
+            return;
+        }
+
+        if (typeof Module !== "undefined")
+        {
+            var dynCallWithSig = Module["dynCall_" + sig];
+            if (typeof dynCallWithSig === "function")
+            {
+                dynCallWithSig.apply(null, [callbackPtr].concat(args));
+                return;
+            }
+
+            if (Module.wasmTable && typeof Module.wasmTable.get === "function")
+            {
+                Module.wasmTable.get(callbackPtr).apply(null, args);
+                return;
+            }
+        }
+
+        if (typeof getWasmTableEntry === "function")
+        {
+            getWasmTableEntry(callbackPtr).apply(null, args);
+            return;
+        }
+
+        if (typeof wasmTable !== "undefined" && typeof wasmTable.get === "function")
+        {
+            wasmTable.get(callbackPtr).apply(null, args);
+            return;
+        }
+
+        throw new Error("No supported callback invocation API found for signature: " + sig);
     },
 
     call_RequestDevice: function(SERVICE_UUID)
@@ -41,7 +90,9 @@ var WebBLEPlugin =
         size = lengthBytesUTF8(name) + 1; // Add null to end of string
         var ptr_name = _malloc(size);
         stringToUTF8(name, ptr_name, size); // write into HEAPxxx
-        Runtime.dynCall('viii', unityMethods.return_RequestDevice, [id, ptr_uuid, ptr_name]);
+        invokeUnityCallback('viii', unityMethods.return_RequestDevice, [id, ptr_uuid, ptr_name]);
+        _free(ptr_uuid);
+        _free(ptr_name);
     },
 
     $error_call_RequestDevice: function(msg)
@@ -49,7 +100,8 @@ var WebBLEPlugin =
         var size = lengthBytesUTF8(msg) + 1; // Add null to end of string
         var ptr = _malloc(size);
         stringToUTF8(msg, ptr, size); // write into HEAPxxx
-        Runtime.dynCall('vi', unityMethods.error_RequestDevice, [ptr]);
+        invokeUnityCallback('vi', unityMethods.error_RequestDevice, [ptr]);
+        _free(ptr);
     },
 
     call_Connect: function(deviceID, SERVICE_UUID)
@@ -64,12 +116,13 @@ var WebBLEPlugin =
         var size = lengthBytesUTF8(serviceUUID) + 1; // Add null to end of string
         var ptr = _malloc(size);
         stringToUTF8(serviceUUID, ptr, size); // write into HEAPxxx
-        Runtime.dynCall('viiii', unityMethods.return_Connect, [deviceID, serverID, serviceID, ptr]);
+        invokeUnityCallback('viiii', unityMethods.return_Connect, [deviceID, serverID, serviceID, ptr]);
+        _free(ptr);
     },
 
     $callback_Disconnected: function(deviceID)
     {
-        Runtime.dynCall('vi', unityMethods.callback_Disconnected, [deviceID]);
+        invokeUnityCallback('vi', unityMethods.callback_Disconnected, [deviceID]);
     },
 
     call_Disconnect: function(serverID)
@@ -90,7 +143,8 @@ var WebBLEPlugin =
         var size = lengthBytesUTF8(characteristicUUID) + 1; // Add null to end of string
         var ptr = _malloc(size);
         stringToUTF8(characteristicUUID, ptr, size); // write into HEAPxxx
-        Runtime.dynCall('viii', unityMethods.return_getCharacteristic, [serviceID, id, ptr]);
+        invokeUnityCallback('viii', unityMethods.return_getCharacteristic, [serviceID, id, ptr]);
+        _free(ptr);
     },
 
     call_getCharacteristics: function(serviceID)
@@ -104,7 +158,8 @@ var WebBLEPlugin =
         var size = lengthBytesUTF8(uuid) + 1; // Add null to end of string
         var ptr = _malloc(size);
         stringToUTF8(uuid, ptr, size); // write into HEAPxxx
-        Runtime.dynCall('viiiii', unityMethods.return_getCharacteristics, [serviceID, len, idx, id, ptr]);
+        invokeUnityCallback('viiiii', unityMethods.return_getCharacteristics, [serviceID, len, idx, id, ptr]);
+        _free(ptr);
     },
 
     // Get sub array of of heap starting from ptr
@@ -132,7 +187,7 @@ var WebBLEPlugin =
     {
         var ptr = _malloc(resBuffer.byteLength);
         HEAP8.set(new Uint8Array(resBuffer), ptr);
-        Runtime.dynCall('viii', unityMethods.return_ReadValue, [characteristicID, ptr, resBuffer.byteLength]);
+        invokeUnityCallback('viii', unityMethods.return_ReadValue, [characteristicID, ptr, resBuffer.byteLength]);
         _free(ptr);
     },
 
@@ -146,7 +201,7 @@ var WebBLEPlugin =
     {
         var ptr = _malloc(resBuffer.byteLength);
         HEAP8.set(new Uint8Array(resBuffer), ptr);
-        Runtime.dynCall('viii', unityMethods.callback_StartNotifications, [characteristicID, ptr, resBuffer.byteLength]);
+        invokeUnityCallback('viii', unityMethods.callback_StartNotifications, [characteristicID, ptr, resBuffer.byteLength]);
         _free(ptr);
     },
 
@@ -158,6 +213,7 @@ var WebBLEPlugin =
 }
 
 autoAddDeps(WebBLEPlugin, '$unityMethods');
+autoAddDeps(WebBLEPlugin, '$invokeUnityCallback');
 autoAddDeps(WebBLEPlugin, '$return_call_RequestDevice');
 autoAddDeps(WebBLEPlugin, '$error_call_RequestDevice');
 autoAddDeps(WebBLEPlugin, '$return_call_Connect');

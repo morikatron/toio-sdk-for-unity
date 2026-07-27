@@ -16,14 +16,39 @@ var characteristicCount = 0;
 var characteristicTable = {};
 var characteristicIdTable = {};
 var characteristicNotificationTable = {};
+var characteristicOperationTable = {};
+var requestDevicePromise = null;
+
+function queueCharacteristicOperation(characteristicID, operation)
+{
+    if (!(characteristicID in characteristicOperationTable))
+    {
+        characteristicOperationTable[characteristicID] = Promise.resolve();
+    }
+
+    var next = characteristicOperationTable[characteristicID]
+        .catch(() => {})
+        .then(operation);
+
+    characteristicOperationTable[characteristicID] = next.then(() => {}, () => {});
+    return next;
+}
 
 // callback(int deviceID, string deviceUUID, string deviceName)
 function bluetooth_requestDevice(SERVICE_UUID, callback, errorCallback)
 {
     let options = {};
     options.filters = [ {services: [SERVICE_UUID]}, ];
-    navigator.bluetooth.requestDevice(options)
-    .then(device => {
+
+    if (!requestDevicePromise)
+    {
+        requestDevicePromise = navigator.bluetooth.requestDevice(options)
+        .finally(() => {
+            requestDevicePromise = null;
+        });
+    }
+
+    requestDevicePromise.then(device => {
         let id = deviceCount;
         if (device.id in deviceIdTable)
         {
@@ -67,6 +92,9 @@ function server_connect(deviceID, SERVICE_UUID, callback, disconnectCallback)
         }
         serverTable[id] = server;
         server_getPrimaryService(id, SERVICE_UUID, (serviceID, serviceUUID) => { callback(deviceID, id, serviceID, serviceUUID); });
+    })
+    .catch(error => {
+        console.error('server_connect error:', error);
     });
 }
 
@@ -88,6 +116,9 @@ function server_getPrimaryService(serverID, SERVICE_UUID, callback)
         }
         serviceTable[id] = service;
         callback(id, service.uuid);
+    })
+    .catch(error => {
+        console.error('server_getPrimaryService error:', error);
     });
 }
 
@@ -113,6 +144,9 @@ function service_getCharacteristic(serviceID, characteristicUUID, callback)
         }
         characteristicTable[id] = chara;
         callback(serviceID, id, characteristicUUID);
+    })
+    .catch(error => {
+        console.error('service_getCharacteristic error:', error);
     });
 }
 
@@ -138,40 +172,52 @@ function service_getCharacteristics(serviceID, callback)
             characteristicTable[id] = charas[i];
             callback(serviceID, charas.length, i, id, charas[i].uuid);
         }
+    })
+    .catch(error => {
+        console.error('service_getCharacteristics error:', error);
     });
 }
 
 function characteristic_writeValue(characteristicID, bytes)
 {
-    characteristicTable[characteristicID].writeValue(bytes);
+    return queueCharacteristicOperation(characteristicID, () => characteristicTable[characteristicID].writeValue(bytes));
 }
 
 function characteristic_readValue(characteristicID, callback)
 {
-    characteristicTable[characteristicID].readValue()
+    return queueCharacteristicOperation(characteristicID, () => characteristicTable[characteristicID].readValue())
     .then(response => {
         callback(characteristicID, response.buffer);
+    })
+    .catch(error => {
+        console.error('characteristic_readValue error:', error);
     });
 }
 
 // callback(int characteristicID, byte[] data)
 function characteristic_startNotifications(characteristicID, callback)
 {
-    characteristicTable[characteristicID].startNotifications().then(char => {
+    return queueCharacteristicOperation(characteristicID, () => characteristicTable[characteristicID].startNotifications()).then(char => {
         console.log('notifications started');
         let onchanged = (event) => {
             callback(characteristicID, event.target.value.buffer);
         };
         characteristicNotificationTable[characteristicID] = onchanged;
         char.addEventListener('characteristicvaluechanged', onchanged);
+    })
+    .catch(error => {
+        console.error('characteristic_startNotifications error:', error);
     });
 }
 
 function characteristic_stopNotifications(characteristicID)
 {
-    characteristicTable[characteristicID].stopNotifications().then(char => {
+    return queueCharacteristicOperation(characteristicID, () => characteristicTable[characteristicID].stopNotifications()).then(char => {
         char.removeEventListener('characteristicvaluechanged', characteristicNotificationTable[characteristicID]);
         delete characteristicNotificationTable[characteristicID];
+    })
+    .catch(error => {
+        console.error('characteristic_stopNotifications error:', error);
     });
 }
 

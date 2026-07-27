@@ -9,3 +9,4 @@ EditorBuildSettings:
     path: Assets/toio-sdk/Tutorials/1.Basic/0.BasicScene/0.BasicScene.unity
     guid: e6ea298340acd41fd8971c8ed14186c5
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

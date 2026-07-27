@@ -18,10 +18,10 @@ We have confirmed that it works in the following environment. You don't necessar
 
 | Tools and Software | Confirmed version | Recommended version |
 | ------------------ | ---------------------- | ----------------------- |
-| OS                 | MacOS 13.4.1 | MacOS 11 or higher |
-| Unity              | 2022.3.44f1 | 2022.3 or higher |
-| XCode              | 14.3.1 | 14 or higher |
-| Device             | MacBook Pro 2017 | N/A |
+| OS | MacOS 26.1 | MacOS 26 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
+| XCode | 26.1 | 26 or higher |
+| Device | MacBook Air M4 | [macOS 26 compatible devices](https://support.apple.com/en-us/122867) |
 
 <br>
 
@@ -29,8 +29,8 @@ We have confirmed that it works in the following environment. You don't necessar
 
 As a preliminary step, go to Apple menu in the upper left corner of the screen and click "About this Mac" to check your OS version.
 
-If your OS version is <b>10.x</b> , <b>11.x</b> or <b>12.x</b>, please refer to [How to download a pre-built bundle file](usage_macble.md#how-to-download-a-pre-built-bundle-file).
-For other OS versions, please refer to [How to build the bundle file on your own PC](usage_macble.md#how-to-build-the-bundle-file-on-your-own-pc).
+If your OS version is <b>10.x</b> or higher, please refer to [How to download a pre-built bundle file](usage_macble.md#how-to-download-a-pre-built-bundle-file).
+For other OS versions or having trouble with the pre-built plugin, please refer to [How to build the bundle file on your own PC](usage_macble.md#how-to-build-the-bundle-file-on-your-own-pc).
 
 <br>
 
@@ -38,9 +38,9 @@ For other OS versions, please refer to [How to build the bundle file on your own
 
 #### 1. Download bundle file
 
-Open [toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases) and click on `bleplugin_10.bundle.zip` if your OS version is <b>10.x</b> or `bleplugin_11.bundle.zip` if your OS version is <b>11.x</b> or <b>12.x</b>. If your OS version is <b>10.x</b>, click on `bleplugin_10.bundle.zip`, and if your OS version is <b>11.x</b> <b>12.x</b>, click on `bleplugin_11.bundle.zip` to download.
+Open [toio/ble-plugin-unity/Releases](https://github.com/toio/ble-plugin-unity/releases). If your OS version is <b>10.x</b>, click on `bleplugin_10.bundle.zip`, and if your OS version is <b>11.x</b> or higher, click on `bleplugin_11.bundle.zip` to download.
 
-> As of v1.5.1, this SDK targets the v1.0.0 release.
+> As of v1.7.0, this SDK targets the v1.0.0 release.
 
 #### 2. Drag and drop bundle file into your Unity project
 
@@ -65,7 +65,7 @@ Open [toio/ble-plugin-unity](https://github.com/toio/ble-plugin-unity) and click
 
 #### 2. Build bundle file
 
-Unzip the downloaded zip file and open the Xcode project file located at `bleplugin_projects/macOS/bleplugin/bleplugin.xcodeproj`. Open the project settings screen, click on "bleplugin" in the <b>TARGETS</b> list, then click on the "Build Settings" tab and open the <b>Deployment</b> settings.
+Unzip the downloaded zip file and open the Xcode project file located at `bleplugin_projects/macOS/bleplugin/bleplugin.xcodeproj`. Open the project settings screen, click on "bleplugin" in the <b>TARGETS</b> list, then click on the "Build Profiles" tab and open the <b>Deployment</b> settings.
 
 Click [macOS (version value)] in the right column of <b>macOS Deployment Target</b> in the Deployment settings, and select the OS version that you checked in the prior work.
 

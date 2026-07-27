@@ -10,7 +10,7 @@
 # 1. Overview
 Uniti Visual Scripting is a visual programming language that has been adopted as a standard feature since Unity 2021.
 
-Visual Scripting in toio SDK for Unity currently (March 29, 2022) supports all features used in the tutorials.
+Visual Scripting in toio SDK for Unity supports all features used in the tutorials.
 
 By using the toio SDK for Unity with Visual Scripting,  you can enjoy the following benefits
 - You can create programs to move cubes without knowledge of C#.

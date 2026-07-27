@@ -45,7 +45,7 @@ Navigation  +----------------------+ Navigator Related Directories
 
 ## 1.1. Class Diagram
 
-Navigator module of toio SDK for Unity consists of the [Navigator](sys_navigator.md#2-navigator-class) class("Cube-independent Navigator" in the figure), which is implemented independently of toio™, and the [CubeNavigator](sys_navigator.md#3-cubenavigator-class) and CubeEntity classes(Figure "Interfavce for Cube") , which are the interfaces between Navigator and CubeHandle.
+Navigator module of toio SDK for Unity consists of the [Navigator](sys_navigator.md#2-navigator-class) class("Cube-independent Navigator" in the figure), which is implemented independently of toio™, and the [CubeNavigator](sys_navigator.md#3-cubenavigator-class) and CubeEntity classes(Figure "Interface for Cube") , which are the interfaces between Navigator and CubeHandle.
 
 <div align="center"><img width=600 src="res/navigator/arch.png"></div>
 

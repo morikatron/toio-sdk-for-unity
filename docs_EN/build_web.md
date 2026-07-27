@@ -33,10 +33,10 @@ The following environments have been tested. You don't necessarily have to match
 
 | Tools & Software | Confirmed Version | Recommended Version |
 | -------------------- | ---------------------- | ----------------------- |
-| OS | MacOS 13.4.1 | macOS 11 or higher |
+| OS | MacOS 26.1 | macOS 15.6 or higher |
 | Bluetooth® | 4.2 | 4.2 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
-| Browser (Chrome) | 114.0.5735.133 | 56 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
+| Browser (Chrome) | 148.0.7778.179 | 56 or higher |
 
 To check the version of BlueTooth®, go to About This Mac > System Report > Bluetooth > LMP Version from Apple menu.
 
@@ -44,17 +44,15 @@ To check the version of BlueTooth®, go to About This Mac > System Report > Blue
 
 | Tools & Software | Confirmed Version | Recommended Version |
 | -------------------- | ---------------------- | ----------------------- |
-| OS | Windows 10 Pro 64bit 1903 | Windows 10 |
+| OS | Windows 11 Pro 25H2 | Windows 10 (64bit) or higher |
 | Bluetooth® | 5.0 (LMP 9.256) | 4.2 or higher |
-| Unity | 2022.3.44f1 | 2022.3 or higher |
-| Browser (Edge) | 114.0.1823.82 | 79 or higher |
-| Browser (Chrome) | 114.0.5735.199 | 56 or higher |
+| Unity | 6000.3.14f1 | 6000.3 or higher |
+| Browser (Chrome) | 148.0.7778.179 | 56 or higher |
 
 <br>
 
 For other browsers, please refer to [WebGL](https://developer.mozilla.org/docs/Web/API/WebGL_API) and [web-bluetooth](https://webbluetoothcg.github.io/web-bluetooth/).
 - WebGL
-  - [WebGL Browser Compatibility](https://docs.unity3d.com/2022.3/Documentation/Manual/webgl-browsercompatibility.html)
   - [Can I use WebGL ?](https://caniuse.com/?search=WebGL)
 - web-bluetooth
   - [Can I use web-bluetooth ?](https://caniuse.com/?search=web-bluetooth)
@@ -73,7 +71,7 @@ Open Unity Hub, go to the Install tab, and in the top right menu of the appropri
 
 We will assume that you have completed the [toio SDK for Unity installation](download_sdk.md) and opened `Assets/toio-sdk/Samples/Sample_WebGL/Sample_UI/`. Let's proceed as follows.
 
-Select [File] -> [Build Settings...] from Unity menu. in Unity menu. Next, in the Platform list under Build Settings, select WebGL and click the Switch Platform button at the bottom right.
+Select [File] -> [Build Profiles] from Unity menu. in Unity menu. Next, in the Platform list under Build Profiles, select WebGL and click the Switch Platform button at the bottom right.
 
 <img width=600 src="res/build_webgl/1.png">
 
@@ -83,7 +81,7 @@ Wait for a few tens of seconds, and when Unity icon appears to the right of WebG
 
 In order to use the provided WebGL plugin, we will modify Unity's Javascript template.
 
-1. From Build Settings, click [Player Settings...] to open the settings window.
+1. From Build Profiles, click [Player Settings...] to open the settings window.
 
 <img width=600 src="res/build_webgl/7.png">
 
@@ -95,11 +93,15 @@ WebGL plugin is now ready to use.
 
 ### Build a web app
 
-With the scene file you want to include in the build open, select [File] -> [Build Settings...] from Unity menu. Next, click the [Add Open Scenes] button.
+With the scene file you want to include in the build open, select [File] -> [Build Profiles] from Unity menu. Select [Scene List] and click the [Add Open Scenes] button.
 
 <img width=600 src="res/build_webgl/2.png">
 
-Then, Sample_UI will be added to the list of "Scenes in Build". Click "Build And Run" to continue.
+Then, Sample_UI will be added to the list of "Scenes in Build". Uncheck other scenes and check the added one.
+
+<img width=600 src="res/build_webgl/2b.png">
+
+Click "Build And Run" to continue.
 
 <img width=600 src="res/build_webgl/3.png">
 
@@ -143,7 +145,7 @@ but web server hosting the content was misconfigured to not serve the file with
 HTTP Response Header "Content-Encoding: gzip" present...
 ```
 
-In this case, set [File] -> [Build Settings...] -> [Player Settings...] -> [Publishing Settings...] -> [Compression Format] to "Disabled".
+In this case, set [File] -> [Build Profiles] -> [Player Settings...] -> [Publishing Settings...] -> [Compression Format] to "Disabled".
 
 <br>
 

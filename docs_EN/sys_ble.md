@@ -1,4 +1,4 @@
-# Technical Document - Function Description - BLE(Bluetooth Low Enegy)
+# Technical Document - Function Description - BLE(Bluetooth Low Energy)
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@
 
 <br>
 
-BLE module group is a group of modules that provide Bluetooth Low Enegy (BLE) communication functions in an abstract manner via an interface.
+BLE module group is a group of modules that provide Bluetooth Low Energy (BLE) communication functions in an abstract manner via an interface.
 By implementing all BLE classes through the interface, toio™ programming can be done independently of the communication architecture.
 Therefore, it is possible to replace them with communication modules other than BLE by developing new inheritance classes.
 

@@ -25,7 +25,7 @@ namespace toio.Samples.Sample_VisualizeNavigator
             navi.AddWall(new Wall(200, 300, 300, 300, 10));
 
             // Get stage
-            stage = GameObject.FindObjectOfType<Stage>();
+            stage = FindFirstObjectByType<Stage>();
         }
 
         // Update is called once per frame

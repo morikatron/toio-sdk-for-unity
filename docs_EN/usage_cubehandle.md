@@ -213,7 +213,7 @@ Move Cube.
   - Description: May be smaller due to border restrictions
 - border
   - Definition: with or without border restrictions
-  - Description: The border range can be set by CubeHanlde public variables.<br>
+  - Description: The border range can be set by CubeHandle public variables.<br>
     `public int RangeX = 370;` `public int RangeY = 370;`
 - order
   - Definition : [instruction priority](sys_cube.md#4-send-command)
@@ -368,7 +368,7 @@ Calculates the Movement to move to the target coordinates.
   - Definition: target x coordinates
   - Range: Any
 - tarY
-  - Definition: target x coordinates
+  - Definition: target y coordinates
   - Range: Any
 - maxSpd
   - Definition: maximum speed indication
@@ -432,7 +432,7 @@ public Movement Rotate2Deg(double tarDeg, int rotateTime = 400, double tolerance
 
 Calculates the Movement to rotate to the specified angle (degrees).
 
-- tarRad
+- tarDeg
   - Definition: Target angle (degree)
   - Range: Any
 - rotateTime

@@ -16,6 +16,7 @@
 - [5. Stage Prefab](sys_simulator.md#5-stage-prefab)
   - [5.1 Target pole](sys_simulator.md#51-target-pole)
   - [5.2 Focus on Cube](sys_simulator.md#52-focus-on-cube)
+- [6. Magnet Prefab](sys_simulator.md#6-magnet-prefab)
 
 # 1. Overview
 
@@ -335,7 +336,7 @@ protected virtual void SimulateIDSensor()
         {
             var stdID = hit.transform.gameObject.GetComponentInParent<StandardID>();
             var deg = stdID.UnityDeg2MatDeg(cube.transform.eulerAngles.y);
-            _SetSandardID(stdID.id, deg);
+            _SetStandardID(stdID.id, deg);
         }
         else _SetOffGround();
     }
@@ -362,7 +363,7 @@ The method `_SetStandardID` to set the Standard ID and angle calls the callback 
 
 ```csharp
 // CubeSimImpl_v2_0_0.cs
-protected void _SetSandardID(uint stdID, int deg)
+protected void _SetStandardID(uint stdID, int deg)
 {
     if (this.standardID != stdID || this.deg != deg || !this.onStandardID)
         this.standardIDCallback?.Invoke(stdID, deg);

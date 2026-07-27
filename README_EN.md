@@ -57,7 +57,7 @@ public class Hello_Toio : MonoBehaviour
   - One useful set of mats, lights, and cameras for simulator
 - BLE communication module
   - Communicate with Cube via iOS app
-  - Communicating with Cube via Web App
+  - Communicate with Cube via Web App
   - Communicate with Cube in Android app
   - Communicate with Cube when playing in Unity Editor on Mac
 - Cube
@@ -79,12 +79,12 @@ public class Hello_Toio : MonoBehaviour
 
 - toio™ Core Cube
 - Mat for toio™Core Cube (Play mat included in toio Collection, Simple play mat included in toio™Core Cube (single package), toio play mat for development)
-- Mac (macOS ver. 11 or higher)
+- Mac (macOS ver. 15.6 or higher)
 - Windows 10 (64 bit version only)
-- iOS devices (iOS ver. 12 or higher)
+- iOS devices (iOS ver. 15 or higher)
 - Android device (Android OS 9.0 or higher)
-- Unity（2022.3.44f1LTS）
-- Unity Visual Scripting(ver 1.8.0)
+- Unity（6000.3.14f1 LTS）
+- Unity Visual Scripting(ver 1.9)
 
 ## Documentation
 

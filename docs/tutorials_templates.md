@@ -27,5 +27,5 @@
 #### ファイル
 
 - `Template_ConnectName_CubeHandle.cs`: メインスクリプト。接続とGUIと制御を実装しています。
-- `TouchOperation.cs`: スマットデバイスでのタッチ操作を実装しています。
+- `TouchOperation.cs`: スマートデバイスでのタッチ操作を実装しています。
 - `UIScannedCubeItem.prefab`: GUIのキューブリストの項目のプレハブです。

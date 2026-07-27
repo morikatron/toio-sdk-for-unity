@@ -11,30 +11,30 @@ We assume that version of Unity Visual Scripting is 1.7.6.
   - [4. Run and test Sample of Visual Scripting](#4-run-and-test-sample-of-visual-scripting)
 
 ## 1. Confirm Unity Visual Scripting
-1. Open the Package Manager by selecting [Package Manager] from the [Window] menu in Unity.
+1. Open the Package Manager by selecting [Package Manager] from the [Window] -> [Package Management] menu in Unity.
 2. Make sure [Visual Scripting] is installed when the upper left is in [Packages:in Project].
 
 <img src="res/visual_scripting_setting/visual_scripting_installed.png">
 
 ### How to install Visual Scripting
-1. Open the Package Manager by selecting [Package Manager] from the [Window] menu in Unity.
-1. Click [Packages:in Project] in the upper left tab and select [Unity Registory].
+1. Open the Package Manager by selecting [Package Manager] from the [Window] -> [Package Management] menu in Unity.
+1. Click [Packages:in Project] in the upper left tab and select [Unity Registry].
 1. Click Visual Scripting, then click the [install] button in the lower right corner.
 
 The installation is complete if Visual Scripting is exist in the [Packages:in Project] state.
 
 ## 2.Make build platform PC
-Set build settings to PC.Without this setting, some nodes, such as the Cube class, will not be displayed.
+Set Build Profiles to PC. Without this setting, some nodes, such as the Cube class, will not be displayed.
 Builds can be done on IOS, android, and WebGL, but if you are programming with Visual Scripting, please make sure that the build platform is PC.
-1. Click [File]->[Build Setting]
-2. Select [Windows, Max, Linux] from list of [Platform] and Click [Swithc Platform]
+1. Click [File]-> [Build Profiles]
+2. Select [Windows], [Mac] or [Linux] from list of [Platform] and Click [Switch Platform]
 <img src="res/visual_scripting_setting/change_platform.png">
 
-Click [Switch Platform] and wait a second,If you see the Unity icon next to [Windows, Mac, Linux], you have succeeded.
+Click [Switch Platform] and wait a second,If you see the Unity icon next to [Windows], [Mac] or [Linux], you have succeeded.
 
 ## 3. Make toio SDK for Unity available to Unity Visual Scripting
 
-1. Click [Edit]->[Project Setting]->[Visual Scripting].
+1. Click [Edit]->[Project Settings]->[Visual Scripting].
 2. Add [toio-sdk-scripts] to Node Library.
    1. Click [Node Library] to see the list of currently available libraries and press the [+] icon.
    2. A tab labeled (No Asseembly) will be added, click on it and select [toio-sdk-scripts].<br>
